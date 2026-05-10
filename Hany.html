@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشيخ هاني الألفي</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Tajawal:wght@400;500;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#020D06;color:#FFF9E6;font-family:'Tajawal',sans-serif;overflow-x:hidden;}
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(2,13,6,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(201,168,76,0.15);}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 1.5rem;}
+.nav-logo{font-family:'Scheherazade New',serif;font-size:1.2rem;color:#E8C97A;}
+.nav-links{display:flex;gap:0.3rem;list-style:none;}
+.nav-links a{color:rgba(255,249,230,0.6);text-decoration:none;font-size:0.82rem;padding:0.4rem 0.8rem;border-radius:20px;transition:all 0.3s;}
+.nav-links a:hover{color:#E8C97A;background:rgba(201,168,76,0.08);}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 1.5rem 3rem;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(0,100,40,0.15) 0%,transparent 70%);}
+.hero-inner{max-width:650px;}
+.bismillah{font-family:'Scheherazade New',serif;font-size:2rem;color:#E8C97A;margin-bottom:2rem;text-shadow:0 0 20px rgba(232,201,122,0.3);}
+.divider{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2rem;}
+.div-line{height:1px;width:80px;background:linear-gradient(90deg,transparent,#C9A84C);}
+.div-line.r{background:linear-gradient(90deg,#C9A84C,transparent);}
+.div-diamond{width:8px;height:8px;background:#C9A84C;transform:rotate(45deg);box-shadow:0 0 10px #C9A84C;}
+.avatar{width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#1B5E20,#2E7D32);margin:0 auto 2rem;display:flex;align-items:center;justify-content:center;font-size:4rem;box-shadow:0 0 40px rgba(0,200,83,0.25);border:2px solid rgba(201,168,76,0.3);}
+.hero-title{font-family:'Scheherazade New',serif;font-size:clamp(2.2rem,7vw,3.8rem);line-height:1.2;margin-bottom:1rem;}
+.hero-title .sub{color:rgba(255,249,230,0.6);font-size:0.55em;display:block;margin-bottom:0.3rem;}
+.hero-title .name{color:#fff;display:block;}
+.hero-tag{font-family:'Cinzel Decorative',serif;font-size:0.65rem;letter-spacing:4px;color:#C9A84C;margin-bottom:1.5rem;opacity:0.8;}
+.hero-desc{color:rgba(255,249,230,0.55);font-size:1rem;line-height:1.9;margin-bottom:2.5rem;}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-green{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;padding:0.85rem 2rem;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.9rem;box-shadow:0 0 20px rgba(0,150,50,0.3);transition:all 0.3s;}
+.btn-green:hover{transform:translateY(-2px);}
+.btn-gold{background:transparent;color:#E8C97A;padding:0.85rem 2rem;border-radius:30px;text-decoration:none;font-size:0.9rem;border:1px solid rgba(201,168,76,0.35);transition:all 0.3s;}
+.btn-gold:hover{background:rgba(201,168,76,0.08);transform:translateY(-2px);}
+section{padding:5rem 1.5rem;}
+.sec-dark{background:#031008;}
+.sec-darker{background:#020A05;}
+.container{max-width:1100px;margin:0 auto;}
+.sec-head{text-align:center;margin-bottom:3.5rem;}
+.sec-eyebrow{font-family:'Cinzel Decorative',serif;font-size:0.6rem;letter-spacing:5px;color:#C9A84C;display:block;margin-bottom:0.8rem;opacity:0.8;}
+.sec-title{font-family:'Scheherazade New',serif;font-size:clamp(1.7rem,4vw,2.6rem);color:#fff;margin-bottom:1rem;}
+.sec-div{display:flex;align-items:center;justify-content:center;gap:0.8rem;}
+.sdl{height:1px;width:60px;background:linear-gradient(90deg,transparent,#C9A84C);}
+.sdl.r{background:linear-gradient(90deg,#C9A84C,transparent);}
+.sds{color:#C9A84C;font-size:0.9rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.2rem;}
+.card{background:linear-gradient(145deg,rgba(0,80,30,0.2),rgba(2,10,4,0.6));border:1px solid rgba(201,168,76,0.1);border-radius:16px;padding:1.6rem;transition:all 0.35s;}
+.card:hover{border-color:rgba(201,168,76,0.25);transform:translateY(-4px);}
+.card-icon{font-size:2rem;margin-bottom:0.8rem;display:block;}
+.card-title{font-family:'Scheherazade New',serif;font-size:1.4rem;color:#fff;margin-bottom:0.3rem;}
+.card-date{font-size:0.7rem;color:rgba(255,249,230,0.35);margin-bottom:1.2rem;letter-spacing:1px;}
+.play-btn{width:100%;background:rgba(0,100,40,0.3);border:1px solid rgba(0,200,83,0.2);color:#69F0AE;padding:0.8rem 1rem;border-radius:30px;font-family:'Tajawal',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.play-btn:hover{background:rgba(0,150,60,0.4);border-color:rgba(0,200,83,0.4);}
+.play-circle{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#00C853,#00E676);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#000;flex-shrink:0;}
+.khutab-list{display:flex;flex-direction:column;gap:1rem;max-width:800px;margin:0 auto;}
+.khutba{background:linear-gradient(135deg,rgba(0,60,20,0.15),rgba(2,10,4,0.5));border:1px solid rgba(201,168,76,0.08);border-radius:14px;padding:1.5rem 1.8rem;transition:all 0.3s;}
+.khutba:hover{border-color:rgba(201,168,76,0.2);}
+.khutba-top{display:flex;align-items:center;gap:1.2rem;margin-bottom:1rem;}
+.khutba-num{font-family:'Cinzel Decorative',serif;font-size:0.85rem;color:#C9A84C;opacity:0.4;min-width:28px;}
+.khutba-title{font-family:'Scheherazade New',serif;font-size:1.2rem;color:#fff;}
+.khutba-date{font-size:0.7rem;color:rgba(255,249,230,0.3);margin-top:0.2rem;letter-spacing:1px;}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.2rem;max-width:900px;margin:0 auto;}
+.contact-card{background:linear-gradient(145deg,rgba(0,60,20,0.15),rgba(2,10,4,0.5));border:1px solid rgba(201,168,76,0.08);border-radius:16px;padding:2rem 1.5rem;text-align:center;text-decoration:none;transition:all 0.35s;display:block;color:inherit;}
+.contact-card:hover{border-color:rgba(201,168,76,0.25);transform:translateY(-4px);}
+.contact-ico{font-size:2.2rem;display:block;margin-bottom:0.8rem;}
+.contact-name{font-family:'Cinzel Decorative',serif;font-size:0.6rem;letter-spacing:2px;color:#E8C97A;margin-bottom:0.3rem;text-transform:uppercase;}
+.contact-handle{font-size:0.8rem;color:rgba(255,249,230,0.45);}
+
+/* PLAYER */
+.modal{position:fixed;inset:0;z-index:500;display:none;}
+.modal.open{display:flex;align-items:flex-end;justify-content:center;}
+.modal-bg{position:absolute;inset:0;background:rgba(0,5,2,0.93);backdrop-filter:blur(20px);}
+.player{position:relative;width:100%;max-width:600px;background:linear-gradient(180deg,#071A08 0%,#030F04 100%);border-radius:28px 28px 0 0;border:1px solid rgba(201,168,76,0.25);border-bottom:none;overflow:hidden;animation:slideUp 0.4s cubic-bezier(0.23,1,0.32,1);box-shadow:0 -8px 40px rgba(201,168,76,0.1);}
+.player::before{content:'';position:absolute;top:0;left:0;right:0;height:100%;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;opacity:1;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.player-bar{height:3px;background:linear-gradient(90deg,#1B5E20,#C9A84C,#E8C97A,#C9A84C,#1B5E20);background-size:300%;animation:flow 3s linear infinite;}
+@keyframes flow{to{background-position:300% 0}}
+.player-handle{width:40px;height:4px;background:rgba(201,168,76,0.2);border-radius:2px;margin:1rem auto 0;}
+.player-body{padding:1.5rem 1.5rem 2.5rem;}
+.player-info{display:flex;gap:1.2rem;align-items:center;margin-bottom:1.2rem;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.08);border-radius:14px;padding:0.8rem 1rem;}
+.player-thumb{width:55px;height:55px;border-radius:12px;background:linear-gradient(135deg,#1B5E20,#2E7D32);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;box-shadow:0 0 15px rgba(0,150,50,0.3);border:1px solid rgba(201,168,76,0.2);}
+.player-name{font-family:'Scheherazade New',serif;font-size:1.2rem;color:#fff;margin-bottom:0.2rem;line-height:1.3;}
+.player-type{font-size:0.6rem;color:#C9A84C;letter-spacing:3px;font-family:'Cinzel Decorative',serif;}
+
+/* VIDEO */
+.video-wrap{display:none;margin-bottom:1rem;width:100%;background:#000;
+  border-radius:16px;
+  border:1px solid rgba(201,168,76,0.35);
+  box-shadow:0 0 0 1px rgba(201,168,76,0.08), 0 0 20px rgba(201,168,76,0.1), inset 0 0 20px rgba(0,0,0,0.5);
+  padding:4px;
+  position:relative;
+}
+.video-wrap::before{
+  content:'✦ ﷽ ✦';
+  position:absolute;
+  top:-11px;left:50%;transform:translateX(-50%);
+  background:#071A08;
+  color:#C9A84C;
+  font-size:0.6rem;
+  padding:0 10px;
+  letter-spacing:4px;
+  white-space:nowrap;
+}
+.video-wrap::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:14px;
+  border:1px solid rgba(201,168,76,0.1);
+  pointer-events:none;
+}
+.video-wrap.show{display:block;}
+.video-wrap iframe{width:100%;aspect-ratio:16/9;height:auto;border:none;display:block;border-radius:12px;}
+.video-wrap video{width:100%;height:auto;max-height:60vh;display:block;border-radius:12px;object-fit:contain;background:#000;}
+
+/* AUDIO */
+.audio-wrap{display:none;}
+.audio-wrap.show{display:block;}
+.viz{display:flex;align-items:flex-end;justify-content:center;gap:3px;height:50px;margin-bottom:1.3rem;padding:0.5rem;background:rgba(0,0,0,0.2);border-radius:12px;border:1px solid rgba(201,168,76,0.06);}
+.vb{width:5px;border-radius:4px;background:linear-gradient(180deg,#E8C97A,#00C853);animation:vb 0.8s ease-in-out infinite;box-shadow:0 0 6px rgba(232,201,122,0.3);}
+.vb:nth-child(1){height:30%;animation-delay:0s}.vb:nth-child(2){height:70%;animation-delay:0.1s}.vb:nth-child(3){height:50%;animation-delay:0.2s}.vb:nth-child(4){height:90%;animation-delay:0.3s}.vb:nth-child(5){height:40%;animation-delay:0.4s}.vb:nth-child(6){height:80%;animation-delay:0.5s}.vb:nth-child(7){height:55%;animation-delay:0.6s}.vb:nth-child(8){height:35%;animation-delay:0.7s}.vb:nth-child(9){height:70%;animation-delay:0.5s}.vb:nth-child(10){height:45%;animation-delay:0.3s}
+@keyframes vb{0%,100%{transform:scaleY(0.15)}50%{transform:scaleY(1)}}
+.viz.paused .vb{animation-play-state:paused;opacity:0.4;}
+.pbar-wrap{margin-bottom:1.2rem;}
+.pbar{height:5px;background:rgba(255,255,255,0.06);border-radius:5px;cursor:pointer;margin-bottom:0.5rem;position:relative;direction:ltr;border:1px solid rgba(201,168,76,0.08);}
+.pfill{height:100%;background:linear-gradient(90deg,#1B5E20,#C9A84C,#E8C97A);border-radius:5px;width:0%;position:relative;}
+.pfill::after{content:'✦';position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:10px;color:#E8C97A;filter:drop-shadow(0 0 4px #E8C97A);}
+.times{display:flex;justify-content:space-between;font-size:0.7rem;color:rgba(201,168,76,0.5);direction:ltr;}
+.ctrl-row{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-bottom:1.2rem;}
+.skip-btn{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:50%;width:42px;height:42px;color:#C9A84C;font-size:0.7rem;font-weight:700;cursor:pointer;transition:all 0.3s;font-family:'Tajawal',sans-serif;}
+.skip-btn:hover{background:rgba(201,168,76,0.15);transform:scale(1.08);}
+.ctrl-play{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#1B5E20,#2E7D32);border:2px solid rgba(201,168,76,0.3);cursor:pointer;font-size:1.4rem;color:#fff;box-shadow:0 0 30px rgba(0,150,50,0.4),0 0 60px rgba(0,100,30,0.2);transition:all 0.3s;}
+.ctrl-play:hover{transform:scale(1.08);box-shadow:0 0 40px rgba(201,168,76,0.4);}
+.vol-row{display:flex;align-items:center;gap:0.8rem;}
+.vol-ico{font-size:0.9rem;color:rgba(201,168,76,0.4);}
+.vol-slider{flex:1;-webkit-appearance:none;height:3px;background:rgba(201,168,76,0.1);border-radius:3px;outline:none;cursor:pointer;}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#E8C97A);cursor:pointer;box-shadow:0 0 6px rgba(201,168,76,0.5);}
+
+.modal-close{position:absolute;top:1.2rem;left:1.2rem;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(201,168,76,0.5);font-size:0.85rem;transition:all 0.3s;}
+.modal-close:hover{color:#ff6b6b;border-color:rgba(255,100,100,0.3);}
+.rfab{position:fixed;bottom:2rem;left:2rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1B5E20,#2E7D32);border:none;cursor:pointer;font-size:1.2rem;color:#fff;box-shadow:0 0 20px rgba(0,150,50,0.4);z-index:200;transition:all 0.4s;}
+.rfab:hover{transform:scale(1.1);}
+.rfab.spin{animation:spinA 0.8s linear infinite;}
+@keyframes spinA{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:3rem;color:rgba(255,249,230,0.3);font-family:'Scheherazade New',serif;font-size:1.1rem;}
+footer{background:#020A05;border-top:1px solid rgba(201,168,76,0.08);padding:3rem 1.5rem;text-align:center;}
+.footer-sym{font-family:'Scheherazade New',serif;font-size:2rem;color:#C9A84C;opacity:0.5;display:block;margin-bottom:0.5rem;}
+.footer-txt{font-size:0.72rem;color:rgba(255,249,230,0.2);letter-spacing:1px;}
+.footer-credit{font-size:0.6rem;color:rgba(201,168,76,0.2);margin-top:0.5rem;letter-spacing:2px;}
+.toast{position:fixed;bottom:2rem;right:2rem;background:rgba(10,40,15,0.95);border:1px solid rgba(0,200,83,0.2);border-radius:12px;padding:0.9rem 1.5rem;font-size:0.85rem;color:#FFF9E6;z-index:600;transform:translateY(80px);opacity:0;transition:all 0.4s;backdrop-filter:blur(10px);}
+.toast.show{transform:translateY(0);opacity:1;}
+audio{display:none;}
+/* DOROS CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem;}
+.cat-card{background:linear-gradient(145deg,rgba(0,80,30,0.25),rgba(2,10,4,0.6));border:1px solid rgba(201,168,76,0.15);border-radius:16px;padding:1.8rem;cursor:pointer;transition:all 0.35s;text-align:right;}
+.cat-card:hover{border-color:rgba(201,168,76,0.4);transform:translateY(-4px);box-shadow:0 15px 40px rgba(0,0,0,0.3);}
+.cat-icon{font-size:2.5rem;margin-bottom:0.8rem;display:block;}
+.cat-name{font-family:'Scheherazade New',serif;font-size:1.5rem;color:#fff;margin-bottom:0.3rem;}
+.cat-count{font-size:0.75rem;color:rgba(201,168,76,0.6);letter-spacing:1px;}
+.cat-arrow{float:left;color:rgba(201,168,76,0.4);font-size:1.2rem;margin-top:0.3rem;}
+
+/* BACK BUTTON */
+.back-btn{background:rgba(0,100,40,0.2);border:1px solid rgba(201,168,76,0.2);color:#E8C97A;padding:0.6rem 1.5rem;border-radius:30px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:0.88rem;margin-bottom:2rem;transition:all 0.3s;display:none;}
+.back-btn.show{display:inline-flex;align-items:center;gap:0.5rem;}
+.back-btn:hover{background:rgba(0,150,60,0.3);}
+
+/* CATEGORY TITLE */
+.cat-title{font-family:'Scheherazade New',serif;font-size:1.8rem;color:#E8C97A;margin-bottom:1.5rem;display:none;}
+.cat-title.show{display:block;}
+
+@media(max-width:700px){.nav-links{display:none}.grid{grid-template-columns:1fr}section{padding:4rem 1rem}.player-body{padding:1.5rem 1.5rem 2rem}}
+</style>
+</head>
+<body>
+
+<audio id="aud"></audio>
+
+<div class="modal" id="modal">
+  <div class="modal-bg" onclick="closePlayer()"></div>
+  <div class="player">
+    <div class="player-bar"></div>
+    <div class="player-handle"></div>
+    <button class="modal-close" onclick="closePlayer()">✕</button>
+    <div class="player-body">
+      <div class="player-info">
+        <div class="player-thumb" id="pThumb">📖</div>
+        <div>
+          <div class="player-name" id="pName"></div>
+          <div class="player-type" id="pType"></div>
+        </div>
+      </div>
+      <div class="video-wrap" id="vWrap"></div>
+      <div class="audio-wrap" id="aWrap">
+        <div class="viz" id="viz">
+          <div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div>
+          <div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div>
+        </div>
+        <div class="pbar-wrap">
+          <div class="pbar" id="pbar" onclick="seek(event)">
+            <div class="pfill" id="pfill"></div>
+          </div>
+          <div class="times"><span id="tNow">0:00</span><span id="tTot">0:00</span></div>
+        </div>
+        <div class="ctrl-row">
+          <button class="skip-btn" onclick="document.getElementById('aud').currentTime-=10">◀◀ 10</button>
+          <button class="ctrl-play" id="ppBtn" onclick="togglePlay()">▶</button>
+          <button class="skip-btn" onclick="document.getElementById('aud').currentTime+=10">10 ▶▶</button>
+        </div>
+        <div class="vol-row">
+          <span class="vol-ico">🔇</span>
+          <input class="vol-slider" type="range" min="0" max="1" step="0.05" value="1" oninput="document.getElementById('aud').volume=this.value">
+          <span class="vol-ico">🔊</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">الشيخ هاني الألفي</div>
+    <ul class="nav-links">
+      <li><a href="#quran">القرآن</a></li>
+      <li><a href="#khutab">الخطب</a></li>
+      <li><a href="#doros">الدروس</a></li>
+      <li><a href="#contact">التواصل</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="bismillah">بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line r"></div></div>
+    <div class="avatar">☪️</div>
+    <h1 class="hero-title">
+      <span class="sub">فضيلة الشيخ</span>
+      <span class="name">هاني الألفي</span>
+    </h1>
+    <div class="hero-tag">قرآن كريم • خطب • دروس دينية</div>
+    <p class="hero-desc">نفحات إيمانية وعلم نافع من تلاوة القرآن الكريم والخطب والدروس الدينية</p>
+    <div class="hero-btns">
+      <a href="#quran" class="btn-green">🎙️ استمع الآن</a>
+      <a href="#contact" class="btn-gold">تواصل معنا</a>
+    </div>
+  </div>
+</section>
+
+<section id="quran" class="sec-dark">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-eyebrow">تلاوات قرآنية</span>
+      <h2 class="sec-title">القرآن الكريم بصوته</h2>
+      <div class="sec-div"><div class="sdl"></div><span class="sds">✦</span><div class="sdl r"></div></div>
+    </div>
+    <div class="grid" id="qg"><div class="empty">جاري التحميل...</div></div>
+  </div>
+</section>
+
+<section id="khutab" class="sec-darker">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-eyebrow">منبر الجمعة</span>
+      <h2 class="sec-title">الخطب المنبرية</h2>
+      <div class="sec-div"><div class="sdl"></div><span class="sds">✦</span><div class="sdl r"></div></div>
+    </div>
+    <div class="khutab-list" id="kl"><div class="empty">جاري التحميل...</div></div>
+  </div>
+</section>
+
+<section id="doros" class="sec-dark">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-eyebrow">تعليم إسلامي</span>
+      <h2 class="sec-title">الدروس الدينية</h2>
+      <div class="sec-div"><div class="sdl"></div><span class="sds">✦</span><div class="sdl r"></div></div>
+    </div>
+    <button class="back-btn" id="dorosBack" onclick="showCatGrid()">→ رجوع للأقسام</button>
+    <div class="cat-title" id="dorosCatTitle"></div>
+    <div class="grid" id="dg"><div class="empty">جاري التحميل...</div></div>
+  </div>
+</section>
+
+<section id="contact" class="sec-darker">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-eyebrow">تواصل معنا</span>
+      <h2 class="sec-title">التواصل مع الشيخ</h2>
+      <div class="sec-div"><div class="sdl"></div><span class="sds">✦</span><div class="sdl r"></div></div>
+    </div>
+    <div class="contact-grid" id="cg"><div class="empty">جاري التحميل...</div></div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-sym">﷽</span>
+  <div class="footer-txt">جميع الحقوق محفوظة • الشيخ هاني الألفي © 2026</div>
+  <div class="footer-credit">CRAFTED BY CLAUDE AI</div>
+</footer>
+
+<button class="rfab" id="rfab" onclick="loadData()">🔄</button>
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEET_ID = '1e1fOyh1xVNHV8mKrR5FxfS7h-HOJ5XIdGfaItTRLU3k';
+const EM = ['📖','🌙','⭐','🕌','🤲','📿','🌿','✨'];
+const aud = document.getElementById('aud');
+let playing = false;
+let prog;
+
+function getType(url) {
+  if (!url) return 'none';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+  if (url.includes('tiktok.com')) return 'tiktok';
+  if (url.includes('player.cloudinary.com')) return 'cloudinary';
+  if (url.match(/\.(mp3|wav|ogg|m4a)$/i)) return 'audio';
+  if (url.match(/\.(mp4|webm|mov)$/i)) return 'video';
+  if (url.includes('cloudinary.com')) return 'video';
+  if (url.includes('drive.google.com')) return 'drive';
+  return 'audio';
+}
+
+function getYTEmbed(url) {
+  let id = '';
+  if (url.includes('youtu.be/')) id = url.split('youtu.be/')[1].split('?')[0];
+  else if (url.includes('v=')) id = url.split('v=')[1].split('&')[0];
+  return 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+}
+
+function getDriveId(url) {
+  if (url.includes('/file/d/')) return url.split('/file/d/')[1].split('/')[0];
+  if (url.includes('id=')) return url.split('id=')[1].split('&')[0];
+  return '';
+}
+
+function openPlayer(link, title, type, icon) {
+  // Set info
+  document.getElementById('pName').textContent = title;
+  document.getElementById('pType').textContent = type;
+  document.getElementById('pThumb').textContent = icon;
+
+  // Reset all
+  const vw = document.getElementById('vWrap');
+  const aw = document.getElementById('aWrap');
+  vw.innerHTML = '';
+  vw.classList.remove('show');
+  aw.classList.remove('show');
+  aud.pause();
+  aud.src = '';
+  clearInterval(prog);
+  document.getElementById('pfill').style.width = '0%';
+  document.getElementById('tNow').textContent = '0:00';
+  document.getElementById('tTot').textContent = '0:00';
+  document.getElementById('ppBtn').textContent = '▶';
+  document.getElementById('viz').classList.add('paused');
+  playing = false;
+
+  const t = getType(link);
+
+  if (t === 'youtube') {
+    vw.classList.add('show');
+    vw.innerHTML = '<iframe src="' + getYTEmbed(link) + '" allowfullscreen allow="autoplay; encrypted-media" style="width:100%;aspect-ratio:16/9;height:auto;border:none;display:block;"></iframe>';
+  } else if (t === 'cloudinary') {
+    vw.classList.add('show');
+    vw.innerHTML = '<iframe src="' + link + '" allowfullscreen allow="autoplay" style="width:100%;aspect-ratio:16/9;height:auto;border:none;display:block;border-radius:14px;"></iframe>';
+  } else if (t === 'tiktok') {
+    vw.classList.add('show');
+    vw.innerHTML = '<iframe src="' + link + '" allowfullscreen allow="autoplay" style="width:100%;aspect-ratio:9/16;min-height:400px;border:none;display:block;border-radius:10px"></iframe>';
+  } else if (t === 'video') {
+    vw.classList.add('show');
+    vw.innerHTML = '<video controls autoplay playsinline src="' + link + '" style="width:100%;max-height:60vh;object-fit:contain;background:#000;border-radius:14px;display:block;"></video>';
+  } else if (t === 'drive') {
+    const fid = getDriveId(link);
+    vw.classList.add('show');
+    vw.innerHTML = '<iframe src="https://drive.google.com/file/d/' + fid + '/preview" style="width:100%;aspect-ratio:16/9;height:auto;border:none;display:block;border-radius:14px;" allow="autoplay"></iframe>';
+  } else {
+    // audio
+    aw.classList.add('show');
+    aud.src = link;
+    aud.play().then(function() {
+      playing = true;
+      document.getElementById('ppBtn').textContent = '⏸';
+      document.getElementById('viz').classList.remove('paused');
+      startProg();
+    }).catch(function() {
+      showToast('❌ تعذر تشغيل الملف');
+    });
+  }
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePlayer() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+  aud.pause();
+  aud.src = '';
+  document.getElementById('vWrap').innerHTML = '';
+  clearInterval(prog);
+  playing = false;
+}
+
+function togglePlay() {
+  if (playing) {
+    aud.pause();
+    playing = false;
+    document.getElementById('ppBtn').textContent = '▶';
+    document.getElementById('viz').classList.add('paused');
+  } else {
+    aud.play();
+    playing = true;
+    document.getElementById('ppBtn').textContent = '⏸';
+    document.getElementById('viz').classList.remove('paused');
+  }
+}
+
+function seek(e) {
+  if (!aud.duration) return;
+  const r = document.getElementById('pbar').getBoundingClientRect();
+  const pct = (e.clientX - r.left) / r.width;
+  aud.currentTime = Math.max(0, Math.min(1, pct)) * aud.duration;
+}
+
+function fmt(s) {
+  if (isNaN(s) || !isFinite(s)) return '0:00';
+  return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0');
+}
+
+function startProg() {
+  clearInterval(prog);
+  prog = setInterval(function() {
+    if (!aud.duration) return;
+    document.getElementById('pfill').style.width = (aud.currentTime/aud.duration*100) + '%';
+    document.getElementById('tNow').textContent = fmt(aud.currentTime);
+    document.getElementById('tTot').textContent = fmt(aud.duration);
+    if (aud.ended) {
+      playing = false;
+      document.getElementById('ppBtn').textContent = '▶';
+      document.getElementById('viz').classList.add('paused');
+      clearInterval(prog);
+    }
+  }, 500);
+}
+
+async function loadData() {
+  const btn = document.getElementById('rfab');
+  btn.classList.add('spin');
+  try {
+    const res = await fetch('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&t=' + Date.now());
+    const text = await res.text();
+    const data = JSON.parse(text.match(/setResponse\(([\s\S]*?)\);/)[1]);
+    const rows = data.table.rows;
+    let q=[], k=[], d=[], c=[];
+    rows.forEach(function(r) {
+      if (!r.c[0] || !r.c[0].v) return;
+      const t=r.c[0].v.trim().toLowerCase();
+      const ti=r.c[1]?r.c[1].v||'':'';
+      const li=r.c[2]?r.c[2].v||'':'';
+      const da=r.c[3]?r.c[3].v||'':'';
+      if(t==='quran') q.push({ti,li,da});
+      else if(t==='khutba') k.push({ti,li,da});
+      else if(t==='dars') { var ca=r.c[4]?r.c[4].v||'عام':'عام'; d.push({ti,li,da,cat:ca}); }
+      else if(t==='contact') c.push({ti,li,da});
+    });
+    renderQ(q); renderK(k); renderD(d); renderC(c);
+    showToast('✅ تم التحديث');
+  } catch(e) {
+    showToast('❌ خطأ في التحميل');
+    ['qg','kl','dg','cg'].forEach(function(id) {
+      document.getElementById(id).innerHTML = '<div class="empty">لا يوجد محتوى بعد</div>';
+    });
+  }
+  btn.classList.remove('spin');
+}
+
+function renderQ(arr) {
+  const g = document.getElementById('qg');
+  if (!arr.length) { g.innerHTML='<div class="empty">لم يُضف قرآن بعد</div>'; return; }
+  g.innerHTML = arr.map(function(x,i) {
+    return '<div class="card"><span class="card-icon">'+EM[i%8]+'</span><div class="card-title">'+x.ti+'</div><div class="card-date">'+x.da+'</div><button class="play-btn" onclick="openPlayer(\''+x.li+'\',\''+x.ti+'\',\'تلاوة قرآنية\',\''+EM[i%8]+'\')"><div class="play-circle">▶</div> استمع للتلاوة</button></div>';
+  }).join('');
+}
+
+function renderK(arr) {
+  const l = document.getElementById('kl');
+  if (!arr.length) { l.innerHTML='<div class="empty">لم تُضف خطب بعد</div>'; return; }
+  l.innerHTML = arr.map(function(x,i) {
+    return '<div class="khutba"><div class="khutba-top"><div class="khutba-num">'+String(i+1).padStart(2,'0')+'</div><div><div class="khutba-title">'+x.ti+'</div><div class="khutba-date">'+x.da+'</div></div></div><button class="play-btn" onclick="openPlayer(\''+x.li+'\',\''+x.ti+'\',\'خطبة منبرية\',\'🎤\')"><div class="play-circle">▶</div> استمع للخطبة</button></div>';
+  }).join('');
+}
+
+var dorosData = [];
+var currentCat = null;
+var catIcons = ['📚','📖','🕌','⭐','🌙','🤲','📿','🌿','✨','☪️'];
+
+function renderD(arr) {
+  dorosData = arr;
+  currentCat = null;
+  showCatGrid();
+}
+
+function showCatGrid() {
+  currentCat = null;
+  const g = document.getElementById('dg');
+  const backBtn = document.getElementById('dorosBack');
+  const catTitle = document.getElementById('dorosCatTitle');
+  
+  backBtn.classList.remove('show');
+  catTitle.classList.remove('show');
+  
+  if (!dorosData.length) { 
+    g.innerHTML='<div class="empty">لم تُضف دروس بعد</div>'; 
+    return; 
+  }
+  
+  // Group by category
+  var cats = {};
+  dorosData.forEach(function(x) {
+    var cat = x.cat || 'عام';
+    if (!cats[cat]) cats[cat] = [];
+    cats[cat].push(x);
+  });
+  
+  var catNames = Object.keys(cats);
+  var html = '<div class="cat-grid">';
+  catNames.forEach(function(cat, i) {
+    var count = cats[cat].length;
+    html += '<div class="cat-card" onclick="showCatDoros(\''+cat+'\')">';
+    html += '<span class="cat-icon">'+catIcons[i % catIcons.length]+'</span>';
+    html += '<div class="cat-name">'+cat+'</div>';
+    html += '<div class="cat-count">'+count+' '+(count === 1 ? 'درس' : 'دروس')+'</div>';
+    html += '<span class="cat-arrow">←</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  g.innerHTML = html;
+}
+
+function showCatDoros(cat) {
+  currentCat = cat;
+  const g = document.getElementById('dg');
+  const backBtn = document.getElementById('dorosBack');
+  const catTitle = document.getElementById('dorosCatTitle');
+  
+  backBtn.classList.add('show');
+  catTitle.classList.add('show');
+  catTitle.textContent = cat;
+  
+  var items = dorosData.filter(function(x) { return (x.cat || 'عام') === cat; });
+  
+  g.innerHTML = items.map(function(x, i) {
+    return '<div class="card"><span class="card-icon">'+EM[(i+3)%8]+'</span><div class="card-title">'+x.ti+'</div><div class="card-date">'+x.da+'</div><button class="play-btn" onclick="openPlayer(\''+x.li+'\',\''+x.ti+'\',\''+cat+'\',\''+EM[(i+3)%8]+'\')"><div class="play-circle">▶</div> شاهد الدرس</button></div>';
+  }).join('');
+}
+
+function renderC(arr) {
+  const g = document.getElementById('cg');
+  const ico = {'واتساب':'📱','يوتيوب':'▶️','فيسبوك':'📘','تيليجرام':'✈️','انستجرام':'📸'};
+  if (!arr.length) {
+    g.innerHTML = ['واتساب','يوتيوب','فيسبوك','تيليجرام'].map(function(n) {
+      return '<div class="contact-card"><span class="contact-ico">'+ico[n]+'</span><div class="contact-name">'+n+'</div><div class="contact-handle">قريباً</div></div>';
+    }).join('');
+    return;
+  }
+  g.innerHTML = arr.map(function(x) {
+    return '<a class="contact-card" href="'+(x.li||'#')+'" target="_blank"><span class="contact-ico">'+(ico[x.ti]||'🔗')+'</span><div class="contact-name">'+x.ti+'</div><div class="contact-handle">'+x.da+'</div></a>';
+  }).join('');
+}
+
+function showToast(m) {
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+loadData();
+</script>
+</body>
+</html>
