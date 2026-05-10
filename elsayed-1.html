@@ -9,51 +9,50 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --gold:#C9A84C;--gold-l:#E8C97A;--gold-d:#8B6914;
-  --deep:#03040B;--dark:#060810;--mid:#090C18;
-  --txt:#F5F0FF;--txt-m:rgba(245,240,255,0.45);
-  --bdr:rgba(201,168,76,0.12);--bdr-g:rgba(201,168,76,0.32);
+  --deep:#02030A;--dark:#05070F;--mid:#080B16;
+  --txt:#F5F0FF;--muted:rgba(245,240,255,0.42);
+  --bdr:rgba(201,168,76,0.11);--bdr-g:rgba(201,168,76,0.30);
 }
 html{scroll-behavior:smooth;}
-body{background:var(--deep);color:var(--txt);font-family:"Tajawal",sans-serif;overflow-x:hidden;max-width:100vw;}
+body{background:var(--deep);color:var(--txt);font-family:'Tajawal',sans-serif;overflow-x:hidden;max-width:100vw;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-d),var(--gold));border-radius:4px;}
 
 /* STARS */
-#sc{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.55;}
+#sc{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
 /* CRESCENTS */
-.cres-l,.cres-r{position:fixed;top:0;bottom:0;display:flex;align-items:center;pointer-events:none;z-index:1;overflow:hidden;}
-.cres-l{left:-15px;animation:fL 7s ease-in-out infinite;}
-.cres-r{right:-15px;animation:fR 8.5s ease-in-out infinite;}
+.cL,.cR{position:fixed;top:0;bottom:0;display:flex;align-items:center;pointer-events:none;z-index:1;overflow:hidden;}
+.cL{left:-15px;animation:fL 7s ease-in-out infinite;}
+.cR{right:-15px;animation:fR 8.5s ease-in-out infinite;}
 @keyframes fL{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-20px) rotate(3deg);}}
 @keyframes fR{0%,100%{transform:translateY(0) rotate(3deg);}50%{transform:translateY(20px) rotate(-3deg);}}
 
 /* NAV */
-nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(3,4,11,0.95);backdrop-filter:blur(30px);border-bottom:1px solid rgba(201,168,76,0.08);}
-.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 1.5rem;}
-.nav-logo{font-family:"Scheherazade New",serif;font-size:1.05rem;color:var(--gold-l);white-space:nowrap;}
-.nav-links{display:flex;gap:0.1rem;list-style:none;}
-.nav-links a{color:var(--txt-m);text-decoration:none;font-size:0.82rem;padding:0.38rem 0.88rem;border-radius:20px;transition:all .3s;}
-.nav-links a:hover{color:var(--gold-l);background:rgba(201,168,76,0.07);}
-.nav-ham{display:none;background:none;border:1px solid rgba(201,168,76,0.18);border-radius:8px;padding:5px 10px;color:var(--gold);cursor:pointer;font-size:1rem;}
+nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(2,3,10,0.96);backdrop-filter:blur(30px);border-bottom:1px solid rgba(201,168,76,0.08);}
+.nav-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 1.5rem;}
+.nav-logo{font-family:'Scheherazade New',serif;font-size:1.05rem;color:var(--gold-l);white-space:nowrap;}
+.nav-ul{display:flex;gap:0.1rem;list-style:none;}
+.nav-ul a{color:var(--muted);text-decoration:none;font-size:0.8rem;padding:0.35rem 0.85rem;border-radius:20px;transition:all .3s;}
+.nav-ul a:hover{color:var(--gold-l);background:rgba(201,168,76,0.07);}
+.ham{display:none;background:none;border:1px solid rgba(201,168,76,0.18);border-radius:8px;padding:5px 10px;color:var(--gold);cursor:pointer;font-size:1rem;}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:90px 1.5rem 5rem;position:relative;overflow:hidden;z-index:2;}
-.hero-glow{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,rgba(201,168,76,0.055) 0%,rgba(40,15,100,0.04) 45%,transparent 68%);pointer-events:none;}
-.hero-inner{max-width:680px;position:relative;z-index:3;}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:90px 1.5rem 4rem;position:relative;overflow:hidden;z-index:2;}
+.hglow{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,rgba(201,168,76,0.055) 0%,rgba(40,15,100,0.04) 45%,transparent 68%);pointer-events:none;}
+.hi{max-width:680px;position:relative;z-index:3;}
+.a1{animation:aU .9s ease both;}.a2{animation:aU .9s .15s ease both;}.a3{animation:aU .9s .28s ease both;}
+.a4{animation:aU .9s .42s ease both;}.a5{animation:aU .9s .55s ease both;}.a6{animation:aU .9s .68s ease both;}
+@keyframes aU{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
 
-.a1{animation:aU .9s ease both;}.a2{animation:aU .9s .15s ease both;}.a3{animation:aU .9s .3s ease both;}
-.a4{animation:aU .9s .45s ease both;}.a5{animation:aU .9s .6s ease both;}.a6{animation:aU .9s .75s ease both;}
-@keyframes aU{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
-
-.bismillah{font-family:"Amiri",serif;font-size:clamp(1.8rem,5vw,2.6rem);color:var(--gold-l);margin-bottom:1.5rem;text-shadow:0 0 40px rgba(201,168,76,0.3);}
+.bism{font-family:'Amiri',serif;font-size:clamp(1.8rem,5vw,2.6rem);color:var(--gold-l);margin-bottom:1.5rem;text-shadow:0 0 40px rgba(201,168,76,0.3);}
 .orn{display:flex;align-items:center;justify-content:center;gap:.9rem;margin-bottom:2rem;}
-.orn-l{height:1px;width:70px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5));}
-.orn-r{height:1px;width:70px;background:linear-gradient(90deg,rgba(201,168,76,.5),transparent);}
-.orn-d{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 10px rgba(201,168,76,.5);}
+.oL{height:1px;width:70px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5));}
+.oR{height:1px;width:70px;background:linear-gradient(90deg,rgba(201,168,76,.5),transparent);}
+.oD{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 10px rgba(201,168,76,.5);}
 
 /* AVATAR */
-.av-wrap{position:relative;width:160px;height:160px;margin:0 auto 2.2rem;}
+.av-w{position:relative;width:160px;height:160px;margin:0 auto 2.2rem;}
 .av-r1{position:absolute;inset:-10px;border-radius:50%;border:1px solid rgba(201,168,76,.14);animation:rot 22s linear infinite;}
 .av-r2{position:absolute;inset:-22px;border-radius:50%;border:1px dashed rgba(201,168,76,.06);animation:rot 40s linear infinite reverse;}
 @keyframes rot{to{transform:rotate(360deg);}}
@@ -61,398 +60,378 @@ nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(3,4,11,0.95);bac
 .av-c img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;}
 .av-moon{display:none;align-items:center;justify-content:center;width:100%;height:100%;}
 
-.hero-label{font-size:.6rem;letter-spacing:8px;color:rgba(201,168,76,.4);margin-bottom:.8rem;}
-.hero-h1{font-family:"Scheherazade New",serif;font-size:clamp(2rem,6.5vw,4.2rem);line-height:1.2;margin-bottom:.8rem;}
-.hero-h1 .s1{color:var(--txt-m);font-size:.42em;display:block;margin-bottom:.3rem;}
-.hero-h1 .s2{color:#fff;display:block;}
-.hero-tag{font-size:.6rem;letter-spacing:7px;color:var(--gold);margin-bottom:1.6rem;}
-.hero-desc{color:var(--txt-m);font-size:.95rem;line-height:2.3;margin-bottom:2.4rem;max-width:500px;margin-left:auto;margin-right:auto;}
-.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.btn-g{background:linear-gradient(135deg,#6B4A12,#C9A84C);color:#fff;padding:.9rem 2.2rem;border-radius:40px;text-decoration:none;font-weight:700;font-size:.88rem;box-shadow:0 0 28px rgba(201,168,76,.18);transition:all .35s;border:1px solid rgba(201,168,76,.22);}
+.hlbl{font-size:.58rem;letter-spacing:8px;color:rgba(201,168,76,.4);margin-bottom:.8rem;}
+.hh1{font-family:'Scheherazade New',serif;font-size:clamp(2rem,6.5vw,4.2rem);line-height:1.2;margin-bottom:.8rem;}
+.hh1 .s1{color:var(--muted);font-size:.42em;display:block;margin-bottom:.3rem;}
+.hh1 .s2{color:#fff;display:block;}
+.htag{font-size:.58rem;letter-spacing:7px;color:var(--gold);margin-bottom:1.6rem;}
+.hdesc{color:var(--muted);font-size:.93rem;line-height:2.3;margin-bottom:2.4rem;max-width:500px;margin-left:auto;margin-right:auto;}
+.hbtns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-g{background:linear-gradient(135deg,#6B4A12,#C9A84C);color:#fff;padding:.88rem 2.2rem;border-radius:40px;text-decoration:none;font-weight:700;font-size:.88rem;box-shadow:0 0 28px rgba(201,168,76,.18);transition:all .35s;border:1px solid rgba(201,168,76,.22);}
 .btn-g:hover{transform:translateY(-3px);box-shadow:0 0 48px rgba(201,168,76,.32);}
-.btn-o{background:transparent;color:var(--gold-l);padding:.9rem 2.2rem;border-radius:40px;text-decoration:none;font-size:.88rem;border:1px solid rgba(201,168,76,.18);transition:all .35s;}
+.btn-o{background:transparent;color:var(--gold-l);padding:.88rem 2.2rem;border-radius:40px;text-decoration:none;font-size:.88rem;border:1px solid rgba(201,168,76,.18);transition:all .35s;}
 .btn-o:hover{background:rgba(201,168,76,.07);transform:translateY(-3px);}
-.scroll-dot{width:1px;height:50px;background:linear-gradient(180deg,transparent,var(--gold),transparent);margin:2rem auto 0;animation:sp 2.2s ease-in-out infinite;}
+.sdot{width:1px;height:50px;background:linear-gradient(180deg,transparent,var(--gold),transparent);margin:2rem auto 0;animation:sp 2.2s ease-in-out infinite;}
 @keyframes sp{0%,100%{opacity:.2;}50%{opacity:.9;}}
 
 /* STATS */
-.stats-bar{background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(40,15,100,.06));border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:2rem 1.5rem;position:relative;z-index:2;}
-.stats-grid{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;}
-.stat-num{font-family:"Scheherazade New",serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--gold-l);display:block;line-height:1;margin-bottom:.3rem;font-weight:700;}
-.stat-lbl{font-size:.6rem;letter-spacing:3px;color:var(--txt-m);}
+.stats{background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(40,15,100,.06));border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:1.8rem 1.5rem;position:relative;z-index:2;}
+.stats-g{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;}
+.sn{font-family:'Scheherazade New',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:var(--gold-l);display:block;line-height:1;margin-bottom:.3rem;font-weight:700;}
+.sl{font-size:.58rem;letter-spacing:3px;color:var(--muted);}
 
 /* SECTIONS */
 section{padding:4.5rem 1.5rem;position:relative;z-index:2;}
-.sec-dark{background:var(--dark);}
-.sec-mid{background:var(--mid);}
-.container{max-width:900px;margin:0 auto;}
-.sec-head{text-align:center;margin-bottom:2.5rem;}
-.sec-eyebrow{font-size:.58rem;letter-spacing:7px;color:var(--gold-d);display:block;margin-bottom:.8rem;}
-.sec-title{font-family:"Scheherazade New",serif;font-size:clamp(1.8rem,4vw,2.6rem);color:#fff;margin-bottom:1rem;}
-.sec-orn{display:flex;align-items:center;justify-content:center;gap:.8rem;}
-.sol{height:1px;width:48px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.55));}
-.sol.r{background:linear-gradient(90deg,rgba(201,168,76,.55),transparent);}
-.sos{color:var(--gold);font-size:.85rem;}
+.sd{background:var(--dark);}
+.sm{background:var(--mid);}
+.con{max-width:900px;margin:0 auto;}
+.sh{text-align:center;margin-bottom:2.5rem;}
+.sey{font-size:.56rem;letter-spacing:7px;color:var(--gold-d);display:block;margin-bottom:.8rem;}
+.st{font-family:'Scheherazade New',serif;font-size:clamp(1.8rem,4vw,2.6rem);color:#fff;margin-bottom:1rem;}
+.so{display:flex;align-items:center;justify-content:center;gap:.8rem;}
+.sl2{height:1px;width:48px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.55));}
+.sl2.r{background:linear-gradient(90deg,rgba(201,168,76,.55),transparent);}
 
 /* SEARCH */
-.sec-search{max-width:400px;margin:0 auto 2rem;display:flex;align-items:center;gap:.6rem;background:rgba(201,168,76,.04);border:1px solid var(--bdr);border-radius:30px;padding:.45rem 1.1rem;}
-.sec-search input{flex:1;background:none;border:none;outline:none;color:var(--txt);font-family:"Tajawal",sans-serif;font-size:.86rem;direction:rtl;}
-.sec-search input::placeholder{color:var(--txt-m);}
+.srch{max-width:400px;margin:0 auto 1.8rem;display:flex;align-items:center;gap:.6rem;background:rgba(201,168,76,.04);border:1px solid var(--bdr);border-radius:30px;padding:.42rem 1.1rem;}
+.srch input{flex:1;background:none;border:none;outline:none;color:var(--txt);font-family:'Tajawal',sans-serif;font-size:.84rem;direction:rtl;}
+.srch input::placeholder{color:rgba(245,240,255,.25);}
 
-/* ROWS - slim list */
-.rows-list{display:flex;flex-direction:column;gap:.45rem;}
-.row-item{background:linear-gradient(135deg,rgba(201,168,76,.03),rgba(6,8,16,.75));border:1px solid var(--bdr);border-radius:12px;padding:.7rem 1rem;display:flex;align-items:center;gap:.8rem;transition:all .3s;opacity:0;transform:translateY(8px);}
-.row-item.visible{opacity:1;transform:translateY(0);}
-.row-item:hover{border-color:var(--bdr-g);background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(6,8,16,.85));}
-.row-icon{font-size:1.2rem;flex-shrink:0;}
-.row-title{font-family:"Scheherazade New",serif;font-size:1.05rem;color:#fff;flex:1;line-height:1.3;}
-.row-sub{font-size:.65rem;color:rgba(201,168,76,.3);margin-top:.1rem;}
-.row-btns{display:flex;gap:.4rem;flex-shrink:0;}
-.btn-play{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:none;color:#fff;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 10px rgba(201,168,76,.2);transition:all .3s;}
-.btn-play:hover{transform:scale(1.12);box-shadow:0 0 18px rgba(201,168,76,.38);}
-.btn-share{width:30px;height:30px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);color:var(--gold-l);font-size:.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;}
-.btn-share:hover{background:rgba(201,168,76,.12);transform:scale(1.08);}
+/* ROW ITEM */
+.rlist{display:flex;flex-direction:column;gap:.4rem;}
+.ritem{background:linear-gradient(135deg,rgba(201,168,76,.03),rgba(5,7,15,.8));border:1px solid var(--bdr);border-radius:11px;padding:.65rem .95rem;display:flex;align-items:center;gap:.75rem;transition:all .3s;opacity:0;transform:translateY(8px);}
+.ritem.vis{opacity:1;transform:translateY(0);}
+.ritem:hover{border-color:var(--bdr-g);background:linear-gradient(135deg,rgba(201,168,76,.055),rgba(5,7,15,.9));}
+.ric{font-size:1.1rem;flex-shrink:0;}
+.rtitle{font-family:'Scheherazade New',serif;font-size:1rem;color:#fff;flex:1;line-height:1.3;}
+.rbtns{display:flex;gap:.38rem;flex-shrink:0;}
+.bplay{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:none;color:#fff;font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(201,168,76,.2);transition:all .3s;flex-shrink:0;}
+.bplay:hover{transform:scale(1.12);box-shadow:0 0 18px rgba(201,168,76,.38);}
+.bshare{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.14);color:var(--gold-l);font-size:.68rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;}
+.bshare:hover{background:rgba(201,168,76,.12);transform:scale(1.08);}
 
-/* DURUS */
-.dars-group{background:rgba(201,168,76,.018);border:1px solid rgba(201,168,76,.09);border-radius:14px;margin-bottom:.5rem;overflow:hidden;opacity:0;transform:translateY(8px);transition:all .3s;}
-.dars-group.visible{opacity:1;transform:translateY(0);}
-.dars-hdr{display:flex;align-items:center;gap:.8rem;padding:.85rem 1.1rem;cursor:pointer;transition:background .3s;}
-.dars-hdr:hover{background:rgba(201,168,76,.04);}
-.dars-hdr-icon{font-size:1.2rem;}
-.dars-hdr-title{flex:1;font-family:"Scheherazade New",serif;font-size:1.05rem;color:#fff;}
-.dars-count{font-size:.62rem;color:var(--gold);background:rgba(201,168,76,.08);padding:2px 10px;border-radius:20px;border:1px solid rgba(201,168,76,.14);}
-.dars-arrow{color:var(--gold-d);font-size:.9rem;transition:transform .3s;}
-.dars-arrow.open{transform:rotate(180deg);}
-.dars-items{display:none;border-top:1px solid rgba(201,168,76,.055);}
-.dars-row{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.1rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.018);transition:background .3s;}
-.dars-row:hover{background:rgba(201,168,76,.04);}
-.dars-row:last-child{border-bottom:none;}
-.dars-num{font-size:.65rem;color:rgba(201,168,76,.28);font-family:monospace;min-width:20px;flex-shrink:0;}
-.dars-info{flex:1;}
-.dars-title{font-size:.9rem;color:rgba(245,240,255,.88);}
-.dars-date{font-size:.6rem;color:rgba(201,168,76,.25);}
-.dars-play{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;flex-shrink:0;}
-.dars-share{width:26px;height:26px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.14);color:var(--gold-l);display:flex;align-items:center;justify-content:center;font-size:.68rem;flex-shrink:0;transition:all .3s;}
-.dars-share:hover{background:rgba(201,168,76,.12);}
+/* ACCORDION (quran sections) */
+.acc{display:flex;flex-direction:column;gap:.5rem;}
+.acc-hdr{background:linear-gradient(135deg,rgba(201,168,76,.05),rgba(5,7,15,.8));border:1px solid var(--bdr);border-radius:12px;padding:.8rem 1.1rem;display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:all .3s;opacity:0;transform:translateY(8px);}
+.acc-hdr.vis{opacity:1;transform:translateY(0);}
+.acc-hdr:hover{border-color:var(--bdr-g);}
+.acc-ic{font-size:1.2rem;flex-shrink:0;}
+.acc-title{font-family:'Scheherazade New',serif;font-size:1.05rem;color:#fff;flex:1;}
+.acc-count{font-size:.6rem;color:var(--gold);background:rgba(201,168,76,.08);padding:2px 10px;border-radius:20px;border:1px solid rgba(201,168,76,.13);}
+.acc-arr{color:var(--gold-d);font-size:.9rem;transition:transform .3s;flex-shrink:0;}
+.acc-arr.open{transform:rotate(180deg);}
+.acc-body{display:none;padding:.4rem 0 .2rem .5rem;flex-direction:column;gap:.35rem;}
+.acc-body.open{display:flex;}
+
+/* DARS GROUPS */
+.dg{background:rgba(201,168,76,.018);border:1px solid rgba(201,168,76,.09);border-radius:12px;margin-bottom:.5rem;overflow:hidden;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s;}
+.dg.vis{opacity:1;transform:translateY(0);}
+.dg-hdr{display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;cursor:pointer;transition:background .3s;}
+.dg-hdr:hover{background:rgba(201,168,76,.04);}
+.dg-ic{font-size:1.2rem;}
+.dg-title{flex:1;font-family:'Scheherazade New',serif;font-size:1rem;color:#fff;}
+.dg-cnt{font-size:.6rem;color:var(--gold);background:rgba(201,168,76,.08);padding:2px 10px;border-radius:20px;border:1px solid rgba(201,168,76,.13);}
+.dg-arr{color:var(--gold-d);font-size:.88rem;transition:transform .3s;}
+.dg-arr.open{transform:rotate(180deg);}
+.dg-items{display:none;border-top:1px solid rgba(201,168,76,.05);}
+.drow{display:flex;align-items:center;gap:.7rem;padding:.65rem 1.1rem;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.015);transition:background .3s;}
+.drow:hover{background:rgba(201,168,76,.04);}
+.drow:last-child{border-bottom:none;}
+.dnum{font-size:.62rem;color:rgba(201,168,76,.25);font-family:monospace;min-width:20px;flex-shrink:0;}
+.dtitle{font-size:.88rem;color:rgba(245,240,255,.88);flex:1;}
+.dplay{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;flex-shrink:0;}
+.dshr{width:24px;height:24px;border-radius:50%;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.13);color:var(--gold-l);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;transition:all .3s;}
+.dshr:hover{background:rgba(201,168,76,.12);}
 
 /* ABOUT */
-.about-box{max-width:700px;margin:0 auto;background:linear-gradient(145deg,rgba(201,168,76,.038),rgba(3,4,11,.5));border:1px solid var(--bdr);border-radius:22px;padding:2.5rem;text-align:center;position:relative;overflow:hidden;}
-.about-box::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.22),transparent);}
-.about-name{font-family:"Scheherazade New",serif;font-size:1.9rem;color:#fff;margin-bottom:.4rem;}
-.about-role{font-size:.6rem;letter-spacing:6px;color:var(--gold);margin-bottom:1.3rem;}
-.about-text{color:var(--txt-m);line-height:2.3;font-size:.92rem;margin-bottom:1.5rem;}
+.abox{max-width:700px;margin:0 auto;background:linear-gradient(145deg,rgba(201,168,76,.038),rgba(3,4,11,.5));border:1px solid var(--bdr);border-radius:22px;padding:2.5rem;text-align:center;position:relative;overflow:hidden;}
+.abox::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:55%;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.22),transparent);}
+.aname{font-family:'Scheherazade New',serif;font-size:1.9rem;color:#fff;margin-bottom:.4rem;}
+.arole{font-size:.58rem;letter-spacing:6px;color:var(--gold);margin-bottom:1.2rem;}
+.atxt{color:var(--muted);line-height:2.3;font-size:.92rem;margin-bottom:1.5rem;}
 
 /* CONTACT */
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-top:1.5rem;}
-.contact-card{background:linear-gradient(145deg,rgba(201,168,76,.04),rgba(3,4,11,.5));border:1px solid var(--bdr);border-radius:16px;padding:1.5rem 1rem;text-align:center;text-decoration:none;transition:all .4s;display:block;color:inherit;position:relative;overflow:hidden;}
-.contact-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s;}
-.contact-card:hover{border-color:var(--bdr-g);transform:translateY(-4px);}
-.contact-card:hover::after{opacity:1;}
-.contact-ico{font-size:2rem;display:block;margin-bottom:.7rem;}
-.contact-name{font-size:.56rem;letter-spacing:4px;color:var(--gold-l);margin-bottom:.3rem;}
-.contact-handle{font-size:.76rem;color:var(--txt-m);}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin-top:1.5rem;}
+.cc{background:linear-gradient(145deg,rgba(201,168,76,.04),rgba(3,4,11,.5));border:1px solid var(--bdr);border-radius:15px;padding:1.4rem 1rem;text-align:center;text-decoration:none;transition:all .4s;display:block;color:inherit;position:relative;overflow:hidden;}
+.cc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s;}
+.cc:hover{border-color:var(--bdr-g);transform:translateY(-4px);}
+.cc:hover::after{opacity:1;}
+.cc-ic{font-size:1.9rem;display:block;margin-bottom:.6rem;}
+.cc-n{font-size:.55rem;letter-spacing:4px;color:var(--gold-l);margin-bottom:.28rem;}
+.cc-h{font-size:.75rem;color:var(--muted);}
+
+/* WHATSAPP FLOAT */
+#waFloat{position:fixed;bottom:5.5rem;right:1.5rem;z-index:400;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#128C7E,#25D366);display:none;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 20px rgba(37,211,102,.35);cursor:pointer;text-decoration:none;animation:waPulse 2s ease-in-out infinite;}
+#waFloat.show{display:flex;}
+@keyframes waPulse{0%,100%{box-shadow:0 0 20px rgba(37,211,102,.35);}50%{box-shadow:0 0 35px rgba(37,211,102,.6);}}
 
 /* MINI PLAYER */
-#miniPlayer{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(3,4,11,0.97);backdrop-filter:blur(30px);border-top:1px solid rgba(201,168,76,.15);padding:.65rem 1.2rem;display:none;align-items:center;gap:.8rem;}
-#miniPlayer.show{display:flex;}
+#mp{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(2,3,10,0.97);backdrop-filter:blur(30px);border-top:1px solid rgba(201,168,76,.15);padding:.6rem 1.1rem;display:none;align-items:center;gap:.75rem;}
+#mp.show{display:flex;}
 .mp-bar{position:absolute;top:0;left:0;right:0;height:2px;background:rgba(201,168,76,.1);}
-.mp-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));width:0%;transition:width .5s linear;}
-.mp-thumb{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#5A3A0A,#C9A84C);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
-.mp-info{flex:1;min-width:0;}
-.mp-title{font-size:.82rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:"Scheherazade New",serif;}
-.mp-type{font-size:.57rem;color:var(--gold-d);letter-spacing:3px;}
-.mp-ctrls{display:flex;align-items:center;gap:.5rem;}
-.mp-btn{background:none;border:none;color:var(--gold-l);cursor:pointer;font-size:.95rem;padding:.25rem;transition:all .3s;}
-.mp-btn:hover{color:var(--gold);transform:scale(1.1);}
-.mp-play-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:none;cursor:pointer;color:#fff;font-size:.85rem;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(201,168,76,.2);transition:all .3s;}
-.mp-play-btn:hover{transform:scale(1.1);}
-.mp-expand{background:none;border:none;color:rgba(201,168,76,.3);cursor:pointer;font-size:.8rem;padding:.25rem;}
+.mp-f{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));width:0%;transition:width .5s linear;}
+.mp-th{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#5A3A0A,#C9A84C);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;}
+.mp-inf{flex:1;min-width:0;}
+.mp-tit{font-size:.8rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Scheherazade New',serif;}
+.mp-typ{font-size:.55rem;color:var(--gold-d);letter-spacing:3px;}
+.mp-cts{display:flex;align-items:center;gap:.45rem;}
+.mp-b{background:none;border:none;color:var(--gold-l);cursor:pointer;font-size:.9rem;padding:.22rem;transition:all .3s;}
+.mp-b:hover{color:var(--gold);transform:scale(1.1);}
+.mp-pb{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:none;cursor:pointer;color:#fff;font-size:.82rem;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(201,168,76,.2);transition:all .3s;}
+.mp-pb:hover{transform:scale(1.1);}
+.mp-ex{background:none;border:none;color:rgba(201,168,76,.3);cursor:pointer;font-size:.78rem;padding:.22rem;}
 
 /* MODAL */
 .modal{position:fixed;inset:0;z-index:500;display:none;}
 .modal.open{display:flex;align-items:flex-end;justify-content:center;}
-.modal-bg{position:absolute;inset:0;background:rgba(2,2,8,.97);backdrop-filter:blur(26px);}
-.player{position:relative;width:100%;max-width:640px;background:linear-gradient(180deg,#080516 0%,#03040B 100%);border-radius:26px 26px 0 0;border:1px solid rgba(201,168,76,.16);border-bottom:none;overflow:hidden;animation:sUp .4s cubic-bezier(0.23,1,.32,1);}
-@keyframes sUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.player-bar{height:2px;background:linear-gradient(90deg,#5A3A0A,#C9A84C,#E8C97A,#C9A84C,#5A3A0A);background-size:300%;animation:flow 4s linear infinite;}
-@keyframes flow{to{background-position:300% 0}}
-.player-handle{width:38px;height:3px;background:rgba(201,168,76,.12);border-radius:2px;margin:.9rem auto 0;}
-.player-body{padding:1.2rem 1.4rem 2.4rem;}
-.player-info{display:flex;gap:1rem;align-items:center;margin-bottom:1rem;background:rgba(201,168,76,.03);border:1px solid rgba(201,168,76,.07);border-radius:14px;padding:.8rem 1rem;}
-.player-thumb{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#5A3A0A,#C9A84C);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
-.player-name{font-family:"Scheherazade New",serif;font-size:1.1rem;color:#fff;margin-bottom:.15rem;line-height:1.3;}
-.player-type{font-size:.55rem;color:var(--gold-d);letter-spacing:4px;}
-.video-wrap{display:none;margin-bottom:.9rem;width:100%;background:#000;border-radius:14px;border:1px solid rgba(201,168,76,.16);padding:3px;}
-.video-wrap.show{display:block;}
-.video-wrap iframe,.video-wrap video{width:100%;aspect-ratio:16/9;height:auto;border:none;display:block;border-radius:12px;}
-.video-wrap video{max-height:55vh;object-fit:contain;background:#000;}
-.audio-wrap{display:none;}
-.audio-wrap.show{display:block;}
-.viz{display:flex;align-items:flex-end;justify-content:center;gap:4px;height:48px;margin-bottom:1rem;padding:.5rem;background:rgba(0,0,0,.25);border-radius:12px;}
+.mbg{position:absolute;inset:0;background:rgba(2,2,8,.97);backdrop-filter:blur(26px);}
+.mpl{position:relative;width:100%;max-width:640px;background:linear-gradient(180deg,#07041A 0%,#02030A 100%);border-radius:26px 26px 0 0;border:1px solid rgba(201,168,76,.15);border-bottom:none;overflow:hidden;animation:sU .4s cubic-bezier(.23,1,.32,1);}
+@keyframes sU{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mbar{height:2px;background:linear-gradient(90deg,#5A3A0A,#C9A84C,#E8C97A,#C9A84C,#5A3A0A);background-size:300%;animation:fl 4s linear infinite;}
+@keyframes fl{to{background-position:300% 0}}
+.mhd{width:38px;height:3px;background:rgba(201,168,76,.12);border-radius:2px;margin:.9rem auto 0;}
+.mbd{padding:1.2rem 1.4rem 2.4rem;}
+.minf{display:flex;gap:1rem;align-items:center;margin-bottom:1rem;background:rgba(201,168,76,.03);border:1px solid rgba(201,168,76,.07);border-radius:14px;padding:.8rem 1rem;}
+.mth{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#5A3A0A,#C9A84C);display:flex;align-items:center;justify-content:center;font-size:1.55rem;flex-shrink:0;}
+.mn{font-family:'Scheherazade New',serif;font-size:1.1rem;color:#fff;margin-bottom:.15rem;line-height:1.3;}
+.mty{font-size:.54rem;color:var(--gold-d);letter-spacing:4px;}
+.vw{display:none;margin-bottom:.9rem;width:100%;background:#000;border-radius:14px;border:1px solid rgba(201,168,76,.15);padding:3px;}
+.vw.show{display:block;}
+.vw iframe,.vw video{width:100%;aspect-ratio:16/9;height:auto;border:none;display:block;border-radius:12px;}
+.vw video{max-height:55vh;object-fit:contain;background:#000;}
+.aw{display:none;}
+.aw.show{display:block;}
+.viz{display:flex;align-items:flex-end;justify-content:center;gap:4px;height:46px;margin-bottom:.9rem;padding:.5rem;background:rgba(0,0,0,.25);border-radius:12px;}
 .vb{width:5px;border-radius:4px;background:linear-gradient(180deg,var(--gold-l),#7A5A1A);animation:vb .8s ease-in-out infinite;}
 .vb:nth-child(1){height:28%;animation-delay:0s}.vb:nth-child(2){height:68%;animation-delay:.1s}.vb:nth-child(3){height:44%;animation-delay:.2s}.vb:nth-child(4){height:92%;animation-delay:.3s}.vb:nth-child(5){height:38%;animation-delay:.4s}.vb:nth-child(6){height:76%;animation-delay:.5s}.vb:nth-child(7){height:54%;animation-delay:.6s}.vb:nth-child(8){height:32%;animation-delay:.7s}.vb:nth-child(9){height:66%;animation-delay:.5s}.vb:nth-child(10){height:42%;animation-delay:.3s}
 @keyframes vb{0%,100%{transform:scaleY(.1)}50%{transform:scaleY(1)}}
-.viz.paused .vb{animation-play-state:paused;opacity:.18;}
-.pbar{height:4px;background:rgba(255,255,255,.04);border-radius:4px;cursor:pointer;margin-bottom:.4rem;position:relative;direction:ltr;}
-.pfill{height:100%;background:linear-gradient(90deg,#5A3A0A,#C9A84C,#E8C97A);border-radius:4px;width:0%;position:relative;}
-.pfill::after{content:"";position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:var(--gold-l);box-shadow:0 0 8px var(--gold);}
-.times{display:flex;justify-content:space-between;font-size:.65rem;color:rgba(201,168,76,.3);direction:ltr;margin-bottom:1rem;}
-.ctrl-row{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-bottom:1rem;}
-.skip-btn{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.13);border-radius:50%;width:40px;height:40px;color:var(--gold-l);font-size:.65rem;font-weight:700;cursor:pointer;transition:all .3s;font-family:"Tajawal",sans-serif;}
-.skip-btn:hover{background:rgba(201,168,76,.1);transform:scale(1.08);}
-.ctrl-play{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:2px solid rgba(201,168,76,.26);cursor:pointer;font-size:1.4rem;color:#fff;box-shadow:0 0 32px rgba(201,168,76,.22);transition:all .3s;}
-.ctrl-play:hover{transform:scale(1.08);}
-.vol-row{display:flex;align-items:center;gap:.8rem;}
-.vol-ico{font-size:.85rem;color:rgba(201,168,76,.28);}
-.vol-slider{flex:1;-webkit-appearance:none;height:3px;background:rgba(201,168,76,.09);border-radius:3px;outline:none;cursor:pointer;}
-.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),var(--gold));cursor:pointer;}
-.modal-close{position:absolute;top:1rem;left:1rem;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(201,168,76,.35);font-size:.8rem;transition:all .3s;}
-.modal-close:hover{color:#ff6b6b;}
-.modal-share-btn{position:absolute;top:1rem;right:1rem;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold-l);font-size:.8rem;transition:all .3s;}
-.modal-share-btn:hover{background:rgba(201,168,76,.1);}
-
-/* TOAST */
-.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(8,5,18,.97);border:1px solid rgba(201,168,76,.2);color:var(--gold-l);padding:.6rem 1.4rem;border-radius:30px;font-size:.82rem;opacity:0;transition:all .4s;z-index:600;backdrop-filter:blur(12px);white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.viz.paused .vb{animation-play-state:paused;opacity:.15;}
+.pb{height:4px;background:rgba(255,255,255,.04);border-radius:4px;cursor:pointer;margin-bottom:.4rem;position:relative;direction:ltr;}
+.pf{height:100%;background:linear-gradient(90deg,#5A3A0A,#C9A84C,#E8C97A);border-radius:4px;width:0%;position:relative;}
+.pf::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:var(--gold-l);box-shadow:0 0 8px var(--gold);}
+.tms{display:flex;justify-content:space-between;font-size:.63rem;color:rgba(201,168,76,.28);direction:ltr;margin-bottom:.9rem;}
+.cr{display:flex;align-items:center;justify-content:center;gap:1.2rem;margin-bottom:.9rem;}
+.sk{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);border-radius:50%;width:40px;height:40px;color:var(--gold-l);font-size:.64rem;font-weight:700;cursor:pointer;transition:all .3s;font-family:'Tajawal',sans-serif;}
+.sk:hover{background:rgba(201,168,76,.1);transform:scale(1.08);}
+.cp{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:2px solid rgba(201,168,76,.26);cursor:pointer;font-size:1.35rem;color:#fff;box-shadow:0 0 30px rgba(201,168,76,.22);transition:all .3s;}
+.cp:hover{transform:scale(1.08);}
+.vr{display:flex;align-items:center;gap:.8rem;}
+.vi{font-size:.83rem;color:rgba(201,168,76,.26);}
+.vs{flex:1;-webkit-appearance:none;height:3px;background:rgba(201,168,76,.09);border-radius:3px;outline:none;cursor:pointer;}
+.vs::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),var(--gold));cursor:pointer;}
+.mcl{position:absolute;top:1rem;left:1rem;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(201,168,76,.34);font-size:.78rem;transition:all .3s;}
+.mcl:hover{color:#ff6b6b;}
+.msh{position:absolute;top:1rem;right:1rem;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.1);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold-l);font-size:.78rem;transition:all .3s;}
+.msh:hover{background:rgba(201,168,76,.1);}
 
 /* FAB */
-.rfab{position:fixed;bottom:5rem;left:1.5rem;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:none;cursor:pointer;font-size:1.1rem;color:#fff;box-shadow:0 0 20px rgba(201,168,76,.25);z-index:400;transition:all .4s;}
+.rfab{position:fixed;bottom:5rem;left:1.5rem;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#5A3A0A,#C9A84C);border:none;cursor:pointer;font-size:1.05rem;color:#fff;box-shadow:0 0 20px rgba(201,168,76,.24);z-index:400;transition:all .4s;}
 .rfab:hover{transform:scale(1.1);}
 .rfab.spin{animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty{text-align:center;color:rgba(201,168,76,.2);padding:2rem;font-size:.88rem;}
 
+/* TOAST */
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(7,4,16,.97);border:1px solid rgba(201,168,76,.2);color:var(--gold-l);padding:.58rem 1.4rem;border-radius:30px;font-size:.8rem;opacity:0;transition:all .4s;z-index:600;backdrop-filter:blur(12px);white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.empty{text-align:center;color:rgba(201,168,76,.18);padding:2rem;font-size:.85rem;}
 footer{background:var(--deep);border-top:1px solid rgba(201,168,76,.07);text-align:center;padding:2.5rem 1.5rem 5rem;position:relative;z-index:2;}
 
-/* MOBILE */
 @media(max-width:680px){
-  .nav-ham{display:block;}
+  .ham{display:block;}
   #navLinks{display:none;}
-  #navLinks.open{display:flex;flex-direction:column;position:absolute;top:64px;right:0;left:0;background:rgba(3,4,11,.98);border-bottom:1px solid var(--bdr);padding:1rem;gap:.3rem;}
-  .cres-l{left:-80px;}.cres-r{right:-80px;}
-  .stats-grid{grid-template-columns:repeat(2,1fr);}
-  .about-box{padding:2rem 1rem;}
-  #miniPlayer{padding:.6rem 1rem;gap:.7rem;}
+  #navLinks.open{display:flex;flex-direction:column;position:absolute;top:64px;right:0;left:0;background:rgba(2,3,10,.98);border-bottom:1px solid var(--bdr);padding:1rem;gap:.3rem;}
+  .cL{left:-80px;}.cR{right:-80px;}
+  .stats-g{grid-template-columns:repeat(2,1fr);}
+  .abox{padding:2rem 1rem;}
+  #mp{padding:.55rem 1rem;gap:.65rem;}
 }
 </style>
 </head>
 <body>
-
-<!-- STARS -->
 <canvas id="sc"></canvas>
 
-<!-- CRESCENTS -->
-<div class="cres-l">
+<div class="cL">
 <svg width="160" height="320" viewBox="0 0 160 320" fill="none">
   <defs>
-    <radialGradient id="cgl" cx="42%" cy="42%" r="55%">
-      <stop offset="0%" stop-color="#FFF0B0" stop-opacity="0.88"/>
-      <stop offset="50%" stop-color="#C9A84C" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#8B6914" stop-opacity="0.07"/>
-    </radialGradient>
+    <radialGradient id="cgl" cx="42%" cy="42%" r="55%"><stop offset="0%" stop-color="#FFF0B0" stop-opacity=".88"/><stop offset="50%" stop-color="#C9A84C" stop-opacity=".55"/><stop offset="100%" stop-color="#8B6914" stop-opacity=".07"/></radialGradient>
     <filter id="gf1"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-  <path d="M80 28 A108 108 0 1 1 80 292 A76 76 0 1 0 80 28Z" fill="url(#cgl)" filter="url(#gf1)" opacity="0.8"/>
-  <circle cx="132" cy="68" r="2.2" fill="#FFF0B0" opacity="0.75"><animate attributeName="opacity" values="0.75;0.15;0.75" dur="2.3s" repeatCount="indefinite"/></circle>
-  <circle cx="144" cy="148" r="1.4" fill="#C9A84C" opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="3.1s" repeatCount="indefinite"/></circle>
-  <circle cx="128" cy="252" r="1.9" fill="#FFF0B0" opacity="0.6"><animate attributeName="opacity" values="0.6;0.12;0.6" dur="1.9s" repeatCount="indefinite"/></circle>
-  <circle cx="45" cy="105" r="1.2" fill="#C9A84C" opacity="0.3"><animate attributeName="opacity" values="0.3;0.05;0.3" dur="3.6s" repeatCount="indefinite"/></circle>
+  <path d="M80 28 A108 108 0 1 1 80 292 A76 76 0 1 0 80 28Z" fill="url(#cgl)" filter="url(#gf1)" opacity=".8"/>
+  <circle cx="132" cy="68" r="2.2" fill="#FFF0B0" opacity=".75"><animate attributeName="opacity" values=".75;.15;.75" dur="2.3s" repeatCount="indefinite"/></circle>
+  <circle cx="144" cy="148" r="1.4" fill="#C9A84C" opacity=".5"><animate attributeName="opacity" values=".5;.1;.5" dur="3.1s" repeatCount="indefinite"/></circle>
+  <circle cx="128" cy="252" r="1.9" fill="#FFF0B0" opacity=".6"><animate attributeName="opacity" values=".6;.12;.6" dur="1.9s" repeatCount="indefinite"/></circle>
 </svg>
 </div>
 
-<div class="cres-r">
+<div class="cR">
 <svg width="160" height="320" viewBox="0 0 160 320" fill="none" style="transform:scaleX(-1)">
   <defs>
-    <radialGradient id="cgr" cx="42%" cy="42%" r="55%">
-      <stop offset="0%" stop-color="#FFF0B0" stop-opacity="0.8"/>
-      <stop offset="50%" stop-color="#C9A84C" stop-opacity="0.48"/>
-      <stop offset="100%" stop-color="#8B6914" stop-opacity="0.05"/>
-    </radialGradient>
+    <radialGradient id="cgr" cx="42%" cy="42%" r="55%"><stop offset="0%" stop-color="#FFF0B0" stop-opacity=".8"/><stop offset="50%" stop-color="#C9A84C" stop-opacity=".48"/><stop offset="100%" stop-color="#8B6914" stop-opacity=".05"/></radialGradient>
     <filter id="gf2"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-  <path d="M80 28 A108 108 0 1 1 80 292 A76 76 0 1 0 80 28Z" fill="url(#cgr)" filter="url(#gf2)" opacity="0.7"/>
-  <circle cx="132" cy="85" r="1.8" fill="#FFF0B0" opacity="0.65"><animate attributeName="opacity" values="0.65;0.12;0.65" dur="2.1s" repeatCount="indefinite"/></circle>
-  <circle cx="142" cy="175" r="1.5" fill="#C9A84C" opacity="0.45"><animate attributeName="opacity" values="0.45;0.08;0.45" dur="3.3s" repeatCount="indefinite"/></circle>
-  <circle cx="125" cy="265" r="2" fill="#FFF0B0" opacity="0.55"><animate attributeName="opacity" values="0.55;0.1;0.55" dur="2.0s" repeatCount="indefinite"/></circle>
+  <path d="M80 28 A108 108 0 1 1 80 292 A76 76 0 1 0 80 28Z" fill="url(#cgr)" filter="url(#gf2)" opacity=".7"/>
+  <circle cx="132" cy="85" r="1.8" fill="#FFF0B0" opacity=".65"><animate attributeName="opacity" values=".65;.12;.65" dur="2.1s" repeatCount="indefinite"/></circle>
+  <circle cx="142" cy="175" r="1.5" fill="#C9A84C" opacity=".45"><animate attributeName="opacity" values=".45;.08;.45" dur="3.3s" repeatCount="indefinite"/></circle>
+  <circle cx="125" cy="265" r="2" fill="#FFF0B0" opacity=".55"><animate attributeName="opacity" values=".55;.1;.55" dur="2.0s" repeatCount="indefinite"/></circle>
 </svg>
 </div>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-inner">
+  <div class="nav-in">
     <span class="nav-logo">✦ الشيخ محمد السيد محمد علي</span>
-    <ul class="nav-links" id="navLinks">
+    <ul class="nav-ul" id="navLinks">
       <li><a href="#quran">القرآن</a></li>
       <li><a href="#khutab">الخطب</a></li>
       <li><a href="#durus">الدروس</a></li>
       <li><a href="#about">عن الشيخ</a></li>
     </ul>
-    <button class="nav-ham" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+    <button class="ham" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-inner">
-    <div class="bismillah a1">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ</div>
-    <div class="orn a2"><div class="orn-l"></div><div class="orn-d"></div><div class="orn-r"></div></div>
-    <div class="av-wrap a3">
+  <div class="hglow"></div>
+  <div class="hi">
+    <div class="bism a1">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ</div>
+    <div class="orn a2"><div class="oL"></div><div class="oD"></div><div class="oR"></div></div>
+    <div class="av-w a3">
       <div class="av-r1"></div><div class="av-r2"></div>
       <div class="av-c">
-        <img src="https://res.cloudinary.com/dtqqprdi1/image/upload/v1778357627/IMG_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A5%D9%A0%D9%A9_%D9%A2%D9%A3%D9%A0%D9%A7%D9%A4%D9%A7_bs6kbi.jpg" alt="الشيخ" id="sheikhImg"
-          onerror="this.style.display='none';document.getElementById('avMoon').style.display='flex';">
-        <div id="avMoon" class="av-moon">
+        <img src="https://res.cloudinary.com/dtqqprdi1/image/upload/v1778357627/IMG_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A5%D9%A0%D9%A9_%D9%A2%D9%A3%D9%A0%D9%A7%D9%A4%D9%A7_bs6kbi.jpg" alt="الشيخ" id="sImg" onerror="this.style.display='none';document.getElementById('aMoon').style.display='flex';">
+        <div id="aMoon" class="av-moon">
           <svg width="95" height="95" viewBox="0 0 95 95" fill="none">
-            <defs>
-              <radialGradient id="mg" cx="38%" cy="35%" r="60%">
-                <stop offset="0%" stop-color="#FFF0B0"/>
-                <stop offset="40%" stop-color="#E8C97A"/>
-                <stop offset="100%" stop-color="#8B6914"/>
-              </radialGradient>
-              <filter id="mf"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            </defs>
+            <defs><radialGradient id="mg" cx="38%" cy="35%" r="60%"><stop offset="0%" stop-color="#FFF0B0"/><stop offset="40%" stop-color="#E8C97A"/><stop offset="100%" stop-color="#8B6914"/></radialGradient><filter id="mf"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
             <path d="M47 12 A35 35 0 1 1 47 82 A25 25 0 1 0 47 12Z" fill="url(#mg)" filter="url(#mf)" style="animation:mR 10s ease-in-out infinite alternate;"/>
-            <circle cx="78" cy="24" r="1.6" fill="#FFF0B0" opacity="0.8"><animate attributeName="opacity" values="0.8;0.15;0.8" dur="1.9s" repeatCount="indefinite"/></circle>
-            <circle cx="16" cy="36" r="1.1" fill="#E8C97A" opacity="0.6"><animate attributeName="opacity" values="0.6;0.1;0.6" dur="2.5s" repeatCount="indefinite"/></circle>
-            <circle cx="80" cy="64" r="1.3" fill="#FFF0B0" opacity="0.7"><animate attributeName="opacity" values="0.7;0.12;0.7" dur="2.1s" repeatCount="indefinite"/></circle>
+            <circle cx="78" cy="24" r="1.6" fill="#FFF0B0" opacity=".8"><animate attributeName="opacity" values=".8;.15;.8" dur="1.9s" repeatCount="indefinite"/></circle>
+            <circle cx="16" cy="36" r="1.1" fill="#E8C97A" opacity=".6"><animate attributeName="opacity" values=".6;.1;.6" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle cx="80" cy="64" r="1.3" fill="#FFF0B0" opacity=".7"><animate attributeName="opacity" values=".7;.12;.7" dur="2.1s" repeatCount="indefinite"/></circle>
           </svg>
         </div>
       </div>
     </div>
     <style>@keyframes mR{0%{transform:rotate(-6deg) scale(.96);}100%{transform:rotate(6deg) scale(1.04);}}</style>
-    <div class="hero-label a4">ISLAMIC SCHOLAR • PREACHER</div>
-    <h1 class="hero-h1 a4">
-      <span class="s1">فضيلة الشيخ</span>
-      <span class="s2">محمد السيد محمد علي</span>
-    </h1>
-    <p class="hero-tag a5">داعية إسلامي • خطيب منبر • مربٍّ فاضل</p>
-    <p class="hero-desc a5">منصة إسلامية متكاملة لتلاوات القرآن الكريم والخطب المنبرية والدروس الدينية</p>
-    <div class="hero-btns a6">
+    <div class="hlbl a4">ISLAMIC SCHOLAR • PREACHER</div>
+    <h1 class="hh1 a4"><span class="s1">فضيلة الشيخ</span><span class="s2">محمد السيد محمد علي</span></h1>
+    <p class="htag a5">داعية إسلامي • خطيب منبر • مربٍّ فاضل</p>
+    <p class="hdesc a5">منصة إسلامية متكاملة لتلاوات القرآن الكريم والخطب المنبرية والدروس الدينية</p>
+    <div class="hbtns a6">
       <a href="#quran" class="btn-g">📖 استمع للتلاوات</a>
       <a href="#khutab" class="btn-o">🎙️ الخطب المنبرية</a>
     </div>
-    <div class="scroll-dot"></div>
+    <div class="sdot"></div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stats-grid">
-    <div><span class="stat-num" id="sQ">0</span><div class="stat-lbl">تلاوة قرآنية</div></div>
-    <div><span class="stat-num" id="sK">0</span><div class="stat-lbl">خطبة منبرية</div></div>
-    <div><span class="stat-num" id="sD">0</span><div class="stat-lbl">درس ديني</div></div>
-    <div><span class="stat-num">+١٠</span><div class="stat-lbl">سنوات خبرة</div></div>
+<div class="stats">
+  <div class="stats-g">
+    <div><span class="sn" id="sQ">0</span><div class="sl">تلاوة قرآنية</div></div>
+    <div><span class="sn" id="sK">0</span><div class="sl">خطبة منبرية</div></div>
+    <div><span class="sn" id="sD">0</span><div class="sl">درس ديني</div></div>
+    <div><span class="sn">+١٠</span><div class="sl">سنوات خبرة</div></div>
   </div>
 </div>
 
-<!-- QURAN -->
-<section class="sec-dark" id="quran">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-eyebrow">كلام الله تعالى</span>
-      <h2 class="sec-title">التلاوات القرآنية</h2>
-      <div class="sec-orn"><div class="sol"></div><span class="sos">❋</span><div class="sol r"></div></div>
+<section class="sd" id="quran">
+  <div class="con">
+    <div class="sh">
+      <span class="sey">كلام الله تعالى</span>
+      <h2 class="st">التلاوات القرآنية</h2>
+      <div class="so"><div class="sl2"></div><span style="color:var(--gold)">❋</span><div class="sl2 r"></div></div>
     </div>
-    <div class="sec-search"><span>🔍</span><input type="text" placeholder="ابحث..." oninput="filterList('qList',this.value)"></div>
-    <div class="rows-list" id="qList"><div class="empty">جارٍ التحميل...</div></div>
+    <div class="srch"><span>🔍</span><input type="text" placeholder="ابحث في التلاوات..." oninput="filterAcc('qAcc',this.value)"></div>
+    <div class="acc" id="qAcc"><div class="empty">جارٍ التحميل...</div></div>
   </div>
 </section>
 
-<!-- KHUTAB -->
-<section class="sec-mid" id="khutab">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-eyebrow">المنبر الإسلامي</span>
-      <h2 class="sec-title">الخطب المنبرية</h2>
-      <div class="sec-orn"><div class="sol"></div><span class="sos">❋</span><div class="sol r"></div></div>
+<section class="sm" id="khutab">
+  <div class="con">
+    <div class="sh">
+      <span class="sey">المنبر الإسلامي</span>
+      <h2 class="st">الخطب المنبرية</h2>
+      <div class="so"><div class="sl2"></div><span style="color:var(--gold)">❋</span><div class="sl2 r"></div></div>
     </div>
-    <div class="sec-search"><span>🔍</span><input type="text" placeholder="ابحث..." oninput="filterList('kList',this.value)"></div>
-    <div class="rows-list" id="kList"><div class="empty">جارٍ التحميل...</div></div>
+    <div class="srch"><span>🔍</span><input type="text" placeholder="ابحث في الخطب..." oninput="filterList('kList',this.value)"></div>
+    <div class="rlist" id="kList"><div class="empty">جارٍ التحميل...</div></div>
   </div>
 </section>
 
-<!-- DURUS -->
-<section class="sec-dark" id="durus">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-eyebrow">العلم النافع</span>
-      <h2 class="sec-title">الدروس الدينية</h2>
-      <div class="sec-orn"><div class="sol"></div><span class="sos">❋</span><div class="sol r"></div></div>
+<section class="sd" id="durus">
+  <div class="con">
+    <div class="sh">
+      <span class="sey">العلم النافع</span>
+      <h2 class="st">الدروس الدينية</h2>
+      <div class="so"><div class="sl2"></div><span style="color:var(--gold)">❋</span><div class="sl2 r"></div></div>
     </div>
-    <div class="sec-search"><span>🔍</span><input type="text" placeholder="ابحث..." oninput="filterList('dList',this.value)"></div>
+    <div class="srch"><span>🔍</span><input type="text" placeholder="ابحث في الدروس..." oninput="filterList('dList',this.value)"></div>
     <div id="dList"><div class="empty">جارٍ التحميل...</div></div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section class="sec-mid" id="about">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-eyebrow">نبذة تعريفية</span>
-      <h2 class="sec-title">عن الشيخ</h2>
-      <div class="sec-orn"><div class="sol"></div><span class="sos">❋</span><div class="sol r"></div></div>
+<section class="sm" id="about">
+  <div class="con">
+    <div class="sh">
+      <span class="sey">نبذة تعريفية</span>
+      <h2 class="st">عن الشيخ</h2>
+      <div class="so"><div class="sl2"></div><span style="color:var(--gold)">❋</span><div class="sl2 r"></div></div>
     </div>
-    <div class="about-box">
-      <div class="about-name">الشيخ محمد السيد محمد علي</div>
-      <div class="about-role">داعية إسلامي • خطيب منبر</div>
-      <p class="about-text">داعية إسلامي يُقدم محتوى دينياً أصيلاً يجمع بين العلم الشرعي والخطاب المعاصر.</p>
-      <div id="contactGrid"></div>
+    <div class="abox">
+      <div class="aname">الشيخ محمد السيد محمد علي</div>
+      <div class="arole">داعية إسلامي • خطيب منبر</div>
+      <p class="atxt">داعية إسلامي يُقدم محتوى دينياً أصيلاً يجمع بين العلم الشرعي والخطاب المعاصر، يسعى إلى نشر الوعي الإسلامي بأسلوب ميسّر يصل إلى القلوب.</p>
+      <div id="cGrid"></div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div style="font-family:'Amiri',serif;font-size:1.5rem;color:rgba(201,168,76,.18);margin-bottom:.7rem;">﷽</div>
-  <div style="font-size:.67rem;color:rgba(201,168,76,.2);letter-spacing:2px;">جميع الحقوق محفوظة • الشيخ محمد السيد محمد علي © 2026</div>
+  <div style="font-family:'Amiri',serif;font-size:1.5rem;color:rgba(201,168,76,.17);margin-bottom:.7rem;">﷽</div>
+  <div style="font-size:.65rem;color:rgba(201,168,76,.2);letter-spacing:2px;">جميع الحقوق محفوظة • الشيخ محمد السيد محمد علي © 2026</div>
 </footer>
 
-<!-- MINI PLAYER -->
-<div id="miniPlayer">
-  <div class="mp-bar"><div class="mp-fill" id="mpFill"></div></div>
-  <div class="mp-thumb" id="mpThumb">🌙</div>
-  <div class="mp-info">
-    <div class="mp-title" id="mpTitle">...</div>
-    <div class="mp-type" id="mpType">...</div>
-  </div>
-  <div class="mp-ctrls">
-    <button class="mp-btn" onclick="skipAud(-10)">⏮</button>
-    <button class="mp-play-btn" id="mpPlay" onclick="togglePlay()">▶</button>
-    <button class="mp-btn" onclick="skipAud(10)">⏭</button>
-    <button class="mp-expand" onclick="document.getElementById('modal').classList.add('open')">⬆</button>
+<a id="waFloat" target="_blank"><span>💬</span></a>
+
+<div id="mp">
+  <div class="mp-bar"><div class="mp-f" id="mpF"></div></div>
+  <div class="mp-th" id="mpTh">🌙</div>
+  <div class="mp-inf"><div class="mp-tit" id="mpTit">...</div><div class="mp-typ" id="mpTyp">...</div></div>
+  <div class="mp-cts">
+    <button class="mp-b" onclick="sk(-10)">⏮</button>
+    <button class="mp-pb" id="mpP" onclick="togPlay()">▶</button>
+    <button class="mp-b" onclick="sk(10)">⏭</button>
+    <button class="mp-ex" onclick="document.getElementById('modal').classList.add('open')">⬆</button>
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
-  <div class="modal-bg" onclick="closeModal()"></div>
-  <div class="player">
-    <div class="player-bar"></div>
-    <div class="player-handle"></div>
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <button class="modal-share-btn" onclick="shareNow()">📤</button>
-    <div class="player-body">
-      <div class="player-info">
-        <div class="player-thumb" id="pThumb">🌙</div>
-        <div><div class="player-name" id="pName">...</div><div class="player-type" id="pType">...</div></div>
+  <div class="mbg" onclick="closeMod()"></div>
+  <div class="mpl">
+    <div class="mbar"></div>
+    <div class="mhd"></div>
+    <button class="mcl" onclick="closeMod()">✕</button>
+    <button class="msh" onclick="shareNow()">📤</button>
+    <div class="mbd">
+      <div class="minf">
+        <div class="mth" id="pTh">🌙</div>
+        <div><div class="mn" id="pN">...</div><div class="mty" id="pTy">...</div></div>
       </div>
-      <div class="video-wrap" id="vWrap"></div>
-      <div class="audio-wrap" id="aWrap">
+      <div class="vw" id="vW"></div>
+      <div class="aw" id="aW">
         <div class="viz paused" id="viz">
           <div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div>
           <div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div>
         </div>
-        <div class="pbar" id="pbar" onclick="seek(event)"><div class="pfill" id="pfill"></div></div>
-        <div class="times"><span id="tNow">0:00</span><span id="tTot">0:00</span></div>
-        <div class="ctrl-row">
-          <button class="skip-btn" onclick="skipAud(-10)">◀◀ 10</button>
-          <button class="ctrl-play" id="ppBtn" onclick="togglePlay()">▶</button>
-          <button class="skip-btn" onclick="skipAud(10)">10 ▶▶</button>
+        <div class="pb" id="pb" onclick="seek(event)"><div class="pf" id="pFill"></div></div>
+        <div class="tms"><span id="tN">0:00</span><span id="tT">0:00</span></div>
+        <div class="cr">
+          <button class="sk" onclick="sk(-10)">◀◀ 10</button>
+          <button class="cp" id="ppB" onclick="togPlay()">▶</button>
+          <button class="sk" onclick="sk(10)">10 ▶▶</button>
         </div>
-        <div class="vol-row">
-          <span class="vol-ico">🔇</span>
-          <input class="vol-slider" type="range" min="0" max="1" step="0.05" value="1" oninput="aud.volume=this.value">
-          <span class="vol-ico">🔊</span>
+        <div class="vr">
+          <span class="vi">🔇</span>
+          <input class="vs" type="range" min="0" max="1" step="0.05" value="1" oninput="aud.volume=this.value">
+          <span class="vi">🔊</span>
         </div>
       </div>
     </div>
@@ -461,395 +440,330 @@ footer{background:var(--deep);border-top:1px solid rgba(201,168,76,.07);text-ali
 
 <audio id="aud"></audio>
 <div class="toast" id="toast"></div>
-<button class="rfab" id="rfab" onclick="loadData()" title="تحديث">🔄</button>
+<button class="rfab" id="rfab" onclick="loadData()">🔄</button>
 
 <script>
-// ===== CONFIG =====
-var SHEET_ID =  + SHEET_ID + ;
-// اسم الشيت - "الورقة 1" بالعربي
-var SHEET_NAME = encodeURIComponent('الورقة 1');
+var SID = '1l7iYxTXSj7dPkt6VUq68PH8P00qP8Yr5sSOyrl35kTQ';
 var EM = ['📖','🌙','⭐','🕌','🤲','📿','🌿','✨'];
-
-// ===== AUDIO =====
 var aud = document.getElementById('aud');
-var playing = false;
-var prog = null;
-var curItem = {};
+var playing = false, prog = null, cur = {};
 
-// ===== STARS =====
+// STARS
 (function(){
-  var c = document.getElementById('sc');
-  var ctx = c.getContext('2d');
-  var stars = [];
-  function resize(){ c.width = innerWidth; c.height = innerHeight; }
-  function init(){
-    resize(); stars = [];
-    var n = Math.floor(c.width * c.height / 6500);
-    for(var i = 0; i < n; i++)
-      stars.push({x:Math.random()*c.width, y:Math.random()*c.height, r:Math.random()*1.1+0.2, o:Math.random(), s:Math.random()*.004+.001, g:Math.random()<.35});
-  }
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    for(var i = 0; i < stars.length; i++){
-      var s = stars[i];
-      s.o += s.s; if(s.o>1||s.o<0) s.s *= -1;
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle = s.g ? 'rgba(201,168,76,'+s.o+')' : 'rgba(245,240,255,'+(s.o*.38)+')';
-      ctx.fill();
-    }
-    requestAnimationFrame(draw);
-  }
-  addEventListener('resize', init); init(); draw();
+  var c=document.getElementById('sc'),ctx=c.getContext('2d'),S=[];
+  function rsz(){c.width=innerWidth;c.height=innerHeight;}
+  function init(){rsz();S=[];var n=Math.floor(c.width*c.height/6500);for(var i=0;i<n;i++)S.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.1+.2,o:Math.random(),s:Math.random()*.004+.001,g:Math.random()<.35});}
+  function draw(){ctx.clearRect(0,0,c.width,c.height);for(var i=0;i<S.length;i++){var s=S[i];s.o+=s.s;if(s.o>1||s.o<0)s.s*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.g?'rgba(201,168,76,'+s.o+')':'rgba(245,240,255,'+(s.o*.38)+')';ctx.fill();}requestAnimationFrame(draw);}
+  addEventListener('resize',init);init();draw();
 })();
 
-// ===== SCROLL ANIMATION =====
-var io = new IntersectionObserver(function(entries){
-  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
-}, {threshold:0.06});
-function observeAll(){
-  document.querySelectorAll('.row-item,.dars-group').forEach(function(el,i){
-    el.style.transitionDelay = (i % 8 * 0.06) + 's';
-    io.observe(el);
+// SCROLL ANIMATION
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);}});},{threshold:.06});
+function obsAll(){document.querySelectorAll('.ritem,.acc-hdr,.dg').forEach(function(el,i){el.style.transitionDelay=(i%8*.06)+'s';io.observe(el);});}
+
+// COUNT UP
+function countUp(el,n){
+  if(!n){el.textContent='0';return;}
+  var i=0,st=Math.ceil(n/40);
+  var t=setInterval(function(){i=Math.min(i+st,n);el.textContent=i;if(i>=n)clearInterval(t);},40);
+}
+
+// FILTER
+function filterList(id,q){
+  document.getElementById(id).querySelectorAll('.ritem,.dg').forEach(function(el){
+    el.style.display=(!q||el.textContent.toLowerCase().includes(q.toLowerCase()))?'':'none';
+  });
+}
+function filterAcc(id,q){
+  document.getElementById(id).querySelectorAll('.acc-hdr').forEach(function(el){
+    el.style.display=(!q||el.textContent.toLowerCase().includes(q.toLowerCase()))?'':'none';
   });
 }
 
-// ===== STATS COUNTER =====
-function countUp(el, target){
-  if(!target){ el.textContent = '0'; return; }
-  var n = 0;
-  var step = Math.ceil(target / 40);
-  var t = setInterval(function(){
-    n = Math.min(n + step, target);
-    el.textContent = n;
-    if(n >= target) clearInterval(t);
-  }, 40);
+// SHARE
+function shareItem(title,link){
+  var txt='🌙 '+title+'\nمن منصة الشيخ محمد السيد محمد علي\n'+(link||location.href);
+  if(navigator.share)navigator.share({title:title,text:txt,url:link||location.href}).catch(function(){});
+  else window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+}
+function shareNow(){shareItem(cur.title,cur.link);}
+
+// PLAYER
+function gType(u){
+  if(!u)return'none';
+  if(u.includes('youtube.com')||u.includes('youtu.be'))return'yt';
+  if(u.includes('tiktok.com'))return'tt';
+  if(u.match(/\.(mp4|webm|mov)$/i))return'vid';
+  if(u.includes('archive.org'))return'arc';
+  if(u.includes('drive.google.com'))return'drv';
+  return'aud';
+}
+function ytId(u){
+  if(u.includes('youtu.be/'))return u.split('youtu.be/')[1].split('?')[0];
+  if(u.includes('v='))return u.split('v=')[1].split('&')[0];
+  return'';
+}
+function drvId(u){
+  if(u.includes('/file/d/'))return u.split('/file/d/')[1].split('/')[0];
+  if(u.includes('id='))return u.split('id=')[1].split('&')[0];
+  return'';
 }
 
-// ===== FILTER =====
-function filterList(id, q){
-  var items = document.getElementById(id).querySelectorAll('.row-item,.dars-group');
-  q = q.trim().toLowerCase();
-  items.forEach(function(el){
-    el.style.display = (!q || el.textContent.toLowerCase().includes(q)) ? '' : 'none';
-  });
-}
-
-// ===== SHARE =====
-function shareItem(title, link){
-  var txt = '🌙 ' + title + '\nمن منصة الشيخ محمد السيد محمد علي\n' + (link || location.href);
-  if(navigator.share){ navigator.share({title:title, text:txt, url:link||location.href}).catch(function(){}); }
-  else { window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank'); }
-}
-function shareNow(){ shareItem(curItem.title, curItem.link); }
-
-// ===== PLAYER =====
-function getType(url){
-  if(!url) return 'none';
-  if(url.includes('youtube.com')||url.includes('youtu.be')) return 'yt';
-  if(url.includes('tiktok.com')) return 'tt';
-  if(url.match(/\.(mp4|webm|mov)$/i)||url.includes('cloudinary.com/video')) return 'vid';
-  if(url.includes('archive.org')) return 'archive';
-  if(url.includes('drive.google.com')) return 'drive';
-  return 'audio';
-}
-function ytId(url){
-  if(url.includes('youtu.be/')) return url.split('youtu.be/')[1].split('?')[0];
-  if(url.includes('v=')) return url.split('v=')[1].split('&')[0];
-  return '';
-}
-function driveId(url){
-  if(url.includes('/file/d/')) return url.split('/file/d/')[1].split('/')[0];
-  if(url.includes('id=')) return url.split('id=')[1].split('&')[0];
-  return '';
-}
-function archiveDirect(url){
-  // Convert archive.org/details/X to archive.org/download/X
-  // User should ideally put direct download link
-  return url.replace('/details/', '/download/');
-}
-
-function openPlayer(link, title, type, icon){
-  curItem = {title:title, link:link};
-  // Update modal info
-  document.getElementById('pName').textContent = title;
-  document.getElementById('pType').textContent = type;
-  document.getElementById('pThumb').textContent = icon;
-  // Update mini player info
-  document.getElementById('mpTitle').textContent = title;
-  document.getElementById('mpType').textContent = type;
-  document.getElementById('mpThumb').textContent = icon;
-  // Reset
-  var vw = document.getElementById('vWrap');
-  var aw = document.getElementById('aWrap');
-  vw.innerHTML = ''; vw.classList.remove('show');
-  aw.classList.remove('show');
-  aud.pause(); aud.src = '';
-  clearInterval(prog);
-  document.getElementById('pfill').style.width = '0%';
-  document.getElementById('mpFill').style.width = '0%';
-  document.getElementById('tNow').textContent = '0:00';
-  document.getElementById('tTot').textContent = '0:00';
-  document.getElementById('ppBtn').textContent = '▶';
-  document.getElementById('mpPlay').textContent = '▶';
+function openPlayer(link,title,type,icon){
+  cur={title:title,link:link};
+  document.getElementById('pN').textContent=title;
+  document.getElementById('pTy').textContent=type;
+  document.getElementById('pTh').textContent=icon;
+  document.getElementById('mpTit').textContent=title;
+  document.getElementById('mpTyp').textContent=type;
+  document.getElementById('mpTh').textContent=icon;
+  var vW=document.getElementById('vW'),aW=document.getElementById('aW');
+  vW.innerHTML='';vW.classList.remove('show');aW.classList.remove('show');
+  aud.pause();aud.src='';clearInterval(prog);
+  document.getElementById('pFill').style.width='0%';
+  document.getElementById('mpF').style.width='0%';
+  document.getElementById('tN').textContent='0:00';
+  document.getElementById('tT').textContent='0:00';
+  document.getElementById('ppB').textContent='▶';
+  document.getElementById('mpP').textContent='▶';
   document.getElementById('viz').classList.add('paused');
-  playing = false;
-  // Open modal
+  playing=false;
   document.getElementById('modal').classList.add('open');
-  // Detect type and play
-  var t = getType(link);
-  if(t === 'yt'){
-    vw.classList.add('show');
-    vw.innerHTML = '<iframe src="https://www.youtube.com/embed/'+ytId(link)+'?autoplay=1" allowfullscreen allow="autoplay;encrypted-media"></iframe>';
-  } else if(t === 'vid'){
-    vw.classList.add('show');
-    vw.innerHTML = '<video controls autoplay playsinline src="'+link+'"></video>';
-  } else if(t === 'drive'){
-    vw.classList.add('show');
-    vw.innerHTML = '<iframe src="https://drive.google.com/file/d/'+driveId(link)+'/preview" allow="autoplay"></iframe>';
-  } else if(t === 'tt'){
-    vw.classList.add('show');
-    vw.innerHTML = '<iframe src="'+link+'" allowfullscreen allow="autoplay" style="aspect-ratio:9/16;min-height:380px;"></iframe>';
-  } else {
-    // audio or archive
-    var src = (t === 'archive') ? archiveDirect(link) : link;
-    aw.classList.add('show');
-    aud.src = src;
+  var t=gType(link);
+  if(t==='yt'){
+    vW.classList.add('show');
+    vW.innerHTML='<iframe src="https://www.youtube.com/embed/'+ytId(link)+'?autoplay=1" allowfullscreen allow="autoplay;encrypted-media"></iframe>';
+  }else if(t==='vid'){
+    vW.classList.add('show');
+    vW.innerHTML='<video controls autoplay playsinline src="'+link+'"></video>';
+  }else if(t==='drv'){
+    vW.classList.add('show');
+    vW.innerHTML='<iframe src="https://drive.google.com/file/d/'+drvId(link)+'/preview" allow="autoplay"></iframe>';
+  }else if(t==='tt'){
+    vW.classList.add('show');
+    vW.innerHTML='<iframe src="'+link+'" allowfullscreen allow="autoplay" style="aspect-ratio:9/16;min-height:380px;"></iframe>';
+  }else{
+    var src=(t==='arc')?link.replace('/details/','/download/'):link;
+    aW.classList.add('show');
+    aud.src=src;
     aud.play().then(function(){
-      playing = true;
-      document.getElementById('ppBtn').textContent = '⏸';
-      document.getElementById('mpPlay').textContent = '⏸';
+      playing=true;
+      document.getElementById('ppB').textContent='⏸';
+      document.getElementById('mpP').textContent='⏸';
       document.getElementById('viz').classList.remove('paused');
-      document.getElementById('miniPlayer').classList.add('show');
+      document.getElementById('mp').classList.add('show');
       startProg();
-    }).catch(function(){ showToast('❌ تعذر تشغيل الملف'); });
+    }).catch(function(){showToast('❌ تعذر تشغيل الملف');});
   }
 }
 
-function closeModal(){
+function closeMod(){
   document.getElementById('modal').classList.remove('open');
-  if(!playing){ aud.pause(); aud.src = ''; document.getElementById('miniPlayer').classList.remove('show'); clearInterval(prog); }
+  if(!playing){aud.pause();aud.src='';document.getElementById('mp').classList.remove('show');clearInterval(prog);}
 }
 
-function togglePlay(){
+function togPlay(){
   if(playing){
-    aud.pause(); playing = false;
-    document.getElementById('ppBtn').textContent = '▶';
-    document.getElementById('mpPlay').textContent = '▶';
+    aud.pause();playing=false;
+    document.getElementById('ppB').textContent='▶';
+    document.getElementById('mpP').textContent='▶';
     document.getElementById('viz').classList.add('paused');
-  } else {
+  }else{
     aud.play().then(function(){
-      playing = true;
-      document.getElementById('ppBtn').textContent = '⏸';
-      document.getElementById('mpPlay').textContent = '⏸';
+      playing=true;
+      document.getElementById('ppB').textContent='⏸';
+      document.getElementById('mpP').textContent='⏸';
       document.getElementById('viz').classList.remove('paused');
       startProg();
     });
   }
 }
 
-function skipAud(s){ aud.currentTime = Math.max(0, (aud.currentTime||0) + s); }
+function sk(s){aud.currentTime=Math.max(0,(aud.currentTime||0)+s);}
 
 function seek(e){
-  if(!aud.duration) return;
-  var r = document.getElementById('pbar').getBoundingClientRect();
-  aud.currentTime = Math.max(0, Math.min(1, (e.clientX-r.left)/r.width)) * aud.duration;
+  if(!aud.duration)return;
+  var r=document.getElementById('pb').getBoundingClientRect();
+  aud.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*aud.duration;
 }
 
 function fmt(s){
-  if(!s||isNaN(s)||!isFinite(s)) return '0:00';
-  return Math.floor(s/60) + ':' + Math.floor(s%60).toString().padStart(2,'0');
+  if(!s||isNaN(s)||!isFinite(s))return'0:00';
+  return Math.floor(s/60)+':'+Math.floor(s%60).toString().padStart(2,'0');
 }
 
 function startProg(){
   clearInterval(prog);
-  prog = setInterval(function(){
-    if(!aud.duration) return;
-    var pct = aud.currentTime / aud.duration * 100;
-    document.getElementById('pfill').style.width = pct + '%';
-    document.getElementById('mpFill').style.width = pct + '%';
-    document.getElementById('tNow').textContent = fmt(aud.currentTime);
-    document.getElementById('tTot').textContent = fmt(aud.duration);
-    if(aud.ended){
-      playing = false;
-      document.getElementById('ppBtn').textContent = '▶';
-      document.getElementById('mpPlay').textContent = '▶';
-      document.getElementById('viz').classList.add('paused');
-      clearInterval(prog);
-    }
-  }, 500);
+  prog=setInterval(function(){
+    if(!aud.duration)return;
+    var p=aud.currentTime/aud.duration*100;
+    document.getElementById('pFill').style.width=p+'%';
+    document.getElementById('mpF').style.width=p+'%';
+    document.getElementById('tN').textContent=fmt(aud.currentTime);
+    document.getElementById('tT').textContent=fmt(aud.duration);
+    if(aud.ended){playing=false;document.getElementById('ppB').textContent='▶';document.getElementById('mpP').textContent='▶';document.getElementById('viz').classList.add('paused');clearInterval(prog);}
+  },500);
 }
 
-// ===== FETCH DATA =====
-// الشيت عنده ورقة واحدة اسمها "الورقة 1"
-// الأعمدة: A=النوع | B=العنوان | C=الرابط | D=التاريخ
-// للدروس: A=dars | B=اسم السلسلة | C=اسم الدرس | D=الرابط | E=التاريخ
+// FETCH
+async function fetchSheet(name){
+  try{
+    var url='https://docs.google.com/spreadsheets/d/'+SID+'/gviz/tq?tqx=out:json';
+    if(name)url+='&sheet='+encodeURIComponent(name);
+    url+='&t='+Date.now();
+    var res=await fetch(url);
+    var txt=await res.text();
+    var m=txt.match(/setResponse\(([\s\S]*?)\);/);
+    if(!m)return[];
+    var data=JSON.parse(m[1]);
+    return data.table?(data.table.rows||[]):[];
+  }catch(e){return[];}
+}
+
 async function loadData(){
-  var btn = document.getElementById('rfab');
+  var btn=document.getElementById('rfab');
   btn.classList.add('spin');
-  var q=[], k=[], d=[], ct=[];
-  try {
-    // جرب "الورقة 1" الأول
-    var rows = await fetchSheet('الورقة 1');
-    // لو ما جابش حاجة جرب Sheet1
-    if(!rows.length) rows = await fetchSheet('Sheet1');
-    // لو لسه ما جابش جرب بدون اسم شيت (الأول تلقائي)
-    if(!rows.length) rows = await fetchSheet('');
-
+  var q=[],k=[],d=[],ct=[],wa='';
+  try{
+    var rows=await fetchSheet('الورقة 1');
+    if(!rows.length)rows=await fetchSheet('Sheet1');
+    if(!rows.length)rows=await fetchSheet('');
     rows.forEach(function(r){
-      if(!r.c || !r.c[0] || !r.c[0].v) return;
-      var t  = r.c[0].v.toString().trim().toLowerCase();
-      var b  = r.c[1] ? (r.c[1].v||'').toString().trim() : '';
-      var c  = r.c[2] ? (r.c[2].v||'').toString().trim() : '';
-      var dd = r.c[3] ? (r.c[3].v||'').toString().trim() : '';
-      var e  = r.c[4] ? (r.c[4].v||'').toString().trim() : '';
-      if(t === 'quran')   q.push({ti:b, li:c, da:dd});
-      else if(t === 'khutba') k.push({ti:b, li:c, da:dd});
-      else if(t === 'dars')   d.push({series:b, ti:c, li:dd, da:e});
-      else if(t === 'contact') ct.push({ti:b, li:c, da:dd});
+      if(!r.c||!r.c[0]||!r.c[0].v)return;
+      var t=r.c[0].v.toString().trim().toLowerCase();
+      var b=r.c[1]?(r.c[1].v||'').toString().trim():'';
+      var c=r.c[2]?(r.c[2].v||'').toString().trim():'';
+      var dd=r.c[3]?(r.c[3].v||'').toString().trim():'';
+      if(t==='quran')q.push({ti:b,li:c});
+      else if(t==='khutba')k.push({ti:b,li:c});
+      else if(t==='dars')d.push({series:b,li:c,ti:dd});
+      else if(t==='contact')ct.push({ti:b,li:c,da:dd});
+      else if(t==='whatsapp')wa=b;
     });
-
-    renderQ(q); renderK(k); renderD(d); renderC(ct);
-    countUp(document.getElementById('sQ'), q.length);
-    countUp(document.getElementById('sK'), k.length);
-    countUp(document.getElementById('sD'), d.length);
-    observeAll();
-    showToast(rows.length ? '✅ تم التحديث' : '⚠️ الشيت فاضي أو مش Public');
-  } catch(e){
-    showToast('❌ تأكد أن الشيت Public');
-    renderEmpty();
-  }
+    renderQ(q);renderK(k);renderD(d);renderC(ct);
+    // WhatsApp float button
+    var waBtn=document.getElementById('waFloat');
+    if(wa){waBtn.href='https://wa.me/'+wa.replace(/[^0-9]/g,'');waBtn.classList.add('show');}
+    else waBtn.classList.remove('show');
+    countUp(document.getElementById('sQ'),q.length);
+    countUp(document.getElementById('sK'),k.length);
+    countUp(document.getElementById('sD'),d.length);
+    obsAll();
+    showToast(rows.length?'✅ تم التحديث':'⚠️ الشيت فاضي أو مش Public');
+  }catch(e){showToast('❌ تأكد أن الشيت Public');}
   btn.classList.remove('spin');
 }
 
-async function fetchSheet(name){
-  try {
-    var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json';
-    if(name) url += '&sheet=' + encodeURIComponent(name);
-    url += '&t=' + Date.now();
-    var res = await fetch(url);
-    var txt = await res.text();
-    var m = txt.match(/setResponse\(([\s\S]*?)\);/);
-    if(!m) return [];
-    var data = JSON.parse(m[1]);
-    return data.table ? (data.table.rows||[]) : [];
-  } catch(e){ return []; }
-}
+function e(s){return(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
 
-function renderEmpty(){
-  document.getElementById('qList').innerHTML = '<div class="empty">تأكد أن الشيت Public ثم اضغط 🔄</div>';
-  document.getElementById('kList').innerHTML = '<div class="empty">تأكد أن الشيت Public ثم اضغط 🔄</div>';
-  document.getElementById('dList').innerHTML = '<div class="empty">تأكد أن الشيت Public ثم اضغط 🔄</div>';
-}
-
-function esc(s){ return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
-
+// Render Quran as accordion groups
 function renderQ(arr){
-  var el = document.getElementById('qList');
-  if(!arr.length){ el.innerHTML = '<div class="empty">لا توجد تلاوات بعد</div>'; return; }
-  el.innerHTML = arr.map(function(x,i){
-    var ic = EM[i%8];
-    return '<div class="row-item">'+
-      '<span class="row-icon">'+ic+'</span>'+
-      '<div class="row-title">'+x.ti+'</div>'+
-      '<div class="row-btns">'+
-        '<button class="btn-play" onclick="openPlayer(''+esc(x.li)+'',''+esc(x.ti)+'','تلاوة قرآنية',''+ic+'')">▶</button>'+
-        '<button class="btn-share" onclick="shareItem(''+esc(x.ti)+'',''+esc(x.li)+'')" title="مشاركة">📤</button>'+
+  var el=document.getElementById('qAcc');
+  if(!arr.length){el.innerHTML='<div class="empty">لا توجد تلاوات بعد</div>';return;}
+  // Group by letter (first letter of title) for accordion feel
+  // But since user adds suras one by one, just show all in one accordion "التلاوات"
+  var gid='qacc0';
+  var items=arr.map(function(x,i){
+    var ic=EM[i%8];
+    return '<div class="ritem">'+
+      '<span class="ric">'+ic+'</span>'+
+      '<div class="rtitle">'+x.ti+'</div>'+
+      '<div class="rbtns">'+
+        '<button class="bplay" onclick="openPlayer(''+e(x.li)+'',''+e(x.ti)+'','تلاوة قرآنية',''+ic+'')">▶</button>'+
+        '<button class="bshare" onclick="shareItem(''+e(x.ti)+'',''+e(x.li)+'')">📤</button>'+
       '</div></div>';
   }).join('');
+  el.innerHTML=
+    '<div class="acc-hdr" onclick="togAcc(''+gid+'')">'+
+      '<span class="acc-ic">📖</span>'+
+      '<div class="acc-title">التلاوات القرآنية</div>'+
+      '<span class="acc-count">'+arr.length+' سورة</span>'+
+      '<span class="acc-arr" id="ar'+gid+'">▾</span>'+
+    '</div>'+
+    '<div class="acc-body" id="'+gid+'">'+items+'</div>';
+}
+
+function togAcc(id){
+  var b=document.getElementById(id),a=document.getElementById('ar'+id);
+  if(!b||!a)return;
+  if(b.classList.contains('open')){b.classList.remove('open');a.textContent='▾';a.classList.remove('open');}
+  else{b.classList.add('open');a.textContent='▴';a.classList.add('open');}
 }
 
 function renderK(arr){
-  var el = document.getElementById('kList');
-  if(!arr.length){ el.innerHTML = '<div class="empty">لا توجد خطب بعد</div>'; return; }
-  el.innerHTML = arr.map(function(x,i){
-    var ic = '🎙️';
-    return '<div class="row-item">'+
-      '<span class="row-icon">'+ic+'</span>'+
-      '<div class="row-title">'+x.ti+'</div>'+
-      '<div class="row-btns">'+
-        '<button class="btn-play" onclick="openPlayer(''+esc(x.li)+'',''+esc(x.ti)+'','خطبة منبرية',''+ic+'')">▶</button>'+
-        '<button class="btn-share" onclick="shareItem(''+esc(x.ti)+'',''+esc(x.li)+'')" title="مشاركة">📤</button>'+
+  var el=document.getElementById('kList');
+  if(!arr.length){el.innerHTML='<div class="empty">لا توجد خطب بعد</div>';return;}
+  el.innerHTML=arr.map(function(x,i){
+    return '<div class="ritem">'+
+      '<span class="ric">🎙️</span>'+
+      '<div class="rtitle">'+x.ti+'</div>'+
+      '<div class="rbtns">'+
+        '<button class="bplay" onclick="openPlayer(''+e(x.li)+'',''+e(x.ti)+'','خطبة منبرية','🎙️')">▶</button>'+
+        '<button class="bshare" onclick="shareItem(''+e(x.ti)+'',''+e(x.li)+'')">📤</button>'+
       '</div></div>';
   }).join('');
 }
 
 function renderD(arr){
-  var el = document.getElementById('dList');
-  if(!arr.length){ el.innerHTML = '<div class="empty">لا توجد دروس بعد</div>'; return; }
-  var groups = {};
-  arr.forEach(function(x){
-    var s = x.series || 'دروس متنوعة';
-    if(!groups[s]) groups[s] = [];
-    groups[s].push(x);
-  });
-  var html = '';
-  var gi = 0;
+  var el=document.getElementById('dList');
+  if(!arr.length){el.innerHTML='<div class="empty">لا توجد دروس بعد</div>';return;}
+  var groups={};
+  arr.forEach(function(x){var s=x.series||'دروس متنوعة';if(!groups[s])groups[s]=[];groups[s].push(x);});
+  var html='',gi=0;
   Object.keys(groups).forEach(function(series){
-    var items = groups[series];
-    var gid = 'dg' + gi++;
-    var ic = EM[gi%8];
-    html += '<div class="dars-group">'+
-      '<div class="dars-hdr" onclick="toggleDars(''+gid+'')">'+
-        '<span class="dars-hdr-icon">'+ic+'</span>'+
-        '<div class="dars-hdr-title">'+series+'</div>'+
-        '<span class="dars-count">'+items.length+' درس</span>'+
-        '<span class="dars-arrow" id="arr'+gid+'">▾</span>'+
+    var items=groups[series],gid='dg'+gi++;
+    var ic=EM[gi%8];
+    html+='<div class="dg">'+
+      '<div class="dg-hdr" onclick="togDg(''+gid+'')">'+
+        '<span class="dg-ic">'+ic+'</span>'+
+        '<div class="dg-title">'+series+'</div>'+
+        '<span class="dg-cnt">'+items.length+' درس</span>'+
+        '<span class="dg-arr" id="da'+gid+'">▾</span>'+
       '</div>'+
-      '<div class="dars-items" id="'+gid+'">';
+      '<div class="dg-items" id="'+gid+'">';
     items.forEach(function(x,i){
-      html += '<div class="dars-row">'+
-        '<span class="dars-num">'+String(i+1).padStart(2,'0')+'</span>'+
-        '<div class="dars-info">'+
-          '<div class="dars-title">'+x.ti+'</div>'+
-          (x.da ? '<div class="dars-date">'+x.da+'</div>' : '')+
-        '</div>'+
-        '<button class="dars-play" onclick="openPlayer(''+esc(x.li)+'',''+esc(x.ti)+'','درس ديني','📖')">▶</button>'+
-        '<button class="dars-share" onclick="shareItem(''+esc(x.ti)+'',''+esc(x.li)+'')">📤</button>'+
+      html+='<div class="drow">'+
+        '<span class="dnum">'+String(i+1).padStart(2,'0')+'</span>'+
+        '<div class="dtitle">'+x.ti+'</div>'+
+        '<button class="dplay" onclick="openPlayer(''+e(x.li)+'',''+e(x.ti)+'','درس ديني','📖')">▶</button>'+
+        '<button class="dshr" onclick="shareItem(''+e(x.ti)+'',''+e(x.li)+'')">📤</button>'+
       '</div>';
     });
-    html += '</div></div>';
+    html+='</div></div>';
   });
-  el.innerHTML = html;
+  el.innerHTML=html;
 }
 
-function toggleDars(id){
-  var el = document.getElementById(id);
-  var ar = document.getElementById('arr'+id);
-  if(!el||!ar) return;
-  if(el.style.display === 'block'){ el.style.display='none'; ar.textContent='▾'; ar.classList.remove('open'); }
-  else { el.style.display='block'; ar.textContent='▴'; ar.classList.add('open'); }
+function togDg(id){
+  var el=document.getElementById(id),ar=document.getElementById('da'+id);
+  if(!el||!ar)return;
+  if(el.style.display==='block'){el.style.display='none';ar.textContent='▾';ar.classList.remove('open');}
+  else{el.style.display='block';ar.textContent='▴';ar.classList.add('open');}
 }
 
 function renderC(arr){
-  var el = document.getElementById('contactGrid');
-  if(!arr.length){ el.innerHTML=''; return; }
-  var ico = {'واتساب':'📱','يوتيوب':'▶️','فيسبوك':'📘','تيليجرام':'✈️','انستجرام':'📸'};
-  el.innerHTML = '<div class="contact-grid">' +
-    arr.map(function(x){
-      return '<a class="contact-card" href="'+(x.li||'#')+'" target="_blank">'+
-        '<span class="contact-ico">'+(ico[x.ti]||'🔗')+'</span>'+
-        '<div class="contact-name">'+x.ti+'</div>'+
-        '<div class="contact-handle">'+x.da+'</div>'+
-      '</a>';
-    }).join('') + '</div>';
+  var el=document.getElementById('cGrid');
+  if(!arr.length){el.innerHTML='';return;}
+  var ico={'فيسبوك':'📘','واتساب':'📱','تيليجرام':'✈️','انستجرام':'📸'};
+  el.innerHTML='<div class="cg">'+arr.map(function(x){
+    return '<a class="cc" href="'+(x.li||'#')+'" target="_blank">'+
+      '<span class="cc-ic">'+(ico[x.ti]||'🔗')+'</span>'+
+      '<div class="cc-n">'+x.ti+'</div>'+
+      '<div class="cc-h">'+x.da+'</div>'+
+    '</a>';
+  }).join('')+'</div>';
 }
 
-function showToast(m){
-  var t = document.getElementById('toast');
-  t.textContent = m; t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 3000);
-}
+function showToast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
 
 // Image fallback
 (function(){
-  var img = document.getElementById('sheikhImg');
-  var moon = document.getElementById('avMoon');
-  if(!img||!moon) return;
-  img.addEventListener('error', function(){ img.style.display='none'; moon.style.display='flex'; });
-  if(img.complete && img.naturalWidth===0){ img.style.display='none'; moon.style.display='flex'; }
+  var img=document.getElementById('sImg'),moon=document.getElementById('aMoon');
+  if(!img||!moon)return;
+  img.addEventListener('error',function(){img.style.display='none';moon.style.display='flex';});
+  if(img.complete&&img.naturalWidth===0){img.style.display='none';moon.style.display='flex';}
 })();
 
-// Start
 loadData();
 </script>
 </body>
