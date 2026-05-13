@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>طلب العلم</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-dim:#8B6914;--gold-glow:rgba(201,168,76,0.15);
+  --bg:#080808;--bg2:#101010;--bg3:#171717;--bg4:#1F1F1F;
+  --border:rgba(201,168,76,0.12);--border-hover:rgba(201,168,76,0.38);
+  --text:#F2EDE4;--text-dim:#9A8A72;--text-muted:#4A4035;
+  --radius:18px;--radius-sm:11px;--t:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+.ldr{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:9999;transition:opacity .5s;}
+.ldr.out{opacity:0;pointer-events:none;}
+.ldr-ttl{font-family:'Amiri',serif;font-size:48px;color:var(--gold-light);text-shadow:0 0 35px rgba(201,168,76,0.45);}
+.ldr-sub{font-size:11px;color:var(--text-muted);letter-spacing:3px;}
+.ldr-bar{width:180px;height:2px;background:var(--bg3);border-radius:1px;overflow:hidden;}
+.ldr-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));animation:lp 2s ease-out forwards;}
+@keyframes lp{from{width:0}to{width:100%}}
+
+.shell{display:flex;min-height:100vh;}
+
+.sb{width:252px;min-height:100vh;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;position:fixed;right:0;top:0;bottom:0;z-index:100;overflow-y:auto;}
+.sb::before{content:'';position:absolute;top:0;right:0;left:0;height:200px;background:radial-gradient(ellipse at 60% 0%,rgba(201,168,76,0.07) 0%,transparent 70%);pointer-events:none;}
+.sb-logo{padding:24px 18px 18px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative;z-index:1;}
+.sb-logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.sb-logo h1{font-size:16px;font-weight:700;color:var(--gold-light);}
+.sb-logo span{font-size:10px;color:var(--text-muted);letter-spacing:1px;}
+.sb-nav{flex:1;padding:6px 10px;}
+.sb-label{font-size:9px;font-weight:700;color:var(--text-muted);letter-spacing:2px;padding:14px 8px 5px;text-transform:uppercase;}
+.si{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--radius-sm);cursor:pointer;transition:var(--t);margin-bottom:1px;position:relative;overflow:hidden;user-select:none;border:1px solid transparent;}
+.si:hover{background:var(--gold-glow);border-color:var(--border);}
+.si:hover .si-lbl{color:var(--text);}
+.si:hover .si-ico{color:var(--gold-light);}
+.si.on{background:linear-gradient(135deg,rgba(201,168,76,0.13),rgba(201,168,76,0.04));border-color:var(--border-hover);}
+.si.on .si-ico{color:var(--gold);}
+.si.on .si-lbl{color:var(--gold-light);font-weight:600;}
+.si.on::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:3px;height:55%;background:var(--gold);border-radius:2px 0 0 2px;}
+.si-ico{font-size:15px;color:var(--text-dim);transition:var(--t);flex-shrink:0;}
+.si-lbl{font-size:13px;color:var(--text-dim);transition:var(--t);}
+
+.main{margin-right:252px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{height:58px;background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;position:sticky;top:0;z-index:90;}
+.bc{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text-dim);flex:1;flex-wrap:wrap;}
+.bc-sep{color:var(--text-muted);}
+.bc-cur{color:var(--text);font-weight:600;}
+.bc-lnk{cursor:pointer;transition:var(--t);}
+.bc-lnk:hover{color:var(--gold);}
+
+.pg{padding:28px;flex:1;display:none;animation:fi .35s ease-out;}
+.pg.on{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.ph{margin-bottom:28px;}
+.ph-top{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.ph-icon{width:44px;height:44px;background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid var(--border-hover);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.ph h2{font-family:'Amiri',serif;font-size:26px;color:var(--text);}
+.ph p{font-size:12px;color:var(--text-muted);margin-top:4px;}
+
+.stitle{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:7px;margin-bottom:14px;margin-top:28px;}
+.stitle::before{content:'';width:3px;height:16px;background:var(--gold);border-radius:2px;display:block;}
+.stitle:first-child{margin-top:0;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;cursor:pointer;transition:var(--t);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold-glow),transparent);opacity:0;transition:var(--t);}
+.card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.5);}
+.card:hover::before{opacity:1;}
+.card-ico{font-size:28px;margin-bottom:12px;position:relative;z-index:1;}
+.card-ttl{font-size:15px;font-weight:700;color:var(--text);position:relative;z-index:1;line-height:1.3;}
+.card-sub{font-size:12px;color:var(--text-dim);margin-top:5px;position:relative;z-index:1;line-height:1.5;}
+.card-ft{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;position:relative;z-index:1;}
+.card-tag{font-size:10px;color:var(--gold);background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);padding:2px 9px;border-radius:20px;}
+.card-arr{color:var(--text-muted);font-size:13px;transition:var(--t);}
+.card:hover .card-arr{color:var(--gold);transform:translateX(-3px);}
+
+.rows{display:flex;flex-direction:column;gap:8px;}
+.row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;transition:var(--t);}
+.row:hover{border-color:var(--border-hover);background:var(--bg3);}
+.row-num{width:28px;height:28px;background:rgba(201,168,76,0.08);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gold);flex-shrink:0;}
+.row-body{flex:1;}
+.row-ttl{font-size:14px;font-weight:600;color:var(--text);}
+.row-sub{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.row-btn{display:flex;align-items:center;gap:5px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--gold);font-family:'Cairo',sans-serif;cursor:pointer;transition:var(--t);text-decoration:none;flex-shrink:0;white-space:nowrap;}
+.row-btn:hover{background:rgba(201,168,76,0.18);}
+
+.audio-row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;gap:12px;transition:var(--t);}
+.audio-row:hover{border-color:var(--border-hover);}
+.audio-row audio{flex:1;height:32px;accent-color:var(--gold);min-width:0;}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,0.07);border:1px solid var(--border);border-radius:9px;padding:6px 14px;font-size:12px;color:var(--text-dim);cursor:pointer;transition:var(--t);margin-bottom:20px;}
+.back-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+.hero{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:22px;padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-50px;left:-50px;width:250px;height:250px;background:radial-gradient(circle,rgba(201,168,76,0.09) 0%,transparent 60%);pointer-events:none;}
+.hero::after{content:'﷽';position:absolute;left:36px;top:50%;transform:translateY(-50%);font-family:'Amiri',serif;font-size:48px;color:rgba(201,168,76,0.055);pointer-events:none;}
+.hero-lbl{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:8px;}
+.hero-ttl{font-family:'Amiri',serif;font-size:30px;color:var(--text);margin-bottom:8px;line-height:1.3;}
+.hero-ttl span{color:var(--gold-light);}
+.hero-sub{font-size:13px;color:var(--text-dim);line-height:1.8;max-width:380px;}
+
+.spin{display:flex;align-items:center;justify-content:center;padding:48px;gap:10px;color:var(--text-muted);font-size:13px;}
+.spin::before{content:'';width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:sp .7s linear infinite;flex-shrink:0;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.err{background:rgba(180,60,60,0.08);border:1px solid rgba(180,60,60,0.25);border-radius:var(--radius-sm);padding:16px 20px;font-size:13px;color:#d08080;margin:12px 0;line-height:1.8;}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 20px;text-align:center;background:var(--bg2);border:1px dashed rgba(201,168,76,0.25);border-radius:var(--radius);gap:14px;}
+.empty-ico{font-size:48px;opacity:.35;}
+.empty-ttl{font-size:16px;font-weight:700;color:var(--text-dim);}
+
+.rpl{position:relative;overflow:hidden;}
+.ripple{position:absolute;border-radius:50%;background:rgba(201,168,76,0.18);transform:scale(0);animation:rp .55s linear;pointer-events:none;}
+@keyframes rp{to{transform:scale(4);opacity:0}}
+
+.mob{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(16,16,16,0.97);backdrop-filter:blur(18px);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:200;justify-content:space-around;}
+.mob-i{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 14px;cursor:pointer;transition:var(--t);border-radius:10px;}
+.mob-i .mi{font-size:20px;color:var(--text-muted);transition:var(--t);}
+.mob-i .ml{font-size:9px;color:var(--text-muted);transition:var(--t);}
+.mob-i.on .mi,.mob-i.on .ml{color:var(--gold);}
+
+@media(max-width:860px){
+  .sb{display:none;}.main{margin-right:0;}.mob{display:flex;}
+  .pg{padding:16px 14px 80px;}.topbar{padding:0 14px;}
+  .hero{padding:22px;}.hero::after{display:none;}
+}
+@media(max-width:480px){.cards{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<div class="ldr" id="ldr">
+  <div class="ldr-ttl">طلب العلم</div>
+  <div class="ldr-sub">جاري التحميل...</div>
+  <div class="ldr-bar"><div class="ldr-fill"></div></div>
+</div>
+
+<div class="shell">
+
+<nav class="sb">
+  <div class="sb-logo">
+    <div class="sb-logo-icon">📿</div>
+    <div><h1>طلب العلم</h1><span>منصة التعلم الإسلامي</span></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-label">الرئيسية</div>
+    <div class="si rpl on" onclick="nav('home',this,'الرئيسية','')"><span class="si-ico">🏠</span><span class="si-lbl">الصفحة الرئيسية</span></div>
+    <div class="sb-label">القرآن الكريم</div>
+    <div class="si rpl" onclick="nav('tilawa',this,'تلاوة القرآن','القرآن الكريم')"><span class="si-ico">📖</span><span class="si-lbl">تلاوة القرآن الكريم</span></div>
+    <div class="si rpl" onclick="nav('tafseer',this,'التفسير','القرآن الكريم')"><span class="si-ico">🔍</span><span class="si-lbl">التفسير</span></div>
+    <div class="sb-label">العلوم الشرعية</div>
+    <div class="si rpl" onclick="nav('oloom',this,'العلوم الشرعية','')"><span class="si-ico">🕌</span><span class="si-lbl">العلوم الشرعية</span></div>
+    <div class="sb-label">المكتبة</div>
+    <div class="si rpl" onclick="nav('kutub',this,'المكتبة','')"><span class="si-ico">📚</span><span class="si-lbl">المكتبة</span></div>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="topbar">
+    <div class="bc" id="bc"><span>طلب العلم</span><span class="bc-sep">›</span><span class="bc-cur">الرئيسية</span></div>
+  </div>
+
+  <!-- HOME -->
+  <div class="pg on" id="p-home">
+    <div class="hero">
+      <div class="hero-lbl">أهلاً وسهلاً</div>
+      <div class="hero-ttl">مرحباً بك في <span>طلب العلم</span></div>
+      <div class="hero-sub">منصة إسلامية متكاملة للقرآن الكريم والتفسير والعلوم الشرعية والمكتبة.</div>
+    </div>
+    <div class="stitle">القرآن الكريم</div>
+    <div class="cards">
+      <div class="card rpl" onclick="nav('tilawa',null,'تلاوة القرآن','القرآن الكريم')">
+        <div class="card-ico">📖</div><div class="card-ttl">تلاوة القرآن الكريم</div>
+        <div class="card-ft"><span class="card-tag">القرآن</span><span class="card-arr">←</span></div>
+      </div>
+      <div class="card rpl" onclick="nav('tafseer',null,'التفسير','القرآن الكريم')">
+        <div class="card-ico">🔍</div><div class="card-ttl">التفسير</div>
+        <div class="card-ft"><span class="card-tag">القرآن</span><span class="card-arr">←</span></div>
+      </div>
+    </div>
+    <div class="stitle">العلوم الشرعية</div>
+    <div class="cards">
+      <div class="card rpl" onclick="nav('oloom',null,'العلوم الشرعية','')">
+        <div class="card-ico">🕌</div><div class="card-ttl">العلوم الشرعية</div>
+        <div class="card-ft"><span class="card-tag">علوم</span><span class="card-arr">←</span></div>
+      </div>
+    </div>
+    <div class="stitle">المكتبة</div>
+    <div class="cards">
+      <div class="card rpl" onclick="nav('kutub',null,'المكتبة','')">
+        <div class="card-ico">📚</div><div class="card-ttl">المكتبة</div>
+        <div class="card-ft"><span class="card-tag">كتب</span><span class="card-arr">←</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TILAWA -->
+  <div class="pg" id="p-tilawa">
+    <div class="ph"><div class="ph-top"><div class="ph-icon">📖</div><h2>تلاوة القرآن الكريم</h2></div><p>القرآن الكريم › التلاوة</p></div>
+    <div id="tilawa-content"><div class="spin">جاري التحميل...</div></div>
+  </div>
+
+  <!-- TAFSEER -->
+  <div class="pg" id="p-tafseer">
+    <div class="ph"><div class="ph-top"><div class="ph-icon">🔍</div><h2>التفسير</h2></div><p id="tafseer-bc-sub">القرآن الكريم › التفسير</p></div>
+    <div id="tafseer-content"><div class="spin">جاري التحميل...</div></div>
+  </div>
+
+  <!-- OLOOM -->
+  <div class="pg" id="p-oloom">
+    <div class="ph"><div class="ph-top"><div class="ph-icon">🕌</div><h2 id="oloom-title">العلوم الشرعية</h2></div><p id="oloom-bc-sub">العلوم الشرعية</p></div>
+    <div id="oloom-content"><div class="spin">جاري التحميل...</div></div>
+  </div>
+
+  <!-- KUTUB -->
+  <div class="pg" id="p-kutub">
+    <div class="ph"><div class="ph-top"><div class="ph-icon">📚</div><h2 id="kutub-title">المكتبة</h2></div><p id="kutub-bc-sub">المكتبة</p></div>
+    <div id="kutub-content"><div class="spin">جاري التحميل...</div></div>
+  </div>
+</main>
+</div>
+
+<div class="mob">
+  <div class="mob-i on" onclick="nav('home',null,'الرئيسية','');mOn(this)"><span class="mi">🏠</span><span class="ml">الرئيسية</span></div>
+  <div class="mob-i" onclick="nav('tilawa',null,'تلاوة القرآن','القرآن');mOn(this)"><span class="mi">📖</span><span class="ml">القرآن</span></div>
+  <div class="mob-i" onclick="nav('tafseer',null,'التفسير','القرآن');mOn(this)"><span class="mi">🔍</span><span class="ml">التفسير</span></div>
+  <div class="mob-i" onclick="nav('oloom',null,'العلوم الشرعية','');mOn(this)"><span class="mi">🕌</span><span class="ml">العلوم</span></div>
+  <div class="mob-i" onclick="nav('kutub',null,'المكتبة','');mOn(this)"><span class="mi">📚</span><span class="ml">الكتب</span></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// الشيت ID
+// ══════════════════════════════════════════
+const SHEET_ID = '1dUzR8Y2KUYF_AZKR84lMW-qLx8r3wU4ReUxI87NQdSI';
+
+// جلب شيت معين عبر Google Sheets API (بدون مفتاح - عام)
+async function getSheet(sheetName) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`فشل تحميل: ${sheetName}`);
+  const text = await res.text();
+  // إزالة wrapper
+  const json = JSON.parse(text.substring(47).slice(0,-2));
+  if (!json.table || !json.table.rows) return [];
+
+  const cols = json.table.cols.map(c => c.label || '');
+  return json.table.rows.map(row => {
+    const obj = {};
+    cols.forEach((col, i) => {
+      const cell = row.c && row.c[i];
+      obj[col] = cell ? (cell.v !== null && cell.v !== undefined ? cell.v : '') : '';
+    });
+    return obj;
+  });
+}
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const S = {
+  tilawa:null, shuyukh:null,
+  tafseer:null, tafseerNames:null, tafseerGroups:null,
+  oloom:null, shuroohat:{}, duroos:{},
+  kutubAqsaam:null, kutub:{}, muhtawa:{}
+};
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function nav(id, el, title, section) {
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const pg = document.getElementById('p-'+id);
+  if(pg) pg.classList.add('on');
+  document.querySelectorAll('.si').forEach(i=>i.classList.remove('on'));
+  if(el) el.classList.add('on');
+  const bc = document.getElementById('bc');
+  bc.innerHTML = section
+    ? `<span>طلب العلم</span><span class="bc-sep">›</span><span class="bc-lnk" onclick="nav('home',null,'الرئيسية','')">${section}</span><span class="bc-sep">›</span><span class="bc-cur">${title}</span>`
+    : `<span>طلب العلم</span><span class="bc-sep">›</span><span class="bc-cur">${title}</span>`;
+  window.scrollTo(0,0);
+  if(id==='tilawa')  loadTilawa();
+  if(id==='tafseer') loadTafseer();
+  if(id==='oloom')   loadOloom();
+  if(id==='kutub')   loadKutubAqsaam();
+}
+function mOn(el){document.querySelectorAll('.mob-i').forEach(i=>i.classList.remove('on'));el.classList.add('on');}
+
+// ══════════════════════════════════════════
+// 1. تلاوة القرآن
+// ══════════════════════════════════════════
+async function loadTilawa() {
+  const el = document.getElementById('tilawa-content');
+  if(S.tilawa){renderTilawa();return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    const [tilawa, shuyukh] = await Promise.all([
+      getSheet('تلاوة_القرآن'),
+      getSheet('الشيوخ')
+    ]);
+    const map = {};
+    shuyukh.forEach(s => map[String(s['رقم'])] = s['اسم الشيخ']);
+    tilawa.forEach(r => r['_sheikh'] = map[String(r['رقم الشيخ'])] || 'غير معروف');
+    S.tilawa = tilawa;
+    renderTilawa();
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderTilawa() {
+  const el = document.getElementById('tilawa-content');
+  const data = S.tilawa;
+  if(!data||!data.length){el.innerHTML=emptyHTML('لا توجد بيانات في شيت تلاوة_القرآن');return;}
+  const groups={};
+  data.forEach(r=>{const sh=r['_sheikh'];if(!groups[sh])groups[sh]=[];groups[sh].push(r);});
+  let html='';
+  for(const [sheikh,rows] of Object.entries(groups)){
+    html+=`<div class="stitle">${sheikh}</div><div class="rows">`;
+    rows.forEach((r,i)=>{
+      const link=r['رابط الصوت']||'';
+      html+=`<div class="audio-row">
+        <div class="row-num">${i+1}</div>
+        <div class="row-body"><div class="row-ttl">${r['اسم السورة']||'سورة'}</div></div>
+        ${link?`<audio controls src="${link}"></audio>`:'<span style="color:var(--text-muted);font-size:12px;">لا يوجد رابط</span>'}
+      </div>`;
+    });
+    html+='</div>';
+  }
+  el.innerHTML=html;
+}
+
+// ══════════════════════════════════════════
+// 2. التفسير
+// ══════════════════════════════════════════
+async function loadTafseer() {
+  const el = document.getElementById('tafseer-content');
+  if(S.tafseerGroups){renderTafseerGroups();return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    const [tafaseer, asma] = await Promise.all([
+      getSheet('التفاسير'),
+      getSheet('أسماء_التفاسير')
+    ]);
+    const map={};
+    asma.forEach(s=>map[String(s['رقم'])]=s['اسم التفسير']);
+    tafaseer.forEach(r=>r['_tafseerName']=map[String(r['رقم التفسير'])]||'غير معروف');
+    S.tafseer=tafaseer;
+    const groups={};
+    tafaseer.forEach(r=>{const t=r['_tafseerName'];if(!groups[t])groups[t]=[];groups[t].push(r);});
+    S.tafseerGroups=groups;
+    renderTafseerGroups();
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderTafseerGroups() {
+  const el=document.getElementById('tafseer-content');
+  document.getElementById('tafseer-bc-sub').textContent='القرآن الكريم › التفسير';
+  const groups=S.tafseerGroups;
+  if(!groups||!Object.keys(groups).length){el.innerHTML=emptyHTML('لا توجد بيانات في شيت التفاسير');return;}
+  let html='<div class="stitle">اختر تفسيراً</div><div class="cards">';
+  for(const [name,rows] of Object.entries(groups)){
+    html+=`<div class="card rpl" onclick="showTafseerList('${esc(name)}')">
+      <div class="card-ico">📚</div>
+      <div class="card-ttl">${name}</div>
+      <div class="card-sub">${rows.length} درس</div>
+      <div class="card-ft"><span class="card-tag">تفسير</span><span class="card-arr">←</span></div>
+    </div>`;
+  }
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function showTafseerList(name) {
+  const el=document.getElementById('tafseer-content');
+  const rows=S.tafseerGroups[name]||[];
+  document.getElementById('tafseer-bc-sub').textContent=`القرآن الكريم › التفسير › ${name}`;
+  let html=`<div class="back-btn rpl" onclick="renderTafseerGroups()">← رجوع</div>
+    <div class="stitle">${name}</div><div class="rows">`;
+  rows.forEach((r,i)=>{
+    const link=r['رابط الفيديو']||'';
+    html+=`<div class="row">
+      <div class="row-num">${i+1}</div>
+      <div class="row-body">
+        <div class="row-ttl">${r['عنوان الفيديو']||r['اسم السورة']||'درس'}</div>
+        <div class="row-sub">${r['اسم السورة']||''} · ${r['اسم الشيخ']||''}</div>
+      </div>
+      ${link?`<a href="${link}" target="_blank" class="row-btn">▶ مشاهدة</a>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ══════════════════════════════════════════
+// 3. العلوم الشرعية
+// ══════════════════════════════════════════
+async function loadOloom() {
+  const el=document.getElementById('oloom-content');
+  if(S.oloom){renderOloomAqsaam();return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    S.oloom = await getSheet('أقسام_العلوم_الشرعية');
+    renderOloomAqsaam();
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderOloomAqsaam() {
+  const el=document.getElementById('oloom-content');
+  document.getElementById('oloom-title').textContent='العلوم الشرعية';
+  document.getElementById('oloom-bc-sub').textContent='العلوم الشرعية';
+  const data=S.oloom;
+  if(!data||!data.length){el.innerHTML=emptyHTML('لا توجد بيانات في شيت أقسام_العلوم_الشرعية');return;}
+  const icons=['🌙','⚖️','📜','🌟','🔬','📿','🕌','✨','🎓','📰'];
+  let html='<div class="stitle">اختر قسماً</div><div class="cards">';
+  data.forEach((r,i)=>{
+    html+=`<div class="card rpl" onclick="loadShuroohat(${r['رقم']},'${esc(r['اسم القسم']||'')}')">
+      <div class="card-ico">${icons[i%icons.length]}</div>
+      <div class="card-ttl">${r['اسم القسم']||'قسم'}</div>
+      <div class="card-ft"><span class="card-tag">علوم شرعية</span><span class="card-arr">←</span></div>
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+async function loadShuroohat(raqm, name) {
+  const el=document.getElementById('oloom-content');
+  document.getElementById('oloom-title').textContent=name;
+  document.getElementById('oloom-bc-sub').textContent=`العلوم الشرعية › ${name}`;
+  if(S.shuroohat[raqm]){renderShuroohat(raqm,name);return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    const all = await getSheet('الشروحات');
+    S.shuroohat[raqm]=all.filter(r=>String(r['رقم القسم'])==String(raqm));
+    renderShuroohat(raqm,name);
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderShuroohat(raqm, name) {
+  const el=document.getElementById('oloom-content');
+  const data=S.shuroohat[raqm]||[];
+  let html=`<div class="back-btn rpl" onclick="renderOloomAqsaam()">← رجوع</div>
+    <div class="stitle">شروحات ${name}</div><div class="cards">`;
+  if(!data.length){el.innerHTML=html+`</div>${emptyHTML('لا توجد شروحات لهذا القسم')}`;return;}
+  data.forEach(r=>{
+    html+=`<div class="card rpl" onclick="loadDuroos(${r['رقم']},'${esc(r['اسم الشرح']||'')}','${esc(name)}',${raqm})">
+      <div class="card-ico">📖</div>
+      <div class="card-ttl">${r['اسم الشرح']||'شرح'}</div>
+      <div class="card-sub">${r['اسم الشيخ']||''}</div>
+      <div class="card-ft"><span class="card-tag">شرح</span><span class="card-arr">←</span></div>
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+async function loadDuroos(raqmSharh, sharhName, qismName, raqmQism) {
+  const el=document.getElementById('oloom-content');
+  document.getElementById('oloom-title').textContent=sharhName;
+  document.getElementById('oloom-bc-sub').textContent=`العلوم › ${qismName} › ${sharhName}`;
+  if(S.duroos[raqmSharh]){renderDuroos(raqmSharh,sharhName,qismName,raqmQism);return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    const all = await getSheet('الدروس');
+    S.duroos[raqmSharh]=all.filter(r=>String(r['رقم الشرح'])==String(raqmSharh));
+    renderDuroos(raqmSharh,sharhName,qismName,raqmQism);
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderDuroos(raqmSharh, sharhName, qismName, raqmQism) {
+  const el=document.getElementById('oloom-content');
+  const data=S.duroos[raqmSharh]||[];
+  let html=`<div class="back-btn rpl" onclick="renderShuroohat(${raqmQism},'${esc(qismName)}')">← رجوع</div>
+    <div class="stitle">دروس: ${sharhName}</div><div class="rows">`;
+  if(!data.length){el.innerHTML=html+`</div>${emptyHTML('لا توجد دروس لهذا الشرح')}`;return;}
+  data.forEach((r,i)=>{
+    const link=r['رابط الفيديو']||'';
+    html+=`<div class="row">
+      <div class="row-num">${i+1}</div>
+      <div class="row-body"><div class="row-ttl">${r['عنوان الدرس']||'درس'}</div></div>
+      ${link?`<a href="${link}" target="_blank" class="row-btn">▶ مشاهدة</a>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ══════════════════════════════════════════
+// 4. الكتب
+// ══════════════════════════════════════════
+async function loadKutubAqsaam() {
+  const el=document.getElementById('kutub-content');
+  if(S.kutubAqsaam){renderKutubAqsaam();return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    S.kutubAqsaam = await getSheet('أقسام_الكتب');
+    renderKutubAqsaam();
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderKutubAqsaam() {
+  const el=document.getElementById('kutub-content');
+  document.getElementById('kutub-title').textContent='المكتبة';
+  document.getElementById('kutub-bc-sub').textContent='المكتبة';
+  const data=S.kutubAqsaam;
+  if(!data||!data.length){el.innerHTML=emptyHTML('لا توجد بيانات في شيت أقسام_الكتب');return;}
+  const icons=['📗','📘','📙','📕','📓','📒','📔','📃'];
+  let html='<div class="stitle">أقسام المكتبة</div><div class="cards">';
+  data.forEach((r,i)=>{
+    html+=`<div class="card rpl" onclick="loadKutub(${r['رقم']},'${esc(r['اسم القسم']||'')}')">
+      <div class="card-ico">${icons[i%icons.length]}</div>
+      <div class="card-ttl">${r['اسم القسم']||'قسم'}</div>
+      <div class="card-ft"><span class="card-tag">المكتبة</span><span class="card-arr">←</span></div>
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+async function loadKutub(raqm, name) {
+  const el=document.getElementById('kutub-content');
+  document.getElementById('kutub-title').textContent=name;
+  document.getElementById('kutub-bc-sub').textContent=`المكتبة › ${name}`;
+  if(S.kutub[raqm]){renderKutub(raqm,name);return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    const all = await getSheet('الكتب');
+    S.kutub[raqm]=all.filter(r=>String(r['رقم قسم الكتب'])==String(raqm));
+    renderKutub(raqm,name);
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderKutub(raqm, name) {
+  const el=document.getElementById('kutub-content');
+  const data=S.kutub[raqm]||[];
+  let html=`<div class="back-btn rpl" onclick="renderKutubAqsaam()">← رجوع</div>
+    <div class="stitle">كتب ${name}</div><div class="cards">`;
+  if(!data.length){el.innerHTML=html+`</div>${emptyHTML('لا توجد كتب في هذا القسم')}`;return;}
+  data.forEach(r=>{
+    html+=`<div class="card rpl" onclick="loadMuhtawa(${r['رقم']},'${esc(r['اسم الكتاب']||'')}','${esc(name)}',${raqm})">
+      <div class="card-ico">📖</div>
+      <div class="card-ttl">${r['اسم الكتاب']||'كتاب'}</div>
+      <div class="card-sub">${r['اسم المؤلف']||''}</div>
+      <div class="card-ft"><span class="card-tag">كتاب</span><span class="card-arr">←</span></div>
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+async function loadMuhtawa(raqmKitab, kitabName, qismName, raqmQism) {
+  const el=document.getElementById('kutub-content');
+  document.getElementById('kutub-title').textContent=kitabName;
+  document.getElementById('kutub-bc-sub').textContent=`المكتبة › ${qismName} › ${kitabName}`;
+  if(S.muhtawa[raqmKitab]){renderMuhtawa(raqmKitab,kitabName,qismName,raqmQism);return;}
+  el.innerHTML='<div class="spin">جاري التحميل...</div>';
+  try {
+    const all = await getSheet('محتوى_الكتب');
+    S.muhtawa[raqmKitab]=all.filter(r=>String(r['رقم الكتاب'])==String(raqmKitab));
+    renderMuhtawa(raqmKitab,kitabName,qismName,raqmQism);
+  } catch(e){el.innerHTML=errHTML(e);}
+}
+
+function renderMuhtawa(raqmKitab, kitabName, qismName, raqmQism) {
+  const el=document.getElementById('kutub-content');
+  const data=S.muhtawa[raqmKitab]||[];
+  let html=`<div class="back-btn rpl" onclick="renderKutub(${raqmQism},'${esc(qismName)}')">← رجوع</div>
+    <div class="stitle">${kitabName}</div><div class="rows">`;
+  if(!data.length){el.innerHTML=html+`</div>${emptyHTML('لا يوجد محتوى لهذا الكتاب')}`;return;}
+  data.forEach((r,i)=>{
+    const link=r['رابط المحتوى']||'';
+    html+=`<div class="row">
+      <div class="row-num">${i+1}</div>
+      <div class="row-body"><div class="row-ttl">${r['عنوان المحتوى']||'محتوى'}</div></div>
+      ${link?`<a href="${link}" target="_blank" class="row-btn">🔗 فتح</a>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function emptyHTML(msg){return`<div class="empty"><div class="empty-ico">📭</div><div class="empty-ttl">${msg}</div></div>`;}
+function errHTML(e){return`<div class="err">⚠️ خطأ في التحميل: ${e.message||e}<br><br>تأكد أن الشيت مشارك للعموم (عرض فقط).<br>الشيت: <a href="https://docs.google.com/spreadsheets/d/${SHEET_ID}" target="_blank" style="color:var(--gold)">افتح الشيت</a></div>`;}
+function esc(s){return String(s).replace(/'/g,"&#39;").replace(/"/g,'&quot;');}
+
+// Ripple
+document.addEventListener('click',e=>{
+  const w=e.target.closest('.rpl');if(!w)return;
+  const r=document.createElement('div');r.className='ripple';
+  const rect=w.getBoundingClientRect(),s=Math.max(rect.width,rect.height);
+  r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px`;
+  w.appendChild(r);setTimeout(()=>r.remove(),600);
+});
+
+// Loader
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const l=document.getElementById('ldr');
+    l.classList.add('out');
+    setTimeout(()=>l.remove(),500);
+  },1800);
+});
+</script>
+</body>
+</html>
