@@ -303,8 +303,8 @@ async function loadTilawa() {
   el.innerHTML='<div class="spin">جاري التحميل...</div>';
   try {
     const [tilawa, shuyukh] = await Promise.all([
-      getSheet('تلاوة_القرآن'),
-      getSheet('الشيوخ')
+      getSheet('تلاوة القرآن'),
+      getSheet('شيوخ القرآن')
     ]);
     const map = {};
     shuyukh.forEach(s => map[String(s['رقم'])] = s['اسم الشيخ']);
@@ -346,7 +346,7 @@ async function loadTafseer() {
   try {
     const [tafaseer, asma] = await Promise.all([
       getSheet('التفاسير'),
-      getSheet('أسماء_التفاسير')
+      getSheet('اسماء التفاسير')
     ]);
     const map={};
     asma.forEach(s=>map[String(s['رقم'])]=s['اسم التفسير']);
@@ -406,7 +406,7 @@ async function loadOloom() {
   if(S.oloom){renderOloomAqsaam();return;}
   el.innerHTML='<div class="spin">جاري التحميل...</div>';
   try {
-    S.oloom = await getSheet('أقسام_العلوم_الشرعية');
+    S.oloom = await getSheet('اقسام العلوم الشرعية');
     renderOloomAqsaam();
   } catch(e){el.innerHTML=errHTML(e);}
 }
@@ -500,7 +500,7 @@ async function loadKutubAqsaam() {
   if(S.kutubAqsaam){renderKutubAqsaam();return;}
   el.innerHTML='<div class="spin">جاري التحميل...</div>';
   try {
-    S.kutubAqsaam = await getSheet('أقسام_الكتب');
+    S.kutubAqsaam = await getSheet('اقسام الكتب');
     renderKutubAqsaam();
   } catch(e){el.innerHTML=errHTML(e);}
 }
@@ -562,7 +562,7 @@ async function loadMuhtawa(raqmKitab, kitabName, qismName, raqmQism) {
   if(S.muhtawa[raqmKitab]){renderMuhtawa(raqmKitab,kitabName,qismName,raqmQism);return;}
   el.innerHTML='<div class="spin">جاري التحميل...</div>';
   try {
-    const all = await getSheet('محتوى_الكتب');
+    const all = await getSheet('محتوى الكتب');
     S.muhtawa[raqmKitab]=all.filter(r=>String(r['رقم الكتاب'])==String(raqmKitab));
     renderMuhtawa(raqmKitab,kitabName,qismName,raqmQism);
   } catch(e){el.innerHTML=errHTML(e);}
