@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="day">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة انعاشة الدينية</title>
+    <style>
+        :root {
+            --bg-color: #e6ccb2;
+            --main-gradient: linear-gradient(135deg, #ede0d4 0%, #ddb892 50%, #b08968 100%);
+            --card-bg: rgba(255,255,255,0.65);
+            --card-border: rgba(127,85,57,0.3);
+            --text-color: #1a0f00;
+            --text-muted: #5c3f2b;
+            --title-color: #7f5539;
+            --glow-color: rgba(127,85,57,0.25);
+            --btn-active: #7f5539;
+            --btn-active-text: #ffffff;
+        }
+        [data-theme="night"] {
+            --bg-color: #05030a;
+            --main-gradient: linear-gradient(135deg, #05030a 0%, #120924 100%);
+            --card-bg: rgba(255,255,255,0.03);
+            --card-border: rgba(147,51,234,0.2);
+            --text-color: #f3f4f6;
+            --text-muted: #a78bfa;
+            --title-color: #c084fc;
+            --glow-color: rgba(147,51,234,0.4);
+            --btn-active: #8b5cf6;
+            --btn-active-text: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--main-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background 0.5s, color 0.5s;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .back-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--title-color);
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .back-btn:hover { background: var(--title-color); color: white; }
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .theme-toggle-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--glow-color); }
+        h1 {
+            color: var(--title-color);
+            text-shadow: 0 0 15px var(--glow-color);
+            margin-bottom: 40px;
+            font-size: 28px;
+            transition: color 0.5s;
+            text-align: center;
+        }
+        .main-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .menu-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .menu-card:hover { transform: translateY(-5px); border-color: var(--title-color); box-shadow: 0 0 20px var(--glow-color); }
+        .menu-card .icon { font-size: 26px; margin-bottom: 12px; display: block; }
+        .menu-card .title { font-size: 17px; font-weight: bold; }
+
+        /* AZKAR */
+        .azkar-screen { display: none; width: 100%; max-width: 700px; flex-direction: column; align-items: center; }
+        .categories-container { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
+        .category-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            padding: 9px 18px;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .category-btn:hover, .category-btn.active {
+            background: var(--btn-active);
+            color: var(--btn-active-text);
+            border-color: var(--btn-active);
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+        .azkar-display { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+        .zekr-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, border-color 0.3s, opacity 0.4s;
+        }
+        .zekr-card.countable { cursor: pointer; }
+        .zekr-card.countable:hover { transform: translateY(-2px); border-color: var(--title-color); box-shadow: 0 0 15px var(--glow-color); }
+        .zekr-title { font-size: 14px; font-weight: bold; color: var(--title-color); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--card-border); }
+        .zekr-text { font-size: 18px; line-height: 1.8; margin-bottom: 10px; font-weight: 500; }
+        .zekr-source { font-size: 13px; color: var(--text-muted); font-style: italic; }
+        .counter-badge {
+            display: inline-block;
+            margin-top: 12px;
+            background: rgba(127,85,57,0.1);
+            border: 1px solid var(--title-color);
+            color: var(--title-color);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        [data-theme="night"] .counter-badge { background: rgba(139,92,246,0.1); }
+        .zekr-card.completed { opacity: 0.35; border-color: #10b981 !important; order: 999; }
+
+        /* TASBIH */
+        .tasbih-screen { display: none; width: 100%; max-width: 600px; flex-direction: column; align-items: center; gap: 20px; }
+        .tasbih-setup {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            width: 100%;
+            backdrop-filter: blur(12px);
+        }
+        .tasbih-setup h3 { color: var(--title-color); font-size: 18px; margin-bottom: 20px; text-align: center; }
+        .setup-field { margin-bottom: 15px; }
+        .setup-field label { display: block; color: var(--text-muted); font-size: 14px; margin-bottom: 6px; }
+        .setup-field input {
+            width: 100%; padding: 10px 14px; border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.3);
+            color: var(--text-color); font-size: 16px;
+            font-family: inherit; outline: none; transition: border-color 0.3s;
+        }
+        [data-theme="night"] .setup-field input { background: rgba(255,255,255,0.05); }
+        .setup-field input:focus { border-color: var(--title-color); }
+        .start-tasbih-btn {
+            width: 100%; padding: 12px;
+            background: var(--btn-active); color: white;
+            border: none; border-radius: 10px;
+            font-size: 17px; font-weight: bold;
+            cursor: pointer; transition: all 0.3s; font-family: inherit;
+        }
+        .start-tasbih-btn:hover { opacity: 0.85; transform: scale(1.02); }
+        .tasbih-counter-area { display: none; flex-direction: column; align-items: center; width: 100%; gap: 20px; }
+        .tasbih-zekr-display {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px; padding: 18px 25px;
+            width: 100%; text-align: center;
+            font-size: 20px; line-height: 1.9;
+            backdrop-filter: blur(12px);
+        }
+        .tasbih-ball-wrap { position: relative; display: flex; justify-content: center; align-items: center; }
+        .tasbih-ring {
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            border: 3px solid var(--card-border);
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .tasbih-center-count { font-size: 64px; font-weight: bold; color: var(--title-color); text-shadow: 0 0 20px var(--glow-color); line-height: 1; }
+        .tasbih-center-label { font-size: 13px; color: var(--text-muted); margin-top: 5px; text-align: center; }
+        .tasbih-btn {
+            width: 190px; height: 190px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #b08968, #7f5539);
+            border: none; cursor: pointer; font-size: 36px;
+            box-shadow: 0 8px 30px rgba(127,85,57,0.5), inset 0 -4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.1s, box-shadow 0.1s;
+            position: absolute;
+            display: flex; align-items: center; justify-content: center;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        [data-theme="night"] .tasbih-btn {
+            background: radial-gradient(circle at 35% 35%, #a855f7, #6d28d9);
+            box-shadow: 0 8px 30px rgba(139,92,246,0.5), inset 0 -4px 10px rgba(0,0,0,0.3);
+        }
+        .tasbih-btn:active { transform: scale(0.92); box-shadow: 0 3px 12px rgba(127,85,57,0.35); }
+        [data-theme="night"] .tasbih-btn:active { box-shadow: 0 3px 12px rgba(139,92,246,0.35); }
+        .tasbih-btn.pulse {
+            animation: tasbihPulse 0.15s ease-out;
+        }
+        @keyframes tasbihPulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(0.91); }
+            100% { transform: scale(1); }
+        }
+        .tasbih-progress-bar-wrap { width: 100%; background: var(--card-bg); border-radius: 20px; height: 12px; border: 1px solid var(--card-border); overflow: hidden; }
+        .tasbih-progress-bar { height: 100%; background: linear-gradient(90deg, #7f5539, #b08968); border-radius: 20px; transition: width 0.3s ease; width: 0%; }
+        [data-theme="night"] .tasbih-progress-bar { background: linear-gradient(90deg, #8b5cf6, #c084fc); }
+        .tasbih-stats { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+        .tasbih-stat {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 10px; padding: 10px 20px; text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .tasbih-stat .s-num { font-size: 24px; font-weight: bold; color: var(--title-color); }
+        .tasbih-stat .s-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .tasbih-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .tasbih-action-btn {
+            padding: 9px 20px; border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background: var(--card-bg); color: var(--text-color);
+            font-size: 14px; cursor: pointer; font-family: inherit;
+            font-weight: bold; transition: all 0.3s;
+        }
+        .tasbih-action-btn:hover { border-color: var(--title-color); color: var(--title-color); }
+        .tasbih-action-btn.danger:hover { border-color: #ef4444; color: #ef4444; }
+
+        /* PRAYER TIMES */
+        .prayer-screen { display: none; width: 100%; max-width: 700px; flex-direction: column; align-items: center; gap: 20px; }
+        .prayer-loading {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px; padding: 40px 20px;
+            text-align: center; width: 100%;
+            backdrop-filter: blur(12px);
+        }
+        .prayer-loading p { color: var(--text-muted); font-size: 16px; margin-top: 15px; }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 4px solid var(--card-border);
+            border-top-color: var(--title-color);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .prayer-header {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px; padding: 20px 25px;
+            width: 100%; text-align: center;
+            backdrop-filter: blur(12px);
+            display: none;
+        }
+        .prayer-city { font-size: 18px; font-weight: bold; color: var(--title-color); }
+        .prayer-date { font-size: 13px; color: var(--text-muted); margin-top: 5px; }
+        .prayer-next-badge {
+            display: inline-block;
+            margin-top: 12px;
+            background: var(--btn-active);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 14px; width: 100%;
+            display: none;
+        }
+        .prayer-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px; padding: 18px 12px;
+            text-align: center; backdrop-filter: blur(12px);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .prayer-card.next-prayer {
+            border-color: var(--title-color);
+            box-shadow: 0 0 18px var(--glow-color);
+            transform: translateY(-4px);
+        }
+        .prayer-card .p-icon { font-size: 22px; margin-bottom: 8px; }
+        .prayer-card .p-name { font-size: 15px; font-weight: bold; color: var(--title-color); margin-bottom: 6px; }
+        .prayer-card .p-time { font-size: 20px; font-weight: bold; color: var(--text-color); }
+        .prayer-card .p-remaining { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .prayer-error {
+            background: var(--card-bg);
+            border: 1px solid #ef4444;
+            border-radius: 12px; padding: 20px;
+            text-align: center; width: 100%;
+            color: #ef4444; display: none;
+        }
+        .retry-btn {
+            margin-top: 12px; padding: 9px 22px;
+            background: var(--btn-active); color: white;
+            border: none; border-radius: 8px;
+            font-size: 15px; cursor: pointer; font-family: inherit;
+        }
+
+        /* FLASH */
+        .done-flash {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(16,185,129,0.95);
+            color: white; padding: 18px 38px;
+            border-radius: 16px; font-size: 22px;
+            font-weight: bold; z-index: 999;
+            transition: transform 0.3s, opacity 0.3s;
+            opacity: 0; pointer-events: none;
+        }
+        .done-flash.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <button class="back-btn" id="backBtn" onclick="showMainDashboard()">⬅ عودة للرئيسية</button>
+        <button class="theme-toggle-btn" onclick="toggleTheme()">
+            <span id="themeIcon">🌙</span> <span id="themeText">الوضع الليلي</span>
+        </button>
+    </div>
+
+    <h1 id="mainTitle">✨ منصة انعاشة الدينية ✨</h1>
+
+    <div class="main-dashboard" id="mainDashboard">
+        <div class="menu-card" onclick="openAzkarScreen()">
+            <span class="icon">🌙</span>
+            <span class="title">الأذكار وحصن المسلم</span>
+        </div>
+        <div class="menu-card">
+            <span class="icon">📖</span>
+            <span class="title">حاسب نفسك</span>
+        </div>
+        <div class="menu-card" onclick="openTasbihScreen()">
+            <span class="icon">📿</span>
+            <span class="title">السبحة الإلكترونية</span>
+        </div>
+        <div class="menu-card" onclick="openPrayerScreen()">
+            <span class="icon">🕌</span>
+            <span class="title">مواقيت الصلاة</span>
+        </div>
+    </div>
+
+    <!-- AZKAR SCREEN -->
+    <div class="azkar-screen" id="azkarScreen">
+        <div class="categories-container">
+            <button class="category-btn active" onclick="switchCategory('sabah', this)">أذكار الصباح</button>
+            <button class="category-btn" onclick="switchCategory('massa', this)">أذكار المساء</button>
+            <button class="category-btn" onclick="switchCategory('nowm', this)">أذكار النوم</button>
+            <button class="category-btn" onclick="switchCategory('hesn', this)">حصن المسلم</button>
+        </div>
+        <div class="azkar-display" id="azkarBox"></div>
+    </div>
+
+    <!-- TASBIH SCREEN -->
+    <div class="tasbih-screen" id="tasbihScreen">
+        <div class="tasbih-setup" id="tasbihSetup">
+            <h3>📿 اضبط السبحة</h3>
+            <div class="setup-field">
+                <label>الذكر</label>
+                <input type="text" id="tasbihText" placeholder="مثال: سبحان الله" />
+            </div>
+            <div class="setup-field">
+                <label>عدد التكرار</label>
+                <input type="number" id="tasbihTarget" placeholder="مثال: 33" min="1" />
+            </div>
+            <button class="start-tasbih-btn" onclick="startTasbih()">ابدأ التسبيح ✨</button>
+        </div>
+
+        <div class="tasbih-counter-area" id="tasbihCounterArea">
+            <div class="tasbih-zekr-display" id="tasbihZekrDisplay"></div>
+            <div class="tasbih-ball-wrap">
+                <div class="tasbih-ring">
+                    <div style="text-align:center;">
+                        <div class="tasbih-center-count" id="tasbihCount">0</div>
+                        <div class="tasbih-center-label">من <span id="tasbihTargetDisplay">0</span></div>
+                    </div>
+                </div>
+                <button class="tasbih-btn" id="tasbihBtn" onclick="tapTasbih()">📿</button>
+            </div>
+            <div class="tasbih-progress-bar-wrap">
+                <div class="tasbih-progress-bar" id="tasbihProgress"></div>
+            </div>
+            <div class="tasbih-stats">
+                <div class="tasbih-stat">
+                    <div class="s-num" id="tasbihRemain">0</div>
+                    <div class="s-label">متبقي</div>
+                </div>
+                <div class="tasbih-stat">
+                    <div class="s-num" id="tasbihRounds">0</div>
+                    <div class="s-label">جولات مكتملة</div>
+                </div>
+                <div class="tasbih-stat">
+                    <div class="s-num" id="tasbihTotal">0</div>
+                    <div class="s-label">إجمالي</div>
+                </div>
+            </div>
+            <div class="tasbih-actions">
+                <button class="tasbih-action-btn" onclick="resetTasbih()">🔄 إعادة</button>
+                <button class="tasbih-action-btn" onclick="newTasbih()">✏️ تغيير الذكر</button>
+                <button class="tasbih-action-btn danger" onclick="undoTasbih()">↩️ تراجع</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRAYER SCREEN -->
+    <div class="prayer-screen" id="prayerScreen">
+        <div class="prayer-loading" id="prayerLoading">
+            <div class="spinner"></div>
+            <p>جاري تحديد موقعك وجلب مواقيت الصلاة...</p>
+        </div>
+        <div class="prayer-error" id="prayerError">
+            <p id="prayerErrorMsg">تعذّر تحديد موقعك</p>
+            <button class="retry-btn" onclick="loadPrayerTimes()">🔄 إعادة المحاولة</button>
+        </div>
+        <div class="prayer-header" id="prayerHeader">
+            <div class="prayer-city" id="prayerCity">—</div>
+            <div class="prayer-date" id="prayerDate">—</div>
+            <div class="prayer-next-badge" id="prayerNextBadge">—</div>
+        </div>
+        <div class="prayer-grid" id="prayerGrid"></div>
+    </div>
+
+    <div class="done-flash" id="doneFlash">🎉 أحسنت! اكتمل الذكر</div>
+
+    <script>
+        // ===== STATE =====
+        let azkarState = {};
+        let currentCategory = 'sabah';
+        let tasbihCount = 0, tasbihTarget = 33, tasbihRounds = 0, tasbihTotal = 0;
+        let prayerLoaded = false;
+
+        // ===== AZKAR DATA =====
+        const azkarData = {
+            sabah: [
+                { text: "اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ...(آية الكرسي)", source: "من قالها حين يصبح أجير من الجن حتى يمسى", count: 1 },
+                { text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ — قُلْ هُوَ اللَّهُ أَحَدٌ والمُعَوِّذَتَيْن", source: "من قالها حين يصبح وحين يمسى كفته من كل شيء", count: 3 },
+                { text: "أَصْبَحْنا وَأَصْبَحَ المُلْكُ لله وَالحَمدُ لله، لا إلهَ إلاّ اللّهُ وَحدَهُ لا شَريكَ لهُ", source: "من أذكار الصباح", count: 1 },
+                { text: "اللّهُـمَّ أَنْتَ رَبِّـي لا إلهَ إلاّ أَنْتَ، خَلَقْتَنـي وَأَنا عَبْـدُك — (سيد الاستغفار)", source: "من قالها موقنًا بها حين يصبح ومات دخل الجنة", count: 1 },
+                { text: "اللّهُـمَّ إِنِّـي أَصْبَـحْتُ أُشْـهِدُك، وَأُشْـهِدُ حَمَلَـةَ عَـرْشِـك، وَمَلائِكَتِك، وَجَمـيعَ خَلْـقِك، أَنَّـكَ أَنْـتَ اللهُ لا إلهَ إلاّ أَنْـتَ وَحْـدَكَ", source: "من قالها أعتقه الله من النار", count: 4 },
+                { text: "اللّهُـمَّ ما أَصْبَـحَ بي مِـنْ نِعْـمَةٍ أَو بِأَحَـدٍ مِـنْ خَلْـقِك، فَمِـنْكَ وَحْـدَكَ لا شريكَ لَـك", source: "من قالها حين يصبح أدى شكر يومه", count: 1 },
+                { text: "اللّهُـمَّ عافِـني في بَدَنـي، اللّهُـمَّ عافِـني في سَمْـعي، اللّهُـمَّ عافِـني في بَصَـري، لا إلهَ إلاّ أَنْـتَ", source: "من أذكار الصباح", count: 3 },
+                { text: "اللّهُـمَّ إِنّـي أَعـوذُ بِكَ مِنَ الْكُـفر، وَالفَـقْر، وَأَعـوذُ بِكَ مِنْ عَذابِ القَـبْر", source: "من أذكار الصباح", count: 3 },
+                { text: "حَسْبِـيَ اللّهُ لا إلهَ إلاّ هُوَ عَلَـيهِ تَوَكَّـلتُ وَهُوَ رَبُّ العَرْشِ العَظـيم", source: "من قالها كفاه الله ما أهمه", count: 7 },
+                { text: "بِسـمِ اللهِ الذي لا يَضُـرُّ مَعَ اسمِـهِ شَيءٌ في الأرْضِ وَلا في السّمـاءِ وَهـوَ السّمـيعُ العَلـيم", source: "لم يضره شيء", count: 3 },
+                { text: "رَضيـتُ باللهِ رَبَّـاً وَبِالإسْلامِ ديـناً وَبِمُحَـمَّدٍ صلى الله عليه وسلم نَبِيّـا", source: "كان حقًا على الله أن يرضيه يوم القيامة", count: 3 },
+                { text: "لَا إلَه إلّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٍ", source: "كانت له عدل عشر رقاب وكُتبت له مئة حسنة", count: 10 },
+                { text: "سُبْحـانَ اللهِ وَبِحَمْـدِهِ عَدَدَ خَلْـقِه، وَرِضـا نَفْسِـه، وَزِنَـةَ عَـرْشِـه، وَمِـدادَ كَلِمـاتِـه", source: "من أذكار الصباح", count: 3 },
+                { text: "اللهم صل وسلم على نبينا محمد", source: "من صلى عليه حين يصبح أدركته شفاعته يوم القيامة", count: 10 },
+                { text: "أستغفر الله وأتوب إليه", source: "التوبة والاستغفار اليومي", count: 100 },
+                { text: "سبحان الله وبحمده", source: "التسبيح والتحميد", count: 100 }
+            ],
+            massa: [
+                { text: "اللّهُ لاَ إِلَـهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ...(آية الكرسي)", source: "من قالها حين يمسى أجير من الجن حتى يصبح", count: 1 },
+                { text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ — قُلْ هُوَ اللَّهُ أَحَدٌ والمُعَوِّذَتَيْن", source: "من قالها حين يمسى كفته من كل شيء", count: 3 },
+                { text: "أَمْسَيْـنا وَأَمْسـى المُلكُ لله وَالحَمدُ لله، لا إلهَ إلاّ اللّهُ وَحدَهُ لا شَريكَ لهُ", source: "من أذكار المساء", count: 1 },
+                { text: "اللّهُـمَّ بِكَ أَمْسَـينا وَبِكَ أَصْـبَحْنا، وَبِكَ نَحْـيا وَبِكَ نَمُـوتُ وَإِلَـيْكَ الْمَصِيرُ", source: "من أذكار المساء", count: 1 },
+                { text: "اللّهُـمَّ أَنْتَ رَبِّـي لا إلهَ إلاّ أَنْتَ — (سيد الاستغفار)", source: "من قالها موقنًا بها حين يمسى ومات دخل الجنة", count: 1 },
+                { text: "اللّهُـمَّ إِنِّـي أَمْسَيْتُ أُشْـهِدُك وَأُشْـهِدُ حَمَلَـةَ عَـرْشِـك وَجَمـيعَ خَلْـقِك", source: "من قالها أعتقه الله من النار", count: 4 },
+                { text: "اللّهُـمَّ ما أَمْسى بي مِـنْ نِعْـمَةٍ فَمِـنْكَ وَحْـدَكَ لا شريكَ لَـك، فَلَـكَ الْحَمْـدُ وَلَـكَ الشُّكْـر", source: "من قالها حين يمسى أدى شكر يومه", count: 1 },
+                { text: "اللّهُـمَّ عافِـني في بَدَنـي وَسَمْـعي وَبَصَـري، لا إلهَ إلاّ أَنْـتَ", source: "من أذكار المساء", count: 3 },
+                { text: "حَسْبِـيَ اللّهُ لا إلهَ إلاّ هُوَ عَلَـيهِ تَوَكَّـلتُ وَهُوَ رَبُّ العَرْشِ العَظـيم", source: "من قالها كفاه الله ما أهمه", count: 7 },
+                { text: "بِسـمِ اللهِ الذي لا يَضُـرُّ مَعَ اسمِـهِ شَيءٌ في الأرْضِ وَلا في السّمـاء", source: "لم يضره شيء", count: 3 },
+                { text: "لَا إلَه إلّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ", source: "كانت له عدل عشر رقاب ومحيت عنه مئة سيئة", count: 10 },
+                { text: "اللهم صل وسلم على نبينا محمد", source: "من صلى عليه حين يمسى أدركته شفاعته", count: 10 },
+                { text: "سُبْحـانَ اللهِ وَبِحَمْـدِهِ", source: "حُطَّتْ خطاياه وإن كانت مثل زبد البحر", count: 100 }
+            ],
+            nowm: [
+                { text: "قراءة المعوذتين والنفث على الجسد", source: "يفعل ذلك ثلاث مرات", count: 3 },
+                { text: "آية الكرسي كاملة", source: "لم يزل عليه من الله حافظ ولا يقربه شيطان حتى يصبح", count: 1 },
+                { text: "آمَنَ الرَّسُولُ... (آخر سورة البقرة)", source: "من قرأ آيتين من آخر سورة البقرة في ليلة كفتاه", count: 1 },
+                { text: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا", source: "من أذكار النوم", count: 1 },
+                { text: "اللَّهُمَّ إِنَّكَ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا، لَكَ مَمَاتُهَا وَمَحْيَاهَا", source: "من أذكار النوم", count: 1 },
+                { text: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", source: "من أذكار النوم", count: 1 },
+                { text: "سُبْحَانَ اللَّهِ", source: "التسبيح قبل النوم", count: 33 },
+                { text: "الْحَمْدُ لِلَّهِ", source: "التحميد قبل النوم", count: 33 },
+                { text: "اللَّهُ أَكْبَر", source: "التكبير قبل النوم", count: 34 },
+                { text: "اللَّهُمَّ أَسْلَمْتُ نَفْسِي إِلَيْكَ، وَفَوَّضْتُ أَمْرِي إِلَيْكَ، وَوَجَّهْتُ وَجْهِي إِلَيْكَ", source: "من أذكار النوم", count: 1 }
+            ],
+            hesn: [
+                { title: "١- أذكار الاستيقاظ", text: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", source: "ذكر الاستيقاظ" },
+                { title: "١- أذكار الاستيقاظ", text: "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي فِي جَسَدِي وَرَدَّ عَلَيَّ رُوحِي وَأَذِنَ لِي بِذِكْرِهِ", source: "ذكر الاستيقاظ" },
+                { title: "٢- دعاء لبس الثوب", text: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ", source: "دعاء اللباس" },
+                { title: "٣- دعاء دخول الخلاء", text: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", source: "دعاء دخول الخلاء" },
+                { title: "٤- دعاء الخروج من الخلاء", text: "غُفْرَانَكَ", source: "دعاء الخروج من الخلاء" },
+                { title: "٥- الذكر بعد الوضوء", text: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّداً عَبْدُهُ وَرَسُولُهُ", source: "بعد الوضوء" },
+                { title: "٦- الذكر عند الخروج من المنزل", text: "بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ", source: "عند الخروج من المنزل" },
+                { title: "٧- الذكر عند دخول المنزل", text: "بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى اللهِ رَبِّنَا تَوَكَّلْنَا", source: "عند دخول المنزل" },
+                { title: "٨- دعاء دخول المسجد", text: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", source: "دعاء دخول المسجد" },
+                { title: "٩- دعاء الخروج من المسجد", text: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", source: "دعاء الخروج من المسجد" },
+                { title: "١٠- دعاء الاستفتاح", text: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ", source: "دعاء الاستفتاح في الصلاة" },
+                { title: "١١- دعاء الركوع", text: "سُبْحَانَ رَبِّيَ الْعَظِيمِ (ثلاث مرات)", source: "أذكار الركوع" },
+                { title: "١٢- دعاء السجود", text: "سُبْحَانَ رَبِّيَ الْأَعْلَى (ثلاث مرات)", source: "أذكار السجود" },
+                { title: "١٣- التشهد", text: "التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ", source: "التشهد في الصلاة" },
+                { title: "١٤- الصلاة الإبراهيمية", text: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ", source: "الصلاة الإبراهيمية" },
+                { title: "١٥- أذكار بعد السلام", text: "أَسْتَغْفِرُ اللهَ (ثلاثاً) — اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", source: "أذكار ما بعد الصلاة" },
+                { title: "١٦- التسبيح بعد الصلاة", text: "سُبْحَانَ اللهِ (٣٣) — الْحَمْدُ لِلَّهِ (٣٣) — اللهُ أَكْبَرُ (٣٣)", source: "التسبيح بعد الصلاة" },
+                { title: "١٧- دعاء الهم والحزن", text: "اللَّهُمَّ إِنِّي عَبْدُكَ ابْنُ عَبْدِكَ... أَنْ تَجْعَلَ الْقُرْآنَ رَبِيعَ قَلْبِي وَنُورَ صَدْرِي وَجَلَاءَ حُزْنِي وَذَهَابَ هَمِّي", source: "دعاء الهم والحزن" },
+                { title: "١٨- دعاء الكرب", text: "لَا إِلَهَ إِلَّا اللهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللهُ رَبُّ الْعَرْشِ الْعَظِيمِ", source: "دعاء الكرب" },
+                { title: "١٩- دعاء السفر", text: "اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى، وَمِنَ الْعَمَلِ مَا تَرْضَى", source: "دعاء السفر" },
+                { title: "٢٠- دعاء الطعام", text: "بِسْمِ اللهِ — فإن نسي في أوله قال: بِسْمِ اللهِ فِي أَوَّلِهِ وَآخِرِهِ", source: "دعاء الطعام" },
+                { title: "٢١- دعاء الفراغ من الطعام", text: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ", source: "دعاء الفراغ من الطعام" },
+                { title: "٢٢- كفارة المجلس", text: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", source: "كفارة المجلس" },
+                { title: "٢٣- دعاء الاستخارة", text: "اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ...", source: "دعاء الاستخارة" },
+                { title: "٢٤- دعاء قنوت الوتر", text: "اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ وَعَافِنِي فِيمَنْ عَافَيْتَ وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ", source: "دعاء قنوت الوتر" }
+            ]
+        };
+
+        // ===== THEME =====
+        function toggleTheme() {
+            const body = document.documentElement;
+            const isDay = body.getAttribute('data-theme') === 'day';
+            body.setAttribute('data-theme', isDay ? 'night' : 'day');
+            document.getElementById('themeIcon').innerText = isDay ? '☀️' : '🌙';
+            document.getElementById('themeText').innerText = isDay ? 'الوضع النهاري' : 'الوضع الليلي';
+        }
+
+        // ===== NAVIGATION =====
+        function openAzkarScreen() {
+            document.getElementById('mainDashboard').style.display = 'none';
+            document.getElementById('azkarScreen').style.display = 'flex';
+            document.getElementById('tasbihScreen').style.display = 'none';
+            document.getElementById('prayerScreen').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('mainTitle').innerText = '✨ الأذكار والأدعية ✨';
+            displayAzkar('sabah');
+        }
+
+        function openTasbihScreen() {
+            document.getElementById('mainDashboard').style.display = 'none';
+            document.getElementById('azkarScreen').style.display = 'none';
+            document.getElementById('tasbihScreen').style.display = 'flex';
+            document.getElementById('prayerScreen').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('mainTitle').innerText = '📿 السبحة الإلكترونية';
+        }
+
+        function openPrayerScreen() {
+            document.getElementById('mainDashboard').style.display = 'none';
+            document.getElementById('azkarScreen').style.display = 'none';
+            document.getElementById('tasbihScreen').style.display = 'none';
+            document.getElementById('prayerScreen').style.display = 'flex';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('mainTitle').innerText = '🕌 مواقيت الصلاة';
+            if (!prayerLoaded) loadPrayerTimes();
+        }
+
+        function showMainDashboard() {
+            document.getElementById('mainDashboard').style.display = 'grid';
+            document.getElementById('azkarScreen').style.display = 'none';
+            document.getElementById('tasbihScreen').style.display = 'none';
+            document.getElementById('prayerScreen').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('mainTitle').innerText = '✨ منصة انعاشة الدينية ✨';
+        }
+
+        // ===== AZKAR =====
+        function getStateKey(category, index) { return category + '_' + index; }
+
+        function displayAzkar(category) {
+            currentCategory = category;
+            const box = document.getElementById('azkarBox');
+            box.innerHTML = '';
+            const items = azkarData[category];
+            if (!items || items.length === 0) {
+                box.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">في انتظار إضافة هذا القسم...</div>';
+                return;
+            }
+            const isHesn = (category === 'hesn');
+            const incomplete = [], complete = [];
+            items.forEach((item, i) => {
+                const key = getStateKey(category, i);
+                const saved = azkarState[key] !== undefined ? azkarState[key] : item.count;
+                if (saved === 0) complete.push({ item, i, saved });
+                else incomplete.push({ item, i, saved });
+            });
+            [...incomplete, ...complete].forEach(({ item, i, saved }) => {
+                const card = document.createElement('div');
+                if (isHesn) {
+                    card.className = 'zekr-card';
+                    card.innerHTML = `<div class="zekr-title">${item.title}</div><div class="zekr-text">${item.text}</div><div class="zekr-source">${item.source}</div>`;
+                } else {
+                    const isDone = saved === 0;
+                    card.className = 'zekr-card countable' + (isDone ? ' completed' : '');
+                    card.dataset.index = i;
+                    card.innerHTML = `
+                        <div class="zekr-text">${item.text}</div>
+                        <div class="zekr-source">${item.source}</div>
+                        <div class="counter-badge">
+                            ${isDone ? '✅ مكتمل' : 'التكرار: <span class="num">' + saved + '</span> / ' + item.count}
+                        </div>`;
+                    if (!isDone) card.onclick = () => reduceCount(card, i);
+                }
+                box.appendChild(card);
+            });
+        }
+
+        function reduceCount(card, index) {
+            const key = getStateKey(currentCategory, index);
+            const item = azkarData[currentCategory][index];
+            let current = azkarState[key] !== undefined ? azkarState[key] : item.count;
+            if (current <= 0) return;
+            current--;
+            azkarState[key] = current;
+            const numSpan = card.querySelector('.num');
+            if (current > 0) { if (numSpan) numSpan.innerText = current; }
+            else displayAzkar(currentCategory);
+        }
+
+        function switchCategory(category, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            displayAzkar(category);
+        }
+
+        // ===== TASBIH =====
+        function startTasbih() {
+            const text = document.getElementById('tasbihText').value.trim();
+            const target = parseInt(document.getElementById('tasbihTarget').value);
+            if (!text) { alert('من فضلك اكتب الذكر أولاً'); return; }
+            if (!target || target < 1) { alert('من فضلك اكتب عدد صحيح'); return; }
+            tasbihCount = 0; tasbihTarget = target; tasbihRounds = 0; tasbihTotal = 0;
+            document.getElementById('tasbihZekrDisplay').innerText = text;
+            document.getElementById('tasbihTargetDisplay').innerText = target;
+            updateTasbihUI();
+            document.getElementById('tasbihSetup').style.display = 'none';
+            document.getElementById('tasbihCounterArea').style.display = 'flex';
+        }
+
+        function tapTasbih() {
+            // اهتزاز
+            if (navigator.vibrate) navigator.vibrate(40);
+            // تأثير بصري
+            const btn = document.getElementById('tasbihBtn');
+            btn.classList.remove('pulse');
+            void btn.offsetWidth;
+            btn.classList.add('pulse');
+
+            tasbihCount++; tasbihTotal++;
+            if (tasbihCount >= tasbihTarget) {
+                tasbihRounds++; tasbihCount = 0;
+                showDoneFlash();
+                if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+            }
+            updateTasbihUI();
+        }
+
+        function updateTasbihUI() {
+            document.getElementById('tasbihCount').innerText = tasbihCount;
+            document.getElementById('tasbihRemain').innerText = tasbihTarget - tasbihCount;
+            document.getElementById('tasbihRounds').innerText = tasbihRounds;
+            document.getElementById('tasbihTotal').innerText = tasbihTotal;
+            const pct = tasbihTarget > 0 ? (tasbihCount / tasbihTarget) * 100 : 0;
+            document.getElementById('tasbihProgress').style.width = pct + '%';
+        }
+
+        function showDoneFlash() {
+            const el = document.getElementById('doneFlash');
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 1800);
+        }
+
+        function resetTasbih() { tasbihCount = 0; tasbihRounds = 0; tasbihTotal = 0; updateTasbihUI(); }
+
+        function undoTasbih() {
+            if (tasbihCount > 0) { tasbihCount--; tasbihTotal = Math.max(0, tasbihTotal - 1); }
+            else if (tasbihRounds > 0) { tasbihRounds--; tasbihCount = tasbihTarget - 1; tasbihTotal = Math.max(0, tasbihTotal - 1); }
+            updateTasbihUI();
+        }
+
+        function newTasbih() {
+            document.getElementById('tasbihSetup').style.display = 'block';
+            document.getElementById('tasbihCounterArea').style.display = 'none';
+            document.getElementById('tasbihText').value = '';
+            document.getElementById('tasbihTarget').value = '';
+        }
+
+        // ===== PRAYER TIMES =====
+        const prayerNames = [
+            { key: 'Fajr', name: 'الفجر', icon: '🌅' },
+            { key: 'Sunrise', name: 'الشروق', icon: '☀️' },
+            { key: 'Dhuhr', name: 'الظهر', icon: '🌤️' },
+            { key: 'Asr', name: 'العصر', icon: '🌇' },
+            { key: 'Maghrib', name: 'المغرب', icon: '🌆' },
+            { key: 'Isha', name: 'العشاء', icon: '🌙' }
+        ];
+
+        function loadPrayerTimes() {
+            document.getElementById('prayerLoading').style.display = 'block';
+            document.getElementById('prayerError').style.display = 'none';
+            document.getElementById('prayerHeader').style.display = 'none';
+            document.getElementById('prayerGrid').style.display = 'none';
+
+            if (!navigator.geolocation) {
+                showPrayerError('المتصفح لا يدعم تحديد الموقع');
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                pos => fetchPrayerFromAPI(pos.coords.latitude, pos.coords.longitude),
+                err => showPrayerError('لم يتم السماح بتحديد الموقع. يرجى السماح بالوصول للموقع من إعدادات المتصفح.')
+            );
+        }
+
+        async function fetchPrayerFromAPI(lat, lng) {
+            try {
+                const today = new Date();
+                const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+                const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lng}&method=5`;
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.code !== 200) throw new Error('API error');
+
+                // reverse geocode
+                let cityName = 'موقعك الحالي';
+                try {
+                    const geo = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ar`);
+                    const geoData = await geo.json();
+                    cityName = geoData.address.city || geoData.address.town || geoData.address.state || cityName;
+                } catch(e) {}
+
+                renderPrayerTimes(data.data.timings, data.data.date, cityName);
+                prayerLoaded = true;
+            } catch(e) {
+                showPrayerError('حدث خطأ أثناء جلب المواقيت. تحقق من الاتصال بالإنترنت.');
+            }
+        }
+
+        function renderPrayerTimes(timings, dateData, city) {
+            document.getElementById('prayerLoading').style.display = 'none';
+
+            const now = new Date();
+            const nowMins = now.getHours() * 60 + now.getMinutes();
+
+            // Find next prayer
+            let nextPrayerKey = null;
+            let minDiff = Infinity;
+            prayerNames.forEach(p => {
+                const t = timings[p.key];
+                if (!t) return;
+                const [h, m] = t.split(':').map(Number);
+                const pMins = h * 60 + m;
+                const diff = pMins > nowMins ? pMins - nowMins : (1440 - nowMins + pMins);
+                if (diff < minDiff) { minDiff = diff; nextPrayerKey = p.key; }
+            });
+
+            const hijri = dateData.hijri;
+            document.getElementById('prayerCity').innerText = '📍 ' + city;
+            document.getElementById('prayerDate').innerText = `${dateData.readable} | ${hijri.day} ${hijri.month.ar} ${hijri.year} هـ`;
+
+            const nextName = prayerNames.find(p => p.key === nextPrayerKey);
+            const hh = Math.floor(minDiff / 60), mm = minDiff % 60;
+            document.getElementById('prayerNextBadge').innerText = `القادمة: ${nextName ? nextName.name : ''} بعد ${hh}س ${mm}د`;
+
+            const grid = document.getElementById('prayerGrid');
+            grid.innerHTML = '';
+            prayerNames.forEach(p => {
+                const t = timings[p.key];
+                if (!t) return;
+                const [h, m] = t.split(':').map(Number);
+                const pMins = h * 60 + m;
+                const diff = pMins > nowMins ? pMins - nowMins : (1440 - nowMins + pMins);
+                const isNext = p.key === nextPrayerKey;
+                const dh = Math.floor(diff / 60), dm = diff % 60;
+
+                // format 12h
+                const ampm = h >= 12 ? 'م' : 'ص';
+                const h12 = h % 12 || 12;
+                const timeStr = `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+
+                const card = document.createElement('div');
+                card.className = 'prayer-card' + (isNext ? ' next-prayer' : '');
+                card.innerHTML = `
+                    <div class="p-icon">${p.icon}</div>
+                    <div class="p-name">${p.name}</div>
+                    <div class="p-time">${timeStr}</div>
+                    <div class="p-remaining">${isNext ? '⬅ القادمة' : `بعد ${dh}س ${dm}د`}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('prayerHeader').style.display = 'block';
+            document.getElementById('prayerGrid').style.display = 'grid';
+        }
+
+        function showPrayerError(msg) {
+            document.getElementById('prayerLoading').style.display = 'none';
+            document.getElementById('prayerErrorMsg').innerText = msg;
+            document.getElementById('prayerError').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
