@@ -359,28 +359,28 @@ footer {
 /* FULLSCREEN AUDIO MODAL */
 .audio-modal {
   display:none; position:fixed; inset:0; z-index:9998;
-  background:linear-gradient(160deg,#050d05,#0a1a0a);
+  background:var(--bg);
   flex-direction:column; align-items:center; justify-content:center;
-  padding:30px 20px;
+  padding:20px;
+  width:100vw; height:100vh;
 }
 .audio-modal.open { display:flex; }
 .audio-modal-close-btn {
   position:absolute; top:16px; right:16px;
-  background:none; border:1px solid var(--gold);
-  border-radius:8px; color:var(--gold);
-  padding:6px 12px; cursor:pointer; font-size:16px;
-  font-family:'Amiri',serif;
+  background:var(--btn-bg); border:1px solid var(--gold);
+  border-radius:8px; color:var(--btn-text);
+  padding:8px 16px; cursor:pointer; font-size:15px;
+  font-family:'Amiri',serif; box-shadow:var(--glow);
 }
 .audio-modal .audio-player {
-  width:100%; max-width:500px;
-  background:linear-gradient(160deg,#0d1f0d,#0a0a0a);
-  border:1px solid #39FF14;
+  width:100%; max-width:520px;
   border-radius:24px;
-  padding:30px 24px;
-  box-shadow:0 0 40px #39FF1433, inset 0 0 40px #00000055;
+  padding:32px 28px;
 }
-.audio-modal .ap-title { font-size:20px; }
+.audio-modal .ap-title { font-size:22px; }
+.audio-modal .ap-sub { font-size:13px; }
 .audio-modal .ap-play { width:80px; height:80px; font-size:32px; }
+.audio-modal .ap-skip { width:48px; height:48px; font-size:14px; }
 </style>
 </head>
 <body>
@@ -573,20 +573,32 @@ let currentFilter = 'الكل';
 function toEmbed(url) {
   if (!url) return '';
   url = url.trim();
+  // archive.org
   if (url.includes('archive.org/embed/')) return url;
   if (url.includes('archive.org/details/')) return url.replace('archive.org/details/', 'archive.org/embed/');
+  // Google Drive video embed
+  if (url.includes('drive.google.com')) {
+    const m = url.match(/(?:file\/d\/|id=)([a-zA-Z0-9_-]+)/);
+    if (m) return 'https://drive.google.com/file/d/' + m[1] + '/preview';
+  }
   return url;
 }
 
 // فتح مودال الفيديو
+function isVideoUrl(url) {
+  return url.includes('drive.google.com') || url.includes('youtube.com') || url.includes('youtu.be') || url.includes('archive.org/embed/');
+}
+
 function openVideo(embedUrl, title) {
   document.getElementById('videoModalTitle').textContent = title;
   document.getElementById('videoModalFrame').src = embedUrl;
   document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 function closeVideo() {
   document.getElementById('videoModal').classList.remove('open');
   document.getElementById('videoModalFrame').src = '';
+  document.body.style.overflow = '';
 }
 
 // Audio Player
@@ -616,13 +628,18 @@ function buildAudioPlayer(embedUrl, title, id) {
       <button class="ap-skip" onclick="skipAudio('${id}',10)">↻<br><span style="font-size:9px">10</span></button>
     </div>
     <audio id="audio-${id}" style="display:none">
-      <source src="${embedUrl.replace('/embed/','/download/').replace('_202605','_202605/') + '.mp3'}" type="audio/mpeg">
+      <source src="" type="audio/mpeg">
     </audio>
   </div>`;
 }
 
 function getDirectUrl(embedUrl) {
-  // تحويل رابط embed لرابط مباشر
+  // Google Drive direct download
+  if (embedUrl.includes('drive.google.com')) {
+    const m = embedUrl.match(/(?:file\/d\/|id=)([a-zA-Z0-9_-]+)/);
+    if (m) return 'https://drive.google.com/uc?export=download&id=' + m[1];
+  }
+  // archive.org
   const id = embedUrl.split('/embed/')[1];
   if (!id) return embedUrl;
   return `https://archive.org/download/${id}/${id}.mp3`;
@@ -717,7 +734,7 @@ function renderDorous(filter) {
             <span class="sub-text">${d['اسم الشرح'] || ''}</span>
           </div>
         </div>
-        <button class="play-toggle-btn" onclick="openVideo('${embedUrl}','${title}')">▶ شاهد</button>
+        <button class="play-toggle-btn" onclick="isVideoUrl('${embedUrl}') ? openVideo('${embedUrl}','${title}') : openAudioModal('${embedUrl}','${title}','drs'+${i})">▶ شاهد</button>
       </div>
     </div>`;
   }).join('');
