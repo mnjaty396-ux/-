@@ -204,6 +204,58 @@ body.dark .social-wa .social-name { color:#39FF14; }
   color:var(--text2); font-size:16px; opacity:0.7;
 }
 
+/* PLAYER */
+.player-wrap {
+  background:var(--card);
+  border:2px solid var(--gold);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:var(--glow), 0 4px 20px var(--shadow);
+  margin-top:12px;
+  position:relative;
+}
+.player-wrap::before {
+  content:'';
+  position:absolute; inset:0;
+  border-radius:14px;
+  box-shadow:inset 0 0 20px var(--shadow);
+  pointer-events:none; z-index:1;
+}
+.player-wrap iframe {
+  width:100%; border:none; display:block;
+}
+.player-label {
+  display:flex; align-items:center; gap:8px;
+  padding:10px 14px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  color:#fff; font-size:13px; font-family:'Amiri',serif;
+  font-weight:bold;
+}
+body.dark .player-label {
+  background:linear-gradient(135deg,#0d2b0d,#1a4d1a);
+  color:var(--gold);
+  border-bottom:1px solid var(--gold);
+}
+.list-item-col {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:16px;
+  box-shadow:0 2px 10px var(--shadow); transition:all 0.3s;
+  margin-bottom:0;
+}
+.list-item-col:hover { transform:translateX(-3px); }
+.item-row {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:10px;
+}
+.play-toggle-btn {
+  background:var(--btn-bg); border:1px solid var(--gold);
+  border-radius:10px; padding:8px 14px;
+  color:var(--btn-text); font-size:13px;
+  box-shadow:var(--glow); transition:all 0.3s;
+  font-family:'Amiri',serif; cursor:pointer; white-space:nowrap;
+}
+.play-toggle-btn:hover { transform:scale(1.05); }
+
 footer {
   text-align:center; padding:20px;
   border-top:1px solid var(--border);
@@ -385,6 +437,18 @@ function toggleMode() {
 
 // ===== رندر الدروس =====
 let currentFilter = 'الكل';
+function toEmbed(url) {
+  if (!url) return '';
+  return url.replace('archive.org/details/', 'archive.org/embed/');
+}
+function togglePlayer(id) {
+  const p = document.getElementById('player-' + id);
+  if (!p) return;
+  const visible = p.style.display !== 'none';
+  p.style.display = visible ? 'none' : 'block';
+  const btn = document.getElementById('btn-' + id);
+  if (btn) btn.textContent = visible ? '▶ شاهد' : '✖ إغلاق';
+}
 function renderDorous(filter) {
   const list = document.getElementById('dorous-list');
   const items = filter === 'الكل' ? DATA.dorous : DATA.dorous.filter(d => d['اسم القسم'] === filter);
@@ -392,18 +456,29 @@ function renderDorous(filter) {
     list.innerHTML = '<div class="empty-msg">لا توجد دروس في هذا القسم بعد</div>';
     return;
   }
-  list.innerHTML = items.map(d => `
-    <div class="list-item">
-      <div>
-        <div class="item-title">${d['عنوان الفيديو'] || ''}</div>
-        <div class="item-sub">
-          <span class="badge">${d['اسم القسم'] || ''}</span>
-          <span class="sub-text">${d['اسم الشرح'] || ''}</span>
+  list.innerHTML = items.map((d, i) => {
+    const embedUrl = toEmbed(d['رابط الفيديو'] || '');
+    const id = 'drs' + i;
+    return `
+    <div class="list-item-col">
+      <div class="item-row">
+        <div>
+          <div class="item-title">${d['عنوان الفيديو'] || ''}</div>
+          <div class="item-sub">
+            <span class="badge">${d['اسم القسم'] || ''}</span>
+            <span class="sub-text">${d['اسم الشرح'] || ''}</span>
+          </div>
+        </div>
+        <button id="btn-${id}" class="play-toggle-btn" onclick="togglePlayer('${id}')">▶ شاهد</button>
+      </div>
+      <div id="player-${id}" style="display:none">
+        <div class="player-wrap">
+          <div class="player-label">🎬 ${d['عنوان الفيديو'] || ''}</div>
+          <iframe src="${embedUrl}" height="220" allowfullscreen></iframe>
         </div>
       </div>
-      <a href="${d['رابط الفيديو'] || '#'}" target="_blank" class="action-btn">▶ شاهد</a>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function filterDorous(val, btn) {
@@ -420,15 +495,26 @@ function renderKhutab() {
     list.innerHTML = '<div class="empty-msg">لا توجد خطب مضافة بعد</div>';
     return;
   }
-  list.innerHTML = DATA.khutab.map((k,i) => `
-    <div class="list-item">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="num-badge">${i+1}</div>
-        <div class="item-title">${k['عنوان الخطبة'] || ''}</div>
+  list.innerHTML = DATA.khutab.map((k, i) => {
+    const embedUrl = toEmbed(k['رابط الصوت'] || '');
+    const id = 'kht' + i;
+    return `
+    <div class="list-item-col">
+      <div class="item-row">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="num-badge">${i+1}</div>
+          <div class="item-title">${k['عنوان الخطبة'] || ''}</div>
+        </div>
+        <button id="btn-${id}" class="play-toggle-btn" onclick="togglePlayer('${id}')">🎧 استمع</button>
       </div>
-      <a href="${k['رابط الصوت'] || '#'}" target="_blank" class="action-btn">🎧 استمع</a>
-    </div>
-  `).join('');
+      <div id="player-${id}" style="display:none">
+        <div class="player-wrap">
+          <div class="player-label">🎙️ ${k['عنوان الخطبة'] || ''}</div>
+          <iframe src="${embedUrl}" height="60" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ===== رندر التلاوة =====
@@ -438,13 +524,22 @@ function renderTilawa() {
     grid.innerHTML = '<div class="empty-msg">لا توجد تلاوات مضافة بعد</div>';
     return;
   }
-  grid.innerHTML = DATA.tilawa.map(t => `
+  grid.innerHTML = DATA.tilawa.map((t, i) => {
+    const embedUrl = toEmbed(t['رابط الصوت'] || '');
+    const id = 'til' + i;
+    return `
     <div class="tilawa-card">
       <div class="t-icon">📖</div>
       <div class="sura-name">سورة ${t['اسم السورة'] || ''}</div>
-      <a href="${t['رابط الصوت'] || '#'}" target="_blank" class="action-btn" style="font-size:12px;padding:6px 12px;display:inline-block">🎧 استمع</a>
-    </div>
-  `).join('');
+      <button id="btn-${id}" class="play-toggle-btn" style="width:100%;margin-top:6px" onclick="togglePlayer('${id}')">🎧 استمع</button>
+      <div id="player-${id}" style="display:none;margin-top:10px">
+        <div class="player-wrap">
+          <div class="player-label">📖 ${t['اسم السورة'] || ''}</div>
+          <iframe src="${embedUrl}" height="60" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ===== رندر التواصل =====
