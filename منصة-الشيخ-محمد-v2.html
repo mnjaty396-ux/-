@@ -576,6 +576,11 @@ function toEmbed(url) {
   // archive.org
   if (url.includes('archive.org/embed/')) return url;
   if (url.includes('archive.org/details/')) return url.replace('archive.org/details/', 'archive.org/embed/');
+  if (url.includes('archive.org/download/')) {
+    // extract item id and convert to embed
+    const parts = url.replace('https://archive.org/download/', '').split('/');
+    if (parts[0]) return 'https://archive.org/embed/' + parts[0];
+  }
   // Google Drive video embed
   if (url.includes('drive.google.com')) {
     const m = url.match(/(?:file\/d\/|id=)([a-zA-Z0-9_-]+)/);
@@ -585,14 +590,18 @@ function toEmbed(url) {
 }
 
 // فتح مودال الفيديو
-function isVideoUrl(url) {
+function isVideoUrl(url, forceVideo) {
   if (!url) return false;
+  if (forceVideo) return true;
   // YouTube is always video
   if (url.includes('youtube.com') || url.includes('youtu.be')) return true;
-  // Google Drive - treat as video (use iframe embed)
-  if (url.includes('drive.google.com/file') && url.includes('/preview')) return true;
-  if (url.includes('drive.google.com') && !url.includes('uc?export')) return true;
-  // archive.org - treat as AUDIO (mp3 player), not video
+  // Google Drive preview = video
+  if (url.includes('drive.google.com') && !url.includes('uc?export=download')) return true;
+  // archive.org - check extension hints
+  if (url.includes('archive.org')) {
+    if (url.includes('.mp4') || url.includes('.webm') || url.includes('.ogv') || url.includes('/video')) return true;
+    return false; // default archive = audio
+  }
   return false;
 }
 
@@ -647,14 +656,17 @@ function getDirectUrl(embedUrl) {
     const m = embedUrl.match(/(?:file\/d\/|id=)([a-zA-Z0-9_-]+)/);
     if (m) return 'https://drive.google.com/uc?export=download&id=' + m[1];
   }
-  // archive.org - extract item id and build mp3 URL
-  let archiveId = null;
-  if (embedUrl.includes('/embed/')) archiveId = embedUrl.split('/embed/')[1];
-  else if (embedUrl.includes('/details/')) archiveId = embedUrl.split('/details/')[1];
-  else if (embedUrl.includes('/download/')) return embedUrl; // already direct
-  if (archiveId) {
-    archiveId = archiveId.split('/')[0].split('?')[0];
-    return 'https://archive.org/download/' + archiveId + '/' + archiveId + '.mp3';
+  // archive.org - extract item id and try to build audio URL
+  if (embedUrl.includes('archive.org')) {
+    if (embedUrl.includes('/download/')) return embedUrl; // already direct
+    let archiveId = null;
+    if (embedUrl.includes('/embed/')) archiveId = embedUrl.split('/embed/')[1];
+    else if (embedUrl.includes('/details/')) archiveId = embedUrl.split('/details/')[1];
+    if (archiveId) {
+      archiveId = archiveId.split('/')[0].split('?')[0];
+      // Try mp3 first, fallback handled by audio element
+      return 'https://archive.org/download/' + archiveId + '/' + archiveId + '.mp3';
+    }
   }
   return embedUrl;
 }
@@ -803,8 +815,10 @@ function renderDourousOfSharh(sharh) {
 
 function playDars(embedUrl, title, id) {
   if (!embedUrl) return;
-  if (isVideoUrl(embedUrl)) {
-    openVideo(embedUrl, title);
+  // الدروس: archive.org دايما فيديو (embed iframe), Google Drive فيديو, YouTube فيديو
+  const forceVideoForDars = embedUrl.includes('archive.org') || embedUrl.includes('drive.google.com') || embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be');
+  if (forceVideoForDars) {
+    openVideo(toEmbed(embedUrl), title);
   } else {
     openAudioModal(embedUrl, title, id);
   }
