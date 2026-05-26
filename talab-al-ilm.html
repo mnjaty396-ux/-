@@ -1232,13 +1232,9 @@ body {
       وانسخ الـ gid من الرابط وضعه هنا
 ══════════════════════════════════════════════ */
 
-const SHEET_ID = '1t_GxExhJU6s4uxNgQwt4rV-8JuR9ApIwswl9uEuw--U';
-
 const CONFIG = {
-  // gid=0 = الورقة الأولى (طلب العلم)
-  LESSONS_GID: '0',
-  // gid للورقة التانية (الكتب) — غيّره لو اختلف
-  BOOKS_GID: '1114436432',
+  LESSONS_CSV: 'https://docs.google.com/spreadsheets/d/1t_GxExhJU6s4uxNgQwt4rV-8JuR9ApIwswl9uEuw--U/pub?gid=0&output=csv',
+  BOOKS_CSV:   'https://docs.google.com/spreadsheets/d/1t_GxExhJU6s4uxNgQwt4rV-8JuR9ApIwswl9uEuw--U/pub?gid=1114436432&output=csv',
 };
 
 /* ══════════════════════════════════════════════
@@ -1323,44 +1319,36 @@ function splitCSVLine(line) {
   return cols;
 }
 
-async function fetchSheet(gid) {
-  // الروابط بالترتيب — published CSV ثم proxy
-  const pubUrl  = `https://docs.google.com/spreadsheets/d/e/2PACX-1vR29HjdFwAoKDG4R48E1khCQSEdHHt605gS-VzL_p_qXy0v3T6b9uU5a2avw-D-2AC04kXiuEuJ2bKN/pub?gid=${gid}&single=true&output=csv`;
-  const expUrl  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
+async function fetchSheet(url) {
+  // مباشر
+  try {
+    const r = await fetch(url);
+    if (r.ok) {
+      const text = await r.text();
+      const data = parseCSV(text);
+      if (data.length) { console.log('✅ direct', data.length); return data; }
+    }
+  } catch(_) {}
 
-  for (const url of [pubUrl, expUrl]) {
-    // مباشر
-    try {
-      const r = await fetch(url);
-      if (r.ok) {
-        const text = await r.text();
-        if (text.includes(',') || text.includes('\t')) {
-          const data = parseCSV(text);
-          if (data.length) { console.log('✅ loaded direct', gid, data.length); return data; }
-        }
-      }
-    } catch(_) {}
+  // allorigins proxy
+  try {
+    const r = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url));
+    if (r.ok) {
+      const text = await r.text();
+      const data = parseCSV(text);
+      if (data.length) { console.log('✅ allorigins', data.length); return data; }
+    }
+  } catch(_) {}
 
-    // allorigins proxy
-    try {
-      const r = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
-      if (r.ok) {
-        const text = await r.text();
-        const data = parseCSV(text);
-        if (data.length) { console.log('✅ loaded allorigins', gid, data.length); return data; }
-      }
-    } catch(_) {}
-
-    // corsproxy
-    try {
-      const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-      if (r.ok) {
-        const text = await r.text();
-        const data = parseCSV(text);
-        if (data.length) { console.log('✅ loaded corsproxy', gid, data.length); return data; }
-      }
-    } catch(_) {}
-  }
+  // corsproxy
+  try {
+    const r = await fetch('https://corsproxy.io/?' + encodeURIComponent(url));
+    if (r.ok) {
+      const text = await r.text();
+      const data = parseCSV(text);
+      if (data.length) { console.log('✅ corsproxy', data.length); return data; }
+    }
+  } catch(_) {}
 
   return [];
 }
@@ -1372,8 +1360,8 @@ async function loadData() {
   try {
     showToast('⏳ جاري تحميل البيانات...');
     const [lessonsData, booksData] = await Promise.all([
-      fetchSheet(CONFIG.LESSONS_GID),
-      fetchSheet(CONFIG.BOOKS_GID),
+      fetchSheet(CONFIG.LESSONS_CSV),
+      fetchSheet(CONFIG.BOOKS_CSV),
     ]);
     state.lessonsData = lessonsData;
     state.booksData = booksData;
