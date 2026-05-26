@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>طلب العلم - منصة العلوم الشرعية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════
+   CSS VARIABLES & THEMES
+══════════════════════════════════════════════ */
+:root {
+  /* Day Mode - Wooden Luxury */
+  --bg-primary: #f5ede0;
+  --bg-secondary: #ede0cc;
+  --bg-card: #fdf6ec;
+  --bg-overlay: rgba(245, 237, 224, 0.97);
+  --text-primary: #2c1a0e;
+  --text-secondary: #6b4226;
+  --text-muted: #9b7355;
+  --gold: #c8962c;
+  --gold-light: #e8b84b;
+  --gold-dark: #9a6f1e;
+  --gold-glow: rgba(200, 150, 44, 0.3);
+  --border: rgba(200, 150, 44, 0.4);
+  --border-strong: rgba(200, 150, 44, 0.7);
+  --shadow: rgba(100, 60, 20, 0.15);
+  --shadow-deep: rgba(80, 40, 10, 0.3);
+  --card-shadow: 0 4px 24px rgba(100,60,20,0.12), 0 1px 4px rgba(100,60,20,0.08);
+  --wood-texture: repeating-linear-gradient(
+    92deg,
+    transparent,
+    transparent 2px,
+    rgba(120,70,20,0.04) 2px,
+    rgba(120,70,20,0.04) 4px
+  );
+  --navbar-bg: rgba(245, 235, 215, 0.96);
+  --player-bg: #2c1a0e;
+  --player-border: #c8962c;
+  --skeleton-base: #e8d5b7;
+  --skeleton-shine: #f5ede0;
+  --toast-bg: #2c1a0e;
+  --toast-text: #e8b84b;
+  --search-bg: rgba(255,255,255,0.6);
+  --overlay-modal: rgba(20,10,5,0.75);
+  --welcome-from: #2c1a0e;
+  --welcome-to: #6b3a1f;
+  --transition-theme: 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #080a0f;
+  --bg-secondary: #0d1117;
+  --bg-card: #111520;
+  --bg-overlay: rgba(8,10,15,0.97);
+  --text-primary: #e8f4f0;
+  --text-secondary: #7df5c8;
+  --text-muted: #4a9e7a;
+  --gold: #00ffb3;
+  --gold-light: #5fffda;
+  --gold-dark: #00c98a;
+  --gold-glow: rgba(0,255,179,0.2);
+  --border: rgba(0,255,179,0.25);
+  --border-strong: rgba(0,255,179,0.5);
+  --shadow: rgba(0,255,179,0.05);
+  --shadow-deep: rgba(0,255,179,0.15);
+  --card-shadow: 0 4px 30px rgba(0,255,179,0.08), 0 0 0 1px rgba(0,255,179,0.1);
+  --wood-texture: repeating-linear-gradient(
+    92deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,179,0.02) 2px,
+    rgba(0,255,179,0.02) 4px
+  );
+  --navbar-bg: rgba(8,10,18,0.95);
+  --player-bg: #060810;
+  --player-border: #00ffb3;
+  --skeleton-base: #1a2030;
+  --skeleton-shine: #222840;
+  --toast-bg: #0d1a14;
+  --toast-text: #00ffb3;
+  --search-bg: rgba(0,255,179,0.06);
+  --overlay-modal: rgba(0,5,10,0.88);
+  --welcome-from: #00ffb3;
+  --welcome-to: #00c98a;
+}
+
+/* ══════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background var(--transition-theme), color var(--transition-theme);
+  background-image: var(--wood-texture);
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════
+   WELCOME / LOADING SCREEN
+══════════════════════════════════════════════ */
+#welcome-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  background-image: var(--wood-texture);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#welcome-screen.hidden {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.welcome-logo {
+  text-align: center;
+  animation: welcomeFadeUp 1s ease forwards;
+  opacity: 0;
+}
+
+.welcome-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  display: block;
+  animation: welcomeSpin 2s ease forwards;
+}
+
+.welcome-title {
+  font-family: 'Amiri', serif;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.05em;
+  text-shadow: none;
+}
+
+.welcome-sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.welcome-loader {
+  margin-top: 2.5rem;
+  width: 180px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.welcome-loader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+  border-radius: 99px;
+  animation: loadBar 2.2s ease forwards;
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.welcome-ayah {
+  margin-top: 2rem;
+  font-family: 'Amiri', serif;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-align: center;
+  opacity: 0;
+  animation: welcomeFadeUp 1s ease 0.5s forwards;
+}
+
+@keyframes welcomeFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes welcomeSpin {
+  from { opacity: 0; transform: rotate(-180deg) scale(0); }
+  to { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+@keyframes loadBar {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--navbar-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 20px var(--shadow);
+  transition: background var(--transition-theme), border-color var(--transition-theme);
+}
+
+.nav-brand {
+  font-family: 'Amiri', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 0 20px var(--gold-glow);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-brand span { font-size: 1.3rem; }
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: var(--gold);
+  color: var(--bg-primary);
+  border-color: var(--gold);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.nav-btn.active {
+  font-weight: 700;
+}
+
+.theme-toggle {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  color: var(--gold);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px var(--gold-glow);
+  margin-right: 0.5rem;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg) scale(1.1);
+  box-shadow: 0 0 20px var(--gold-glow);
+}
+
+/* ══════════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════════ */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  min-height: calc(100vh - 70px);
+}
+
+/* ══════════════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════════════ */
+.section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.section-header::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 1rem auto 0;
+  border-radius: 99px;
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.section-title {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.section-title .icon { font-size: 1.2em; }
+
+/* ══════════════════════════════════════════════
+   SEARCH BAR
+══════════════════════════════════════════════ */
+.search-wrapper {
+  max-width: 540px;
+  margin: 0 auto 2.5rem;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.85rem 3.5rem 0.85rem 1.2rem;
+  background: var(--search-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  text-align: right;
+}
+
+.search-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px var(--gold-glow);
+  background: var(--bg-card);
+}
+
+.search-input::placeholder { color: var(--text-muted); }
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════
+   CATEGORIES GRID
+══════════════════════════════════════════════ */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.category-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover::before,
+.category-card.active::before { transform: scaleX(1); }
+
+.category-card:hover, .category-card.active {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px var(--gold-glow), var(--card-shadow);
+}
+
+.category-card.active {
+  background: linear-gradient(135deg, var(--bg-card), rgba(200,150,44,0.08));
+}
+
+[data-theme="dark"] .category-card.active {
+  background: linear-gradient(135deg, var(--bg-card), rgba(0,255,179,0.06));
+}
+
+.cat-icon {
+  font-size: 2rem;
+  margin-bottom: 0.7rem;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover .cat-icon { transform: scale(1.15) rotate(5deg); }
+
+.cat-name {
+  font-family: 'Amiri', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: color 0.3s;
+}
+
+.category-card:hover .cat-name, .category-card.active .cat-name {
+  color: var(--gold);
+}
+
+.cat-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* ══════════════════════════════════════════════
+   BREADCRUMB
+══════════════════════════════════════════════ */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.breadcrumb-item {
+  cursor: pointer;
+  color: var(--gold);
+  transition: opacity 0.2s;
+}
+.breadcrumb-item:hover { opacity: 0.7; text-decoration: underline; }
+.breadcrumb-sep { color: var(--text-muted); }
+.breadcrumb-current { color: var(--text-primary); font-weight: 600; }
+
+/* ══════════════════════════════════════════════
+   BACK BUTTON
+══════════════════════════════════════════════ */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.back-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+/* ══════════════════════════════════════════════
+   BOOKS / LESSONS GRID
+══════════════════════════════════════════════ */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.item-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.item-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--gold-glow) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.item-card:hover::after { opacity: 1; }
+.item-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--gold-glow), var(--card-shadow);
+}
+
+.item-icon {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.item-title {
+  font-family: 'Amiri', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 0.4rem;
+}
+
+.item-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.item-badge {
+  display: inline-block;
+  background: var(--gold-glow);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════
+   VIDEO PLAYER
+══════════════════════════════════════════════ */
+.player-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--overlay-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  backdrop-filter: blur(6px);
+}
+
+.player-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.player-container {
+  background: var(--player-bg);
+  border: 2px solid var(--player-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 820px;
+  box-shadow: 0 0 60px var(--gold-glow), 0 20px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.player-overlay.open .player-container {
+  transform: scale(1) translateY(0);
+}
+
+/* Decorative corners */
+.player-container::before, .player-container::after {
+  content: '✦';
+  position: absolute;
+  color: var(--player-border);
+  font-size: 1.2rem;
+  opacity: 0.6;
+  z-index: 2;
+}
+.player-container::before { top: 10px; right: 14px; }
+.player-container::after { bottom: 10px; left: 14px; }
+
+.player-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(200,150,44,0.3);
+  position: relative;
+}
+
+[data-theme="dark"] .player-header {
+  border-bottom-color: rgba(0,255,179,0.2);
+}
+
+.player-title {
+  font-family: 'Amiri', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-weight: 700;
+  text-shadow: 0 0 15px var(--gold-glow);
+  flex: 1;
+  padding-left: 1rem;
+  line-height: 1.4;
+}
+
+.player-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.player-close:hover {
+  border-color: #ff4444;
+  color: #ff4444;
+  transform: rotate(90deg);
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  background: #000;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-skeleton {
+  position: absolute;
+  inset: 0;
+  background: var(--skeleton-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.video-skeleton::after {
+  content: '⟳';
+  font-size: 2rem;
+  color: var(--gold);
+  opacity: 0.5;
+  animation: spin 1.5s linear infinite;
+}
+
+.player-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(200,150,44,0.2);
+}
+
+.player-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--gold);
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.85rem;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+.player-action-btn:hover {
+  background: var(--gold);
+  color: var(--bg-primary);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+/* ══════════════════════════════════════════════
+   PDF VIEWER
+══════════════════════════════════════════════ */
+.pdf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--overlay-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  gap: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  backdrop-filter: blur(6px);
+}
+
+.pdf-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.pdf-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  max-width: 820px;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.pdf-title-bar {
+  font-family: 'Amiri', serif;
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-weight: 700;
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+.pdf-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.8rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.82rem;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-decoration: none;
+}
+.pdf-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.pdf-close-btn {
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+.pdf-close-btn:hover {
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+.pdf-frame-container {
+  width: 100%;
+  max-width: 820px;
+  flex: 1;
+  min-height: 0;
+  border: 2px solid var(--border-strong);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 40px var(--gold-glow), 0 20px 60px rgba(0,0,0,0.5);
+  background: #fff;
+  height: calc(100vh - 130px);
+  position: relative;
+}
+
+.pdf-frame-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.pdf-skeleton {
+  position: absolute;
+  inset: 0;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.pdf-skeleton .sk-icon { font-size: 3rem; opacity: 0.3; animation: spin 2s linear infinite; }
+.pdf-skeleton .sk-text { color: #999; font-size: 0.9rem; }
+
+/* ══════════════════════════════════════════════
+   SKELETON LOADING
+══════════════════════════════════════════════ */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+
+.skeleton-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.3rem;
+  overflow: hidden;
+}
+
+.skeleton-line {
+  height: 14px;
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: skeletonSlide 1.5s ease-in-out infinite;
+  margin-bottom: 0.8rem;
+}
+
+.skeleton-line.short { width: 60%; }
+.skeleton-line.medium { width: 80%; }
+.skeleton-circle {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: skeletonSlide 1.5s ease-in-out infinite;
+  margin-bottom: 0.8rem;
+}
+
+@keyframes skeletonSlide {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ══════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+══════════════════════════════════════════════ */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--toast-bg);
+  color: var(--toast-text);
+  border: 1px solid var(--border-strong);
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  animation: toastIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.toast.hide { animation: toastOut 0.3s ease forwards; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(-10px) scale(0.9); }
+}
+
+/* ══════════════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  animation: fadeInUp 0.5s ease;
+}
+.empty-icon { font-size: 3rem; opacity: 0.4; margin-bottom: 1rem; }
+.empty-text { color: var(--text-muted); font-size: 1rem; }
+
+/* ══════════════════════════════════════════════
+   STATS BAR
+══════════════════════════════════════════════ */
+.stats-bar {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px var(--gold-glow);
+  transform: translateY(-2px);
+}
+
+.stat-num {
+  font-family: 'Amiri', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+}
+.stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem; }
+
+/* ══════════════════════════════════════════════
+   DECORATIVE DIVIDER
+══════════════════════════════════════════════ */
+.ornament {
+  text-align: center;
+  color: var(--gold);
+  opacity: 0.5;
+  font-size: 1.2rem;
+  letter-spacing: 0.5em;
+  margin: 1.5rem 0;
+}
+
+/* ══════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 10px var(--gold-glow); }
+  50% { box-shadow: 0 0 30px var(--gold-glow), 0 0 60px var(--gold-glow); }
+}
+
+.animate-in {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-delay-1 { animation-delay: 0.1s; }
+.animate-delay-2 { animation-delay: 0.2s; }
+.animate-delay-3 { animation-delay: 0.3s; }
+
+/* Glow pulse on active elements in dark mode */
+[data-theme="dark"] .category-card.active {
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-family: 'Amiri', serif;
+}
+
+.footer .gold-text { color: var(--gold); }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .navbar { padding: 0 1rem; }
+  .nav-brand { font-size: 1.2rem; }
+  .nav-btn { padding: 0.4rem 0.8rem; font-size: 0.82rem; }
+  .main-content { padding: 1.5rem 1rem; }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  .items-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+  .stats-bar { gap: 0.8rem; }
+  .stat-item { padding: 0.8rem 1.2rem; }
+  .pdf-toolbar { padding: 0.5rem 0.6rem; gap: 0.4rem; }
+  .pdf-btn { padding: 0.3rem 0.5rem; font-size: 0.75rem; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ══ WELCOME SCREEN ══ -->
+<div id="welcome-screen">
+  <div class="welcome-logo">
+    <span class="welcome-icon">📚</span>
+    <div class="welcome-title">طلب العلم</div>
+    <div class="welcome-sub">منصة العلوم الشرعية الإسلامية</div>
+  </div>
+  <div class="welcome-loader">
+    <div class="welcome-loader-bar"></div>
+  </div>
+  <p class="welcome-ayah">﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾</p>
+</div>
+
+<!-- ══ TOAST CONTAINER ══ -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ══ VIDEO PLAYER OVERLAY ══ -->
+<div class="player-overlay" id="player-overlay" onclick="closePlayer(event)">
+  <div class="player-container" onclick="event.stopPropagation()">
+    <div class="player-header">
+      <div class="player-title" id="player-title">عنوان الدرس</div>
+      <button class="player-close" onclick="closePlayer()">✕</button>
+    </div>
+    <div class="video-wrapper">
+      <div class="video-skeleton" id="video-skeleton"></div>
+      <iframe id="player-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="player-footer">
+      <a href="#" id="player-yt-link" target="_blank" class="player-action-btn">▶ فتح في يوتيوب</a>
+      <button class="player-action-btn" onclick="closePlayer()">✕ إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PDF VIEWER OVERLAY ══ -->
+<div class="pdf-overlay" id="pdf-overlay" onclick="closePDF(event)">
+  <div class="pdf-toolbar" onclick="event.stopPropagation()">
+    <button class="pdf-btn pdf-close-btn" onclick="closePDF()">✕ إغلاق</button>
+    <div class="pdf-title-bar" id="pdf-title">اسم الكتاب</div>
+    <a href="#" id="pdf-download-btn" target="_blank" class="pdf-btn">⬇ تحميل</a>
+    <button class="pdf-btn" onclick="toggleFullscreen()">⛶ ملء الشاشة</button>
+  </div>
+  <div class="pdf-frame-container" id="pdf-frame-container" onclick="event.stopPropagation()">
+    <div class="pdf-skeleton" id="pdf-skeleton">
+      <div class="sk-icon">📄</div>
+      <div class="sk-text">جاري تحميل الكتاب...</div>
+    </div>
+    <iframe id="pdf-iframe" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <span>📚</span> طلب العلم
+  </div>
+  <div class="nav-links">
+    <button class="theme-toggle" id="theme-btn" title="تغيير المظهر">☀️</button>
+    <button class="nav-btn active" id="nav-lessons" onclick="switchSection('lessons')">طلب العلم</button>
+    <button class="nav-btn" id="nav-books" onclick="switchSection('books')">الكتب</button>
+  </div>
+</nav>
+
+<!-- ══ MAIN CONTENT ══ -->
+<div class="main-content">
+
+  <!-- LESSONS SECTION -->
+  <div id="section-lessons">
+
+    <div class="section-header animate-in">
+      <h1 class="section-title"><span class="icon">🎓</span> طلب العلم الشرعي</h1>
+    </div>
+
+    <div class="stats-bar animate-in animate-delay-1" id="lessons-stats">
+      <div class="stat-item">
+        <span class="stat-num" id="stat-cats">6</span>
+        <div class="stat-label">تخصصات</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="stat-books-count">—</span>
+        <div class="stat-label">شروح</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="stat-lessons-count">—</span>
+        <div class="stat-label">درس</div>
+      </div>
+    </div>
+
+    <!-- Categories View -->
+    <div id="lessons-categories-view">
+      <div class="search-wrapper animate-in animate-delay-2">
+        <input type="text" class="search-input" id="cat-search" placeholder="ابحث عن تخصص..." oninput="filterCategories(this.value)">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="categories-grid animate-in animate-delay-3" id="lessons-cats-grid"></div>
+    </div>
+
+    <!-- Books View (after selecting category) -->
+    <div id="lessons-books-view" style="display:none;">
+      <div class="breadcrumb" id="lessons-breadcrumb"></div>
+      <div class="search-wrapper animate-in">
+        <input type="text" class="search-input" id="book-search" placeholder="ابحث عن شرح أو كتاب..." oninput="filterBooks(this.value)">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="items-grid" id="books-grid"></div>
+    </div>
+
+    <!-- Lessons View (after selecting book) -->
+    <div id="lessons-list-view" style="display:none;">
+      <div class="breadcrumb" id="lessons-list-breadcrumb"></div>
+      <div class="search-wrapper animate-in">
+        <input type="text" class="search-input" id="lesson-search" placeholder="ابحث عن درس..." oninput="filterLessons(this.value)">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="items-grid" id="lessons-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- BOOKS SECTION -->
+  <div id="section-books" style="display:none;">
+
+    <div class="section-header animate-in">
+      <h1 class="section-title"><span class="icon">📖</span> المكتبة الشرعية</h1>
+    </div>
+
+    <div class="stats-bar animate-in animate-delay-1" id="books-stats">
+      <div class="stat-item">
+        <span class="stat-num">6</span>
+        <div class="stat-label">أقسام</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="stat-books-total">—</span>
+        <div class="stat-label">كتاب</div>
+      </div>
+    </div>
+
+    <!-- Categories View -->
+    <div id="books-categories-view">
+      <div class="search-wrapper animate-in animate-delay-2">
+        <input type="text" class="search-input" id="book-cat-search" placeholder="ابحث عن قسم..." oninput="filterBookCategories(this.value)">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="categories-grid animate-in animate-delay-3" id="books-cats-grid"></div>
+    </div>
+
+    <!-- Books List View -->
+    <div id="books-list-view" style="display:none;">
+      <div class="breadcrumb" id="books-breadcrumb"></div>
+      <div class="search-wrapper animate-in">
+        <input type="text" class="search-input" id="books-list-search" placeholder="ابحث عن كتاب..." oninput="filterBooksList(this.value)">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div class="items-grid" id="books-items-grid"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="ornament">❧ ✦ ❧</div>
+  منصة <span class="gold-text">طلب العلم</span> — ﴿ وَفَوْقَ كُلِّ ذِي عِلْمٍ عَلِيمٌ ﴾
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIG
+   📌 لو أضفت ورقة جديدة — اضغط عليها في الشيت
+      وانسخ الـ gid من الرابط وضعه هنا
+══════════════════════════════════════════════ */
+
+const SHEET_ID = '1t_GxExhJU6s4uxNgQwt4rV-8JuR9ApIwswl9uEuw--U';
+
+const CONFIG = {
+  // gid=0 = الورقة الأولى (طلب العلم)
+  LESSONS_GID: '0',
+  // gid للورقة التانية (الكتب) — غيّره لو اختلف
+  BOOKS_GID: '1114436432',
+};
+
+/* ══════════════════════════════════════════════
+   CATEGORIES DEFINITIONS
+══════════════════════════════════════════════ */
+const LESSON_CATEGORIES = [
+  { id: 'عقيدة', name: 'عقيدة', icon: '🌙', desc: 'أصول الإيمان والتوحيد' },
+  { id: 'فقه',   name: 'فقه',   icon: '⚖️', desc: 'الأحكام الشرعية العملية' },
+  { id: 'حديث',  name: 'حديث',  icon: '📜', desc: 'علم الحديث والسنة النبوية' },
+  { id: 'تفسير', name: 'تفسير', icon: '📖', desc: 'تفسير القرآن الكريم' },
+  { id: 'تجويد', name: 'تجويد', icon: '🎵', desc: 'أحكام تلاوة القرآن' },
+  { id: 'علوم أخرى', name: 'علوم أخرى', icon: '🔬', desc: 'سيرة ونحو وغيرها' },
+];
+
+const BOOK_CATEGORIES = [
+  { id: 'كتب عقيدة', name: 'كتب عقيدة', icon: '🌙', desc: 'مصنفات العقيدة' },
+  { id: 'كتب فقه',   name: 'كتب فقه',   icon: '⚖️', desc: 'مصنفات الفقه' },
+  { id: 'كتب حديث',  name: 'كتب حديث',  icon: '📜', desc: 'كتب السنة' },
+  { id: 'كتب تفسير', name: 'كتب تفسير', icon: '📖', desc: 'كتب التفسير' },
+  { id: 'كتب تجويد', name: 'كتب تجويد', icon: '🎵', desc: 'كتب التجويد' },
+  { id: 'كتب أخرى',  name: 'كتب أخرى',  icon: '🔬', desc: 'علوم متنوعة' },
+];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let state = {
+  currentSection: 'lessons',
+  lessonsData: [],
+  booksData: [],
+  selectedLessonCat: null,
+  selectedBook: null,
+  selectedBookCat: null,
+  dataLoaded: false,
+};
+
+/* ══════════════════════════════════════════════
+   THEME
+══════════════════════════════════════════════ */
+const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+
+function initTheme() {
+  const saved = localStorage.getItem('talab-theme') || 'light';
+  applyTheme(saved);
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-btn').textContent = theme === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('talab-theme', theme);
+}
+
+document.getElementById('theme-btn').addEventListener('click', () => {
+  applyTheme(isDark() ? 'light' : 'dark');
+  showToast(isDark() ? '🌙 الوضع الليلي' : '☀️ الوضع النهاري');
+});
+
+/* ══════════════════════════════════════════════
+   HTML TABLE PARSER (من صفحة الـ pubhtml)
+══════════════════════════════════════════════ */
+function parseCSV(text) {
+  const lines = text.trim().split('\n').filter(l => l.trim());
+  if (lines.length < 2) return [];
+  const headers = splitCSVLine(lines[0]);
+  return lines.slice(1).map(line => {
+    const cols = splitCSVLine(line);
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (cols[i] || '').trim(); });
+    return obj;
+  }).filter(r => Object.values(r).some(v => v));
+}
+
+function splitCSVLine(line) {
+  const cols = [];
+  let cur = '', inQ = false;
+  for (let c of line) {
+    if (c === '"') { inQ = !inQ; continue; }
+    if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+    else cur += c;
+  }
+  cols.push(cur.trim());
+  return cols;
+}
+
+async function fetchSheet(gid) {
+  // الروابط بالترتيب — published CSV ثم proxy
+  const pubUrl  = `https://docs.google.com/spreadsheets/d/e/2PACX-1vR29HjdFwAoKDG4R48E1khCQSEdHHt605gS-VzL_p_qXy0v3T6b9uU5a2avw-D-2AC04kXiuEuJ2bKN/pub?gid=${gid}&single=true&output=csv`;
+  const expUrl  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
+
+  for (const url of [pubUrl, expUrl]) {
+    // مباشر
+    try {
+      const r = await fetch(url);
+      if (r.ok) {
+        const text = await r.text();
+        if (text.includes(',') || text.includes('\t')) {
+          const data = parseCSV(text);
+          if (data.length) { console.log('✅ loaded direct', gid, data.length); return data; }
+        }
+      }
+    } catch(_) {}
+
+    // allorigins proxy
+    try {
+      const r = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+      if (r.ok) {
+        const text = await r.text();
+        const data = parseCSV(text);
+        if (data.length) { console.log('✅ loaded allorigins', gid, data.length); return data; }
+      }
+    } catch(_) {}
+
+    // corsproxy
+    try {
+      const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+      if (r.ok) {
+        const text = await r.text();
+        const data = parseCSV(text);
+        if (data.length) { console.log('✅ loaded corsproxy', gid, data.length); return data; }
+      }
+    } catch(_) {}
+  }
+
+  return [];
+}
+
+/* ══════════════════════════════════════════════
+   DATA LOADING
+══════════════════════════════════════════════ */
+async function loadData() {
+  try {
+    showToast('⏳ جاري تحميل البيانات...');
+    const [lessonsData, booksData] = await Promise.all([
+      fetchSheet(CONFIG.LESSONS_GID),
+      fetchSheet(CONFIG.BOOKS_GID),
+    ]);
+    state.lessonsData = lessonsData;
+    state.booksData = booksData;
+    state.dataLoaded = true;
+    if (lessonsData.length || booksData.length) {
+      showToast('✅ تم تحميل البيانات');
+    } else {
+      showToast('⚠️ لم يتم جلب بيانات — تأكد أن الشيت منشور للعموم');
+    }
+    updateStats();
+    renderCurrentView();
+  } catch(e) {
+    console.error('Data load error:', e);
+    showToast('⚠️ خطأ في تحميل البيانات');
+    renderCurrentView();
+  }
+}
+
+function updateStats() {
+  const books = [...new Set(state.lessonsData.map(r => r['اسم الشرح'] || r['book_title']).filter(Boolean))];
+  document.getElementById('stat-books-count').textContent = books.length || '—';
+  document.getElementById('stat-lessons-count').textContent = state.lessonsData.length || '—';
+  document.getElementById('stat-books-total').textContent = state.booksData.length || '—';
+}
+
+/* ══════════════════════════════════════════════
+   SECTION SWITCHING
+══════════════════════════════════════════════ */
+function switchSection(sec) {
+  state.currentSection = sec;
+  document.getElementById('section-lessons').style.display = sec === 'lessons' ? '' : 'none';
+  document.getElementById('section-books').style.display = sec === 'books' ? '' : 'none';
+  document.getElementById('nav-lessons').classList.toggle('active', sec === 'lessons');
+  document.getElementById('nav-books').classList.toggle('active', sec === 'books');
+  if (sec === 'books' && !document.getElementById('books-cats-grid').children.length) renderBookCats();
+  if (sec === 'lessons' && !document.getElementById('lessons-cats-grid').children.length) renderLessonCats();
+}
+
+/* ══════════════════════════════════════════════
+   LESSONS SECTION
+══════════════════════════════════════════════ */
+function renderLessonCats() {
+  const grid = document.getElementById('lessons-cats-grid');
+  grid.innerHTML = '';
+  LESSON_CATEGORIES.forEach((cat, i) => {
+    const count = state.lessonsData.filter(r => (r['القسم'] || r['category']) === cat.id).length;
+    const el = document.createElement('div');
+    el.className = 'category-card animate-in';
+    el.style.animationDelay = (i * 0.07) + 's';
+    el.innerHTML = `
+      <span class="cat-icon">${cat.icon}</span>
+      <div class="cat-name">${cat.name}</div>
+      <div class="cat-count">${count ? count + ' درس' : 'قريباً'}</div>
+    `;
+    el.onclick = () => showLessonBooks(cat.id, cat.name);
+    grid.appendChild(el);
+  });
+}
+
+function showLessonBooks(catId, catName) {
+  state.selectedLessonCat = { id: catId, name: catName };
+  const rows = state.lessonsData.filter(r => (r['القسم'] || r['category']) === catId);
+  const books = [...new Set(rows.map(r => r['اسم الشرح'] || r['book_title']).filter(Boolean))];
+
+  document.getElementById('lessons-categories-view').style.display = 'none';
+  document.getElementById('lessons-books-view').style.display = '';
+  document.getElementById('lessons-list-view').style.display = 'none';
+
+  // Breadcrumb
+  document.getElementById('lessons-breadcrumb').innerHTML = `
+    <span class="breadcrumb-item" onclick="backToLessonCats()">🏠 الرئيسية</span>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">${catName}</span>
+  `;
+
+  const grid = document.getElementById('books-grid');
+  if (!books.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📭</div><div class="empty-text">لا توجد شروح في هذا القسم بعد</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+  books.forEach((book, i) => {
+    const lessonCount = rows.filter(r => (r['اسم الشرح'] || r['book_title']) === book).length;
+    const el = document.createElement('div');
+    el.className = 'item-card animate-in';
+    el.style.animationDelay = (i * 0.06) + 's';
+    el.innerHTML = `
+      <span class="item-icon">📚</span>
+      <div class="item-title">${book}</div>
+      <div class="item-meta">📝 ${lessonCount} درس</div>
+      <span class="item-badge">اضغط للدروس</span>
+    `;
+    el.onclick = () => showLessons(book);
+    grid.appendChild(el);
+  });
+}
+
+function showLessons(bookTitle) {
+  state.selectedBook = bookTitle;
+  const rows = state.lessonsData.filter(r =>
+    (r['القسم'] || r['category']) === state.selectedLessonCat.id &&
+    (r['اسم الشرح'] || r['book_title']) === bookTitle
+  );
+
+  document.getElementById('lessons-books-view').style.display = 'none';
+  document.getElementById('lessons-list-view').style.display = '';
+
+  document.getElementById('lessons-list-breadcrumb').innerHTML = `
+    <span class="breadcrumb-item" onclick="backToLessonCats()">🏠 الرئيسية</span>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-item" onclick="backToLessonBooks()">${state.selectedLessonCat.name}</span>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">${bookTitle}</span>
+  `;
+
+  const grid = document.getElementById('lessons-grid');
+  grid.innerHTML = '';
+  rows.forEach((row, i) => {
+    const title = row['اسم الدرس'] || row['lesson_title'] || `الدرس ${i+1}`;
+    const url = row['رابط يوتيوب'] || row['youtube_url'] || '';
+    const el = document.createElement('div');
+    el.className = 'item-card animate-in';
+    el.style.animationDelay = (i * 0.06) + 's';
+    el.innerHTML = `
+      <span class="item-icon">▶️</span>
+      <div class="item-title">${title}</div>
+      ${url ? '<span class="item-badge">▶ شاهد الدرس</span>' : '<span class="item-badge" style="opacity:0.5">قريباً</span>'}
+    `;
+    if (url) el.onclick = () => openPlayer(title, url);
+    grid.appendChild(el);
+  });
+}
+
+function backToLessonCats() {
+  state.selectedLessonCat = null;
+  state.selectedBook = null;
+  document.getElementById('lessons-categories-view').style.display = '';
+  document.getElementById('lessons-books-view').style.display = 'none';
+  document.getElementById('lessons-list-view').style.display = 'none';
+}
+
+function backToLessonBooks() {
+  document.getElementById('lessons-books-view').style.display = '';
+  document.getElementById('lessons-list-view').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════
+   BOOKS SECTION
+══════════════════════════════════════════════ */
+function renderBookCats() {
+  const grid = document.getElementById('books-cats-grid');
+  grid.innerHTML = '';
+  BOOK_CATEGORIES.forEach((cat, i) => {
+    const count = state.booksData.filter(r => (r['القسم'] || r['category']) === cat.id).length;
+    const el = document.createElement('div');
+    el.className = 'category-card animate-in';
+    el.style.animationDelay = (i * 0.07) + 's';
+    el.innerHTML = `
+      <span class="cat-icon">${cat.icon}</span>
+      <div class="cat-name">${cat.name}</div>
+      <div class="cat-count">${count ? count + ' كتاب' : 'قريباً'}</div>
+    `;
+    el.onclick = () => showBooksList(cat.id, cat.name);
+    grid.appendChild(el);
+  });
+}
+
+function showBooksList(catId, catName) {
+  state.selectedBookCat = { id: catId, name: catName };
+  const rows = state.booksData.filter(r => (r['القسم'] || r['category']) === catId);
+
+  document.getElementById('books-categories-view').style.display = 'none';
+  document.getElementById('books-list-view').style.display = '';
+
+  document.getElementById('books-breadcrumb').innerHTML = `
+    <span class="breadcrumb-item" onclick="backToBookCats()">🏠 الرئيسية</span>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">${catName}</span>
+  `;
+
+  const grid = document.getElementById('books-items-grid');
+  if (!rows.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📭</div><div class="empty-text">لا توجد كتب في هذا القسم بعد</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = '';
+  rows.forEach((row, i) => {
+    const name = row['اسم الكتاب'] || row['book_name'] || 'كتاب';
+    const url  = row['رابط الكتاب'] || row['book_url'] || '';
+    const el = document.createElement('div');
+    el.className = 'item-card animate-in';
+    el.style.animationDelay = (i * 0.06) + 's';
+    el.innerHTML = `
+      <span class="item-icon">📕</span>
+      <div class="item-title">${name}</div>
+      ${url ? '<span class="item-badge">📖 اقرأ الكتاب</span>' : '<span class="item-badge" style="opacity:0.5">قريباً</span>'}
+    `;
+    if (url) el.onclick = () => openPDF(name, url);
+    grid.appendChild(el);
+  });
+}
+
+function backToBookCats() {
+  state.selectedBookCat = null;
+  document.getElementById('books-categories-view').style.display = '';
+  document.getElementById('books-list-view').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════
+   VIDEO PLAYER
+══════════════════════════════════════════════ */
+function extractYoutubeId(url) {
+  if (!url) return null;
+  const patterns = [
+    /youtu\.be\/([^?&\s]+)/,
+    /youtube\.com\/watch\?v=([^&\s]+)/,
+    /youtube\.com\/embed\/([^?&\s]+)/,
+    /youtube\.com\/shorts\/([^?&\s]+)/,
+  ];
+  for (let p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+function openPlayer(title, url) {
+  const id = extractYoutubeId(url);
+  if (!id) { showToast('⚠️ رابط يوتيوب غير صحيح'); return; }
+  const overlay = document.getElementById('player-overlay');
+  const iframe = document.getElementById('player-iframe');
+  const skeleton = document.getElementById('video-skeleton');
+  const ytLink = document.getElementById('player-yt-link');
+  document.getElementById('player-title').textContent = title;
+  skeleton.style.display = 'flex';
+  iframe.src = '';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  ytLink.href = url;
+  setTimeout(() => {
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    iframe.onload = () => { skeleton.style.display = 'none'; };
+    setTimeout(() => { skeleton.style.display = 'none'; }, 3000);
+  }, 300);
+}
+
+function closePlayer(e) {
+  if (e && e.target !== document.getElementById('player-overlay')) return;
+  const overlay = document.getElementById('player-overlay');
+  const iframe = document.getElementById('player-iframe');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { iframe.src = ''; }, 400);
+}
+
+/* ══════════════════════════════════════════════
+   PDF VIEWER
+══════════════════════════════════════════════ */
+function extractDriveFileId(url) {
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return m ? m[1] : null;
+}
+
+function openPDF(name, url) {
+  const overlay = document.getElementById('pdf-overlay');
+  const iframe = document.getElementById('pdf-iframe');
+  const skeleton = document.getElementById('pdf-skeleton');
+  const dlBtn = document.getElementById('pdf-download-btn');
+  document.getElementById('pdf-title').textContent = name;
+  skeleton.style.display = 'flex';
+  iframe.src = '';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Build preview URL
+  let previewUrl = url;
+  const fileId = extractDriveFileId(url);
+  if (fileId) {
+    previewUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+    dlBtn.href = `https://drive.google.com/uc?export=download&id=${fileId}`;
+  } else {
+    // Try Google Docs viewer for other URLs
+    previewUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+    dlBtn.href = url;
+  }
+
+  setTimeout(() => {
+    iframe.src = previewUrl;
+    iframe.onload = () => { skeleton.style.display = 'none'; };
+    setTimeout(() => { skeleton.style.display = 'none'; }, 4000);
+  }, 300);
+}
+
+function closePDF(e) {
+  if (e && e.target !== document.getElementById('pdf-overlay')) return;
+  const overlay = document.getElementById('pdf-overlay');
+  const iframe = document.getElementById('pdf-iframe');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { iframe.src = ''; }, 400);
+}
+
+function toggleFullscreen() {
+  const el = document.getElementById('pdf-frame-container');
+  if (!document.fullscreenElement) {
+    el.requestFullscreen && el.requestFullscreen();
+  } else {
+    document.exitFullscreen && document.exitFullscreen();
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SEARCH FILTERS
+══════════════════════════════════════════════ */
+function filterCategories(q) {
+  document.querySelectorAll('#lessons-cats-grid .category-card').forEach(el => {
+    el.style.display = el.querySelector('.cat-name').textContent.includes(q) ? '' : 'none';
+  });
+}
+
+function filterBookCategories(q) {
+  document.querySelectorAll('#books-cats-grid .category-card').forEach(el => {
+    el.style.display = el.querySelector('.cat-name').textContent.includes(q) ? '' : 'none';
+  });
+}
+
+function filterBooks(q) {
+  document.querySelectorAll('#books-grid .item-card').forEach(el => {
+    el.style.display = el.querySelector('.item-title').textContent.includes(q) ? '' : 'none';
+  });
+}
+
+function filterLessons(q) {
+  document.querySelectorAll('#lessons-grid .item-card').forEach(el => {
+    el.style.display = el.querySelector('.item-title').textContent.includes(q) ? '' : 'none';
+  });
+}
+
+function filterBooksList(q) {
+  document.querySelectorAll('#books-items-grid .item-card').forEach(el => {
+    el.style.display = el.querySelector('.item-title').textContent.includes(q) ? '' : 'none';
+  });
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function showToast(msg, duration = 2800) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => { toast.classList.add('hide'); setTimeout(() => toast.remove(), 300); }, duration);
+}
+
+/* ══════════════════════════════════════════════
+   RENDER CURRENT VIEW
+══════════════════════════════════════════════ */
+function renderCurrentView() {
+  renderLessonCats();
+  renderBookCats();
+}
+
+/* ══════════════════════════════════════════════
+   KEYBOARD CLOSE
+══════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('player-overlay').classList.contains('open')) {
+      document.getElementById('player-overlay').classList.remove('open');
+      document.getElementById('player-iframe').src = '';
+      document.body.style.overflow = '';
+    }
+    if (document.getElementById('pdf-overlay').classList.contains('open')) {
+      document.getElementById('pdf-overlay').classList.remove('open');
+      document.getElementById('pdf-iframe').src = '';
+      document.body.style.overflow = '';
+    }
+  }
+});
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+initTheme();
+
+// Show welcome screen then load
+setTimeout(() => {
+  document.getElementById('welcome-screen').classList.add('hidden');
+  setTimeout(() => { document.getElementById('welcome-screen').remove(); }, 800);
+  loadData();
+}, 2500);
+</script>
+</body>
+</html>
