@@ -930,23 +930,23 @@ function getDirectUrl(embedUrl) {
     const m = embedUrl.match(/(?:file\/d\/|id=)([a-zA-Z0-9_-]+)/);
     if (m) return 'https://docs.google.com/uc?export=open&id=' + m[1];
   }
-  // archive.org → رابط مباشر قابل للتشغيل في audio tag
+  // archive.org → رابط مباشر
   if (embedUrl.includes('archive.org')) {
-    // 1) رابط download مباشر فيه امتداد صوت → استخدمه كما هو
-    if (embedUrl.includes('/download/') && /\.(mp3|ogg|flac|m4a|wav|opus)/i.test(embedUrl)) return embedUrl;
+    // رابط download مباشر فيه امتداد → استخدمه كما هو
+    if (embedUrl.includes('/download/') && /\.(mp3|m4a|ogg|flac|wav|opus)/i.test(embedUrl)) return embedUrl;
 
-    // 2) رابط download بدون امتداد → استخدمه كما هو (archive بيعمله redirect للملف)
+    // رابط download بدون امتداد
     if (embedUrl.includes('/download/')) return embedUrl;
 
-    // 3) details أو embed فيه اسم ملف صوتي
-    const withFile = embedUrl.match(/\/(?:details|embed)\/([^/?#]+)\/([^/?#]+\.(?:mp3|ogg|flac|m4a|wav|opus))/i);
+    // details أو embed فيه اسم ملف صوتي
+    const withFile = embedUrl.match(/\/(?:details|embed)\/([^/?#]+)\/([^/?#]+\.(?:mp3|m4a|ogg|flac|wav|opus))/i);
     if (withFile) return 'https://archive.org/download/' + withFile[1] + '/' + withFile[2];
 
-    // 4) details/ITEM أو embed/ITEM → حوّله لـ download/ITEM/ITEM.mp3
+    // details/ITEM أو embed/ITEM → نبني رابط m4a (الأشيع في archive)
     const itemMatch = embedUrl.match(/\/(?:details|embed)\/([^/?#\s]+)/);
     if (itemMatch) {
-      const item = itemMatch[1].split('/')[0];
-      return 'https://archive.org/download/' + item + '/' + item + '.mp3';
+      const item = itemMatch[1].split('/')[0].split('?')[0];
+      return 'https://archive.org/download/' + item + '/' + item + '.m4a';
     }
   }
   return embedUrl;
@@ -984,7 +984,18 @@ function toggleAudio(id, directUrl) {
   if (audio.paused) {
     audio.play().catch(e => {
       console.warn('Audio play error:', e);
-      // Drive fallback: open in new tab if browser blocks streaming
+      // لو m4a فشل جرب mp3 والعكس
+      if (directUrl && directUrl.includes('archive.org')) {
+        let fallback = directUrl;
+        if (directUrl.endsWith('.m4a')) fallback = directUrl.replace('.m4a', '.mp3');
+        else if (directUrl.endsWith('.mp3')) fallback = directUrl.replace('.mp3', '.m4a');
+        if (fallback !== directUrl) {
+          audio.src = fallback;
+          audio.load();
+          audio.play().catch(() => {});
+        }
+      }
+      // Drive fallback
       if (directUrl && directUrl.includes('docs.google.com/uc')) {
         const fileId = directUrl.match(/id=([a-zA-Z0-9_-]+)/);
         if (fileId) window.open('https://drive.google.com/file/d/' + fileId[1] + '/view', '_blank');
