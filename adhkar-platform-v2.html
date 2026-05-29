@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>روضة الأذكار</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+:root {
+  --bg-dark:    #1a0a14;
+  --bg-mid:     #2d1023;
+  --bg-card:    #3d1530;
+  --pink-deep:  #8b0045;
+  --pink-main:  #c2185b;
+  --pink-soft:  #e91e8c;
+  --pink-light: #f48fb1;
+  --gold:       #d4af37;
+  --gold-light: #f0d060;
+  --gold-pale:  #f9e99a;
+  --text-main:  #f9e4ee;
+  --text-soft:  #d4a0bb;
+  --text-gold:  #f0d060;
+  --border:     rgba(212,175,55,0.25);
+  --card-glow:  rgba(194,24,91,0.15);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+html, body {
+  width:100%; min-height:100vh;
+  background: var(--bg-dark);
+  font-family: 'Tajawal', sans-serif;
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* ===================== INTRO SCREEN ===================== */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #3d1530 0%, #1a0a14 70%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease;
+}
+#intro.hide { opacity:0; pointer-events:none; }
+
+.intro-heart-wrap {
+  position: relative;
+  width: 180px; height: 180px;
+  display: flex; align-items:center; justify-content:center;
+}
+
+/* SVG Islamic heart (crescent+heart shape via SVG) */
+.intro-heart-svg {
+  width: 140px; height: 140px;
+  animation: heartBeat 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(212,175,55,0.6)) drop-shadow(0 0 60px rgba(194,24,91,0.4));
+}
+
+@keyframes heartBeat {
+  0%,100% { transform: scale(1); }
+  15%      { transform: scale(1.12); }
+  30%      { transform: scale(1); }
+  45%      { transform: scale(1.06); }
+  60%      { transform: scale(1); }
+}
+
+.intro-ring {
+  position:absolute;
+  border-radius:50%;
+  border: 1.5px solid rgba(212,175,55,0.3);
+  animation: ringExpand 2.5s ease-in-out infinite;
+}
+.intro-ring:nth-child(1){ width:160px; height:160px; animation-delay:0s; }
+.intro-ring:nth-child(2){ width:200px; height:200px; animation-delay:0.5s; }
+.intro-ring:nth-child(3){ width:250px; height:250px; animation-delay:1s; }
+
+@keyframes ringExpand {
+  0%   { transform:scale(0.8); opacity:0.6; }
+  100% { transform:scale(1.2); opacity:0; }
+}
+
+.intro-title {
+  font-family:'Amiri', serif;
+  font-size: 2.2rem;
+  color: var(--gold-light);
+  margin-top: 28px;
+  text-shadow: 0 0 20px rgba(212,175,55,0.5);
+  animation: fadeUp 1s ease 0.5s both;
+  letter-spacing: 2px;
+}
+
+.intro-subtitle {
+  font-size: 0.9rem;
+  color: var(--pink-light);
+  margin-top: 10px;
+  animation: fadeUp 1s ease 0.8s both;
+  opacity: 0.8;
+}
+
+.intro-tap {
+  margin-top: 40px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  animation: blink 1.5s ease-in-out infinite, fadeUp 1s ease 1.2s both;
+  cursor: pointer;
+}
+@keyframes blink { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ===================== BG PARTICLES ===================== */
+.bg-layer {
+  position: fixed;
+  inset: 0; pointer-events:none; z-index:0;
+  overflow:hidden;
+}
+.particle {
+  position:absolute;
+  border-radius:50%;
+  animation: floatParticle linear infinite;
+  opacity: 0;
+}
+@keyframes floatParticle {
+  0%   { transform:translateY(110vh) scale(0); opacity:0; }
+  5%   { opacity:1; }
+  95%  { opacity:0.6; }
+  100% { transform:translateY(-10vh) scale(1); opacity:0; }
+}
+
+/* ===================== MAIN APP ===================== */
+#app {
+  position:relative; z-index:1;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 0 60px;
+  animation: fadeUp 0.6s ease;
+}
+
+/* Header */
+.app-header {
+  text-align:center;
+  padding: 30px 20px 20px;
+  background: linear-gradient(180deg, rgba(61,21,48,0.9) 0%, transparent 100%);
+  position: sticky; top:0; z-index:100;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header-ornament {
+  font-size: 1.4rem;
+  letter-spacing: 6px;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.app-header h1 {
+  font-family:'Amiri', serif;
+  font-size: 1.9rem;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--pink-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 8px rgba(212,175,55,0.3));
+}
+
+/* ===================== MAIN TABS ===================== */
+.main-tabs {
+  display: flex;
+  margin: 20px 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  padding: 5px;
+  gap: 5px;
+}
+
+.main-tab-btn {
+  flex: 1;
+  padding: 14px 10px;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--text-soft);
+  font-family:'Tajawal', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  gap: 6px;
+}
+
+.main-tab-btn.active {
+  background: linear-gradient(135deg, var(--pink-main), var(--pink-deep));
+  color: white;
+  box-shadow: 0 6px 25px rgba(194,24,91,0.45),
+              inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.main-tab-btn .tab-icon { font-size: 1.3rem; }
+
+/* ===================== PANELS ===================== */
+.panel { display:none; animation: fadeUp 0.4s ease; }
+.panel.active { display:block; }
+
+/* Sub-tabs for adhkar */
+.sub-tabs {
+  display:flex;
+  gap: 8px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sub-tabs::-webkit-scrollbar { display:none; }
+
+.sub-tab-btn {
+  flex-shrink:0;
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-soft);
+  font-family:'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.sub-tab-btn.active {
+  background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(194,24,91,0.2));
+  border-color: var(--gold);
+  color: var(--gold-light);
+  box-shadow: 0 4px 15px rgba(212,175,55,0.15);
+}
+
+/* Time label */
+.time-label {
+  margin: 0 16px 14px;
+  padding: 10px 16px;
+  background: rgba(212,175,55,0.07);
+  border: 1px solid rgba(212,175,55,0.2);
+  border-radius: 14px;
+  font-size: 0.82rem;
+  color: var(--text-gold);
+  text-align:center;
+}
+
+/* Ornament divider */
+.ornament {
+  text-align:center;
+  color: var(--gold);
+  opacity: 0.45;
+  font-size: 1rem;
+  letter-spacing: 10px;
+  margin: 4px 0 16px;
+}
+
+/* Cards container */
+.cards-wrap { padding: 0 16px; }
+
+/* ===================== DHIKR CARD ===================== */
+.dhikr-card {
+  background: linear-gradient(135deg, rgba(61,21,48,0.9), rgba(45,16,35,0.95));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 0 rgba(212,175,55,0);
+}
+
+.dhikr-card::before {
+  content:'';
+  position:absolute;
+  top:0; right:0;
+  width:4px; height:100%;
+  background: linear-gradient(180deg, var(--gold), var(--pink-main));
+  border-radius: 0 20px 20px 0;
+}
+
+.dhikr-card::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.dhikr-card:active, .dhikr-card.tap {
+  transform: scale(0.97);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4), 0 0 0 2px rgba(212,175,55,0.3);
+}
+
+.dhikr-card.done {
+  background: linear-gradient(135deg, rgba(139,0,69,0.35), rgba(45,16,35,0.9));
+  border-color: rgba(212,175,55,0.5);
+}
+
+.dhikr-card-top {
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dhikr-num {
+  width: 28px; height: 28px;
+  border-radius:50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--bg-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  box-shadow: 0 3px 10px rgba(212,175,55,0.35);
+}
+
+.dhikr-label {
+  font-size: 0.78rem;
+  color: var(--gold-pale);
+  font-weight: 600;
+  flex:1;
+  opacity: 0.85;
+}
+
+.dhikr-badge {
+  font-size: 0.75rem;
+  padding: 3px 12px;
+  border-radius:20px;
+  background: rgba(212,175,55,0.12);
+  border: 1px solid rgba(212,175,55,0.3);
+  color: var(--gold-light);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dhikr-text {
+  font-family:'Amiri', serif;
+  font-size: 1.08rem;
+  line-height: 2.1;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.dhikr-footer {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.counter-pill {
+  background: rgba(194,24,91,0.2);
+  border: 1.5px solid rgba(194,24,91,0.4);
+  border-radius: 30px;
+  padding: 5px 18px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--pink-light);
+  min-width: 90px;
+  text-align:center;
+  transition: all 0.15s;
+}
+
+.counter-pill.bump {
+  background: rgba(212,175,55,0.2);
+  border-color: var(--gold);
+  color: var(--gold-light);
+  transform: scale(1.1);
+}
+
+.tap-hint {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  opacity: 0.6;
+}
+
+.done-badge {
+  display:none;
+  font-size:0.82rem;
+  color: var(--gold-light);
+  font-weight:700;
+  animation: popIn 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+.dhikr-card.done .done-badge { display:inline; }
+.dhikr-card.done .tap-hint   { display:none; }
+
+@keyframes popIn {
+  from { transform:scale(0); opacity:0; }
+  to   { transform:scale(1); opacity:1; }
+}
+
+/* Reset btn */
+.reset-section-btn {
+  display:block;
+  margin: 10px auto 5px;
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.25);
+  color: var(--text-soft);
+  padding: 9px 28px;
+  border-radius:30px;
+  font-family:'Tajawal',sans-serif;
+  font-size: 0.85rem;
+  cursor:pointer;
+  transition: all 0.3s;
+}
+.reset-section-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+  background: rgba(212,175,55,0.07);
+}
+
+/* ===================== TASBIH PANEL ===================== */
+.tasbih-wrap {
+  padding: 10px 16px 30px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.tasbih-dhikr-selector {
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  justify-content:center;
+  margin-bottom: 20px;
+  width:100%;
+}
+
+.dhikr-choice-btn {
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-soft);
+  font-family:'Tajawal',sans-serif;
+  font-size: 0.88rem;
+  font-weight:600;
+  cursor:pointer;
+  transition: all 0.3s;
+}
+.dhikr-choice-btn.sel {
+  background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(194,24,91,0.2));
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+/* Custom dhikr input area */
+.add-dhikr-box {
+  width:100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.add-dhikr-box h3 {
+  font-size: 0.9rem;
+  color: var(--gold-light);
+  margin-bottom: 10px;
+  display:flex; align-items:center; gap:6px;
+}
+
+.add-dhikr-inputs {
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.add-dhikr-inputs input {
+  flex:1;
+  min-width: 130px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-family:'Tajawal',sans-serif;
+  font-size: 0.9rem;
+  outline:none;
+  transition: border-color 0.3s;
+}
+.add-dhikr-inputs input:focus { border-color: var(--gold); }
+.add-dhikr-inputs input::placeholder { color: var(--text-soft); opacity:0.5; }
+
+.add-dhikr-inputs button {
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--gold), var(--pink-main));
+  color: white;
+  font-family:'Tajawal',sans-serif;
+  font-size: 0.9rem;
+  font-weight:700;
+  cursor:pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(212,175,55,0.25);
+  white-space:nowrap;
+}
+.add-dhikr-inputs button:hover { transform:translateY(-2px); box-shadow: 0 8px 25px rgba(212,175,55,0.35); }
+
+/* Tasbih display */
+.tasbih-display-box {
+  background: linear-gradient(135deg, rgba(61,21,48,0.95), rgba(45,16,35,0.95));
+  border: 1px solid rgba(212,175,55,0.35);
+  border-radius: 24px;
+  padding: 24px 40px;
+  text-align:center;
+  width:100%;
+  max-width: 320px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(212,175,55,0.1);
+  position:relative;
+  overflow:hidden;
+}
+
+.tasbih-display-box::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+.tasbih-current-text {
+  font-family:'Amiri',serif;
+  font-size: 1.1rem;
+  color: var(--gold-pale);
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+.tasbih-big-count {
+  font-size: 5.5rem;
+  font-weight: 800;
+  line-height:1;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--pink-light));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter: drop-shadow(0 4px 12px rgba(212,175,55,0.3));
+  transition: transform 0.1s;
+}
+
+.tasbih-big-count.bump { transform: scale(1.1); }
+
+.tasbih-goal {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  margin-top: 6px;
+}
+
+/* Progress */
+.progress-wrap {
+  width:100%;
+  max-width:320px;
+  margin-bottom: 24px;
+}
+.progress-labels {
+  display:flex;
+  justify-content:space-between;
+  font-size:0.78rem;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+  font-weight:600;
+}
+.progress-bar-track {
+  height: 7px;
+  background: rgba(255,255,255,0.08);
+  border-radius:10px;
+  overflow:hidden;
+}
+.progress-bar-fill {
+  height:100%;
+  border-radius:10px;
+  background: linear-gradient(90deg, var(--pink-main), var(--gold));
+  transition: width 0.35s ease;
+  box-shadow: 0 0 12px rgba(212,175,55,0.3);
+}
+
+/* Tasbih button */
+.tasbih-btn-wrap {
+  position:relative;
+  width:170px; height:170px;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom: 20px;
+}
+
+.tasbih-pulse-ring {
+  position:absolute;
+  border-radius:50%;
+  border: 2px solid rgba(212,175,55,0.2);
+  animation: pRing 2.2s ease-in-out infinite;
+}
+.tasbih-pulse-ring:nth-child(1){ width:170px; height:170px; animation-delay:0s; }
+.tasbih-pulse-ring:nth-child(2){ width:200px; height:200px; animation-delay:0.6s; }
+@keyframes pRing {
+  0%   { transform:scale(0.9); opacity:0.5; }
+  100% { transform:scale(1.2); opacity:0; }
+}
+
+.tasbih-main-btn {
+  width:145px; height:145px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  position:relative;
+  z-index:2;
+  background: radial-gradient(circle at 35% 35%, #e91e8c, #8b0045 50%, #5a0030);
+  box-shadow:
+    0 12px 40px rgba(139,0,69,0.5),
+    0 0 0 3px rgba(212,175,55,0.3),
+    inset 0 2px 4px rgba(255,255,255,0.15),
+    inset 0 -4px 8px rgba(0,0,0,0.2);
+  transition: all 0.12s ease;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 3rem;
+}
+
+.tasbih-main-btn::before {
+  content:'';
+  position:absolute;
+  top:14%; left:20%;
+  width:32%; height:18%;
+  background:rgba(255,255,255,0.2);
+  border-radius:50%;
+  transform:rotate(-35deg);
+}
+
+.tasbih-main-btn:active, .tasbih-main-btn.pressed {
+  transform: scale(0.91);
+  box-shadow:
+    0 4px 15px rgba(139,0,69,0.5),
+    0 0 0 3px rgba(212,175,55,0.5),
+    inset 0 1px 2px rgba(255,255,255,0.1),
+    inset 0 -2px 4px rgba(0,0,0,0.3);
+}
+
+/* Tasbih controls */
+.tasbih-ctrl-row {
+  display:flex; gap:10px;
+}
+
+.ctrl-btn {
+  padding: 10px 24px;
+  border-radius:30px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-soft);
+  font-family:'Tajawal',sans-serif;
+  font-size: 0.9rem;
+  font-weight:600;
+  cursor:pointer;
+  transition: all 0.3s;
+}
+.ctrl-btn:hover {
+  border-color: var(--pink-main);
+  color: var(--pink-light);
+  background: rgba(194,24,91,0.1);
+}
+
+/* ===================== FLY HEART ===================== */
+.fly-heart {
+  position:fixed;
+  pointer-events:none;
+  font-size: 1.8rem;
+  z-index: 9998;
+  animation: flyUp 0.9s ease forwards;
+}
+@keyframes flyUp {
+  0%   { transform:translateY(0) scale(1) rotate(0deg); opacity:1; }
+  100% { transform:translateY(-130px) scale(0.2) rotate(20deg); opacity:0; }
+}
+
+/* Toast */
+.toast {
+  position:fixed;
+  bottom:80px;
+  left:50%;
+  transform:translateX(-50%) translateY(30px);
+  background: linear-gradient(135deg, var(--gold), var(--pink-main));
+  color:white;
+  padding: 10px 28px;
+  border-radius:30px;
+  font-size:0.9rem;
+  font-weight:700;
+  opacity:0;
+  transition: all 0.4s;
+  z-index:9000;
+  white-space:nowrap;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+</style>
+</head>
+<body>
+
+<!-- =================== INTRO =================== -->
+<div id="intro" onclick="skipIntro()">
+  <div class="intro-heart-wrap">
+    <div class="intro-ring"></div>
+    <div class="intro-ring"></div>
+    <div class="intro-ring"></div>
+    <!-- Islamic heart SVG: crescent + heart combined -->
+    <svg class="intro-heart-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hg" cx="40%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#f0d060"/>
+          <stop offset="50%" stop-color="#d4af37"/>
+          <stop offset="100%" stop-color="#8b0045"/>
+        </radialGradient>
+        <radialGradient id="sg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f48fb1" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#c2185b" stop-opacity="0.3"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Outer glow circle -->
+      <circle cx="50" cy="50" r="46" fill="url(#sg)" opacity="0.25"/>
+      <!-- Heart shape -->
+      <path d="M50 80 C50 80 15 60 15 38 C15 26 24 18 34 18 C40 18 46 22 50 27 C54 22 60 18 66 18 C76 18 85 26 85 38 C85 60 50 80 50 80Z"
+            fill="url(#hg)" filter="url(#glow)" opacity="0.95"/>
+      <!-- Crescent moon inside heart -->
+      <path d="M42 38 C42 30 48 24 56 24 C50 26 46 31 46 38 C46 45 50 50 56 52 C48 52 42 46 42 38Z"
+            fill="#1a0a14" opacity="0.6"/>
+      <!-- Star -->
+      <polygon points="62,28 63.5,32.5 68,32.5 64.5,35 66,39.5 62,37 58,39.5 59.5,35 56,32.5 60.5,32.5"
+               fill="#f9e99a" opacity="0.9"/>
+      <!-- Gold border on heart -->
+      <path d="M50 80 C50 80 15 60 15 38 C15 26 24 18 34 18 C40 18 46 22 50 27 C54 22 60 18 66 18 C76 18 85 26 85 38 C85 60 50 80 50 80Z"
+            stroke="#d4af37" stroke-width="1.5" fill="none" opacity="0.7"/>
+    </svg>
+  </div>
+  <div class="intro-title">روضة الأذكار</div>
+  <div class="intro-subtitle">💗 اذكري الله كثيراً والذاكرات 💗</div>
+  <div class="intro-tap">✨ اضغطي للمتابعة ✨</div>
+</div>
+
+<!-- =================== BG =================== -->
+<div class="bg-layer" id="bgLayer"></div>
+
+<!-- =================== APP =================== -->
+<div id="app" style="display:none">
+
+  <div class="app-header">
+    <div class="app-header-ornament">❧ ✦ ❧</div>
+    <h1>روضة الأذكار 💗</h1>
+  </div>
+
+  <!-- MAIN TABS -->
+  <div class="main-tabs">
+    <button class="main-tab-btn active" id="mainTabAdhkar" onclick="switchMain('adhkar')">
+      <span class="tab-icon">📖</span> الأذكار
+    </button>
+    <button class="main-tab-btn" id="mainTabTasbih" onclick="switchMain('tasbih')">
+      <span class="tab-icon">📿</span> السبحة
+    </button>
+  </div>
+
+  <!-- ======= ADHKAR PANEL ======= -->
+  <div class="panel active" id="panelAdhkar">
+    <div class="sub-tabs">
+      <button class="sub-tab-btn active" onclick="switchSub(this,'sabah')">🌅 أذكار الصباح</button>
+      <button class="sub-tab-btn" onclick="switchSub(this,'masaa')">🌙 أذكار المساء</button>
+      <button class="sub-tab-btn" onclick="switchSub(this,'nawm')">⭐ أذكار النوم</button>
+    </div>
+
+    <!-- Sabah -->
+    <div class="panel active" id="subSabah">
+      <div class="time-label">🌅 تُقال من بعد الفجر إلى طلوع الشمس</div>
+      <div class="ornament">✦ ❀ ✦ ❀ ✦</div>
+      <div class="cards-wrap" id="cardsSabah"></div>
+      <button class="reset-section-btn" onclick="resetSection('sabah')">🔄 إعادة تعيين</button>
+    </div>
+
+    <!-- Masaa -->
+    <div class="panel" id="subMasaa">
+      <div class="time-label">🌙 تُقال من بعد العصر إلى قبل النوم</div>
+      <div class="ornament">✦ ❀ ✦ ❀ ✦</div>
+      <div class="cards-wrap" id="cardsMasaa"></div>
+      <button class="reset-section-btn" onclick="resetSection('masaa')">🔄 إعادة تعيين</button>
+    </div>
+
+    <!-- Nawm -->
+    <div class="panel" id="subNawm">
+      <div class="time-label">⭐ تُقال عند النوم</div>
+      <div class="ornament">✦ ❀ ✦ ❀ ✦</div>
+      <div class="cards-wrap" id="cardsNawm"></div>
+      <button class="reset-section-btn" onclick="resetSection('nawm')">🔄 إعادة تعيين</button>
+    </div>
+  </div>
+
+  <!-- ======= TASBIH PANEL ======= -->
+  <div class="panel" id="panelTasbih">
+    <div class="tasbih-wrap">
+
+      <div style="text-align:center; margin-bottom:16px;">
+        <div style="font-family:'Amiri',serif; font-size:1.5rem; color:var(--gold-light); margin-bottom:4px;">السبحة الإلكترونية</div>
+        <div style="font-size:0.82rem; color:var(--text-soft);">اضغطي على السبحة لكل تسبيحة 💗</div>
+      </div>
+
+      <!-- Preset dhikr -->
+      <div class="tasbih-dhikr-selector" id="dhikrSelector">
+        <button class="dhikr-choice-btn sel" onclick="selectDhikr(this,'سبحان الله',33)">سبحان الله</button>
+        <button class="dhikr-choice-btn" onclick="selectDhikr(this,'الحمد لله',33)">الحمد لله</button>
+        <button class="dhikr-choice-btn" onclick="selectDhikr(this,'الله أكبر',34)">الله أكبر</button>
+        <button class="dhikr-choice-btn" onclick="selectDhikr(this,'لا إله إلا الله',100)">لا إله إلا الله</button>
+        <button class="dhikr-choice-btn" onclick="selectDhikr(this,'سبحان الله وبحمده',100)">سبحان الله وبحمده</button>
+        <button class="dhikr-choice-btn" onclick="selectDhikr(this,'أستغفر الله',100)">أستغفر الله</button>
+        <button class="dhikr-choice-btn" onclick="selectDhikr(this,'اللهم صلِّ على محمد ﷺ',10)">الصلاة على النبي ﷺ</button>
+      </div>
+
+      <!-- Add custom dhikr -->
+      <div class="add-dhikr-box">
+        <h3>✦ إضافة ذكر جديد</h3>
+        <div class="add-dhikr-inputs">
+          <input type="text" id="newDhikrText" placeholder="اكتبي الذكر هنا..." maxlength="120">
+          <input type="number" id="newDhikrCount" placeholder="العدد" min="1" max="9999" style="max-width:90px;">
+          <button onclick="addCustomDhikr()">➕ إضافة</button>
+        </div>
+      </div>
+
+      <!-- Display -->
+      <div class="tasbih-display-box">
+        <div class="tasbih-current-text" id="tasbihText">سبحان الله</div>
+        <div class="tasbih-big-count" id="tasbihCount">0</div>
+        <div class="tasbih-goal" id="tasbihGoal">الهدف: 33</div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-labels">
+          <span id="progLabel">0 / 33</span>
+          <span id="progPct">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="tasbih-btn-wrap">
+        <div class="tasbih-pulse-ring"></div>
+        <div class="tasbih-pulse-ring"></div>
+        <button class="tasbih-main-btn" id="tasbihBtn" onclick="pressTasbih(event)">💗</button>
+      </div>
+
+      <div class="tasbih-ctrl-row">
+        <button class="ctrl-btn" onclick="resetTasbih()">🔄 تصفير</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ========================================================
+// DATA
+// ========================================================
+const sabahData = [
+  {text:"﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾", count:1, label:"آية الكرسي"},
+  {text:"﴿قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ﴾", count:3, label:"سورة الإخلاص"},
+  {text:"﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * مِنْ شَرِّ مَا خَلَقَ * وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ * وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ * وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾", count:3, label:"سورة الفلق"},
+  {text:"﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ * مَلِكِ النَّاسِ * إِلَٰهِ النَّاسِ * مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ * الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ * مِنَ الْجِنَّةِ وَالنَّاسِ﴾", count:3, label:"سورة الناس"},
+  {text:"أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، ربِّ أسألك خير ما في هذا اليوم وخير ما بعده، وأعوذ بك من شر ما في هذا اليوم وشر ما بعده، ربِّ أعوذ بك من الكسل وسوء الكبر، ربِّ أعوذ بك من عذاب في النار وعذاب في القبر.", count:1},
+  {text:"اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.", count:1},
+  {text:"اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، أبوء لك بنعمتك عليَّ، وأبوء بذنبي فاغفر لي؛ فإنه لا يغفر الذنوب إلا أنت.", count:1},
+  {text:"اللهم إني أصبحت أُشهدك وأشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله لا إله إلا أنت وحدك لا شريك لك وأن محمدًا عبدك ورسولك.", count:4},
+  {text:"اللهم ما أصبح بي من نعمة أو بأحدٍ من خلقك فمنك وحدك لا شريك لك، فلك الحمد ولك الشكر.", count:1},
+  {text:"حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم.", count:7},
+  {text:"بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم.", count:3},
+  {text:"رضيت بالله ربًّا، وبالإسلام دينًا، وبمحمد ﷺ نبيًّا.", count:3},
+  {text:"يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين.", count:1},
+  {text:"أصبحنا على فطرة الإسلام، وعلى كلمة الإخلاص، وعلى دين نبينا محمد ﷺ، وعلى ملة أبينا إبراهيم حنيفًا مسلمًا وما كان من المشركين.", count:1},
+  {text:"سبحان الله وبحمده، عدد خلقه، ورضا نفسه، وزنة عرشه، ومداد كلماته.", count:3},
+  {text:"اللهم إني أسألك علمًا نافعًا، ورزقًا طيبًا، وعملًا متقبلًا.", count:1},
+  {text:"أعوذ بكلمات الله التامات من شر ما خلق.", count:3},
+  {text:"اللهم عافني في بدني، اللهم عافني في سمعي، اللهم عافني في بصري، لا إله إلا أنت، اللهم إني أعوذ بك من الكفر والفقر، وأعوذ بك من عذاب القبر، لا إله إلا أنت.", count:3},
+  {text:"اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل، والبخل والجبن، وضلع الدين وغلبة الرجال.", count:1},
+  {text:"اللهم إني أسألك العفو والعافية في الدنيا والآخرة، اللهم إني أسألك العفو والعافية في ديني ودنياي وأهلي ومالي، اللهم استر عوراتي وآمن روعاتي، اللهم احفظني من بين يدي ومن خلفي وعن يميني وعن شمالي ومن فوقي، وأعوذ بعظمتك أن أُغتال من تحتي.", count:1},
+  {text:"اللهم فاطر السماوات والأرض، عالم الغيب والشهادة، رب كل شيء ومليكه، أشهد أن لا إله إلا أنت، أعوذ بك من شر نفسي ومن شر الشيطان وشِركه، وأن أقترف على نفسي سوءًا أو أجره إلى مسلم.", count:1},
+  {text:"اللهم إني أصبحت منك في نعمة وعافية وستر، فأتمم عليَّ نعمتك وعافيتك وسترك في الدنيا والآخرة.", count:3},
+  {text:"اللهم إني أسألك خير هذا اليوم: فتحه، ونصره، ونوره، وبركته، وهداه، وأعوذ بك من شر ما فيه وشر ما بعده.", count:1},
+  {text:"اللهم صلِّ وسلم على نبينا محمد ﷺ.", count:10, label:"الصلاة على النبي"},
+  {text:"سبحان الله وبحمده.", count:100},
+  {text:"لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.", count:100},
+  {text:"أستغفر الله وأتوب إليه.", count:100},
+];
+
+const masaaData = [
+  {text:"﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾", count:1, label:"آية الكرسي"},
+  {text:"﴿قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ﴾", count:3, label:"سورة الإخلاص"},
+  {text:"﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * مِنْ شَرِّ مَا خَلَقَ * وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ * وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ * وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾", count:3, label:"سورة الفلق"},
+  {text:"﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ * مَلِكِ النَّاسِ * إِلَٰهِ النَّاسِ * مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ * الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ * مِنَ الْجِنَّةِ وَالنَّاسِ﴾", count:3, label:"سورة الناس"},
+  {text:"أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، ربِّ أسألك خير ما في هذه الليلة وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة وشر ما بعدها، ربِّ أعوذ بك من الكسل وسوء الكبر، ربِّ أعوذ بك من عذاب في النار وعذاب في القبر.", count:1},
+  {text:"اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.", count:1},
+  {text:"اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، أبوء لك بنعمتك عليَّ، وأبوء بذنبي فاغفر لي؛ فإنه لا يغفر الذنوب إلا أنت.", count:1},
+  {text:"اللهم إني أمسيت أُشهدك وأشهد حملة عرشك وملائكتك وجميع خلقك أنك أنت الله لا إله إلا أنت وحدك لا شريك لك وأن محمدًا عبدك ورسولك.", count:4},
+  {text:"اللهم ما أمسى بي من نعمة أو بأحدٍ من خلقك فمنك وحدك لا شريك لك، فلك الحمد ولك الشكر.", count:1},
+  {text:"حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم.", count:7},
+  {text:"بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم.", count:3},
+  {text:"رضيت بالله ربًّا، وبالإسلام دينًا، وبمحمد ﷺ نبيًّا.", count:3},
+  {text:"يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين.", count:1},
+  {text:"أمسينا على فطرة الإسلام، وعلى كلمة الإخلاص، وعلى دين نبينا محمد ﷺ، وعلى ملة أبينا إبراهيم حنيفًا مسلمًا وما كان من المشركين.", count:1},
+  {text:"سبحان الله وبحمده، عدد خلقه، ورضا نفسه، وزنة عرشه، ومداد كلماته.", count:3},
+  {text:"أعوذ بكلمات الله التامات من شر ما خلق.", count:3},
+  {text:"اللهم صلِّ وسلم على نبينا محمد ﷺ.", count:10, label:"الصلاة على النبي"},
+  {text:"اللهم عافني في بدني، اللهم عافني في سمعي، اللهم عافني في بصري، لا إله إلا أنت، اللهم إني أعوذ بك من الكفر والفقر، وأعوذ بك من عذاب القبر، لا إله إلا أنت.", count:3},
+  {text:"اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل، والبخل والجبن، وضلع الدين وغلبة الرجال.", count:1},
+  {text:"اللهم إني أسألك العفو والعافية في الدنيا والآخرة، اللهم إني أسألك العفو والعافية في ديني ودنياي وأهلي ومالي، اللهم استر عوراتي وآمن روعاتي، اللهم احفظني من بين يدي ومن خلفي وعن يميني وعن شمالي ومن فوقي، وأعوذ بعظمتك أن أُغتال من تحتي.", count:1},
+  {text:"اللهم فاطر السماوات والأرض، عالم الغيب والشهادة، رب كل شيء ومليكه، أشهد أن لا إله إلا أنت، أعوذ بك من شر نفسي ومن شر الشيطان وشِركه، وأن أقترف على نفسي سوءًا أو أجره إلى مسلم.", count:1},
+  {text:"اللهم إني أمسيت منك في نعمة وعافية وستر، فأتمم عليَّ نعمتك وعافيتك وسترك في الدنيا والآخرة.", count:3},
+  {text:"اللهم إني أسألك خير هذه الليلة: فتحها، ونصرها، ونورها، وبركتها، وهداها، وأعوذ بك من شر ما فيها وشر ما بعدها.", count:1},
+  {text:"اللهم إني أعوذ بك من أن أشرك بك وأنا أعلم، وأستغفرك لما لا أعلم.", count:3},
+  {text:"سبحان الله وبحمده.", count:100},
+  {text:"لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.", count:100},
+  {text:"أستغفر الله وأتوب إليه.", count:100},
+];
+
+const nawmData = [
+  {text:"﴿اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ﴾", count:1, label:"آية الكرسي"},
+  {text:"﴿قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ﴾", count:3, label:"سورة الإخلاص"},
+  {text:"﴿قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * مِنْ شَرِّ مَا خَلَقَ * وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ * وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ * وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ﴾", count:3, label:"سورة الفلق"},
+  {text:"﴿قُلْ أَعُوذُ بِرَبِّ النَّاسِ * مَلِكِ النَّاسِ * إِلَٰهِ النَّاسِ * مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ * الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ * مِنَ الْجِنَّةِ وَالنَّاسِ﴾", count:3, label:"سورة الناس"},
+  {text:"باسمك ربي وضعت جنبي، وبك أرفعه، إن أمسكت نفسي فارحمها، وإن أرسلتها فاحفظها بما تحفظ به عبادك الصالحين.", count:1},
+  {text:"اللهم باسمك أموت وأحيا.", count:1},
+  {text:"اللهم قني عذابك يوم تبعث عبادك.", count:3},
+  {text:"اللهم رب السماوات السبع ورب الأرض ورب العرش العظيم، ربنا ورب كل شيء، فالق الحب والنوى، ومنزل التوراة والإنجيل والفرقان، أعوذ بك من شر كل شيء أنت آخذ بناصيته، اللهم أنت الأول فليس قبلك شيء، وأنت الآخر فليس بعدك شيء، وأنت الظاهر فليس فوقك شيء، وأنت الباطن فليس دونك شيء، اقض عنا الدين وأغننا من الفقر.", count:1},
+  {text:"الحمد لله الذي أطعمنا وسقانا، وكفانا وآوانا، فكم ممن لا كافي له ولا مؤوي.", count:1},
+  {text:"اللهم عالم الغيب والشهادة، فاطر السماوات والأرض، رب كل شيء ومليكه، أشهد أن لا إله إلا أنت، أعوذ بك من شر نفسي، ومن شر الشيطان وشِركه، وأن أقترف على نفسي سوءًا أو أجره إلى مسلم.", count:1},
+  {text:"اللهم أسلمت نفسي إليك، وفوضت أمري إليك، ووجهت وجهي إليك، وألجأت ظهري إليك، رغبةً ورهبةً إليك، لا ملجأ ولا منجا منك إلا إليك، آمنت بكتابك الذي أنزلت، وبنبيك الذي أرسلت.", count:1},
+  {text:"سبحان الله.", count:33},
+  {text:"الحمد لله.", count:33},
+  {text:"الله أكبر.", count:34},
+  {text:"لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.", count:10},
+  {text:"اللهم صلِّ وسلم على نبينا محمد ﷺ.", count:10, label:"الصلاة على النبي"},
+  {text:"أستغفر الله العظيم وأتوب إليه.", count:0, label:"ما تيسر"},
+  {text:"باسمك اللهم أموت وأحيا.", count:1},
+  {text:"سبحان الله وبحمده.", count:100},
+];
+
+// ========================================================
+// STATE
+// ========================================================
+const ST = {
+  sabah: sabahData.map(()=>({cur:0,done:false})),
+  masaa: masaaData.map(()=>({cur:0,done:false})),
+  nawm:  nawmData.map(()=>({cur:0,done:false})),
+};
+
+let tCount=0, tTarget=33, tText='سبحان الله';
+
+// ========================================================
+// INTRO
+// ========================================================
+let introTimer = setTimeout(()=>launchApp(), 4000);
+
+function skipIntro(){
+  clearTimeout(introTimer);
+  launchApp();
+}
+
+function launchApp(){
+  const intro = document.getElementById('intro');
+  intro.classList.add('hide');
+  setTimeout(()=>{
+    intro.style.display='none';
+    document.getElementById('app').style.display='block';
+  }, 800);
+}
+
+// ========================================================
+// BG PARTICLES
+// ========================================================
+(function(){
+  const layer = document.getElementById('bgLayer');
+  const emojis=['💗','💕','🌸','✦','❀','💖','🌷','✿'];
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.cssText=`
+      left:${Math.random()*100}%;
+      font-size:${0.7+Math.random()*1.2}rem;
+      animation-duration:${10+Math.random()*15}s;
+      animation-delay:${Math.random()*20}s;
+      color: ${Math.random()>0.5?'rgba(212,175,55,0.5)':'rgba(194,24,91,0.4)'};
+    `;
+    p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    layer.appendChild(p);
+  }
+})();
+
+// ========================================================
+// MAIN TABS
+// ========================================================
+function switchMain(which){
+  ['adhkar','tasbih'].forEach(t=>{
+    document.getElementById('panel'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t===which);
+    document.getElementById('mainTab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t===which);
+  });
+}
+
+// ========================================================
+// SUB TABS
+// ========================================================
+let activeSub = 'sabah';
+function switchSub(btn, which){
+  document.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['Sabah','Masaa','Nawm'].forEach(s=>{
+    document.getElementById('sub'+s).classList.toggle('active', s.toLowerCase()===which);
+  });
+  activeSub=which;
+}
+
+// ========================================================
+// RENDER CARDS
+// ========================================================
+function cLabel(d){
+  if(d.label && d.count===0) return d.label;
+  if(d.count===0) return 'ما تيسر';
+  if(d.count===1) return 'مرة واحدة';
+  return d.count+' مرات';
+}
+
+function renderAll(){
+  render('sabah', sabahData, 'cardsSabah');
+  render('masaa', masaaData, 'cardsMasaa');
+  render('nawm',  nawmData,  'cardsNawm');
+}
+
+function render(sec, data, containerId){
+  const wrap = document.getElementById(containerId);
+  wrap.innerHTML='';
+  data.forEach((d,i)=>{
+    const s = ST[sec][i];
+    const card = document.createElement('div');
+    card.className = 'dhikr-card'+(s.done?' done':'');
+    card.id=`c-${sec}-${i}`;
+
+    const canCount = d.count > 0;
+
+    card.innerHTML=`
+      <div class="dhikr-card-top">
+        <div class="dhikr-num">${i+1}</div>
+        ${d.label?`<span class="dhikr-label">${d.label}</span>`:'<span class="dhikr-label"></span>'}
+        <div class="dhikr-badge">${cLabel(d)}</div>
+      </div>
+      <div class="dhikr-text">${d.text}</div>
+      <div class="dhikr-footer">
+        ${canCount?`<div class="counter-pill" id="pill-${sec}-${i}">${s.cur} / ${d.count}</div>`:'<div style="font-size:0.78rem;color:var(--text-soft)">اضغطي عند الانتهاء 💗</div>'}
+        <span class="tap-hint">اضغطي للعد 💗</span>
+        <span class="done-badge">✦ تم ✦</span>
+      </div>
+    `;
+
+    card.addEventListener('click', ev=>onTap(ev,sec,i,d,card));
+    wrap.appendChild(card);
+  });
+}
+
+function onTap(ev,sec,i,d,card){
+  const s=ST[sec][i];
+  if(s.done) return;
+
+  // tap animation
+  card.classList.add('tap');
+  setTimeout(()=>card.classList.remove('tap'),200);
+
+  spawnHeart(ev.clientX, ev.clientY);
+
+  if(d.count===0){
+    s.done=true; card.classList.add('done'); return;
+  }
+
+  s.cur++;
+  const pill=document.getElementById(`pill-${sec}-${i}`);
+  if(pill){
+    pill.textContent=`${s.cur} / ${d.count}`;
+    pill.classList.add('bump');
+    setTimeout(()=>pill.classList.remove('bump'),180);
+  }
+
+  if(s.cur>=d.count){
+    s.done=true; card.classList.add('done');
+  }
+}
+
+// ========================================================
+// TASBIH
+// ========================================================
+function selectDhikr(btn, text, target){
+  document.querySelectorAll('.dhikr-choice-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  tText=text; tTarget=target; tCount=0;
+  document.getElementById('tasbihText').textContent=text;
+  updateTasbih();
+}
+
+function addCustomDhikr(){
+  const txt=(document.getElementById('newDhikrText').value||'').trim();
+  const cnt=parseInt(document.getElementById('newDhikrCount').value)||33;
+  if(!txt){ showToast('⚠️ اكتبي الذكر أولاً'); return; }
+
+  const sel=document.getElementById('dhikrSelector');
+  const btn=document.createElement('button');
+  btn.className='dhikr-choice-btn';
+  btn.textContent=txt.length>20?txt.slice(0,20)+'…':txt;
+  const savedTxt=txt, savedCnt=cnt;
+  btn.onclick=function(){ selectDhikr(this, savedTxt, savedCnt); };
+  sel.appendChild(btn);
+
+  selectDhikr(btn, txt, cnt);
+  document.getElementById('newDhikrText').value='';
+  document.getElementById('newDhikrCount').value='';
+  showToast('✦ تم إضافة الذكر 💗');
+}
+
+function pressTasbih(ev){
+  tCount++;
+  const btn=document.getElementById('tasbihBtn');
+  btn.classList.add('pressed');
+  setTimeout(()=>btn.classList.remove('pressed'),150);
+  if(navigator.vibrate) navigator.vibrate(35);
+  spawnHeart(ev.clientX, ev.clientY);
+  updateTasbih();
+  if(tCount===tTarget){
+    setTimeout(()=>{ burstHearts(); showToast('🌸 اكتملت التسبيحات! جزاكِ الله خيراً 💗'); },200);
+  }
+}
+
+function updateTasbih(){
+  const c=document.getElementById('tasbihCount');
+  c.textContent=tCount;
+  c.classList.add('bump');
+  setTimeout(()=>c.classList.remove('bump'),140);
+  document.getElementById('tasbihGoal').textContent='الهدف: '+tTarget;
+  const pct=Math.min(100,Math.round(tCount/tTarget*100));
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progLabel').textContent=tCount+' / '+tTarget;
+  document.getElementById('progPct').textContent=pct+'%';
+}
+
+function resetTasbih(){ tCount=0; updateTasbih(); }
+
+// ========================================================
+// RESET SECTION
+// ========================================================
+function resetSection(sec){
+  const data={sabah:sabahData,masaa:masaaData,nawm:nawmData}[sec];
+  ST[sec]=data.map(()=>({cur:0,done:false}));
+  const ids={sabah:'cardsSabah',masaa:'cardsMasaa',nawm:'cardsNawm'};
+  render(sec,data,ids[sec]);
+}
+
+// ========================================================
+// HEARTS
+// ========================================================
+const heartEmojis=['💗','💕','🌸','💖','💓','🌷','✦'];
+function spawnHeart(x,y){
+  const h=document.createElement('div');
+  h.className='fly-heart';
+  h.style.cssText=`left:${x-12}px;top:${y-12}px;`;
+  h.textContent=heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),950);
+}
+function burstHearts(){
+  for(let i=0;i<10;i++){
+    setTimeout(()=>{
+      spawnHeart(80+Math.random()*(window.innerWidth-160), 100+Math.random()*(window.innerHeight-200));
+    },i*70);
+  }
+}
+
+// ========================================================
+// TOAST
+// ========================================================
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ========================================================
+// INIT
+// ========================================================
+renderAll();
+updateTasbih();
+</script>
+</body>
+</html>
