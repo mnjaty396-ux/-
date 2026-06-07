@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>منصة تسميع القرآن</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  ::-webkit-scrollbar { width: 0; }
+
+  :root {
+    --green: #4caf7d;
+    --green-dark: #2d8a5a;
+    --green-dim: rgba(76,175,125,0.12);
+    --bg: #0d1a0d;
+    --text: #e8f5e2;
+    --muted: #6a8a6a;
+    --card: rgba(255,255,255,0.03);
+    --card-border: rgba(76,175,125,0.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Naskh Arabic', Georgia, serif;
+    direction: rtl;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .bg-glow {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -5%, #1a3a1a, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 85% 95%, #0f2a1a, transparent 60%);
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 430px; margin: 0 auto;
+    padding: 0 0 90px;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 430px; z-index: 50;
+    background: rgba(13,26,13,0.95); backdrop-filter: blur(20px);
+    border-top: 1px solid #1e3a1e;
+    display: flex; justify-content: space-around;
+    padding: 10px 0 16px;
+  }
+
+  .nav-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 11px;
+    font-family: 'Noto Naskh Arabic', serif;
+    transition: color 0.2s;
+  }
+  .nav-btn.active { color: var(--green); }
+  .nav-btn span:first-child { font-size: 24px; }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px; padding: 22px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 14px;
+  }
+
+  /* PAGE */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HEADER */
+  .page-label {
+    font-size: 13px; letter-spacing: 0.15em;
+    color: var(--green); margin-bottom: 4px;
+    font-family: Georgia, serif;
+  }
+  .page-title {
+    font-size: 27px; font-weight: 700; color: var(--text); line-height: 1.3;
+  }
+
+  /* BTNS */
+  .btn {
+    width: 100%; padding: 14px 24px; border-radius: 14px;
+    border: none; cursor: pointer; font-size: 16px;
+    font-family: 'Noto Naskh Arabic', serif; font-weight: 600;
+    transition: all 0.2s; color: #fff; margin-bottom: 10px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    box-shadow: 0 4px 20px rgba(76,175,125,0.3);
+  }
+  .btn-danger {
+    background: linear-gradient(135deg, #c0392b, #922b21);
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* STATS ROW */
+  .stats-row { display: flex; justify-content: space-around; }
+  .stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .stat-num { font-size: 24px; font-weight: 700; color: var(--green); font-family: Georgia, serif; }
+  .stat-lbl { font-size: 11px; color: var(--muted); }
+
+  /* WAVE */
+  .wave-wrap { display: flex; align-items: center; gap: 4px; height: 48px; justify-content: center; margin-bottom: 14px; }
+  .wave-bar {
+    width: 3px; border-radius: 4px;
+    background: #2a3a2a; height: 5px;
+    transition: height 0.1s, background 0.3s;
+  }
+  .wave-bar.active { background: var(--green); }
+
+  /* CIRCULAR PROGRESS */
+  .score-wrap { position: relative; display: inline-block; }
+  .score-inner {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .score-num { font-size: 36px; font-weight: 700; font-family: Georgia, serif; }
+  .score-lbl { font-size: 11px; color: var(--muted); }
+
+  /* WORD CHIPS */
+  .word-chip {
+    padding: 6px 12px; border-radius: 8px;
+    font-size: 16px; display: inline-block;
+  }
+  .chip-correct { background: rgba(76,175,125,0.15); color: #4caf7d; border: 1px solid rgba(76,175,125,0.3); }
+  .chip-wrong   { background: rgba(231,76,60,0.15);  color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
+  .chip-missing { background: rgba(230,126,34,0.15); color: #e67e22; border: 1px solid rgba(230,126,34,0.3); }
+  .chip-extra   { background: rgba(155,89,182,0.15); color: #9b59b6; border: 1px solid rgba(155,89,182,0.3); }
+
+  /* SURAH PICKER */
+  .surah-picker {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease;
+    border-radius: 12px;
+    background: #0f1f0f;
+    border: 1px solid rgba(76,175,125,0.15);
+    margin-top: 8px;
+  }
+  .surah-picker.open { max-height: 200px; overflow-y: auto; }
+  .surah-item {
+    padding: 12px 16px; cursor: pointer; font-size: 15px;
+    color: #a0c0a0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .surah-item.selected { color: var(--green); }
+  .surah-item:hover { background: rgba(76,175,125,0.08); }
+
+  /* INTERIM TEXT */
+  .spoken-box {
+    background: rgba(0,0,0,0.3); border-radius: 10px;
+    padding: 10px 14px; margin-bottom: 12px;
+    font-size: 15px; line-height: 1.8; text-align: right;
+    min-height: 50px; display: none;
+  }
+  .spoken-final { color: #a8d5a2; }
+  .spoken-interim { color: #6a8a6a; font-style: italic; }
+
+  /* ERROR BOX */
+  .error-box {
+    background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.3);
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
+    font-size: 13px; color: #e74c3c; display: none;
+  }
+
+  /* ACHIEVEMENT */
+  .ach-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+  .ach-card {
+    min-width: 82px; border-radius: 14px; padding: 12px 8px; text-align: center;
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); opacity: 0.4;
+  }
+  .ach-card.earned { background: rgba(76,175,125,0.1); border-color: rgba(76,175,125,0.3); opacity: 1; }
+  .ach-icon { font-size: 22px; margin-bottom: 5px; }
+  .ach-title { font-size: 10px; font-weight: 600; color: #4a6a4a; }
+  .ach-card.earned .ach-title { color: #a8d5a2; }
+
+  /* HISTORY */
+  .hist-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .hist-name { font-size: 15px; }
+  .hist-date { font-size: 12px; color: var(--muted); }
+  .hist-score { font-size: 18px; font-weight: 700; font-family: Georgia, serif; }
+
+  /* ANALYZING */
+  .analyze-bar {
+    height: 4px; background: #1a2a1a; border-radius: 4px; overflow: hidden; margin-top: 14px;
+  }
+  .analyze-bar-inner {
+    height: 100%; background: linear-gradient(90deg, var(--green), var(--green-dark));
+    border-radius: 4px; animation: scan 1.5s ease-in-out infinite; width: 40%;
+  }
+
+  @keyframes scan { 0%{margin-right:100%} 100%{margin-right:-50%} }
+  @keyframes waveAnim { from{transform:scaleY(0.3)} to{transform:scaleY(1)} }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="wrap">
+
+  <!-- ========== الرئيسية ========== -->
+  <div class="page active" id="page-home">
+    <div style="padding: 28px 20px 0">
+      <div class="page-label">منصة التسميع</div>
+      <div class="page-title">مرحباً 👋</div>
+      <div style="color:var(--muted);font-size:13px;margin-top:4px" id="today-date"></div>
+    </div>
+
+    <div id="home-last" style="margin: 20px 20px 14px" class="card" style="background:rgba(76,175,125,0.06)">
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:40px;margin-bottom:10px">🕌</div>
+        <div style="font-size:15px;color:var(--muted)">لا يوجد تسميع سابق</div>
+        <div style="font-size:13px;color:#4a5a4a;margin-top:4px">ابدأ تسميعك الأول الآن</div>
+      </div>
+    </div>
+
+    <div class="card stats-row" style="margin: 0 20px 14px" id="home-stats">
+      <div class="stat"><div class="stat-num" id="stat-count">0</div><div class="stat-lbl">تسميع</div></div>
+      <div class="stat"><div class="stat-num" id="stat-avg">—</div><div class="stat-lbl">متوسط</div></div>
+      <div class="stat"><div class="stat-num" id="stat-excellent">0</div><div class="stat-lbl">ممتاز</div></div>
+    </div>
+
+    <div style="padding: 0 20px">
+      <button class="btn btn-primary" onclick="goPage('recite')">🎙️ بدء تسميع جديد</button>
+    </div>
+
+    <div class="card" style="margin:14px 20px 0" id="home-history" style="display:none">
+      <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:#a8d5a2">سجل التسميعات</div>
+      <div id="history-list"></div>
+    </div>
+
+    <div style="padding: 14px 20px 0">
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:#a8d5a2">الإنجازات</div>
+      <div class="ach-scroll">
+        <div class="ach-card earned"><div class="ach-icon">🎯</div><div class="ach-title">أول تسميع</div></div>
+        <div class="ach-card" id="ach-streak"><div class="ach-icon">🔥</div><div class="ach-title">7 أيام</div></div>
+        <div class="ach-card" id="ach-surah"><div class="ach-icon">📖</div><div class="ach-title">سورة كاملة</div></div>
+        <div class="ach-card" id="ach-100"><div class="ach-icon">💯</div><div class="ach-title">100 تسميع</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== التسميع ========== -->
+  <div class="page" id="page-recite">
+    <div style="padding: 28px 20px 0">
+      <div class="page-label">تسميع جديد</div>
+      <div class="page-title">اختر وابدأ</div>
+    </div>
+
+    <div class="card" style="margin: 20px 20px 14px">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px">السورة</div>
+      <button id="surah-toggle" onclick="toggleSurahPicker()"
+        style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(76,175,125,0.2);
+        border-radius:12px;padding:13px 16px;color:var(--text);font-size:17px;
+        font-family:'Noto Naskh Arabic',serif;cursor:pointer;
+        display:flex;justify-content:space-between;align-items:center">
+        <span id="surah-name-btn">سورة الفاتحة</span>
+        <span style="color:var(--green)">▾</span>
+      </button>
+      <div class="surah-picker" id="surah-picker">
+        <div class="surah-item selected" onclick="selectSurah(0)">١. سورة الفاتحة</div>
+        <div class="surah-item" onclick="selectSurah(1)">١١٢. سورة الإخلاص</div>
+        <div class="surah-item" onclick="selectSurah(2)">١١٤. سورة الناس</div>
+        <div class="surah-item" onclick="selectSurah(3)">١١٣. سورة الفلق</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin:0 20px 14px;background:rgba(76,175,125,0.03);max-height:180px;overflow-y:auto">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">الآيات المختارة</div>
+      <div id="verses-preview"></div>
+    </div>
+
+    <div class="card" style="margin:0 20px 14px;text-align:center">
+      <div class="error-box" id="mic-error"></div>
+
+      <div id="analyzing-view" style="display:none">
+        <div style="font-size:34px;margin-bottom:10px">🧠</div>
+        <div style="font-size:16px;color:var(--green);margin-bottom:6px">جاري تحليل قراءتك...</div>
+        <div style="font-size:13px;color:var(--muted)">مقارنة بالنص القرآني الصحيح</div>
+        <div class="analyze-bar"><div class="analyze-bar-inner"></div></div>
+      </div>
+
+      <div id="recording-view">
+        <div class="wave-wrap" id="wave-wrap">
+          <div class="wave-bar" id="wb0"></div><div class="wave-bar" id="wb1"></div>
+          <div class="wave-bar" id="wb2"></div><div class="wave-bar" id="wb3"></div>
+          <div class="wave-bar" id="wb4"></div><div class="wave-bar" id="wb5"></div>
+          <div class="wave-bar" id="wb6"></div><div class="wave-bar" id="wb7"></div>
+          <div class="wave-bar" id="wb8"></div><div class="wave-bar" id="wb9"></div>
+          <div class="wave-bar" id="wb10"></div><div class="wave-bar" id="wb11"></div>
+          <div class="wave-bar" id="wb12"></div><div class="wave-bar" id="wb13"></div>
+        </div>
+        <div id="timer-display" style="font-size:22px;font-family:Georgia;color:var(--green);margin-bottom:8px;display:none">0:00</div>
+        <div class="spoken-box" id="spoken-box">
+          <span class="spoken-final" id="spoken-final"></span>
+          <span class="spoken-interim" id="spoken-interim"></span>
+        </div>
+        <button class="btn btn-primary" id="start-btn" onclick="startRecording()" style="font-size:18px;padding:16px 24px">
+          🎙️ ابدأ التسجيل
+        </button>
+        <button class="btn btn-danger" id="stop-btn" onclick="stopRecording()" style="display:none">
+          ⏹ إنهاء وتحليل
+        </button>
+        <div id="hint-text" style="font-size:12px;color:var(--muted);margin-top:8px">اضغط وابدأ القراءة بصوت واضح</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== النتائج ========== -->
+  <div class="page" id="page-result">
+    <div style="padding: 28px 20px 0">
+      <div class="page-label">نتيجة التسميع</div>
+      <div class="page-title" id="result-surah-name">سورة الفاتحة</div>
+    </div>
+
+    <div class="card" style="margin:20px 20px 14px;background:rgba(76,175,125,0.05);text-align:center">
+      <div class="score-wrap" style="margin-bottom:10px">
+        <svg id="score-svg" width="140" height="140" style="transform:rotate(-90deg)">
+          <circle cx="70" cy="70" r="60" fill="none" stroke="#1a2a1a" stroke-width="10"/>
+          <circle id="score-circle" cx="70" cy="70" r="60" fill="none" stroke="#4caf7d" stroke-width="10"
+            stroke-dasharray="376.99" stroke-dashoffset="376.99" stroke-linecap="round"
+            style="transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1), stroke 0.5s"/>
+        </svg>
+        <div class="score-inner">
+          <div class="score-num" id="score-num" style="color:var(--green)">0</div>
+          <div class="score-lbl">من 100</div>
+        </div>
+      </div>
+      <div id="score-label" style="font-size:16px;font-weight:600;color:var(--green);margin-bottom:16px"></div>
+      <div class="stats-row">
+        <div class="stat"><div style="font-size:19px;font-weight:700;color:#a8d5a2;font-family:Georgia" id="res-mastery">—</div><div class="stat-lbl">الإتقان</div></div>
+        <div class="stat"><div style="font-size:19px;font-weight:700;color:#a8d5a2;font-family:Georgia" id="res-mistakes">—</div><div class="stat-lbl">أخطاء</div></div>
+        <div class="stat"><div style="font-size:19px;font-weight:700;color:#a8d5a2;font-family:Georgia" id="res-missing">—</div><div class="stat-lbl">سقط</div></div>
+        <div class="stat"><div style="font-size:19px;font-weight:700;color:#a8d5a2;font-family:Georgia" id="res-duration">—</div><div class="stat-lbl">المدة</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin:0 20px 14px">
+      <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:#a8d5a2">تحليل كل كلمة</div>
+      <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:5px"><div style="width:9px;height:9px;border-radius:3px;background:#4caf7d"></div><span style="color:var(--muted);font-size:12px">صحيح</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><div style="width:9px;height:9px;border-radius:3px;background:#e74c3c"></div><span style="color:var(--muted);font-size:12px">خطأ</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><div style="width:9px;height:9px;border-radius:3px;background:#e67e22"></div><span style="color:var(--muted);font-size:12px">ناقص</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><div style="width:9px;height:9px;border-radius:3px;background:#9b59b6"></div><span style="color:var(--muted);font-size:12px">زائد</span></div>
+      </div>
+      <div id="words-wrap" style="display:flex;flex-wrap:wrap;gap:8px;direction:rtl"></div>
+    </div>
+
+    <div class="card" style="margin:0 20px 14px">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:#a8d5a2">ما قرأته</div>
+      <div id="spoken-result" style="font-size:15px;line-height:1.9;color:#8aaa8a;direction:rtl"></div>
+    </div>
+
+    <div style="padding:0 20px">
+      <button class="btn btn-primary" onclick="retryRecite()">🔄 إعادة التسميع</button>
+      <button class="btn btn-ghost" onclick="goPage('home')">🏠 الرئيسية</button>
+    </div>
+  </div>
+
+</div><!-- wrap -->
+
+<nav>
+  <button class="nav-btn active" id="nav-home" onclick="goPage('home')">
+    <span>🏠</span><span>الرئيسية</span>
+  </button>
+  <button class="nav-btn" id="nav-recite" onclick="goPage('recite')">
+    <span>🎙️</span><span>تسميع</span>
+  </button>
+</nav>
+
+<script>
+// ==================== البيانات ====================
+const SURAHS_DATA = [
+  { name:"الفاتحة", number:1, verses:[
+    {id:1,text:"بسم الله الرحمن الرحيم"},
+    {id:2,text:"الحمد لله رب العالمين"},
+    {id:3,text:"الرحمن الرحيم"},
+    {id:4,text:"مالك يوم الدين"},
+    {id:5,text:"إياك نعبد وإياك نستعين"},
+    {id:6,text:"اهدنا الصراط المستقيم"},
+    {id:7,text:"صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين"},
+  ]},
+  { name:"الإخلاص", number:112, verses:[
+    {id:1,text:"قل هو الله أحد"},
+    {id:2,text:"الله الصمد"},
+    {id:3,text:"لم يلد ولم يولد"},
+    {id:4,text:"ولم يكن له كفوا أحد"},
+  ]},
+  { name:"الناس", number:114, verses:[
+    {id:1,text:"قل أعوذ برب الناس"},
+    {id:2,text:"ملك الناس"},
+    {id:3,text:"إله الناس"},
+    {id:4,text:"من شر الوسواس الخناس"},
+    {id:5,text:"الذي يوسوس في صدور الناس"},
+    {id:6,text:"من الجنة والناس"},
+  ]},
+  { name:"الفلق", number:113, verses:[
+    {id:1,text:"قل أعوذ برب الفلق"},
+    {id:2,text:"من شر ما خلق"},
+    {id:3,text:"ومن شر غاسق إذا وقب"},
+    {id:4,text:"ومن شر النفاثات في العقد"},
+    {id:5,text:"ومن شر حاسد إذا حسد"},
+  ]},
+];
+
+// ==================== الحالة ====================
+let currentSurah = 0;
+let isRecording = false;
+let recordingTime = 0;
+let timerInterval = null;
+let recognition = null;
+let spokenFinal = "";
+let spokenInterim = "";
+let history = [];
+let waveInterval = null;
+let analyserNode = null;
+let animFrame = null;
+let audioCtx = null;
+
+// ==================== التهيئة ====================
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('today-date').textContent =
+    new Date().toLocaleDateString('ar-EG', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  renderVerses();
+});
+
+// ==================== التنقل ====================
+function goPage(name) {
+  if (isRecording) return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const navBtn = document.getElementById('nav-' + name);
+  if (navBtn) navBtn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ==================== اختيار السورة ====================
+function toggleSurahPicker() {
+  if (isRecording) return;
+  const picker = document.getElementById('surah-picker');
+  picker.classList.toggle('open');
+}
+
+function selectSurah(idx) {
+  currentSurah = idx;
+  document.getElementById('surah-name-btn').textContent = 'سورة ' + SURAHS_DATA[idx].name;
+  document.querySelectorAll('.surah-item').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('surah-picker').classList.remove('open');
+  spokenFinal = ""; spokenInterim = "";
+  renderVerses();
+}
+
+function renderVerses() {
+  const surah = SURAHS_DATA[currentSurah];
+  const el = document.getElementById('verses-preview');
+  el.innerHTML = surah.verses.map(v =>
+    `<div style="font-size:18px;line-height:2.1;color:#c8e8c0;border-bottom:1px solid rgba(255,255,255,0.04);padding-bottom:6px;margin-bottom:6px">
+      ${v.text} <span style="font-size:12px;color:var(--green);margin-right:6px">﴿${v.id}﴾</span>
+    </div>`
+  ).join('');
+}
+
+// ==================== التسجيل ====================
+async function startRecording() {
+  showError('');
+  spokenFinal = ""; spokenInterim = "";
+  updateSpokenBox();
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    startVolumeTracking(stream);
+  } catch(e) {
+    showError('يرجى السماح بالوصول للميكروفون من إعدادات المتصفح');
+    return;
+  }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { showError('المتصفح لا يدعم التعرف على الصوت، جرب Chrome'); return; }
+
+  recognition = new SR();
+  recognition.lang = 'ar-SA';
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onresult = (e) => {
+    let fin = '', int = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) fin += e.results[i][0].transcript + ' ';
+      else int += e.results[i][0].transcript;
+    }
+    if (fin) spokenFinal += fin;
+    spokenInterim = int;
+    updateSpokenBox();
+  };
+
+  recognition.onerror = (e) => {
+    if (e.error !== 'no-speech') showError('خطأ: ' + e.error);
+  };
+
+  recognition.start();
+  isRecording = true;
+  recordingTime = 0;
+
+  document.getElementById('start-btn').style.display = 'none';
+  document.getElementById('stop-btn').style.display = 'block';
+  document.getElementById('timer-display').style.display = 'block';
+  document.getElementById('hint-text').style.display = 'none';
+
+  timerInterval = setInterval(() => {
+    recordingTime++;
+    const m = Math.floor(recordingTime/60), s = recordingTime%60;
+    document.getElementById('timer-display').textContent = m + ':' + String(s).padStart(2,'0');
+  }, 1000);
+}
+
+function stopRecording() {
+  if (recognition) recognition.stop();
+  clearInterval(timerInterval);
+  cancelAnimationFrame(animFrame);
+  if (audioCtx) audioCtx.close();
+  isRecording = false;
+
+  document.getElementById('recording-view').style.display = 'none';
+  document.getElementById('analyzing-view').style.display = 'block';
+
+  setTimeout(() => {
+    const surah = SURAHS_DATA[currentSurah];
+    const fullText = surah.verses.map(v => v.text).join(' ');
+    const spoken = (spokenFinal + spokenInterim).trim();
+
+    if (!spoken) {
+      document.getElementById('recording-view').style.display = 'block';
+      document.getElementById('analyzing-view').style.display = 'none';
+      resetRecordUI();
+      showError('لم يُكتشف أي صوت، حاول مجدداً');
+      return;
+    }
+
+    const analysis = compareTexts(spoken, fullText);
+    const res = { ...analysis, duration: recordingTime, surahName: surah.name, spokenText: spoken };
+    history.unshift({ ...res, date: new Date().toLocaleDateString('ar-EG') });
+    if (history.length > 10) history.pop();
+
+    showResult(res);
+    updateHome();
+    resetRecordUI();
+  }, 900);
+}
+
+function resetRecordUI() {
+  document.getElementById('start-btn').style.display = 'block';
+  document.getElementById('stop-btn').style.display = 'none';
+  document.getElementById('timer-display').style.display = 'none';
+  document.getElementById('hint-text').style.display = 'block';
+  document.getElementById('recording-view').style.display = 'block';
+  document.getElementById('analyzing-view').style.display = 'none';
+  document.getElementById('spoken-box').style.display = 'none';
+  resetWave();
+}
+
+function retryRecite() {
+  spokenFinal = ''; spokenInterim = '';
+  updateSpokenBox();
+  goPage('recite');
+}
+
+// ==================== الموجة ====================
+function startVolumeTracking(stream) {
+  audioCtx = new AudioContext();
+  const src = audioCtx.createMediaStreamSource(stream);
+  const analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 64;
+  src.connect(analyser);
+  const data = new Uint8Array(analyser.frequencyBinCount);
+
+  function tick() {
+    analyser.getByteFrequencyData(data);
+    const avg = data.reduce((a,b) => a+b, 0) / data.length;
+    animateWave(avg / 128);
+    animFrame = requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function animateWave(vol) {
+  for (let i = 0; i < 14; i++) {
+    const bar = document.getElementById('wb' + i);
+    if (!bar) continue;
+    const h = Math.max(5, 8 + Math.sin(i * 0.9 + Date.now() * 0.004) * 20 * vol + 8 * vol);
+    bar.style.height = h + 'px';
+    bar.style.background = `hsl(${140 + i*2},60%,55%)`;
+    bar.classList.add('active');
+  }
+}
+
+function resetWave() {
+  for (let i = 0; i < 14; i++) {
+    const bar = document.getElementById('wb' + i);
+    if (bar) { bar.style.height = '5px'; bar.style.background = '#2a3a2a'; bar.classList.remove('active'); }
+  }
+}
+
+// ==================== UI helpers ====================
+function showError(msg) {
+  const el = document.getElementById('mic-error');
+  el.textContent = msg ? '⚠️ ' + msg : '';
+  el.style.display = msg ? 'block' : 'none';
+}
+
+function updateSpokenBox() {
+  const box = document.getElementById('spoken-box');
+  if (spokenFinal || spokenInterim) {
+    box.style.display = 'block';
+    document.getElementById('spoken-final').textContent = spokenFinal;
+    document.getElementById('spoken-interim').textContent = spokenInterim;
+  }
+}
+
+// ==================== عرض النتيجة ====================
+function showResult(res) {
+  document.getElementById('result-surah-name').textContent = 'سورة ' + res.surahName;
+  document.getElementById('res-mastery').textContent = res.score + '%';
+  document.getElementById('res-mistakes').textContent = res.mistakes;
+  document.getElementById('res-missing').textContent = res.missing;
+  const m = Math.floor(res.duration/60), s = res.duration%60;
+  document.getElementById('res-duration').textContent = m + ':' + String(s).padStart(2,'0');
+  document.getElementById('spoken-result').textContent = res.spokenText || '—';
+
+  const scoreColor = res.score >= 80 ? '#4caf7d' : res.score >= 60 ? '#e67e22' : '#e74c3c';
+  const scoreLabel = res.score >= 80 ? 'ممتاز 🌟' : res.score >= 60 ? 'جيد 👍' : 'يحتاج مراجعة 📚';
+  document.getElementById('score-label').textContent = scoreLabel;
+  document.getElementById('score-label').style.color = scoreColor;
+  document.getElementById('score-num').style.color = scoreColor;
+  document.getElementById('score-circle').style.stroke = scoreColor;
+
+  // كلمات
+  const wrap = document.getElementById('words-wrap');
+  wrap.innerHTML = res.words.map(w => {
+    const cls = {correct:'chip-correct',wrong:'chip-wrong',missing:'chip-missing',extra:'chip-extra'}[w.status]||'chip-correct';
+    return `<span class="word-chip ${cls}">${w.word}</span>`;
+  }).join('');
+
+  goPage('result');
+
+  // أنيميشن الدرجة
+  let v = 0;
+  const circ = 376.99;
+  const anim = setInterval(() => {
+    v += 2;
+    if (v >= res.score) { v = res.score; clearInterval(anim); }
+    document.getElementById('score-num').textContent = v;
+    document.getElementById('score-circle').style.strokeDashoffset = circ - (v/100)*circ;
+  }, 18);
+}
+
+// ==================== تحديث الرئيسية ====================
+function updateHome() {
+  document.getElementById('stat-count').textContent = history.length;
+  const avg = history.length ? Math.round(history.reduce((a,h)=>a+h.score,0)/history.length) : null;
+  document.getElementById('stat-avg').textContent = avg ? avg+'%' : '—';
+  document.getElementById('stat-excellent').textContent = history.filter(h=>h.score>=80).length;
+
+  if (history.length > 0) {
+    const last = history[0];
+    const scoreColor = last.score>=80?'#4caf7d':last.score>=60?'#e67e22':'#e74c3c';
+    document.getElementById('home-last').innerHTML = `
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="position:relative">
+          <svg width="100" height="100" style="transform:rotate(-90deg)">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1a2a1a" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="${scoreColor}" stroke-width="8"
+              stroke-dasharray="263.9" stroke-dashoffset="${263.9-(last.score/100)*263.9}" stroke-linecap="round"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <div style="font-size:20px;font-weight:700;color:${scoreColor};font-family:Georgia">${last.score}</div>
+            <div style="font-size:9px;color:var(--muted)">من 100</div>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:16px;font-weight:700;margin-bottom:5px">آخر تسميع</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:10px">سورة ${last.surahName} • ${last.date}</div>
+          <div style="display:flex;gap:8px">
+            <span style="background:rgba(231,76,60,0.15);color:#e74c3c;padding:3px 10px;border-radius:8px;font-size:12px">❌ ${last.mistakes} خطأ</span>
+            <span style="background:rgba(230,126,34,0.15);color:#e67e22;padding:3px 10px;border-radius:8px;font-size:12px">⚠️ ${last.missing} سقط</span>
+          </div>
+        </div>
+      </div>`;
+    document.getElementById('home-last').style.background = 'rgba(76,175,125,0.06)';
+
+    const histList = document.getElementById('history-list');
+    histList.innerHTML = history.slice(0,4).map(h => {
+      const c = h.score>=80?'#4caf7d':h.score>=60?'#e67e22':'#e74c3c';
+      return `<div class="hist-item">
+        <div><div class="hist-name">سورة ${h.surahName}</div><div class="hist-date">${h.date}</div></div>
+        <div class="hist-score" style="color:${c}">${h.score}/100</div>
+      </div>`;
+    }).join('');
+    document.getElementById('home-history').style.display = 'block';
+  }
+}
+
+// ==================== خوارزمية المقارنة ====================
+function normalizeArabic(text) {
+  return text
+    .replace(/[\u064B-\u065F]/g, '')
+    .replace(/[أإآ]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function levenshtein(a, b) {
+  const d = Array.from({length:a.length+1},(_,i)=>[i,...Array(b.length).fill(0)]);
+  for(let j=0;j<=b.length;j++) d[0][j]=j;
+  for(let i=1;i<=a.length;i++)
+    for(let j=1;j<=b.length;j++)
+      d[i][j]=a[i-1]===b[j-1]?d[i-1][j-1]:1+Math.min(d[i-1][j],d[i][j-1],d[i-1][j-1]);
+  return d[a.length][b.length];
+}
+
+function compareTexts(spoken, reference) {
+  const sw = normalizeArabic(spoken).split(' ').filter(Boolean);
+  const rw = normalizeArabic(reference).split(' ').filter(Boolean);
+  const origRef = reference.split(' ').filter(Boolean);
+  const origSpoken = spoken.split(' ').filter(Boolean);
+
+  const m=sw.length, n=rw.length;
+  const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+  for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+    dp[i][j]=sw[i-1]===rw[j-1]?dp[i-1][j-1]+1:Math.max(dp[i-1][j],dp[i][j-1]);
+
+  let i=m,j=n;
+  const matchedR=new Set(), matchedS=new Set();
+  while(i>0&&j>0){
+    if(sw[i-1]===rw[j-1]){matchedR.add(j-1);matchedS.add(i-1);i--;j--;}
+    else if(dp[i-1][j]>dp[i][j-1]) i--;
+    else j--;
+  }
+
+  const words=[];
+  origRef.forEach((word,idx)=>{
+    if(matchedR.has(idx)) words.push({word,status:'correct'});
+    else {
+      const close=sw.some(s=>levenshtein(s,normalizeArabic(word))<=2&&s!==normalizeArabic(word));
+      words.push({word,status:close?'wrong':'missing'});
+    }
+  });
+  origSpoken.forEach((_,idx)=>{
+    if(!matchedS.has(idx)) words.push({word:origSpoken[idx],status:'extra'});
+  });
+
+  const correct=words.filter(w=>w.status==='correct').length;
+  return {
+    words,
+    score: Math.round((correct/origRef.length)*100),
+    mistakes: words.filter(w=>w.status==='wrong').length,
+    missing: words.filter(w=>w.status==='missing').length,
+    extra: words.filter(w=>w.status==='extra').length,
+  };
+}
+</script>
+</body>
+</html>
