@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سفاري القواعد النحوية 🦁</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sun:#FFB627;
+    --sun-dark:#E39A0A;
+    --leaf:#3CAA5C;
+    --leaf-dark:#2A8145;
+    --sky:#2FA8E0;
+    --coral:#FF6B4A;
+    --coral-dark:#D6491F;
+    --cream:#FFF8E7;
+    --ink:#33260F;
+    --purple:#8E5BD8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Cairo', sans-serif;
+    background:
+      radial-gradient(circle at 12% 15%, #FFD873 0%, transparent 38%),
+      radial-gradient(circle at 88% 12%, #57D0FF 0%, transparent 36%),
+      radial-gradient(circle at 20% 92%, #7CE39A 0%, transparent 38%),
+      radial-gradient(circle at 90% 88%, #FF9A7A 0%, transparent 36%),
+      linear-gradient(160deg, #1F8A55, #2FA8E0 55%, #17754A);
+    min-height:100vh;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    overflow-x:hidden;
+  }
+
+  .leaves-bg{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    font-size:26px;
+    opacity:.16;
+    background-image: none;
+  }
+  .leaves-bg span{
+    position:absolute;
+    animation:drift 9s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-18px) rotate(12deg);}
+  }
+
+  .app{
+    position:relative; z-index:1;
+    width:100%;
+    max-width:760px;
+  }
+
+  .brand{
+    text-align:center;
+    margin-bottom:14px;
+  }
+  .brand h1{
+    font-family:'Baloo 2', 'Cairo', sans-serif;
+    font-weight:800;
+    font-size:clamp(23px,4.3vw,36px);
+    color:#fff;
+    margin:0 0 4px;
+    text-shadow:0 4px 0 rgba(0,0,0,.18);
+    letter-spacing:.5px;
+  }
+  .brand p{
+    color:#FFF3D6;
+    margin:0;
+    font-weight:700;
+    font-size:14px;
+  }
+  .mascots{
+    font-size:42px;
+    display:inline-flex;
+    gap:6px;
+  }
+  .mascots .m1{display:inline-block; animation:bounce 2.6s ease-in-out infinite;}
+  .mascots .m2{display:inline-block; animation:bounce 2.6s ease-in-out infinite .5s;}
+  @keyframes bounce{
+    0%,100%{transform:translateY(0) rotate(-4deg);}
+    50%{transform:translateY(-12px) rotate(4deg);}
+  }
+
+  .card{
+    background:var(--cream);
+    border-radius:28px;
+    padding:26px;
+    box-shadow:0 20px 40px rgba(15,60,30,.35), inset 0 0 0 6px #fff;
+    position:relative;
+    overflow:hidden;
+    animation:pop .35s ease;
+  }
+  @keyframes pop{
+    from{opacity:0; transform:scale(.94) translateY(10px);}
+    to{opacity:1; transform:scale(1) translateY(0);}
+  }
+
+  #start-screen .desc{
+    text-align:center;
+    font-size:15.5px;
+    line-height:1.9;
+    color:#2E4B2A;
+    font-weight:600;
+    margin-bottom:18px;
+  }
+  .category-pills{
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:20px;
+  }
+  .pill{
+    background:#fff;
+    border:2px solid #FFE2A8;
+    color:var(--coral-dark);
+    font-weight:700;
+    font-size:12.5px;
+    padding:6px 14px;
+    border-radius:999px;
+  }
+  .big-btn{
+    display:block;
+    width:100%;
+    border:none;
+    cursor:pointer;
+    font-family:'Baloo 2','Cairo',sans-serif;
+    font-weight:800;
+    font-size:19px;
+    color:#fff;
+    padding:16px;
+    border-radius:18px;
+    background:linear-gradient(180deg, var(--leaf), var(--leaf-dark));
+    box-shadow:0 8px 0 #1E5C33, 0 14px 22px rgba(30,92,51,.35);
+    transition:transform .08s ease;
+  }
+  .big-btn:active{
+    transform:translateY(6px);
+    box-shadow:0 2px 0 #1E5C33, 0 4px 10px rgba(30,92,51,.3);
+  }
+  .big-btn.sky{
+    background:linear-gradient(180deg, var(--sky), #1E7FAF);
+    box-shadow:0 8px 0 #145B7E, 0 14px 22px rgba(20,91,126,.35);
+  }
+  .big-btn.sky:active{
+    box-shadow:0 2px 0 #145B7E, 0 4px 10px rgba(20,91,126,.3);
+  }
+
+  .quiz-top{
+    display:flex; align-items:center; gap:12px; margin-bottom:16px;
+  }
+  .progress-wrap{
+    flex:1;
+    background:#FFE9BE;
+    height:16px;
+    border-radius:999px;
+    overflow:hidden;
+    box-shadow:inset 0 2px 4px rgba(0,0,0,.12);
+  }
+  .progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--sun), var(--coral));
+    border-radius:999px;
+    transition:width .4s ease;
+  }
+  .score-chip{
+    background:var(--sky);
+    color:#fff;
+    font-weight:800;
+    font-size:13.5px;
+    padding:6px 12px;
+    border-radius:999px;
+    white-space:nowrap;
+    box-shadow:0 3px 0 #1E7FAF;
+  }
+  .q-counter{
+    font-weight:700;
+    font-size:12.5px;
+    color:#3E7A46;
+    text-align:center;
+    margin-bottom:6px;
+  }
+  .category-tag{
+    display:inline-block;
+    background:var(--coral);
+    color:#fff;
+    font-size:11.5px;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+  .type-tag{
+    display:inline-block;
+    background:#fff;
+    color:var(--leaf-dark);
+    border:2px solid var(--leaf);
+    font-size:10.5px;
+    font-weight:800;
+    padding:2px 10px;
+    border-radius:999px;
+    margin-right:6px;
+    margin-bottom:8px;
+  }
+
+  .question-text{
+    font-family:'Baloo 2','Cairo',sans-serif;
+    font-weight:700;
+    font-size:clamp(18px,3.6vw,22px);
+    line-height:1.7;
+    color:var(--ink);
+    background:#fff;
+    border-radius:16px;
+    padding:16px 18px;
+    margin-bottom:18px;
+    border:2px dashed #FFD48A;
+  }
+  .question-text .hl{
+    color:var(--coral-dark);
+    text-decoration:underline;
+    text-decoration-color:var(--sky);
+    text-decoration-thickness:3px;
+  }
+
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .options.tf-layout{
+    grid-template-columns:1fr 1fr;
+  }
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr;}
+  }
+  .opt{
+    background:#fff;
+    border:3px solid #FFE2A8;
+    border-radius:16px;
+    padding:14px 10px;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:16.5px;
+    color:var(--ink);
+    cursor:pointer;
+    text-align:center;
+    transition:all .15s ease;
+    position:relative;
+  }
+  .opt:hover{
+    border-color:var(--sky);
+    transform:translateY(-2px);
+    box-shadow:0 6px 14px rgba(47,168,224,.2);
+  }
+  .opt.tf-yes{border-color:#BEE9C8; background:#F3FFF6;}
+  .opt.tf-no{border-color:#FFD3C8; background:#FFF6F3;}
+  .opt.correct{
+    background:#E7FBEF;
+    border-color:var(--leaf);
+    color:#1E5C33;
+    animation:shake-good .4s ease;
+  }
+  .opt.wrong{
+    background:#FFEAEA;
+    border-color:var(--coral);
+    color:var(--coral-dark);
+    animation:shake-bad .4s ease;
+  }
+  .opt.disabled{
+    pointer-events:none;
+    opacity:.65;
+  }
+  @keyframes shake-good{
+    0%{transform:scale(1);} 40%{transform:scale(1.06);} 100%{transform:scale(1);}
+  }
+  @keyframes shake-bad{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-6px);}
+    40%{transform:translateX(6px);}
+    60%{transform:translateX(-4px);}
+    80%{transform:translateX(4px);}
+  }
+
+  .feedback{
+    margin-top:16px;
+    min-height:52px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:15.5px;
+    border-radius:14px;
+    padding:0 14px;
+    opacity:0;
+    transform:translateY(6px);
+    transition:all .25s ease;
+  }
+  .feedback.show{opacity:1; transform:translateY(0); padding:12px 14px;}
+  .feedback.good{background:#E7FBEF; color:#1E5C33;}
+  .feedback.bad{background:#FFEAEA; color:var(--coral-dark);}
+  .feedback .emoji{font-size:26px;}
+
+  .next-btn{
+    margin-top:16px;
+    width:100%;
+    display:none;
+  }
+
+  #result-screen{display:none; text-align:center;}
+  .result-emoji{font-size:70px; display:block; margin-bottom:6px; animation:pop-in .5s ease;}
+  @keyframes pop-in{
+    0%{transform:scale(0);} 70%{transform:scale(1.15);} 100%{transform:scale(1);}
+  }
+  .result-title{
+    font-family:'Baloo 2','Cairo',sans-serif;
+    font-weight:800;
+    font-size:26px;
+    color:var(--leaf-dark);
+    margin:0 0 6px;
+  }
+  .result-score{
+    font-size:44px;
+    font-weight:900;
+    color:var(--coral);
+    margin:6px 0 4px;
+  }
+  .result-msg{
+    font-weight:600;
+    color:#3E7A46;
+    margin-bottom:18px;
+    font-size:15.5px;
+  }
+  .stars-row{
+    font-size:34px;
+    margin-bottom:18px;
+    letter-spacing:6px;
+  }
+  .result-buttons{display:flex; gap:10px;}
+  .result-buttons .big-btn{flex:1; font-size:16px; padding:13px;}
+
+  .foot-note{
+    text-align:center;
+    color:#FFF3D6;
+    font-size:12px;
+    margin-top:14px;
+    font-weight:600;
+    opacity:.9;
+  }
+
+  #quiz-screen{display:none;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <span class="mascots"><span class="m1">🦁</span><span class="m2">🐵</span></span>
+    <h1>سفاري القواعد النحوية</h1>
+    <p>جولة جديدة مع الأسد الملك والقرد الشقي في أدغال النحو!</p>
+  </div>
+
+  <div class="card">
+
+    <!-- شاشة البداية -->
+    <div id="start-screen">
+      <div class="desc">
+        أهلًا يا مستكشف! 🌿<br>
+        رحلة جديدة في أدغال النحو تنتظرك مع <b>30 سؤالًا</b> متنوعًا:
+        أسئلة اختيار من متعدد، وأسئلة (صواب/خطأ)، تركّز على
+        الجملة الاسمية والفعلية وأسماء الإشارة، بجانب الاسم والفعل
+        والحرف والضمائر والمثنى والجمع والإعراب.
+        <br>جهّز نفسك... هل ستكمل الرحلة بلا أخطاء؟ 🐾
+      </div>
+      <div class="category-pills">
+        <span class="pill">🧩 الجملة الاسمية والفعلية</span>
+        <span class="pill">👉 أسماء الإشارة</span>
+        <span class="pill">🔗 الموصول والحرف</span>
+        <span class="pill">🙋 الضمائر</span>
+        <span class="pill">✅ صواب أم خطأ</span>
+      </div>
+      <button class="big-btn" onclick="startGame()">🐾 انطلق في الرحلة</button>
+    </div>
+
+    <!-- شاشة الأسئلة -->
+    <div id="quiz-screen">
+      <div class="quiz-top">
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="score-chip">🍌 <span id="scoreDisplay">0</span></div>
+      </div>
+      <div class="q-counter" id="qCounter">السؤال 1 من 30</div>
+      <div style="text-align:center;">
+        <span class="type-tag" id="typeTag">اختر الإجابة</span>
+        <span class="category-tag" id="categoryTag">الجملة</span>
+      </div>
+      <div class="question-text" id="questionText"></div>
+      <div class="options" id="optionsBox"></div>
+      <div class="feedback" id="feedback"><span class="emoji" id="feedbackEmoji"></span><span id="feedbackText"></span></div>
+      <button class="big-btn sky next-btn" id="nextBtn" onclick="nextQuestion()">التالي ⬅️</button>
+    </div>
+
+    <!-- شاشة النتيجة -->
+    <div id="result-screen">
+      <span class="result-emoji" id="resultEmoji">🏆</span>
+      <h2 class="result-title" id="resultTitle">رائع يا مستكشف!</h2>
+      <div class="result-score"><span id="finalScore">0</span> / <span id="finalTotal">30</span></div>
+      <div class="stars-row" id="starsRow">⭐⭐⭐</div>
+      <div class="result-msg" id="resultMsg">لقد أنهيت رحلة الأدغال ببراعة!</div>
+      <div class="result-buttons">
+        <button class="big-btn sky" onclick="location.reload()">🔁 أعد الرحلة</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot-note">رحلة سفاري ممتعة لتعلّم القواعد النحوية 🌿🦁</div>
+</div>
+
+<script>
+/* ==========================================================
+   بنك الأسئلة (30 سؤالًا) — متنوع بين اختيار من متعدد وصواب/خطأ
+   لا يوجد تكرار لأي سؤال
+   ========================================================== */
+const QUESTIONS = [
+
+  /* ---------- الجملة الاسمية والفعلية ---------- */
+  {cat:"الجملة", type:"tf", q:"الجملة الاسمية تبدأ دائمًا باسم.", options:["✅ صواب","❌ خطأ"], correct:0},
+  {cat:"الجملة", type:"tf", q:"الجملة الفعلية تبدأ بفعل ماضٍ أو مضارع أو أمر.", options:["✅ صواب","❌ خطأ"], correct:0},
+  {cat:"الجملة", type:"mcq", q:"«الأشجارُ تزدهرُ في فصل الربيع» — هذه الجملة:", options:["جملة اسمية","جملة فعلية"], correct:0},
+  {cat:"الجملة", type:"mcq", q:"حوّل الجملة الاسمية «الأشجار تزدهر في فصل الربيع» إلى جملة فعلية:", options:["تزدهر الأشجار في فصل الربيع","الأشجار تزدهر في فصل الربيع","ازدهرت الأشجارُ الربيعَ"], correct:0},
+  {cat:"الجملة", type:"mcq", q:"«الشقيقتانِ تُعِدَّانِ الطعامَ لوالديهما» — هذه الجملة:", options:["جملة اسمية","جملة فعلية"], correct:0},
+  {cat:"الجملة", type:"mcq", q:"«اللاعبونَ يُحِبُّونَ لعبةَ كرةِ القدمِ» — هذه الجملة:", options:["جملة اسمية","جملة فعلية"], correct:0},
+  {cat:"الجملة", type:"mcq", q:"«اختارَ الأبُ الهديةَ لابنِه» — هذه الجملة:", options:["جملة فعلية","جملة اسمية"], correct:0},
+  {cat:"الجملة", type:"mcq", q:"حوّل الجملة الاسمية «الأبُ اختارَ الهديةَ لابنِه» إلى جملة فعلية:", options:["اختار الأبُ الهديةَ لابنِه","الأبُ اختارَ الهديةَ لابنِه","الهديةُ اختارها الأبُ"], correct:0},
+  {cat:"الجملة", type:"mcq", q:"«يُحِبُّ اللاعبونَ لعبةَ كرةِ القدمِ» — هذه الجملة:", options:["جملة فعلية","جملة اسمية"], correct:0},
+  {cat:"الجملة", type:"tf", q:"جملة «مصرُ حضارةٌ عريقةٌ» جملة فعلية.", options:["✅ صواب","❌ خطأ"], correct:1},
+
+  /* ---------- أسماء الإشارة ---------- */
+  {cat:"اسم الإشارة", type:"mcq", q:"اسم الإشارة المناسب لكلمة (كتابٌ) وهي مفرد مذكر:", options:["هذا","هذه","هؤلاء"], correct:0},
+  {cat:"اسم الإشارة", type:"mcq", q:"اسم الإشارة المناسب لكلمة (سيارتان) وهي مثنى مؤنث:", options:["هاتان","هذان","هؤلاء"], correct:0},
+  {cat:"اسم الإشارة", type:"mcq", q:"اسم الإشارة المناسب لكلمة (لاعبون ماهرون) وهي جمع مذكر:", options:["هؤلاء","هذا","هاتان"], correct:0},
+  {cat:"اسم الإشارة", type:"mcq", q:"اسم الإشارة المناسب لكلمة (وردةٌ) وهي مفرد مؤنث:", options:["هذه","هذا","هؤلاء"], correct:0},
+  {cat:"اسم الإشارة", type:"mcq", q:"اسم الإشارة المناسب لكلمة (قلمانِ) وهي مثنى مذكر:", options:["هذان","هاتان","هؤلاء"], correct:0},
+  {cat:"اسم الإشارة", type:"tf", q:"نستخدم اسم الإشارة (هذه) للإشارة إلى المثنى المذكر.", options:["✅ صواب","❌ خطأ"], correct:1},
+  {cat:"اسم الإشارة", type:"mcq", q:"«هذا معلمٌ» — اجعل الجملة للجمع المذكر:", options:["هؤلاء معلمونَ","هذانِ معلمونَ","هذه معلمونَ"], correct:0},
+
+  /* ---------- الاسم الموصول ---------- */
+  {cat:"الاسم الموصول", type:"mcq", q:"شاهدتُ الفيلمَ ____ أعجبني.", options:["الذي","التي","الذين"], correct:0},
+  {cat:"الاسم الموصول", type:"mcq", q:"قابلتُ الأولادَ ____ فازوا بالمسابقةِ.", options:["التي","الذين","الذي"], correct:1},
+
+  /* ---------- الاسم والفعل والحرف ---------- */
+  {cat:"الاسم والفعل والحرف", type:"mcq", q:"ما نوع كلمة (نافذة)؟", options:["اسم","فعل","حرف"], correct:0},
+  {cat:"الاسم والفعل والحرف", type:"mcq", q:"ما نوع كلمة (يلعب)؟", options:["حرف","اسم","فعل"], correct:2},
+  {cat:"الاسم والفعل والحرف", type:"mcq", q:"ما نوع كلمة (مِن)؟", options:["اسم","فعل","حرف"], correct:2},
+
+  /* ---------- حروف الجر ---------- */
+  {cat:"حروف الجر", type:"mcq", q:"نظرتُ ____ السماءِ.", options:["إلى","من","عن"], correct:0},
+  {cat:"حروف الجر", type:"mcq", q:"خرجَ القطارُ ____ المحطةِ.", options:["إلى","من","في"], correct:1},
+  {cat:"حروف الجر", type:"tf", q:"الحرف له معنى كامل بذاته دون الحاجة لكلمة أخرى.", options:["✅ صواب","❌ خطأ"], correct:1},
+
+  /* ---------- الضمائر ---------- */
+  {cat:"الضمائر", type:"mcq", q:"ضمير المخاطبات (أنتنَّ) يُستخدم مع:", options:["الجمع المؤنث","الجمع المذكر","المفرد المؤنث"], correct:0},
+  {cat:"الضمائر", type:"mcq", q:"«هما لاعبتانِ ماهرتانِ» — نوع الضمير (هما):", options:["متكلم","مخاطب","غائب"], correct:2},
+
+  /* ---------- المثنى والجمع ---------- */
+  {cat:"المثنى والجمع", type:"mcq", q:"مثنى كلمة (نافذة) هو:", options:["نافذتان","نوافذ","نافذات"], correct:0},
+  {cat:"المثنى والجمع", type:"mcq", q:"جمع تكسير من كلمة (كتاب) هو:", options:["كُتُب","كُتّاب","كتابون"], correct:0},
+
+  /* ---------- الإعراب: الفاعل والمفعول به ---------- */
+  {cat:"الإعراب", type:"mcq", q:"يشربُ الطفلُ ____.", options:["لبنٌ","لبنًا","لبنِ"], correct:1},
+];
+
+/* ==========================================================
+   منطق اللعبة
+   ========================================================== */
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+let gameQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+
+function startGame(){
+  gameQuestions = shuffle(QUESTIONS);
+  currentIndex = 0;
+  score = 0;
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('finalTotal').textContent = gameQuestions.length;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  const total = gameQuestions.length;
+  const q = gameQuestions[currentIndex];
+
+  document.getElementById('progressBar').style.width = ((currentIndex)/total*100) + '%';
+  document.getElementById('scoreDisplay').textContent = score;
+  document.getElementById('qCounter').textContent = `السؤال ${currentIndex+1} من ${total}`;
+  document.getElementById('categoryTag').textContent = q.cat;
+  document.getElementById('typeTag').textContent = q.type === 'tf' ? '✅❌ صواب أم خطأ' : '🔤 اختر الإجابة الصحيحة';
+  document.getElementById('questionText').innerHTML = q.q;
+
+  const feedback = document.getElementById('feedback');
+  feedback.className = 'feedback';
+  document.getElementById('feedbackText').textContent = '';
+  document.getElementById('feedbackEmoji').textContent = '';
+  document.getElementById('nextBtn').style.display = 'none';
+
+  const optionIndices = q.options.map((_,i)=>i);
+  const shuffledIdx = q.type === 'tf' ? optionIndices : shuffle(optionIndices);
+
+  const box = document.getElementById('optionsBox');
+  box.className = q.type === 'tf' ? 'options tf-layout' : 'options';
+  box.innerHTML = '';
+  shuffledIdx.forEach(origIndex=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    if(q.type === 'tf'){
+      btn.classList.add(origIndex === 0 ? 'tf-yes' : 'tf-no');
+    }
+    btn.textContent = q.options[origIndex];
+    btn.onclick = () => selectAnswer(origIndex, q, btn);
+    box.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosenIndex, q, btnEl){
+  if(answered) return;
+  answered = true;
+
+  const allOpts = document.querySelectorAll('.opt');
+  allOpts.forEach(o=>o.classList.add('disabled'));
+
+  const feedback = document.getElementById('feedback');
+  const feedbackEmoji = document.getElementById('feedbackEmoji');
+  const feedbackText = document.getElementById('feedbackText');
+
+  if(chosenIndex === q.correct){
+    score++;
+    btnEl.classList.add('correct');
+    feedback.classList.add('show','good');
+    feedbackEmoji.textContent = '🐒';
+    const goodMsgs = ['أحسنت أيها المستكشف!','ممتاز! 👏','رائع، أنت أسد النحو!','إجابة رائعة جدًا!'];
+    feedbackText.textContent = goodMsgs[Math.floor(Math.random()*goodMsgs.length)];
+  } else {
+    btnEl.classList.add('wrong');
+    allOpts.forEach(o=>{
+      if(o.textContent === q.options[q.correct]) o.classList.add('correct');
+    });
+    feedback.classList.add('show','bad');
+    feedbackEmoji.textContent = '🦒';
+    feedbackText.textContent = `لا بأس، حاول مرة قادمة! الإجابة الصحيحة: ${q.options[q.correct]}`;
+  }
+
+  document.getElementById('scoreDisplay').textContent = score;
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex >= gameQuestions.length){
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResult(){
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+
+  const total = gameQuestions.length;
+  const pct = Math.round((score/total)*100);
+
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('finalTotal').textContent = total;
+
+  let emoji, title, msg, stars;
+  if(pct >= 90){
+    emoji = '🏆'; title = 'ملك أدغال النحو!';
+    msg = 'أداء استثنائي! أنت تتقن القواعد النحوية بامتياز 🌟';
+    stars = '⭐⭐⭐';
+  } else if(pct >= 70){
+    emoji = '🦁'; title = 'أحسنت صنعًا!';
+    msg = 'نتيجة رائعة! استمر في المراجعة لتصل للقمة 💪';
+    stars = '⭐⭐';
+  } else if(pct >= 50){
+    emoji = '🐵'; title = 'بداية جيدة!';
+    msg = 'أنت في الطريق الصحيح، راجع الدروس وحاول مجددًا 📚';
+    stars = '⭐';
+  } else {
+    emoji = '🐢'; title = 'لا تستسلم يا مستكشف!';
+    msg = 'كل خبير كان مبتدئًا يومًا ما، راجع الملف وحاول مرة أخرى!';
+    stars = '✨';
+  }
+
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultMsg').textContent = msg + `  (${pct}%)`;
+  document.getElementById('starsRow').textContent = stars;
+}
+</script>
+</body>
+</html>
