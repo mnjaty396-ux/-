@@ -914,6 +914,15 @@ function App() {
     setUser(null);
   }
 
+  // بيربط حساب المستخدم باشتراك OneSignal بتاعه عشان الإشعارات توصله بالتحديد
+  useEffect(() => {
+    if (!user || !user.username) return;
+    if (typeof window.OneSignalDeferred === "undefined") return;
+    window.OneSignalDeferred.push(async function (OneSignal) {
+      try { await OneSignal.login(user.username.trim().toLowerCase()); } catch (e) {}
+    });
+  }, [user]);
+
   // بيراقب في الخلفية لو حد اختارك كـ"صاحب متابعة" له وضغط "أنا في خطر"،
   // وبيظهرله تنبيه مباشر — من غير ما الشخص اللي في خطر يعرف إن الرسالة وصلت أو لأ.
   useEffect(() => {
@@ -2925,3 +2934,4 @@ root.render(<App />);
 </script>
 </body>
 </html>
+
