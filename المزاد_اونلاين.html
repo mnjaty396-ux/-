@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>⚽ المزاد</title>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
 :root{
   --bg:#0b0f14;
@@ -457,6 +458,7 @@ button:disabled{cursor:not-allowed; opacity:.35;}
       كود الغرفة — ابعته لصاحبك
       <div class="room-code-big" id="roomCodeDisplay"></div>
     </div>
+    <button class="btn-primary" id="copyLinkBtn" style="background:linear-gradient(135deg,#5a9bff,#2f5fc7); box-shadow:0 8px 24px rgba(76,140,255,.25); margin-top:-6px;">🔗 نسخ لينك الدعوة</button>
     <div class="budget-note">
       <div class="conn-row"><span class="conn-dot on"></span><span id="waitHostName"></span></div>
       <div class="conn-row" style="margin-top:6px;"><span class="conn-dot pulse" id="guestDot"></span><span id="waitGuestName">في انتظار صديقك...</span></div>
@@ -1055,17 +1057,22 @@ function showScreen(id){
 
 /* =========================================================
    ONLINE ROOM / MULTIPLAYER SYNC
-   Two devices share game state through window.storage (shared=true).
-   Every state-changing action re-reads the freshest copy right before
-   writing (a lightweight compare-and-swap) so simultaneous taps from
-   both players don't silently overwrite each other.
+   Two devices connect directly to each other over WebRTC via PeerJS,
+   using PeerJS's free public broker (no account/API key needed — this
+   works from any static host, including GitHub Pages). The host device
+   is the single source of truth for the room; the guest sends action
+   requests and the host broadcasts the resulting state back.
 ========================================================= */
-let roomCode = null;      // e.g. "K7X2Q"
+let roomCode = null;      // e.g. "K7X2Q" — also used as the host's Peer ID
 let myIdx = null;         // 0 = host (creator), 1 = guest (joiner), null = offline (both)
 let isOnline = true;      // false = both players share this one device
 let localRev = -1;        // last room revision we've rendered
-let pollTimer = null;
 let matchResultShown = false;
+
+let peer = null;          // this device's PeerJS instance
+let conn = null;           // the data connection to the other device
+let localRoom = null;      // host's authoritative room object
+let pendingResolve = null; // guest: resolves once host answers our last action
 
 function genRoomCode(){
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I confusion
@@ -1073,17 +1080,117 @@ function genRoomCode(){
   for(let i=0;i<5;i++) s += chars[Math.floor(Math.random()*chars.length)];
   return s;
 }
-function roomKey(){ return 'auctionroom_' + roomCode; }
 
-async function readRoom(){
-  try{
-    const r = await window.storage.get(roomKey(), true);
-    return r ? JSON.parse(r.value) : null;
-  }catch(e){ return null; }
+function teardownConnection(){
+  if(conn){ try{ conn.close(); }catch(e){} conn = null; }
+  if(peer){ try{ peer.destroy(); }catch(e){} peer = null; }
+  localRoom = null; pendingResolve = null;
 }
-async function writeRoom(obj){
-  try{ await window.storage.set(roomKey(), JSON.stringify(obj), true); return true; }
-  catch(e){ console.error('storage error', e); return false; }
+
+/* Host: applies a mutation to the authoritative room, then pushes the
+   full updated room to the guest (if connected). This replaces the old
+   read-modify-write-to-shared-storage compare-and-swap. */
+async function casUpdate(mutator){
+  if(!localRoom) return null;
+  const draft = JSON.parse(JSON.stringify(localRoom));
+  const outcome = mutator(draft, localRoom);
+  if(outcome === false) return localRoom;
+  draft.rev = (localRoom.rev||0) + 1;
+  localRoom = draft;
+  if(conn && conn.open) conn.send({type:'room', room: draft});
+  return draft;
+}
+
+/* Guest: since only the host may mutate the room, the guest sends a
+   named action request over the data channel and waits for the host's
+   next 'room' broadcast (which arrives as the reply). */
+function sendAction(action){
+  return new Promise((resolve)=>{
+    pendingResolve = resolve;
+    if(conn && conn.open) conn.send(action);
+    else resolve(null);
+  });
+}
+
+function scheduleAdvance(){
+  setTimeout(async ()=>{
+    const adv = await casUpdate((draft)=>{
+      state = deserializeGameState(draft.gameState);
+      if(state.phase==='players'){
+        state.slotIndex++;
+        if(state.slotIndex >= FORMATION_SLOTS.length) startCoachPhasePure();
+        else nextAuctionItemPure();
+      } else if(state.phase==='coaches'){
+        finishAuctionPure();
+      }
+      draft.gameState = serializeGameState(state);
+      draft.lastSold = null;
+      draft.lastSoldAt = 0;
+    });
+    if(adv) applyRoom(adv);
+  }, 1900);
+}
+
+/* Host-side: applies whatever action the guest asked for, exactly like
+   the host's own button clicks would. */
+async function handleGuestMessage(msg){
+  if(msg.type === 'join'){
+    const updated = await casUpdate((draft)=>{
+      draft.guestName = msg.name;
+      draft.guestJoined = true;
+    });
+    if(updated) applyRoom(updated);
+  } else if(msg.type === 'bid'){
+    const updated = await casUpdate((draft)=>{
+      const s = deserializeGameState(draft.gameState);
+      const nextPrice = s.price + 1;
+      if(nextPrice > s.budgets[msg.idx]) return false;
+      s.price = nextPrice;
+      s.leader = msg.idx;
+      draft.gameState = serializeGameState(s);
+    });
+    if(updated) applyRoom(updated);
+  } else if(msg.type === 'hammer'){
+    const outcome = await casUpdate((draft)=>{
+      state = deserializeGameState(draft.gameState);
+      if(state.leader===null) return false;
+      const winner = state.leader, loser = winner===0?1:0, price = state.price;
+      state.budgets[winner] -= price;
+      let wonItem, freeItem, titleText;
+      if(state.phase==='players'){
+        wonItem = state.current;
+        state.teams[winner].push(wonItem);
+        markUsedPlayer(wonItem);
+        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id);
+        if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
+        titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
+      } else {
+        wonItem = state.current;
+        state.coaches[winner] = wonItem;
+        markUsedCoach(wonItem);
+        freeItem = pickCoachCandidate(wonItem.id);
+        if(freeItem){ state.coaches[loser] = freeItem; markUsedCoach(freeItem); }
+        titleText = `👔 نتيجة مزاد المدربين`;
+      }
+      state.leader = null;
+      draft.gameState = serializeGameState(state);
+      draft.lastSold = {winnerIdx:winner, wonItem, freeItem, price, titleText};
+      draft.lastSoldAt = Date.now();
+      draft._resolvedNow = true;
+    });
+    if(outcome && outcome._resolvedNow){
+      applyRoom(outcome);
+      scheduleAdvance();
+    }
+  }
+}
+
+/* Guest-side: every message from the host is the freshest full room. */
+function handleHostMessage(msg){
+  if(msg.type === 'room'){
+    applyRoom(msg.room);
+    if(pendingResolve){ const r = pendingResolve; pendingResolve = null; r(msg.room); }
+  }
 }
 
 function serializeGameState(s){
@@ -1093,25 +1200,6 @@ function serializeGameState(s){
 function deserializeGameState(o){
   if(!o) return null;
   return {...o, usedPlayerIds:new Set(o.usedPlayerIds||[]), usedCoachIds:new Set(o.usedCoachIds||[])};
-}
-
-/* Compare-and-swap style update: reads the freshest room, lets `mutator`
-   modify a draft copy, then re-checks nothing else changed in between
-   right before writing. Retries a couple of times on collision. */
-async function casUpdate(mutator){
-  for(let attempt=0; attempt<3; attempt++){
-    const cur = await readRoom();
-    if(!cur) return null;
-    const draft = JSON.parse(JSON.stringify(cur));
-    const outcome = mutator(draft, cur);
-    if(outcome === false) return cur; // mutator aborted (action no longer valid)
-    draft.rev = (cur.rev||0) + 1;
-    const recheck = await readRoom();
-    if(!recheck || recheck.rev !== cur.rev) continue; // someone else wrote first, retry
-    await writeRoom(draft);
-    return draft;
-  }
-  return null;
 }
 
 function applyRoom(room){
@@ -1209,18 +1297,11 @@ function fillSoldMiniFromData(suffix, idx, item, priceText){
   if(item) setAvatar('smAvatar'+suffix, item.name, item.flag);
 }
 
-async function pollRoom(){
-  if(!roomCode) return;
-  const room = await readRoom();
-  if(room && room.rev !== localRev) applyRoom(room);
-}
-function startPolling(){
-  if(pollTimer) clearInterval(pollTimer);
-  pollTimer = setInterval(pollRoom, 1100);
-}
-function stopPolling(){
-  if(pollTimer){ clearInterval(pollTimer); pollTimer=null; }
-}
+/* No-ops kept so existing call sites don't need touching — state now
+   arrives in real time over the peer connection instead of by polling. */
+function pollRoom(){}
+function startPolling(){}
+function stopPolling(){ teardownConnection(); }
 
 /* ---- lobby UI wiring ---- */
 $('showCreateBtn').addEventListener('click', ()=> showScreen('screen-create'));
@@ -1281,19 +1362,45 @@ confirmCreateBtn.addEventListener('click', async ()=>{
   const name = hostNameInput.value.trim();
   confirmCreateBtn.disabled = true;
   isOnline = true;
-  roomCode = genRoomCode();
   myIdx = 0;
-  const room = {
+  localRoom = {
     rev: 1, hostName: name, guestName: null, guestJoined:false, started:false,
     gameState:null, lastSold:null, lastSoldAt:0, matchResult:null
   };
-  await writeRoom(room);
   localRev = 1;
-  $('roomCodeDisplay').textContent = roomCode;
-  $('waitHostName').textContent = '👤 ' + name + ' (المضيف)';
-  $('waitGuestName').textContent = 'في انتظار صديقك...';
-  showScreen('screen-waiting');
-  startPolling();
+
+  // Try a fresh random code; if that Peer ID happens to be taken, retry.
+  function tryCreate(attempt){
+    roomCode = genRoomCode();
+    peer = new Peer(roomCode);
+    peer.on('open', ()=>{
+      $('roomCodeDisplay').textContent = roomCode;
+      $('waitHostName').textContent = '👤 ' + name + ' (المضيف)';
+      $('waitGuestName').textContent = 'في انتظار صديقك...';
+      showScreen('screen-waiting');
+    });
+    peer.on('connection', (c)=>{
+      conn = c;
+      conn.on('data', handleGuestMessage);
+      conn.on('open', ()=>{ conn.send({type:'room', room: localRoom}); });
+      conn.on('close', ()=>{ conn = null; });
+    });
+    peer.on('error', (err)=>{
+      if(err.type === 'unavailable-id' && attempt < 5){ peer.destroy(); tryCreate(attempt+1); }
+      else console.error('peer error', err);
+    });
+  }
+  tryCreate(0);
+});
+
+$('copyLinkBtn').addEventListener('click', ()=>{
+  if(!roomCode) return;
+  const url = location.origin + location.pathname + '?room=' + roomCode;
+  const btn = $('copyLinkBtn');
+  const done = (ok)=>{ btn.textContent = ok ? '✅ اتنسخ! ابعته لصاحبك' : ('🔗 ' + url); setTimeout(()=>{ btn.textContent = '🔗 نسخ لينك الدعوة'; }, 2200); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(()=>done(true)).catch(()=>done(false));
+  } else { done(false); }
 });
 
 confirmJoinBtn.addEventListener('click', async ()=>{
@@ -1303,31 +1410,56 @@ confirmJoinBtn.addEventListener('click', async ()=>{
   $('joinError').style.display = 'none';
   isOnline = true;
   roomCode = code;
-  const cur = await readRoom();
-  if(!cur){
-    $('joinError').textContent = '❌ مفيش غرفة بالكود ده. اتأكد من الكود مع صاحبك.';
-    $('joinError').style.display = 'block';
-    confirmJoinBtn.disabled = false;
-    roomCode = null;
-    return;
-  }
   myIdx = 1;
-  const updated = await casUpdate((draft)=>{
-    draft.guestName = name;
-    draft.guestJoined = true;
-  });
-  if(!updated){
-    $('joinError').textContent = '❌ حصل خطأ، جرب تاني.';
+
+  let settled = false;
+  const fail = (msg)=>{
+    if(settled) return; settled = true;
+    $('joinError').textContent = msg;
     $('joinError').style.display = 'block';
     confirmJoinBtn.disabled = false;
-    return;
-  }
-  localRev = updated.rev;
-  $('roomCodeDisplay').textContent = roomCode;
-  showScreen('screen-waiting');
-  applyRoom(updated);
-  startPolling();
+    roomCode = null; myIdx = null;
+    teardownConnection();
+  };
+  const timeoutId = setTimeout(()=> fail('❌ محدش رد. اتأكد من الكود واتأكد إن صاحبك فاتح الشاشة اللي فيها الكود.'), 12000);
+
+  peer = new Peer();
+  peer.on('open', ()=>{
+    conn = peer.connect(roomCode, {reliable:true});
+    conn.on('open', ()=>{
+      conn.send({type:'join', name});
+    });
+    conn.on('data', (msg)=>{
+      if(!settled){
+        settled = true; clearTimeout(timeoutId);
+        $('roomCodeDisplay').textContent = roomCode;
+        showScreen('screen-waiting');
+      }
+      handleHostMessage(msg);
+    });
+    conn.on('close', ()=>{ conn = null; });
+  });
+  peer.on('error', (err)=>{
+    clearTimeout(timeoutId);
+    if(err.type === 'peer-unavailable'){
+      fail('❌ مفيش غرفة بالكود ده. اتأكد من الكود مع صاحبك.');
+    } else {
+      fail('❌ حصل خطأ في الاتصال، جرب تاني.');
+    }
+  });
 });
+
+/* If someone opened this page via a shared invite link (?room=CODE),
+   pre-fill the join screen with that code. */
+(function prefillFromLink(){
+  const params = new URLSearchParams(location.search);
+  const code = params.get('room');
+  if(code){
+    showScreen('screen-join');
+    roomCodeInput.value = code.toUpperCase();
+    checkJoinReady();
+  }
+})();
 
 $('startAuctionBtn').addEventListener('click', async ()=>{
   if(myIdx!==0) return;
@@ -1463,21 +1595,25 @@ function updateHammer(){
   $('hammerBtn').disabled = (state.leader===null);
 }
 
-/* Online: bidding writes straight to the shared room via CAS (read freshest
-   price, verify it's still biddable, push the higher bid).
+/* Online: the host applies bids directly to the authoritative room;
+   the guest sends a bid request over the peer connection and the host's
+   reply (broadcast to both sides) is what actually updates the screen.
    Offline: both players share this device, so it's a plain local update. */
 async function placeBid(idx){
   if(isOnline){
     if(idx!==myIdx) return;
-    await casUpdate((draft)=>{
-      const s = deserializeGameState(draft.gameState);
-      const nextPrice = s.price + 1;
-      if(nextPrice > s.budgets[idx]) return false;
-      s.price = nextPrice;
-      s.leader = idx;
-      draft.gameState = serializeGameState(s);
-    });
-    pollRoom();
+    if(myIdx===0){
+      await casUpdate((draft)=>{
+        const s = deserializeGameState(draft.gameState);
+        const nextPrice = s.price + 1;
+        if(nextPrice > s.budgets[idx]) return false;
+        s.price = nextPrice;
+        s.leader = idx;
+        draft.gameState = serializeGameState(s);
+      });
+    } else {
+      await sendAction({type:'bid', idx});
+    }
   } else {
     const nextPrice = state.price + 1;
     if(nextPrice > state.budgets[idx]) return;
@@ -1545,57 +1681,47 @@ $('hammerBtn').addEventListener('click', async ()=>{
     return;
   }
 
-  const outcome = await casUpdate((draft)=>{
-    state = deserializeGameState(draft.gameState);
-    if(state.leader===null) return false; // already resolved by the other player
-    const winner = state.leader;
-    const loser = winner===0 ? 1 : 0;
-    const price = state.price;
-    state.budgets[winner] -= price;
-    let wonItem, freeItem, titleText;
+  if(myIdx===0){
+    const outcome = await casUpdate((draft)=>{
+      state = deserializeGameState(draft.gameState);
+      if(state.leader===null) return false; // already resolved by the other player
+      const winner = state.leader;
+      const loser = winner===0 ? 1 : 0;
+      const price = state.price;
+      state.budgets[winner] -= price;
+      let wonItem, freeItem, titleText;
 
-    if(state.phase==='players'){
-      wonItem = state.current;
-      state.teams[winner].push(wonItem);
-      markUsedPlayer(wonItem);
-      freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id);
-      if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
-      titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
-    } else {
-      wonItem = state.current;
-      state.coaches[winner] = wonItem;
-      markUsedCoach(wonItem);
-      freeItem = pickCoachCandidate(wonItem.id);
-      if(freeItem){ state.coaches[loser] = freeItem; markUsedCoach(freeItem); }
-      titleText = `👔 نتيجة مزاد المدربين`;
+      if(state.phase==='players'){
+        wonItem = state.current;
+        state.teams[winner].push(wonItem);
+        markUsedPlayer(wonItem);
+        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id);
+        if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
+        titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
+      } else {
+        wonItem = state.current;
+        state.coaches[winner] = wonItem;
+        markUsedCoach(wonItem);
+        freeItem = pickCoachCandidate(wonItem.id);
+        if(freeItem){ state.coaches[loser] = freeItem; markUsedCoach(freeItem); }
+        titleText = `👔 نتيجة مزاد المدربين`;
+      }
+      state.leader = null; // marks this round as resolved
+      draft.gameState = serializeGameState(state);
+      draft.lastSold = {winnerIdx:winner, wonItem, freeItem, price, titleText};
+      draft.lastSoldAt = Date.now();
+      draft._resolvedNow = true;
+    });
+
+    if(outcome && outcome._resolvedNow){
+      applyRoom(outcome);
+      scheduleAdvance();
     }
-    state.leader = null; // marks this round as resolved
-    draft.gameState = serializeGameState(state);
-    draft.lastSold = {winnerIdx:winner, wonItem, freeItem, price, titleText};
-    draft.lastSoldAt = Date.now();
-    draft._resolvedNow = true;
-  });
-
-  if(outcome && outcome._resolvedNow){
-    applyRoom(outcome);
-    setTimeout(async ()=>{
-      const adv = await casUpdate((draft)=>{
-        state = deserializeGameState(draft.gameState);
-        if(state.phase==='players'){
-          state.slotIndex++;
-          if(state.slotIndex >= FORMATION_SLOTS.length) startCoachPhasePure();
-          else nextAuctionItemPure();
-        } else if(state.phase==='coaches'){
-          finishAuctionPure();
-        }
-        draft.gameState = serializeGameState(state);
-        draft.lastSold = null;
-        draft.lastSoldAt = 0;
-      });
-      if(adv) applyRoom(adv);
-    }, 1900);
   } else {
-    pollRoom();
+    // Guest: ask the host to resolve the round. The host's broadcast
+    // (via handleHostMessage → applyRoom) updates our screen, and the
+    // host alone schedules the advance to the next item.
+    await sendAction({type:'hammer'});
   }
 });
 
