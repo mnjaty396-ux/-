@@ -219,10 +219,11 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 #roomCodeInput{text-transform:uppercase;}
 .bid-btn small{font-size:11px; opacity:.85; font-weight:600;}
 
+.hammer-row{display:flex; gap:10px; width:100%; max-width:420px; margin-bottom:22px;}
 .hammer-btn{
-  width:100%; max-width:420px; padding:14px; border-radius:14px; margin-bottom:22px;
-  background:linear-gradient(135deg,var(--gold),#a9791a); color:#1a1300; font-weight:800; font-size:16px;
-  box-shadow:0 6px 18px rgba(231,179,76,.2);
+  flex:1; padding:14px 8px; border-radius:14px;
+  background:linear-gradient(135deg,var(--gold),#a9791a); color:#1a1300; font-weight:800; font-size:15px;
+  box-shadow:0 6px 18px rgba(231,179,76,.2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .hammer-btn:disabled{background:#2a3441; color:#5a6b7a; box-shadow:none;}
 
@@ -510,7 +511,10 @@ button:disabled{cursor:not-allowed; opacity:.35;}
       <button class="bid-btn p1" id="bidBtn1"><span class="plus">+</span><span id="bidName1"></span></button>
       <button class="bid-btn p2" id="bidBtn2"><span id="bidName2"></span><span class="plus">+</span></button>
     </div>
-    <button class="hammer-btn" id="hammerBtn" disabled>🔨 حسم المزاد</button>
+    <div class="hammer-row">
+      <button class="hammer-btn" id="hammerBtn1" disabled>🔨 حسم (<span id="hammerName1"></span>)</button>
+      <button class="hammer-btn" id="hammerBtn2" disabled>🔨 حسم (<span id="hammerName2"></span>)</button>
+    </div>
   </div>
 
   <div class="sec-title">التشكيلات الحالية</div>
@@ -1342,6 +1346,8 @@ function renderAuctionScreen(){
   $('tpName2').textContent = state.names[1];
   $('bidName1').textContent = state.names[0];
   $('bidName2').textContent = state.names[1];
+  $('hammerName1').textContent = state.names[0];
+  $('hammerName2').textContent = state.names[1];
   updateBudgetBar();
   renderFormations();
 
@@ -1674,15 +1680,24 @@ function updateBidButtons(){
 }
 
 function updateHammer(){
-  const btn = $('hammerBtn');
-  if(state.leader===null){ btn.disabled = true; return; }
-  // Online: only the side that did NOT place the current top bid may finalize —
-  // it's their turn to either counter-bid or accept. The leader can't hammer
-  // their own bid (that would let someone bid a huge number and instantly
-  // close it out before the other side ever gets a chance to respond).
-  // Offline: both players share one device, so there's no "other side" to
-  // enforce this against — leave it open to whoever's holding the phone.
-  btn.disabled = isOnline && (myIdx === state.leader);
+  const b1 = $('hammerBtn1'), b2 = $('hammerBtn2');
+  // Each side gets its own hammer button now (mirrors the bid buttons), so
+  // "whoever's turn it is" is always explicit — even offline on a shared
+  // device — instead of relying on a single button anyone could tap.
+  // A side can only finalize when it is NOT the current leader: it's their
+  // turn to either counter-bid or accept, never to close out their own bid.
+  // Online, it must also be your own seat (same rule as the bid buttons).
+  if(state.leader===null){
+    b1.disabled = true; b2.disabled = true;
+    b1.classList.remove('not-you'); b2.classList.remove('not-you');
+    return;
+  }
+  const canHammer1 = state.leader!==0 && (!isOnline || myIdx===0);
+  const canHammer2 = state.leader!==1 && (!isOnline || myIdx===1);
+  b1.disabled = !canHammer1;
+  b2.disabled = !canHammer2;
+  b1.classList.toggle('not-you', isOnline && myIdx!==0);
+  b2.classList.toggle('not-you', isOnline && myIdx!==1);
 }
 
 /* Online: the host applies bids directly to the authoritative room;
@@ -1718,14 +1733,15 @@ async function placeBid(idx){
 $('bidBtn1').addEventListener('click', ()=>placeBid(0));
 $('bidBtn2').addEventListener('click', ()=>placeBid(1));
 
-/* Online: only the non-leader may call the hammer (see updateHammer) — the
-   leader's own tap is rejected even if their button was stale, so bidding a
-   huge number and instantly closing it out yourself is not possible.
-   Offline: it's all local (shared device, no identity to enforce), so either
-   player calling the hammer resolves the round immediately in place. */
-$('hammerBtn').addEventListener('click', async ()=>{
+/* Only the non-leader's hammer button can ever finalize (see updateHammer) —
+   whichever side currently holds the top bid can't close out its own bid,
+   online or offline. clickerIdx is which button was pressed (0 or 1); it's
+   rejected if that side is the leader, or (online) isn't your own seat, even
+   if the button's disabled state was somehow stale. */
+async function hammerClick(clickerIdx){
   if(state.leader===null) return;
-  if(isOnline && myIdx===state.leader) return;
+  if(state.leader===clickerIdx) return;
+  if(isOnline && myIdx!==clickerIdx) return;
 
   if(!isOnline){
     const winner = state.leader, loser = winner===0?1:0, price = state.price;
@@ -1775,7 +1791,7 @@ $('hammerBtn').addEventListener('click', async ()=>{
     const outcome = await casUpdate((draft)=>{
       state = deserializeGameState(draft.gameState);
       if(state.leader===null) return false; // already resolved by the other player
-      if(state.leader===myIdx) return false; // the leader can't hammer their own bid
+      if(state.leader===myIdx) return false; // the leader can't hammer their own bid, even if this tab is stale
       const winner = state.leader;
       const loser = winner===0 ? 1 : 0;
       const price = state.price;
@@ -1814,7 +1830,9 @@ $('hammerBtn').addEventListener('click', async ()=>{
     // host alone schedules the advance to the next item.
     await sendAction({type:'hammer'});
   }
-});
+}
+$('hammerBtn1').addEventListener('click', ()=>hammerClick(0));
+$('hammerBtn2').addEventListener('click', ()=>hammerClick(1));
 
 /* =========================================================
    FORMATIONS RENDER
