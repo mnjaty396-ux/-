@@ -1213,6 +1213,7 @@ async function handleGuestMessage(msg){
     const outcome = await casUpdate((draft)=>{
       state = deserializeGameState(draft.gameState);
       if(state.leader===null) return false;
+      if(state.leader===1) return false; // the guest (idx 1) can't hammer their own bid
       const winner = state.leader, loser = winner===0?1:0, price = state.price;
       state.budgets[winner] -= price;
       let wonItem, freeItem, titleText;
@@ -1673,7 +1674,15 @@ function updateBidButtons(){
 }
 
 function updateHammer(){
-  $('hammerBtn').disabled = (state.leader===null);
+  const btn = $('hammerBtn');
+  if(state.leader===null){ btn.disabled = true; return; }
+  // Online: only the side that did NOT place the current top bid may finalize —
+  // it's their turn to either counter-bid or accept. The leader can't hammer
+  // their own bid (that would let someone bid a huge number and instantly
+  // close it out before the other side ever gets a chance to respond).
+  // Offline: both players share one device, so there's no "other side" to
+  // enforce this against — leave it open to whoever's holding the phone.
+  btn.disabled = isOnline && (myIdx === state.leader);
 }
 
 /* Online: the host applies bids directly to the authoritative room;
@@ -1709,13 +1718,14 @@ async function placeBid(idx){
 $('bidBtn1').addEventListener('click', ()=>placeBid(0));
 $('bidBtn2').addEventListener('click', ()=>placeBid(1));
 
-/* Either player can call the hammer. Online: whoever's tap wins the CAS
-   race resolves the round and — uniquely, since only their own code path
-   runs this — schedules the delayed advance to the next item; the other
-   device just polls and renders the same result a moment later.
-   Offline: it's all local, so resolve immediately in place. */
+/* Online: only the non-leader may call the hammer (see updateHammer) — the
+   leader's own tap is rejected even if their button was stale, so bidding a
+   huge number and instantly closing it out yourself is not possible.
+   Offline: it's all local (shared device, no identity to enforce), so either
+   player calling the hammer resolves the round immediately in place. */
 $('hammerBtn').addEventListener('click', async ()=>{
   if(state.leader===null) return;
+  if(isOnline && myIdx===state.leader) return;
 
   if(!isOnline){
     const winner = state.leader, loser = winner===0?1:0, price = state.price;
@@ -1765,6 +1775,7 @@ $('hammerBtn').addEventListener('click', async ()=>{
     const outcome = await casUpdate((draft)=>{
       state = deserializeGameState(draft.gameState);
       if(state.leader===null) return false; // already resolved by the other player
+      if(state.leader===myIdx) return false; // the leader can't hammer their own bid
       const winner = state.leader;
       const loser = winner===0 ? 1 : 0;
       const price = state.price;
