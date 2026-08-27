@@ -471,6 +471,7 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 <!-- ============ AUCTION SCREEN ============ -->
 <div id="screen-auction" class="screen">
   <div class="topbar">
+    <div class="conn-status" id="connStatus" style="display:none; text-align:center; font-size:12.5px; padding:6px 10px; border-radius:8px; margin-bottom:8px;"></div>
     <div class="teams-progress">
       <div class="tp-card p1">
         <div class="tp-top">
@@ -1087,6 +1088,20 @@ function teardownConnection(){
   localRoom = null; pendingResolve = null;
 }
 
+/* WebRTC needs help getting through mobile-carrier NATs — plain STUN
+   (the default) often fails on 4G/5G, so we add a public TURN relay
+   as a fallback path. This is a public demo relay (no account needed);
+   it's best-effort but dramatically improves connection success rate
+   on cellular networks compared to STUN alone. */
+const ICE_CONFIG = {
+  iceServers: [
+    { urls: 'stun:stun.relay.metered.ca:80' },
+    { urls: 'turn:global.relay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
+    { urls: 'turn:global.relay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' },
+    { urls: 'turn:global.relay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' }
+  ]
+};
+
 /* Host: applies a mutation to the authoritative room, then pushes the
    full updated room to the guest (if connected). This replaces the old
    read-modify-write-to-shared-storage compare-and-swap. */
@@ -1104,11 +1119,34 @@ async function casUpdate(mutator){
 /* Guest: since only the host may mutate the room, the guest sends a
    named action request over the data channel and waits for the host's
    next 'room' broadcast (which arrives as the reply). */
+function setConnStatus(text, kind){
+  const el = document.getElementById('connStatus');
+  if(!el) return;
+  if(!text){ el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.textContent = text;
+  el.style.background = kind==='bad' ? 'rgba(255,92,92,.12)' : 'rgba(231,179,76,.08)';
+  el.style.color = kind==='bad' ? 'var(--red)' : 'var(--gold)';
+  el.style.border = '1px solid ' + (kind==='bad' ? 'rgba(255,92,92,.35)' : 'rgba(231,179,76,.25)');
+}
+
 function sendAction(action){
   return new Promise((resolve)=>{
-    pendingResolve = resolve;
-    if(conn && conn.open) conn.send(action);
-    else resolve(null);
+    if(!conn || !conn.open){
+      setConnStatus('⚠️ الاتصال بصاحبك انقطع — جرب تقفل وترجع للعبة تاني', 'bad');
+      resolve(null);
+      return;
+    }
+    let settled = false;
+    pendingResolve = (room)=>{ settled = true; resolve(room); };
+    conn.send(action);
+    setTimeout(()=>{
+      if(!settled){
+        pendingResolve = null;
+        setConnStatus('⚠️ محدش رد — الاتصال ممكن يكون بطيء أو اتقطع', 'bad');
+        resolve(null);
+      }
+    }, 6000);
   });
 }
 
@@ -1383,7 +1421,7 @@ confirmCreateBtn.addEventListener('click', async ()=>{
   // Try a fresh random code; if that Peer ID happens to be taken, retry.
   function tryCreate(attempt){
     roomCode = genRoomCode();
-    peer = new Peer(roomCode);
+    peer = new Peer(roomCode, {config: ICE_CONFIG});
     peer.on('open', ()=>{
       $('roomCodeDisplay').textContent = roomCode;
       $('waitHostName').textContent = '👤 ' + name + ' (المضيف)';
@@ -1393,8 +1431,8 @@ confirmCreateBtn.addEventListener('click', async ()=>{
     peer.on('connection', (c)=>{
       conn = c;
       conn.on('data', handleGuestMessage);
-      conn.on('open', ()=>{ conn.send({type:'room', room: localRoom}); });
-      conn.on('close', ()=>{ conn = null; });
+      conn.on('open', ()=>{ conn.send({type:'room', room: localRoom}); setConnStatus(null); });
+      conn.on('close', ()=>{ conn = null; setConnStatus('⚠️ صاحبك اتقطع الاتصال بيه — استنى يرجع أو اطلب منه يدخل تاني بنفس الكود', 'bad'); });
     });
     peer.on('error', (err)=>{
       if(err.type === 'unavailable-id' && attempt < 5){ peer.destroy(); tryCreate(attempt+1); }
@@ -1434,7 +1472,7 @@ confirmJoinBtn.addEventListener('click', async ()=>{
   };
   const timeoutId = setTimeout(()=> fail('❌ محدش رد. اتأكد من الكود واتأكد إن صاحبك فاتح الشاشة اللي فيها الكود.'), 12000);
 
-  peer = new Peer();
+  peer = new Peer({config: ICE_CONFIG});
   peer.on('open', ()=>{
     conn = peer.connect(roomCode, {reliable:true});
     conn.on('open', ()=>{
@@ -1446,9 +1484,10 @@ confirmJoinBtn.addEventListener('click', async ()=>{
         $('roomCodeDisplay').textContent = roomCode;
         showScreen('screen-waiting');
       }
+      setConnStatus(null);
       handleHostMessage(msg);
     });
-    conn.on('close', ()=>{ conn = null; });
+    conn.on('close', ()=>{ conn = null; setConnStatus('⚠️ الاتصال بصاحبك (المضيف) اتقطع', 'bad'); });
   });
   peer.on('error', (err)=>{
     clearTimeout(timeoutId);
