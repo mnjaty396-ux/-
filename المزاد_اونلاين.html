@@ -1182,6 +1182,17 @@ async function handleGuestMessage(msg){
       applyRoom(outcome);
       scheduleAdvance();
     }
+  } else if(msg.type === 'simulate'){
+    const outcome = await casUpdate((draft)=>{
+      if(draft.matchResult) return false; // already simulated
+      state = deserializeGameState(draft.gameState);
+      draft.matchResult = simulateMatch();
+    });
+    if(outcome && outcome.matchResult){
+      matchResultShown = true;
+      applyRoom(outcome);
+      setTimeout(()=>{ showResult(outcome.matchResult); }, 1400);
+    }
   }
 }
 
@@ -1603,7 +1614,7 @@ async function placeBid(idx){
   if(isOnline){
     if(idx!==myIdx) return;
     if(myIdx===0){
-      await casUpdate((draft)=>{
+      const updated = await casUpdate((draft)=>{
         const s = deserializeGameState(draft.gameState);
         const nextPrice = s.price + 1;
         if(nextPrice > s.budgets[idx]) return false;
@@ -1611,6 +1622,7 @@ async function placeBid(idx){
         s.leader = idx;
         draft.gameState = serializeGameState(s);
       });
+      if(updated) applyRoom(updated);
     } else {
       await sendAction({type:'bid', idx});
     }
@@ -1903,19 +1915,21 @@ $('aiBtn').addEventListener('click', async ()=>{
     return;
   }
 
-  // whoever clicks first computes the result and shares it; the other
-  // device picks it up automatically on its next poll
-  const outcome = await casUpdate((draft)=>{
-    if(draft.matchResult) return false; // already simulated
-    state = deserializeGameState(draft.gameState);
-    draft.matchResult = simulateMatch();
-  });
-  if(!(outcome && outcome.matchResult)){
-    // someone beat us to it — just wait for the poll to pick it up
-    return;
+  if(myIdx===0){
+    const outcome = await casUpdate((draft)=>{
+      if(draft.matchResult) return false; // already simulated
+      state = deserializeGameState(draft.gameState);
+      draft.matchResult = simulateMatch();
+    });
+    if(!(outcome && outcome.matchResult)) return;
+    matchResultShown = true; // set first so applyRoom's own check doesn't short-circuit our delay
+    applyRoom(outcome);
+    setTimeout(()=>{ showResult(outcome.matchResult); }, 1400);
+  } else {
+    // Guest: ask the host to run the simulation; its broadcast (handled by
+    // handleHostMessage → applyRoom) will call showResult on our screen too.
+    await sendAction({type:'simulate'});
   }
-  matchResultShown = true; // prevents the poll loop from also firing showResult
-  setTimeout(()=>{ showResult(outcome.matchResult); }, 1400);
 });
 
 function showResult(res){
