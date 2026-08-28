@@ -948,8 +948,19 @@ function buildCoaches(){
 
 /* ---- slot-based candidate picking (formation order + rating split + legend/current balance) ---- */
 function getSlotCandidates(slot, excludeId){
-  return ALL_PLAYERS.filter(p =>
+  const strict = ALL_PLAYERS.filter(p =>
     slot.pos.includes(p.pos) && !state.usedPlayerIds.has(p.id) && p.id !== excludeId
+  );
+  if(strict.length>0) return strict;
+  // Safety net: the exact position (e.g. RB) ran out of unused players.
+  // Without this, pickPlayerForSlot returns null, state.current stays null,
+  // and the screen freezes with no card and no way to bid (the bug reported).
+  // Broaden to any position in the same formation bucket instead (e.g. any
+  // DEF for a defensive slot) — still respects usedPlayerIds, so every
+  // player is still only ever offered once across the whole draft.
+  const bucket = bucketOf(slot.pos[0]);
+  return ALL_PLAYERS.filter(p =>
+    bucketOf(p.pos)===bucket && !state.usedPlayerIds.has(p.id) && p.id !== excludeId
   );
 }
 function pickPlayerForSlot(slot, excludeId){
