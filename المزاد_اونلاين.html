@@ -1206,6 +1206,7 @@ async function handleGuestMessage(msg){
     if(updated) applyRoom(updated);
   } else if(msg.type === 'bid'){
     const updated = await casUpdate((draft)=>{
+      if(draft.lastSold) return false; // a round just resolved and hasn't advanced yet — no bidding on the item that already sold
       const s = deserializeGameState(draft.gameState);
       if(!canAffordBid(s, msg.idx)) return false;
       s.price = s.price + 1;
@@ -1306,6 +1307,10 @@ function applyRoom(room){
   if(ALL_COACHES.length===0){ ALL_COACHES = shuffle(buildCoaches()); }
 
   state = deserializeGameState(room.gameState);
+  // Authoritative, clock-independent: as long as the host says this round's
+  // win hasn't been advanced past yet, block further bids/hammers on both
+  // sides — regardless of whether the two phones' clocks agree.
+  roundResolving = !!room.lastSold;
 
   if(room.matchResult){
     if(!matchResultShown){
@@ -1669,10 +1674,28 @@ function updateBudgetBar(){
   $('tpCount2').textContent = state.teams[1].length + '/11';
 }
 
+let roundResolving = false; // true from the moment a round is won until the
+                             // next item has fully loaded — driven by state,
+                             // not by comparing clocks between two phones
+                             // (which can drift), so it's reliable even if
+                             // the visual "sold" overlay itself is ever late.
+
+/* True while a round is won but the next player/coach hasn't loaded yet.
+   Bidding or hammering must be blocked for this whole window: state.leader
+   is already null again at this point (so the hammer buttons are naturally
+   disabled), but nothing previously stopped a fast repeated tap from placing
+   a fresh bid — and then even hammering it — on the item that was JUST sold,
+   before the screen moved on to the next one. That's what was corrupting
+   the next pick. */
+function isResolving(){
+  return roundResolving || $('soldFlash').classList.contains('show');
+}
+
 function updateBidButtons(){
   const b1 = $('bidBtn1'), b2 = $('bidBtn2');
-  const canBid1 = isOnline ? myIdx===0 : true;
-  const canBid2 = isOnline ? myIdx===1 : true;
+  const resolving = isResolving();
+  const canBid1 = !resolving && (isOnline ? myIdx===0 : true);
+  const canBid2 = !resolving && (isOnline ? myIdx===1 : true);
   b1.disabled = !canAffordBid(state, 0) || !canBid1;
   b2.disabled = !canAffordBid(state, 1) || !canBid2;
   b1.classList.toggle('not-you', !canBid1);
@@ -1687,7 +1710,7 @@ function updateHammer(){
   // A side can only finalize when it is NOT the current leader: it's their
   // turn to either counter-bid or accept, never to close out their own bid.
   // Online, it must also be your own seat (same rule as the bid buttons).
-  if(state.leader===null){
+  if(state.leader===null || isResolving()){
     b1.disabled = true; b2.disabled = true;
     b1.classList.remove('not-you'); b2.classList.remove('not-you');
     return;
@@ -1705,10 +1728,12 @@ function updateHammer(){
    reply (broadcast to both sides) is what actually updates the screen.
    Offline: both players share this device, so it's a plain local update. */
 async function placeBid(idx){
+  if(isResolving()) return; // don't let a stray/queued tap land a bid on an item that already sold and hasn't advanced yet
   if(isOnline){
     if(idx!==myIdx) return;
     if(myIdx===0){
       const updated = await casUpdate((draft)=>{
+        if(draft.lastSold) return false; // a round just resolved and hasn't advanced yet
         const s = deserializeGameState(draft.gameState);
         if(!canAffordBid(s, idx)) return false;
         s.price = s.price + 1;
@@ -1739,12 +1764,14 @@ $('bidBtn2').addEventListener('click', ()=>placeBid(1));
    rejected if that side is the leader, or (online) isn't your own seat, even
    if the button's disabled state was somehow stale. */
 async function hammerClick(clickerIdx){
+  if(isResolving()) return; // same guard as placeBid — block stray/queued taps during the sold-flash window
   if(state.leader===null) return;
   if(state.leader===clickerIdx) return;
   if(isOnline && myIdx!==clickerIdx) return;
 
   if(!isOnline){
     const winner = state.leader, loser = winner===0?1:0, price = state.price;
+    roundResolving = true;
     state.budgets[winner] -= price;
     let wonItem, freeItem, titleText;
     if(state.phase==='players'){
@@ -1777,6 +1804,7 @@ async function hammerClick(clickerIdx){
       } else if(state.phase==='coaches'){
         finishAuctionPure();
       }
+      roundResolving = false;
       if(state.phase==='done'){
         renderFormations('finalFormations');
         showScreen('screen-final');
