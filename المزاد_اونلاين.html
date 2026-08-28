@@ -386,6 +386,34 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 </style>
 </head>
 <body>
+<script>
+/* Diagnostic only: shows any JS error or unhandled promise rejection as a
+   red banner at the top of the screen instead of letting it fail silently.
+   This is what was making the auction "freeze" with no explanation — some
+   error was being thrown and swallowed, so nothing after it ever ran, but
+   nothing on screen said why. If it happens again, screenshot the red
+   banner and send it over — that's the exact bug, no more guessing. */
+(function(){
+  function showJsError(msg){
+    let el = document.getElementById('jsErrorBanner');
+    if(!el){
+      el = document.createElement('div');
+      el.id = 'jsErrorBanner';
+      el.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#ff2d2d;color:#fff;padding:10px 14px;font-size:13px;line-height:1.5;text-align:right;direction:rtl;white-space:pre-wrap;font-family:monospace;box-shadow:0 4px 12px rgba(0,0,0,.4);';
+      document.body.prepend(el);
+    }
+    el.style.display = 'block';
+    el.textContent += (el.textContent ? '\n---\n' : '⚠️ خطأ برمجي:\n') + msg;
+  }
+  window.addEventListener('error', function(e){
+    showJsError((e.message||'error') + '\n' + (e.filename ? e.filename.split('/').pop()+':'+e.lineno : ''));
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    const r = e.reason;
+    showJsError('Promise rejection: ' + (r && r.message ? r.message : String(r)) + (r && r.stack ? '\n'+r.stack.split('\n').slice(0,3).join('\n') : ''));
+  });
+})();
+</script>
 
 <!-- ============ LOBBY CHOICE ============ -->
 <div id="screen-lobby" class="screen active">
