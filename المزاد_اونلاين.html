@@ -209,7 +209,8 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 .bid-btn.p1{background:linear-gradient(135deg,#5a9bff,#2f5fc7); box-shadow:0 8px 22px rgba(76,140,255,.28);}
 .bid-btn.p2{background:linear-gradient(135deg,#ff7a7a,#c73737); box-shadow:0 8px 22px rgba(255,92,92,.28);}
 .bid-btn.not-you{background:#232c37 !important; color:#5a6b7a; box-shadow:none;}
-.you-badge{font-size:9.5px; font-weight:800; background:rgba(255,255,255,.18); border-radius:8px; padding:1px 6px; margin-top:2px;}
+.you-badge{font-size:9.5px; font-weight:800; background:rgba(255,255,255,.18); border-radius:8px; padding:2px 8px; margin-top:3px; display:block; min-height:14px;}
+.bid-btn.not-you .you-badge{background:rgba(255,255,255,.06); color:#5a6b7a;}
 
 /* ---------- ONLINE LOBBY ---------- */
 .room-code-box{
@@ -520,8 +521,8 @@ button:disabled{cursor:not-allowed; opacity:.35;}
     </div>
 
     <div class="bid-row">
-      <button class="bid-btn p1" id="bidBtn1"><span class="plus">+</span><span id="bidName1"></span></button>
-      <button class="bid-btn p2" id="bidBtn2"><span id="bidName2"></span><span class="plus">+</span></button>
+      <button class="bid-btn p1" id="bidBtn1"><span class="plus">+</span><span id="bidName1"></span><span class="you-badge" id="youBadge1"></span></button>
+      <button class="bid-btn p2" id="bidBtn2"><span id="bidName2"></span><span class="plus">+</span><span class="you-badge" id="youBadge2"></span></button>
     </div>
     <div class="hammer-row">
       <button class="hammer-btn" id="hammerBtn1" disabled>🔨 حسم (<span id="hammerName1"></span>)</button>
@@ -1726,6 +1727,7 @@ function isResolving(){
 
 function updateBidButtons(){
   const b1 = $('bidBtn1'), b2 = $('bidBtn2');
+  const yb1 = $('youBadge1'), yb2 = $('youBadge2');
   const resolving = isResolving();
   const canBid1 = !resolving && (isOnline ? myIdx===0 : true);
   const canBid2 = !resolving && (isOnline ? myIdx===1 : true);
@@ -1733,6 +1735,16 @@ function updateBidButtons(){
   b2.disabled = !canAffordBid(state, 1) || !canBid2;
   b1.classList.toggle('not-you', !canBid1);
   b2.classList.toggle('not-you', !canBid2);
+  // Make it unmistakable which button belongs to which player — without
+  // this label the two "not-you" buttons look identically disabled and
+  // it's easy for either player to assume the whole thing is broken.
+  if(isOnline){
+    yb1.textContent = myIdx===0 ? '👈 ده زرارك' : 'زرار صاحبك';
+    yb2.textContent = myIdx===1 ? 'ده زرارك 👉' : 'زرار صاحبك';
+  } else {
+    yb1.textContent = '';
+    yb2.textContent = '';
+  }
 }
 
 function updateHammer(){
