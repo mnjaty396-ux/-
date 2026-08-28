@@ -386,34 +386,6 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 </style>
 </head>
 <body>
-<script>
-/* Diagnostic only: shows any JS error or unhandled promise rejection as a
-   red banner at the top of the screen instead of letting it fail silently.
-   This is what was making the auction "freeze" with no explanation — some
-   error was being thrown and swallowed, so nothing after it ever ran, but
-   nothing on screen said why. If it happens again, screenshot the red
-   banner and send it over — that's the exact bug, no more guessing. */
-(function(){
-  function showJsError(msg){
-    let el = document.getElementById('jsErrorBanner');
-    if(!el){
-      el = document.createElement('div');
-      el.id = 'jsErrorBanner';
-      el.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#ff2d2d;color:#fff;padding:10px 14px;font-size:13px;line-height:1.5;text-align:right;direction:rtl;white-space:pre-wrap;font-family:monospace;box-shadow:0 4px 12px rgba(0,0,0,.4);';
-      document.body.prepend(el);
-    }
-    el.style.display = 'block';
-    el.textContent += (el.textContent ? '\n---\n' : '⚠️ خطأ برمجي:\n') + msg;
-  }
-  window.addEventListener('error', function(e){
-    showJsError((e.message||'error') + '\n' + (e.filename ? e.filename.split('/').pop()+':'+e.lineno : ''));
-  });
-  window.addEventListener('unhandledrejection', function(e){
-    const r = e.reason;
-    showJsError('Promise rejection: ' + (r && r.message ? r.message : String(r)) + (r && r.stack ? '\n'+r.stack.split('\n').slice(0,3).join('\n') : ''));
-  });
-})();
-</script>
 
 <!-- ============ LOBBY CHOICE ============ -->
 <div id="screen-lobby" class="screen active">
@@ -1236,23 +1208,52 @@ function sendAction(action){
 }
 
 function scheduleAdvance(){
-  setTimeout(async ()=>{
-    const adv = await casUpdate((draft)=>{
-      state = deserializeGameState(draft.gameState);
-      if(state.phase==='players'){
-        state.slotIndex++;
-        if(state.slotIndex >= FORMATION_SLOTS.length) startCoachPhasePure();
-        else nextAuctionItemPure();
-      } else if(state.phase==='coaches'){
-        finishAuctionPure();
-      }
-      draft.gameState = serializeGameState(state);
-      draft.lastSold = null;
-      draft.lastSoldAt = 0;
-    });
-    if(adv) applyRoom(adv);
-  }, 1900);
+  setTimeout(()=>{ forceAdvanceIfDue(); }, 1900);
 }
+
+/* Mobile browsers throttle or fully suspend setTimeout on a backgrounded
+   or locked tab, so the host-only timer inside scheduleAdvance can miss
+   its 1900ms window — sometimes for minutes, sometimes forever if the
+   tab gets discarded. When that happens, draft.lastSold never clears,
+   which means isResolving() stays true and BOTH players' bid/hammer
+   buttons stay disabled indefinitely, even though nothing is actually
+   wrong with their connection.
+   Fix: instead of trusting only the timer to fire on schedule, we store
+   a wall-clock deadline (advanceAt) in the shared room and re-check it
+   from multiple independent triggers (the timer itself, the host's tab
+   regaining visibility, and the heartbeat). Any of these can push the
+   round forward the moment it's actually due, even if the original
+   timer was suspended for a while. */
+async function forceAdvanceIfDue(){
+  if(!isOnline || myIdx!==0) return; // only the host owns/mutates localRoom
+  if(!localRoom || !localRoom.lastSold) return; // nothing stuck
+  if(localRoom.advanceAt && Date.now() < localRoom.advanceAt) return; // not due yet — its own timer will handle it
+  const adv = await casUpdate((draft)=>{
+    if(!draft.lastSold) return false; // already advanced by another trigger in the meantime
+    state = deserializeGameState(draft.gameState);
+    if(state.phase==='players'){
+      state.slotIndex++;
+      if(state.slotIndex >= FORMATION_SLOTS.length) startCoachPhasePure();
+      else nextAuctionItemPure();
+    } else if(state.phase==='coaches'){
+      finishAuctionPure();
+    }
+    draft.gameState = serializeGameState(state);
+    draft.lastSold = null;
+    draft.lastSoldAt = 0;
+    draft.advanceAt = 0;
+  });
+  if(adv) applyRoom(adv);
+}
+
+/* The host's own tab is the only place lastSold ever gets cleared, so if
+   IT was the one that got backgrounded/locked, the fix above only helps
+   once that tab is actually running JS again. 'visibilitychange' fires
+   immediately (unlike setTimeout) the moment the host looks at the app
+   again, so this is what actually unsticks a stalled round in practice. */
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden) forceAdvanceIfDue();
+});
 
 /* Host-side: applies whatever action the guest asked for, exactly like
    the host's own button clicks would. */
@@ -1300,6 +1301,7 @@ async function handleGuestMessage(msg){
       draft.gameState = serializeGameState(state);
       draft.lastSold = {winnerIdx:winner, wonItem, freeItem, price, titleText};
       draft.lastSoldAt = Date.now();
+      draft.advanceAt = Date.now() + 1900;
       draft._resolvedNow = true;
     });
     if(outcome && outcome._resolvedNow){
@@ -1541,7 +1543,8 @@ confirmCreateBtn.addEventListener('click', async ()=>{
         conn.send({type:'room', room: localRoom});
         setConnStatus(null);
         if(heartbeatTimer) clearInterval(heartbeatTimer);
-        heartbeatTimer = setInterval(()=>{
+        heartbeatTimer = setInterval(async ()=>{
+          await forceAdvanceIfDue(); // self-heal a stuck round if it's overdue
           if(conn && conn.open && localRoom) conn.send({type:'room', room: localRoom});
         }, 2000);
       });
@@ -1929,6 +1932,7 @@ async function hammerClick(clickerIdx){
       draft.gameState = serializeGameState(state);
       draft.lastSold = {winnerIdx:winner, wonItem, freeItem, price, titleText};
       draft.lastSoldAt = Date.now();
+      draft.advanceAt = Date.now() + 1900;
       draft._resolvedNow = true;
     });
 
