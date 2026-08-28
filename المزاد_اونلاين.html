@@ -1258,6 +1258,15 @@ document.addEventListener('visibilitychange', ()=>{
 /* Host-side: applies whatever action the guest asked for, exactly like
    the host's own button clicks would. */
 async function handleGuestMessage(msg){
+  // Whatever the host's tab was doing, an incoming message means it's
+  // actively running JS right now — so this is a free chance to catch up
+  // on any advance that a throttled/backgrounded setTimeout or heartbeat
+  // missed. Ping messages (below) exist purely to create these chances.
+  await forceAdvanceIfDue();
+  if(msg.type === 'ping'){
+    if(conn && conn.open && localRoom) conn.send({type:'room', room: localRoom});
+    return;
+  }
   if(msg.type === 'join'){
     const updated = await casUpdate((draft)=>{
       draft.guestName = msg.name;
@@ -1329,6 +1338,21 @@ function handleHostMessage(msg){
     if(pendingResolve){ const r = pendingResolve; pendingResolve = null; r(msg.room); }
   }
 }
+
+/* Guest-side watchdog: if a round is stuck waiting to advance (lastSold
+   still set) for more than a couple seconds, keep gently pinging the host.
+   Normally the host's own timer/heartbeat/visibilitychange handles this —
+   but if the HOST's tab is the one that got backgrounded or the phone got
+   locked, none of those fire until the host looks at it again, and both
+   players stay frozen. A ping is just an ordinary incoming message, and
+   handleGuestMessage() always checks forceAdvanceIfDue() first — so each
+   ping gives the host's JS a fresh chance to notice the round is overdue,
+   even while its own timers are being throttled. */
+setInterval(()=>{
+  if(isOnline && myIdx===1 && conn && conn.open && roundResolving){
+    conn.send({type:'ping'});
+  }
+}, 1500);
 
 function serializeGameState(s){
   if(!s) return null;
