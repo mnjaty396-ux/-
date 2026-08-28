@@ -1596,6 +1596,15 @@ $('copyLinkBtn').addEventListener('click', ()=>{
   } else { done(false); }
 });
 
+/* Finding the peer (host) instantly proves the room code is right — PeerJS's
+   broker replies with 'peer-unavailable' right away if the code is wrong.
+   So if we get PAST that and still never see the data channel open, the
+   room code was fine and the real problem is the WebRTC handshake itself
+   (NAT traversal failing, usually because the free public TURN relay is
+   flaky on cellular). A single attempt only gets one shot at ICE gathering,
+   and retrying with a fresh Peer often succeeds where the first try hung —
+   so we give it up to 3 tries before telling the user it's a connection
+   problem rather than a wrong-code problem. */
 confirmJoinBtn.addEventListener('click', async ()=>{
   const name = guestNameInput.value.trim();
   const code = roomCodeInput.value.trim().toUpperCase();
@@ -1606,6 +1615,7 @@ confirmJoinBtn.addEventListener('click', async ()=>{
   myIdx = 1;
 
   let settled = false;
+  let foundRoom = false; // true once we know the code itself is valid
   const fail = (msg)=>{
     if(settled) return; settled = true;
     $('joinError').textContent = msg;
@@ -1614,33 +1624,57 @@ confirmJoinBtn.addEventListener('click', async ()=>{
     roomCode = null; myIdx = null;
     teardownConnection();
   };
-  const timeoutId = setTimeout(()=> fail('❌ محدش رد. اتأكد من الكود واتأكد إن صاحبك فاتح الشاشة اللي فيها الكود.'), 12000);
 
-  peer = new Peer({config: ICE_CONFIG});
-  peer.on('open', ()=>{
-    conn = peer.connect(roomCode, {reliable:true});
-    conn.on('open', ()=>{
-      conn.send({type:'join', name});
-    });
-    conn.on('data', (msg)=>{
-      if(!settled){
-        settled = true; clearTimeout(timeoutId);
-        $('roomCodeDisplay').textContent = roomCode;
-        showScreen('screen-waiting');
+  const MAX_ATTEMPTS = 3;
+  const ATTEMPT_TIMEOUT = 7000;
+
+  function attempt(n){
+    if(settled) return;
+    if(peer){ try{ peer.destroy(); }catch(e){} peer = null; }
+    setConnStatus(n>1 ? `🔄 بيحاول يتصل تاني (محاولة ${n}/${MAX_ATTEMPTS})...` : null);
+
+    const attemptTimeoutId = setTimeout(()=>{
+      if(settled) return;
+      if(n < MAX_ATTEMPTS){ attempt(n+1); }
+      else if(foundRoom){
+        fail('❌ لقينا الغرفة بس الاتصال المباشر بين الجهازين مبيكملش (مشكلة شبكة/NAT شائعة على شبكات الموبايل). جربوا تكونوا على نفس الواي فاي، أو جربوا تاني كام مرة.');
+      } else {
+        fail('❌ محدش رد. اتأكد من الكود واتأكد إن صاحبك فاتح الشاشة اللي فيها الكود.');
       }
-      setConnStatus(null);
-      handleHostMessage(msg);
+    }, ATTEMPT_TIMEOUT);
+
+    peer = new Peer({config: ICE_CONFIG});
+    peer.on('open', ()=>{
+      conn = peer.connect(roomCode, {reliable:true});
+      conn.on('open', ()=>{
+        foundRoom = true;
+        conn.send({type:'join', name});
+      });
+      conn.on('data', (msg)=>{
+        if(!settled){
+          settled = true; clearTimeout(attemptTimeoutId);
+          $('roomCodeDisplay').textContent = roomCode;
+          showScreen('screen-waiting');
+        }
+        setConnStatus(null);
+        handleHostMessage(msg);
+      });
+      conn.on('close', ()=>{ conn = null; setConnStatus('⚠️ الاتصال بصاحبك (المضيف) اتقطع', 'bad'); });
     });
-    conn.on('close', ()=>{ conn = null; setConnStatus('⚠️ الاتصال بصاحبك (المضيف) اتقطع', 'bad'); });
-  });
-  peer.on('error', (err)=>{
-    clearTimeout(timeoutId);
-    if(err.type === 'peer-unavailable'){
-      fail('❌ مفيش غرفة بالكود ده. اتأكد من الكود مع صاحبك.');
-    } else {
-      fail('❌ حصل خطأ في الاتصال، جرب تاني.');
-    }
-  });
+    peer.on('error', (err)=>{
+      clearTimeout(attemptTimeoutId);
+      if(settled) return;
+      if(err.type === 'peer-unavailable'){
+        fail('❌ مفيش غرفة بالكود ده. اتأكد من الكود مع صاحبك.');
+      } else if(n < MAX_ATTEMPTS){
+        attempt(n+1);
+      } else {
+        fail('❌ حصل خطأ في الاتصال، جرب تاني.');
+      }
+    });
+  }
+
+  attempt(1);
 });
 
 /* If someone opened this page via a shared invite link (?room=CODE),
