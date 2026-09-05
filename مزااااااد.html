@@ -1,0 +1,2738 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>⚽ المزاد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+:root{
+  --bg:#0a0d12;
+  --bg2:#0f1620;
+  --pitch:#0e2418;
+  --gold:#e7b34c;
+  --gold2:#fff3d0;
+  --green:#28c76f;
+  --red:#ff5c5c;
+  --blue:#4c8cff;
+  --ink:#f3f6fa;
+  --dim:#8ea2b5;
+  --card-bg:#141b24;
+  --card-bg2:#181f2b;
+  --line:#22303d;
+  --shadow-soft:0 10px 30px rgba(0,0,0,.35);
+  --radius-lg:20px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:"Cairo","Segoe UI", Tahoma, Geneva, Arial, sans-serif;
+  background:
+    radial-gradient(ellipse at 20% -10%, #10202f 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 110%, #1a1020 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 120%, #0f2a1c 0%, transparent 50%),
+    var(--bg);
+  color:var(--ink);
+  min-height:100%;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.screen{display:none; min-height:100vh; flex-direction:column;}
+.screen.active{display:flex;}
+button{font-family:inherit; cursor:pointer; border:none;}
+button:disabled{cursor:not-allowed; opacity:.35;}
+::selection{background:var(--gold); color:#111;}
+
+/* ---------- START SCREEN ---------- */
+#screen-start{align-items:center; justify-content:center; padding:24px; text-align:center;}
+.logo-wrap{margin-bottom:34px;}
+.logo-ball{font-size:52px; display:inline-block; animation:spin 6s linear infinite;}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.logo-title{
+  font-size:38px; font-weight:800; letter-spacing:1px; margin-top:8px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold) 60%, #fff);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 0 40px rgba(231,179,76,.25);
+}
+.logo-sub{color:var(--dim); font-size:13px; margin-top:6px; letter-spacing:2px;}
+.start-form{width:100%; max-width:380px; display:flex; flex-direction:column; gap:16px;}
+.player-input{
+  background:var(--card-bg); border:1.5px solid var(--line); border-radius:14px;
+  padding:14px 16px; display:flex; align-items:center; gap:12px;
+  transition:border-color .2s;
+}
+.player-input:focus-within{border-color:var(--gold);}
+.player-input .tag{
+  width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:13px; flex-shrink:0;
+}
+.tag.p1{background:var(--blue); color:#fff;}
+.tag.p2{background:var(--red); color:#fff;}
+.player-input input{
+  background:transparent; border:none; outline:none; color:var(--ink); font-size:16px; width:100%;
+}
+.player-input input::placeholder{color:#5a6b7a;}
+.budget-note{
+  margin-top:6px; font-size:13px; color:var(--dim); background:var(--card-bg);
+  border:1px solid var(--line); border-radius:12px; padding:10px 14px;
+}
+.budget-note b{color:var(--gold);}
+.btn-primary{
+  margin-top:8px; background:linear-gradient(135deg, var(--gold), #c98f1f);
+  color:#1a1300; font-weight:800; font-size:17px; padding:16px; border-radius:14px;
+  box-shadow:0 8px 24px rgba(231,179,76,.25);
+  transition:transform .12s ease;
+}
+.btn-primary:active{transform:scale(.97);}
+.btn-primary:disabled{background:#2a3441; color:#5a6b7a; box-shadow:none;}
+
+/* ---------- TOP BAR (auction) ---------- */
+.topbar{
+  padding:6px 12px; background:rgba(13,19,28,.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line); position:sticky; top:0; z-index:20;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);
+}
+.budget-row{display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:4px;}
+.budget-row .label{font-size:12px; color:var(--dim);}
+.budget-row .amount{font-size:17px; font-weight:800; color:var(--gold);}
+.teams-progress{display:flex; justify-content:space-between; gap:10px;}
+.tp-card{
+  flex:1; background:var(--card-bg); border:1px solid var(--line); border-radius:8px;
+  padding:4px 8px; font-size:11.5px;
+}
+.tp-card.p1{border-color:rgba(76,140,255,.4);}
+.tp-card.p2{border-color:rgba(255,92,92,.4);}
+.tp-top{display:flex; align-items:center; justify-content:space-between;}
+.tp-name{font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:90px;}
+.tp-count{font-weight:800; color:var(--gold); font-variant-numeric:tabular-nums;}
+.tp-budget{margin-top:4px; font-size:12px; font-weight:800; color:var(--gold2); font-variant-numeric:tabular-nums;}
+
+/* ---------- AUCTION AREA ---------- */
+.auction-wrap{padding:8px 12px 4px; display:flex; flex-direction:column; align-items:center;}
+.stage-label{font-size:11px; color:var(--dim); letter-spacing:2px; margin-bottom:4px; text-transform:uppercase;}
+.status-msg{
+  font-size:12.5px; color:var(--gold); background:rgba(231,179,76,.08);
+  border:1px solid rgba(231,179,76,.25); border-radius:10px; padding:6px 12px; margin-bottom:10px; text-align:center;
+}
+
+/* player card — trading-card layout: corner OVR/POS badge, a large centered
+   photo that dominates the card, clamped name plate (so long names never
+   overflow), and a distinctive asymmetric silhouette instead of a plain
+   rounded box. Darkened throughout with an edge/bottom vignette for a
+   moodier, more premium feel. */
+.card-slot{perspective:1000px; margin-bottom:8px;}
+.player-card{
+  width:190px; min-height:250px; position:relative; overflow:hidden;
+  padding:10px 10px 10px; text-align:center;
+  display:flex; flex-direction:column; align-items:center;
+  animation:cardIn .45s cubic-bezier(.2,.9,.25,1.2);
+  border:1.5px solid rgba(255,255,255,.07);
+  box-shadow:0 22px 48px rgba(0,0,0,.6), 0 6px 16px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+  /* one softly swept corner gives the card its own silhouette instead of a
+     generic rectangle, while staying simple enough to render reliably */
+  border-radius:28px 28px 28px 72px;
+}
+@keyframes cardIn{
+  from{opacity:0; transform:translateY(30px) scale(.9) rotateX(15deg);}
+  to{opacity:1; transform:translateY(0) scale(1) rotateX(0);}
+}
+/* soft glass highlight across the top of every card, regardless of tier */
+.pc-sheen{
+  position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(160deg, rgba(255,255,255,.11), rgba(255,255,255,0) 38%);
+}
+/* dark vignette: fades the edges and lower half toward black so the photo
+   reads like it's lit out of darkness — the source of the "moody/luxurious"
+   feel instead of a flat, evenly-lit rectangle */
+.pc-vignette{
+  position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 34%, rgba(0,0,0,0) 0%, rgba(0,0,0,.4) 78%, rgba(0,0,0,.72) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.62) 100%);
+}
+/* rating tiers — a luxurious jewel-tone hierarchy that scales with rating:
+   70-79 silver · 80-84 sapphire · 85-89 amethyst · 90-94 blood-ruby · 95+ radiant gold
+   (kept deep and near-black at the base of every tier for a darker, more
+   dramatic card rather than a flat, evenly-bright block of color) */
+.tier-1{ /* 70-79 · silver/steel */
+  background:linear-gradient(160deg,#5c6873,#2a3138 55%,#0d1114);
+  border-color:rgba(210,222,232,.35);
+}
+.tier-2{ /* 80-84 · sapphire blue */
+  background:linear-gradient(160deg,#254e94,#0d1c33 60%,#040810);
+  border:2px solid #4c8cff; box-shadow:0 0 26px rgba(76,140,255,.28), inset 0 0 24px rgba(0,0,0,.4);
+}
+.tier-3{ /* 85-89 · amethyst purple */
+  background:linear-gradient(160deg,#7229c2,#200d35 60%,#08040f);
+  border:2px solid #b366f5; box-shadow:0 0 28px rgba(179,102,245,.32), inset 0 0 24px rgba(0,0,0,.4);
+}
+.tier-4{ /* 90-94 · deep blood-ruby, extra-luxurious */
+  background:linear-gradient(160deg,#8f0c1a,#280307 55%,#000);
+  border:2px solid #ff2f45; box-shadow:0 0 36px rgba(255,20,40,.4), inset 0 0 26px rgba(0,0,0,.45);
+}
+.tier-4::before{
+  content:""; position:absolute; inset:-50%; pointer-events:none;
+  background:conic-gradient(from 0deg, transparent, rgba(255,140,140,.16), transparent 30%);
+  animation:sheen 3.2s linear infinite;
+}
+.tier-5{ /* 95+ · radiant, extremely shiny gold against a near-black base */
+  background:linear-gradient(165deg,#6b4c0c,#1c1302 55%, #000);
+  border:2px solid var(--gold); box-shadow:0 0 46px rgba(231,179,76,.42), inset 0 0 30px rgba(0,0,0,.4);
+}
+.tier-5::before{
+  content:""; position:absolute; inset:-50%; pointer-events:none;
+  background:conic-gradient(from 0deg, transparent, rgba(255,236,170,.25), transparent 30%);
+  animation:sheen 2.6s linear infinite;
+}
+@keyframes sheen{to{transform:rotate(360deg);}}
+.tier-4::after, .tier-5::after{
+  content:""; position:absolute; top:-40%; left:-60%; width:60%; height:220%;
+  background:linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
+  animation:glint 2.6s ease-in-out infinite;
+}
+@keyframes glint{0%{left:-60%;} 50%{left:130%;} 100%{left:130%;}}
+
+/* corner rating badge — the number/position live in one compact plate,
+   like a real sports card, instead of one giant number floating alone */
+.pc-badge{
+  position:absolute; top:8px; right:8px; z-index:2;
+  display:flex; flex-direction:column; align-items:center; min-width:32px;
+  padding:3px 5px 4px; border-radius:9px;
+  background:rgba(0,0,0,.5); border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 4px 12px rgba(0,0,0,.45);
+}
+.pc-badge-rating{font-size:16px; font-weight:900; line-height:1; text-shadow:0 2px 6px rgba(0,0,0,.6);}
+.pc-badge-pos{font-size:9px; font-weight:800; letter-spacing:.5px; margin-top:2px; opacity:.92;}
+.tier-1 .pc-badge-rating{color:#eef3f7;}
+.tier-2 .pc-badge-rating{color:#bcd6ff; text-shadow:0 0 12px rgba(76,140,255,.6);}
+.tier-3 .pc-badge-rating{color:#e6c8ff; text-shadow:0 0 12px rgba(179,102,245,.6);}
+.tier-4 .pc-badge-rating{color:#ffd0d5; text-shadow:0 0 14px rgba(255,40,60,.65);}
+.tier-5 .pc-badge-rating{color:var(--gold2); text-shadow:0 0 16px rgba(255,225,140,.7);}
+
+/* photo medallion — the dominant element on the card, with a dark, moody
+   ring instead of a bright halo */
+.pc-photo-ring{
+  width:118px; height:118px; border-radius:50%; margin:2px 0 6px; padding:3px;
+  background:conic-gradient(from 180deg, rgba(255,255,255,.22), rgba(0,0,0,.4) 45%, rgba(255,255,255,.22) 100%);
+  box-shadow:0 12px 26px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.4); flex-shrink:0; position:relative; z-index:1;
+}
+.pc-avatar{
+  width:100%; height:100%; border-radius:50%; overflow:hidden;
+  background:rgba(255,255,255,.06); border:2px solid rgba(0,0,0,.55);
+  display:flex; align-items:center; justify-content:center; font-size:46px;
+  box-shadow:inset 0 -18px 30px rgba(0,0,0,.45);
+}
+.pc-avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+
+/* name plate — clamped to 2 lines so a long name can never overflow the
+   card or collide with the divider below it */
+.pc-name{
+  position:relative; z-index:1;
+  font-size:13.5px; font-weight:800; margin:0 0 4px; line-height:1.15;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  overflow:hidden; min-height:2em; padding:0 4px; word-break:break-word;
+  text-shadow:0 2px 8px rgba(0,0,0,.6);
+}
+.pc-divider{position:relative; z-index:1; width:56%; height:1px; margin:0 0 5px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);}
+.pc-country{position:relative; z-index:1; font-size:11.5px; font-weight:700; color:#eef3f8; margin-bottom:2px; text-shadow:0 1px 6px rgba(0,0,0,.6);}
+.pc-team{position:relative; z-index:1; font-size:10px; color:#c3cfda; letter-spacing:.2px; text-shadow:0 1px 6px rgba(0,0,0,.6);}
+
+/* legend/coach corner ribbon, mirrored to the opposite corner from the
+   rating badge so the two never collide */
+.pc-legend-tag{
+  position:absolute; top:10px; left:10px; z-index:1; font-size:10px; font-weight:800; color:#1a1300;
+  background:linear-gradient(90deg,var(--gold2),var(--gold)); padding:3px 10px; border-radius:10px;
+  letter-spacing:.5px; box-shadow:0 3px 8px rgba(0,0,0,.3);
+}
+
+/* price */
+.price-box{text-align:center; margin-bottom:6px;}
+.price-label{font-size:11px; color:var(--dim); letter-spacing:2px;}
+.price-amount{
+  font-size:24px; font-weight:900; color:var(--ink); font-variant-numeric:tabular-nums;
+  transition:transform .15s;
+}
+.price-amount.bump{animation:bump .28s ease;}
+@keyframes bump{0%{transform:scale(1);}40%{transform:scale(1.28); color:var(--gold);}100%{transform:scale(1);}}
+.leader-line{font-size:11.5px; margin-top:2px; min-height:14px;}
+.leader-line .lp1{color:var(--blue); font-weight:800;}
+.leader-line .lp2{color:var(--red); font-weight:800;}
+
+/* bid buttons */
+.bid-row{display:flex; gap:8px; width:100%; max-width:420px; margin-bottom:6px;}
+.bid-btn{
+  flex:1; padding:11px 6px; border-radius:13px; font-size:14px; font-weight:800;
+  color:#fff; display:flex; flex-direction:column; align-items:center; gap:1px;
+  transition:transform .1s, box-shadow .15s; box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+.bid-btn:active:not(:disabled){transform:scale(.95);}
+.bid-btn .plus{font-size:22px;}
+.bid-btn.p1{background:linear-gradient(135deg,#5a9bff,#2f5fc7); box-shadow:0 8px 22px rgba(76,140,255,.28);}
+.bid-btn.p2{background:linear-gradient(135deg,#ff7a7a,#c73737); box-shadow:0 8px 22px rgba(255,92,92,.28);}
+.bid-btn.not-you{background:#232c37 !important; color:#5a6b7a; box-shadow:none;}
+.you-badge{font-size:9.5px; font-weight:800; background:rgba(255,255,255,.18); border-radius:8px; padding:2px 8px; margin-top:3px; display:block; min-height:14px;}
+.bid-btn.not-you .you-badge{background:rgba(255,255,255,.06); color:#5a6b7a;}
+
+/* ---------- ONLINE LOBBY ---------- */
+.room-code-box{
+  text-align:center; font-size:15px; color:var(--dim);
+}
+.room-code-big{
+  font-size:38px; font-weight:900; color:var(--gold); letter-spacing:6px; margin-top:8px;
+  font-variant-numeric:tabular-nums;
+}
+.conn-row{display:flex; align-items:center; justify-content:center; gap:8px; font-size:13.5px;}
+.conn-dot{width:9px; height:9px; border-radius:50%; background:#3d4a56; flex-shrink:0;}
+.conn-dot.on{background:var(--green); box-shadow:0 0 8px rgba(40,199,111,.6);}
+.conn-dot.pulse{animation:dotPulse2 1.2s infinite ease-in-out;}
+@keyframes dotPulse2{0%,100%{opacity:.4;}50%{opacity:1;}}
+.err-msg{color:var(--red); font-size:13px; text-align:center;}
+.back-link{color:var(--dim); font-size:13px; text-align:center; margin-top:4px; text-decoration:underline; background:none; padding:4px;}
+#roomCodeInput{text-transform:uppercase;}
+.bid-btn small{font-size:11px; opacity:.85; font-weight:600;}
+
+.hammer-row{display:flex; gap:8px; width:100%; max-width:420px; margin-bottom:8px;}
+.hammer-btn{
+  flex:1; padding:9px 8px; border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),#a9791a); color:#1a1300; font-weight:800; font-size:13px;
+  box-shadow:0 6px 18px rgba(231,179,76,.2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.hammer-btn:disabled{background:#2a3441; color:#5a6b7a; box-shadow:none;}
+
+/* sold flash */
+.sold-flash{
+  position:fixed; inset:0; z-index:50; display:none; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.6); backdrop-filter:blur(3px);
+}
+.sold-flash.show{display:flex;}
+.sold-wrap{display:flex; flex-direction:column; align-items:center; gap:16px; padding:0 16px;}
+.sold-title-main{font-size:16px; font-weight:800; color:var(--gold); text-align:center;}
+.sold-cards{display:flex; gap:14px;}
+.sold-mini{
+  width:132px; border-radius:16px 16px 16px 36px; padding:16px 10px; text-align:center;
+  background:var(--card-bg); border:2px solid rgba(255,255,255,.12);
+  animation:soldPop .4s cubic-bezier(.2,.9,.3,1.3);
+}
+.sold-mini.p1{border-color:var(--blue); box-shadow:0 0 24px rgba(76,140,255,.3);}
+.sold-mini.p2{border-color:var(--red); box-shadow:0 0 24px rgba(255,92,92,.3);}
+@keyframes soldPop{from{transform:scale(.6); opacity:0;}to{transform:scale(1); opacity:1;}}
+.sm-tag{font-size:11px; font-weight:800; color:var(--dim); margin-bottom:8px;}
+.sold-mini.p1 .sm-tag{color:var(--blue);}
+.sold-mini.p2 .sm-tag{color:var(--red);}
+.sm-avatar{
+  width:44px; height:44px; border-radius:50%; margin:0 auto 6px; overflow:hidden;
+  background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.25);
+  display:flex; align-items:center; justify-content:center; font-size:18px;
+}
+.sm-avatar img{width:100%; height:100%; object-fit:cover; display:block;}
+.sm-name{font-size:13.5px; font-weight:800; margin-bottom:6px; line-height:1.25; min-height:34px;}
+.sm-rating{font-size:28px; font-weight:900; color:var(--gold); line-height:1;}
+.sm-pos{
+  font-size:10.5px; color:var(--dim); margin:6px 0; background:rgba(255,255,255,.08);
+  border-radius:8px; padding:2px 8px; display:inline-block;
+}
+.sm-price{font-size:12px; font-weight:800; color:var(--ink); margin-top:2px;}
+
+/* formations — the two teams sit side by side (wide, not stacked tall) */
+.formations{padding:6px 10px 30px; display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;}
+.team-block{background:var(--bg2); border:1px solid var(--line); border-radius:16px; padding:10px; box-shadow:var(--shadow-soft); min-width:0;}
+.team-head{display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:8px;}
+.team-head .name{font-weight:800; font-size:12.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
+.team-head.p1 .name{color:var(--blue);}
+.team-head.p2 .name{color:var(--red);}
+.team-head .count{font-size:10.5px; color:var(--dim); flex-shrink:0;}
+.pitch{
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 40px, transparent 40px 80px),
+    linear-gradient(180deg, var(--pitch), #0a1a10);
+  border:2px solid rgba(255,255,255,.12); border-radius:12px; padding:8px 4px;
+  display:flex; flex-direction:column; gap:6px; min-height:170px; position:relative;
+}
+.pitch::before{
+  content:""; position:absolute; left:50%; top:50%; width:50px; height:50px; margin:-25px 0 0 -25px;
+  border:1.5px solid rgba(255,255,255,.15); border-radius:50%;
+}
+.pline{display:flex; justify-content:center; gap:4px; flex-wrap:wrap; z-index:1;}
+.pchip{
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:8px;
+  padding:4px 4px 3px; text-align:center; min-width:42px; max-width:46px; animation:chipIn .3s ease;
+  display:flex; flex-direction:column; align-items:center;
+}
+@keyframes chipIn{from{opacity:0; transform:translateY(6px) scale(.8);}to{opacity:1; transform:translateY(0) scale(1);}}
+.pchip .ca{
+  width:24px; height:24px; border-radius:7px; margin-bottom:2px; overflow:hidden;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+  display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0;
+}
+.pchip .ca img{width:100%; height:100%; object-fit:cover; display:block;}
+.pchip .cn{font-size:8px; font-weight:700; white-space:nowrap; max-width:42px; overflow:hidden; text-overflow:ellipsis;}
+.pchip .cr{font-size:10px; font-weight:900; color:var(--gold);}
+.pchip .cp{font-size:7px; color:var(--dim);}
+.empty-slot{
+  border:1px dashed rgba(255,255,255,.15); border-radius:8px; padding:3px 4px; min-width:42px;
+  text-align:center; color:#3d4a56; font-size:9px;
+}
+.coach-row{
+  display:flex; align-items:center; gap:6px; margin-top:8px; padding:6px 8px;
+  background:rgba(255,255,255,.04); border-radius:10px; font-size:10.5px;
+}
+.coach-row .cico{font-size:14px;}
+.coach-row .cname{font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.coach-row.empty{color:#4a5866;}
+@media (max-width:340px){
+  .formations{grid-template-columns:1fr; gap:14px;}
+}
+
+/* section title */
+.sec-title{font-size:12px; color:var(--dim); letter-spacing:2px; text-transform:uppercase; margin:6px 4px 2px; text-align:center;}
+
+/* ---------- FINAL / RESULT ---------- */
+#screen-final, #screen-result{padding:18px 14px 40px; align-items:center;}
+.final-title{font-size:24px; font-weight:800; margin:6px 0 18px; text-align:center;}
+.ai-btn{
+  margin:22px 0 8px; padding:18px 30px; border-radius:18px; font-size:18px; font-weight:800;
+  background:linear-gradient(135deg,#7c5cff,#4c2fbf); color:#fff;
+  box-shadow:0 10px 30px rgba(124,92,255,.35);
+  animation:pulseBtn 2s ease-in-out infinite;
+}
+@keyframes pulseBtn{0%,100%{box-shadow:0 10px 30px rgba(124,92,255,.35);}50%{box-shadow:0 10px 44px rgba(124,92,255,.6);}}
+.ai-btn:active{transform:scale(.97);}
+.thinking{display:none; align-items:center; gap:10px; color:var(--dim); font-size:14px; margin-top:14px;}
+.thinking.show{display:flex;}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--gold); animation:dotPulse 1s infinite ease-in-out;}
+.dot:nth-child(2){animation-delay:.15s;} .dot:nth-child(3){animation-delay:.3s;}
+@keyframes dotPulse{0%,80%,100%{opacity:.25; transform:scale(.7);}40%{opacity:1; transform:scale(1);}}
+
+.score-board{
+  width:100%; max-width:440px; background:linear-gradient(160deg,var(--card-bg2),var(--card-bg)); border:1px solid var(--line); border-radius:22px;
+  padding:26px 16px; text-align:center; margin-top:6px; animation:cardIn .5s ease; box-shadow:var(--shadow-soft);
+}
+.score-teams{display:flex; align-items:center; justify-content:center; gap:16px;}
+.score-teams .tname{font-size:15px; font-weight:800; width:110px; overflow:hidden; text-overflow:ellipsis;}
+.score-teams .tname.p1{color:var(--blue);} .score-teams .tname.p2{color:var(--red);}
+.score-num{font-size:44px; font-weight:900; color:var(--gold);}
+.score-dash{font-size:30px; color:var(--dim);}
+.win-tag{margin-top:10px; font-size:13px; color:var(--dim);}
+.prob-bar{
+  display:flex; height:8px; border-radius:6px; overflow:hidden; margin:16px 0 4px; max-width:440px; width:100%;
+}
+.prob-bar .b1{background:var(--blue);} .prob-bar .b2{background:var(--red);}
+.prob-labels{display:flex; justify-content:space-between; font-size:11px; color:var(--dim); width:100%; max-width:440px;}
+
+.stats-block{width:100%; max-width:440px; margin-top:20px; display:flex; flex-direction:column; gap:12px;}
+.stat-row{display:flex; align-items:center; gap:10px;}
+.stat-row .sv{width:44px; text-align:center; font-weight:800; font-size:13px;}
+.stat-row .sv.p1{color:var(--blue);} .stat-row .sv.p2{color:var(--red);}
+.stat-mid{flex:1;}
+.stat-name{text-align:center; font-size:11px; color:var(--dim); margin-bottom:4px;}
+.stat-track{display:flex; height:7px; border-radius:5px; overflow:hidden; background:#1c2530;}
+.stat-track .f1{background:var(--blue);} .stat-track .f2{background:var(--red);}
+
+.commentary{
+  width:100%; max-width:440px; margin-top:22px; background:var(--bg2); border:1px solid var(--line);
+  border-radius:16px; padding:18px; font-size:14px; line-height:1.9; color:#dbe4ec; box-shadow:var(--shadow-soft);
+}
+.commentary .ctitle{font-size:12px; color:var(--gold); font-weight:800; margin-bottom:8px; letter-spacing:1px;}
+
+.replay-btn{
+  margin-top:26px; padding:14px 30px; border-radius:14px; background:var(--card-bg); border:1px solid var(--line);
+  color:var(--ink); font-weight:700; font-size:14px; transition:transform .12s ease, border-color .2s;
+}
+.replay-btn:active{transform:scale(.97);}
+.replay-btn:hover{border-color:var(--gold);}
+
+/* misc */
+.hidden{display:none !important;}
+@media (max-width:360px){
+  .player-card{width:206px; min-height:312px;}
+  .pc-photo-ring{width:146px; height:146px;}
+  .pc-avatar{font-size:52px;}
+  .pc-badge-rating{font-size:18px;}
+  .pc-name{font-size:14.5px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOBBY CHOICE ============ -->
+<div id="screen-lobby" class="screen active">
+  <div class="logo-wrap">
+    <div class="logo-ball">⚽</div>
+    <div class="logo-title">المزاد</div>
+    <div class="logo-sub">مزاد كرة القدم أونلاين مع صاحبك</div>
+  </div>
+  <div class="start-form">
+    <button class="btn-primary" id="showCreateBtn">🆕 أنشئ غرفة جديدة (أونلاين)</button>
+    <button class="btn-primary" id="showJoinBtn" style="background:linear-gradient(135deg,#5a9bff,#2f5fc7); box-shadow:0 8px 24px rgba(76,140,255,.25);">🔗 انضم لغرفة صاحبك (أونلاين)</button>
+    <button class="btn-primary" id="showOfflineBtn" style="background:linear-gradient(135deg,#8a94a3,#4a5866); box-shadow:0 8px 24px rgba(74,88,102,.25);">📱 العب أوفلاين على نفس الجهاز</button>
+    <button class="btn-primary" id="showBotBtn" style="background:linear-gradient(135deg,#7c5cff,#4c2fbf); box-shadow:0 8px 24px rgba(124,92,255,.28);">🤖 العب مع بوت ذكي</button>
+    <div class="budget-note">أونلاين: واحد بيعمل غرفة ويبعت الكود للتاني، وكل واحد يلعب من جهازه. أوفلاين: نفس الطريقة القديمة، الاتنين على نفس الجهاز يتبادلوا الدور.</div>
+  </div>
+</div>
+
+<!-- ============ OFFLINE SETUP ============ -->
+<div id="screen-offline-setup" class="screen">
+  <div class="logo-wrap">
+    <div class="logo-ball">⚽</div>
+    <div class="logo-title" style="font-size:26px;">مزاد أوفلاين</div>
+    <div class="logo-sub">الاتنين على نفس الجهاز</div>
+  </div>
+  <div class="start-form">
+    <div class="player-input">
+      <div class="tag p1">1</div>
+      <input id="offlineName1" type="text" placeholder="اسم اللاعب الأول (مثلاً: أحمد)" maxlength="16">
+    </div>
+    <div class="player-input">
+      <div class="tag p2">2</div>
+      <input id="offlineName2" type="text" placeholder="اسم اللاعب الثاني (مثلاً: محمد)" maxlength="16">
+    </div>
+    <div class="budget-note">كل شخص عنده ميزانية <b>200M</b> مستقلة — كل شخص يبني فريقًا من <b>11 لاعبًا + مدرب</b></div>
+    <button class="btn-primary" id="offlineStartBtn" disabled>ابدأ المزاد</button>
+    <button class="back-link" id="backFromOffline">رجوع</button>
+  </div>
+</div>
+
+<!-- ============ BOT SETUP ============ -->
+<div id="screen-bot-setup" class="screen">
+  <div class="logo-wrap">
+    <div class="logo-ball">⚽</div>
+    <div class="logo-title" style="font-size:26px;">العب مع بوت ذكي</div>
+    <div class="logo-sub">هتزايد ضد الذكاء الاصطناعي</div>
+  </div>
+  <div class="start-form">
+    <div class="player-input">
+      <div class="tag p1">1</div>
+      <input id="botName1" type="text" placeholder="اسمك" maxlength="16">
+    </div>
+    <div class="player-input">
+      <div class="tag p2">🤖</div>
+      <input type="text" value="البوت الذكي" disabled style="opacity:.6;">
+    </div>
+    <div class="budget-note">هتلعب أنت بميزانية <b>200M</b>، والبوت هيزايد ويقرر بنفسه — كل واحد يبني فريقًا من <b>11 لاعبًا + مدرب</b></div>
+    <button class="btn-primary" id="botStartBtn" disabled>ابدأ المزاد</button>
+    <button class="back-link" id="backFromBot">رجوع</button>
+  </div>
+</div>
+
+<!-- ============ CREATE ROOM ============ -->
+<div id="screen-create" class="screen">
+  <div class="logo-wrap">
+    <div class="logo-ball">⚽</div>
+    <div class="logo-title" style="font-size:26px;">أنشئ غرفتك</div>
+  </div>
+  <div class="start-form">
+    <div class="player-input">
+      <div class="tag p1">1</div>
+      <input id="hostNameInput" type="text" placeholder="اسمك" maxlength="16">
+    </div>
+    <button class="btn-primary" id="confirmCreateBtn" disabled>إنشاء الغرفة</button>
+    <button class="back-link" id="backFromCreate">رجوع</button>
+  </div>
+</div>
+
+<!-- ============ JOIN ROOM ============ -->
+<div id="screen-join" class="screen">
+  <div class="logo-wrap">
+    <div class="logo-ball">⚽</div>
+    <div class="logo-title" style="font-size:26px;">انضم لغرفة</div>
+  </div>
+  <div class="start-form">
+    <div class="player-input">
+      <div class="tag p2">2</div>
+      <input id="guestNameInput" type="text" placeholder="اسمك" maxlength="16">
+    </div>
+    <div class="player-input">
+      <div class="tag" style="background:var(--gold); color:#1a1300;">#</div>
+      <input id="roomCodeInput" type="text" placeholder="كود الغرفة" maxlength="6">
+    </div>
+    <div class="err-msg" id="joinError" style="display:none;"></div>
+    <button class="btn-primary" id="confirmJoinBtn" disabled>انضمام</button>
+    <button class="back-link" id="backFromJoin">رجوع</button>
+  </div>
+</div>
+
+<!-- ============ WAITING ROOM ============ -->
+<div id="screen-waiting" class="screen">
+  <div class="logo-wrap">
+    <div class="logo-ball">⚽</div>
+    <div class="logo-title" style="font-size:22px;">غرفة المزاد</div>
+  </div>
+  <div class="start-form">
+    <div class="room-code-box" id="roomCodeBox">
+      كود الغرفة — ابعته لصاحبك
+      <div class="room-code-big" id="roomCodeDisplay"></div>
+    </div>
+    <button class="btn-primary" id="copyLinkBtn" style="background:linear-gradient(135deg,#5a9bff,#2f5fc7); box-shadow:0 8px 24px rgba(76,140,255,.25); margin-top:-6px;">🔗 نسخ لينك الدعوة</button>
+    <div class="budget-note">
+      <div class="conn-row"><span class="conn-dot on"></span><span id="waitHostName"></span></div>
+      <div class="conn-row" style="margin-top:6px;"><span class="conn-dot pulse" id="guestDot"></span><span id="waitGuestName">في انتظار صديقك...</span></div>
+    </div>
+    <button class="btn-primary" id="startAuctionBtn" disabled>ابدأ المزاد</button>
+    <button class="back-link" id="backFromWaiting">إلغاء والخروج</button>
+  </div>
+</div>
+
+<!-- ============ AUCTION SCREEN ============ -->
+<div id="screen-auction" class="screen">
+  <div class="topbar">
+    <div class="conn-status" id="connStatus" style="display:none; text-align:center; font-size:12.5px; padding:6px 10px; border-radius:8px; margin-bottom:8px;"></div>
+    <div class="teams-progress">
+      <div class="tp-card p1">
+        <div class="tp-top">
+          <span class="tp-name" id="tpName1"></span>
+          <span class="tp-count" id="tpCount1">0/11</span>
+        </div>
+        <div class="tp-budget">💰 <span id="tpBudget1">200M</span></div>
+      </div>
+      <div class="tp-card p2">
+        <div class="tp-top">
+          <span class="tp-name" id="tpName2"></span>
+          <span class="tp-count" id="tpCount2">0/11</span>
+        </div>
+        <div class="tp-budget">💰 <span id="tpBudget2">200M</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auction-wrap">
+    <div class="stage-label" id="stageLabel">مزاد اللاعبين</div>
+    <div class="status-msg hidden" id="statusMsg"></div>
+
+    <div class="card-slot">
+      <div class="player-card" id="playerCard">
+        <!-- injected -->
+      </div>
+    </div>
+
+    <div class="price-box">
+      <div class="price-label">السعر الحالي</div>
+      <div class="price-amount" id="priceAmount">💰 1M</div>
+      <div class="leader-line" id="leaderLine"></div>
+    </div>
+
+    <div class="bid-row">
+      <button class="bid-btn p1" id="bidBtn1"><span class="plus">+</span><span id="bidName1"></span><span class="you-badge" id="youBadge1"></span></button>
+      <button class="bid-btn p2" id="bidBtn2"><span id="bidName2"></span><span class="plus">+</span><span class="you-badge" id="youBadge2"></span></button>
+    </div>
+    <div class="hammer-row">
+      <button class="hammer-btn" id="hammerBtn1" disabled>🔨 حسم (<span id="hammerName1"></span>)</button>
+      <button class="hammer-btn" id="hammerBtn2" disabled>🔨 حسم (<span id="hammerName2"></span>)</button>
+    </div>
+  </div>
+
+  <div class="sec-title">التشكيلات الحالية</div>
+  <div class="formations" id="formations"></div>
+</div>
+
+<!-- ============ FINAL SCREEN ============ -->
+<div id="screen-final" class="screen">
+  <div class="final-title">🏟️ المباراة الكبرى</div>
+  <div class="formations" id="finalFormations"></div>
+  <button class="ai-btn" id="aiBtn">🤖 رأي الـ AI</button>
+  <div class="thinking" id="thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>يحلل الذكاء الاصطناعي الفريقين...</span></div>
+</div>
+
+<!-- ============ RESULT SCREEN ============ -->
+<div id="screen-result" class="screen">
+  <div class="sec-title">نتيجة المباراة</div>
+  <div class="score-board">
+    <div class="score-teams">
+      <div class="tname p1" id="resName1"></div>
+      <div class="score-num" id="resScore1">0</div>
+      <div class="score-dash">—</div>
+      <div class="score-num" id="resScore2">0</div>
+      <div class="tname p2" id="resName2"></div>
+    </div>
+    <div class="win-tag" id="winTag"></div>
+  </div>
+
+  <div class="prob-bar"><div class="b1" id="probBar1"></div><div class="b2" id="probBar2"></div></div>
+  <div class="prob-labels"><span id="probLabel1"></span><span id="probLabel2"></span></div>
+
+  <div class="stats-block" id="statsBlock"></div>
+
+  <div class="commentary">
+    <div class="ctitle">🎙️ تحليل الذكاء الاصطناعي</div>
+    <div id="commentaryText"></div>
+  </div>
+
+  <button class="replay-btn" id="replayBtn">🔄 لعبة جديدة</button>
+</div>
+
+<div class="sold-flash" id="soldFlash">
+  <div class="sold-wrap">
+    <div class="sold-title-main" id="soldMainTitle"></div>
+    <div class="sold-cards">
+      <div class="sold-mini" id="soldCardW">
+        <div class="sm-tag" id="smTagW"></div>
+        <div class="sm-avatar" id="smAvatarW"></div>
+        <div class="sm-name" id="smNameW"></div>
+        <div class="sm-rating" id="smRatingW"></div>
+        <div class="sm-pos" id="smPosW"></div>
+        <div class="sm-price" id="smPriceW"></div>
+      </div>
+      <div class="sold-mini" id="soldCardL">
+        <div class="sm-tag" id="smTagL"></div>
+        <div class="sm-avatar" id="smAvatarL"></div>
+        <div class="sm-name" id="smNameL"></div>
+        <div class="sm-rating" id="smRatingL"></div>
+        <div class="sm-pos" id="smPosL"></div>
+        <div class="sm-price" id="smPriceL"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   DATA
+========================================================= */
+const POS_BUCKET = {
+  GK:'GK',
+  CB:'DEF', LB:'DEF', RB:'DEF', LWB:'DEF', RWB:'DEF',
+  CDM:'MID', CM:'MID', CAM:'MID', LM:'MID', RM:'MID',
+  LW:'FWD', RW:'FWD', ST:'FWD', CF:'FWD'
+};
+const BUCKET_ORDER = ['FWD','MID','DEF','GK'];
+const BUCKET_LABEL_AR = {GK:'حراسة', DEF:'دفاع', MID:'وسط', FWD:'هجوم'};
+
+/* fixed formation draft order: one slot at a time, both teams get a player
+   of the same position every round (winner buys, loser gets a free one) */
+const FORMATION_SLOTS = [
+  {pos:['GK'],              label:'حارس مرمى'},
+  {pos:['RB','RWB'],        label:'ظهير أيمن'},
+  {pos:['CB'],              label:'قلب دفاع (1)'},
+  {pos:['CB'],              label:'قلب دفاع (2)'},
+  {pos:['LB','LWB'],        label:'ظهير أيسر'},
+  {pos:['CM','CDM','CAM'],  label:'لاعب وسط (1)'},
+  {pos:['CM','CDM','CAM'],  label:'لاعب وسط (2)'},
+  {pos:['CM','CDM','CAM'],  label:'لاعب وسط (3)'},
+  {pos:['LW'],               label:'جناح أيسر'},
+  {pos:['RW'],               label:'جناح أيمن'},
+  {pos:['ST','CF'],          label:'رأس حربة'},
+];
+
+/* Safety net against a full-budget deadlock: if both teams could ever drop
+   below the minimum next bid (2M) at the same time, with slots still
+   unfilled, NEITHER side's + button nor the hammer would ever work again —
+   the auction freezes permanently. To make that impossible, every bid is
+   capped so a team always keeps enough in reserve (2M × however many rounds
+   are still left after this one) to be able to afford at least the minimum
+   bid in every future round on its own. This still allows big, exciting
+   bids early on — it only kicks in once someone is bidding themselves down
+   to nothing. */
+function roundsRemainingAfter(s){
+  return s.phase==='players' ? (FORMATION_SLOTS.length - s.slotIndex - 1) : 0;
+}
+function canAffordBid(s, idx){
+  const nextPrice = s.price + 1;
+  const reserve = 2 * roundsRemainingAfter(s);
+  return (nextPrice + reserve) <= s.budgets[idx];
+}
+/* Every round has a designated "first bidder" (state.firstBidder,
+   alternating so both sides open exactly half of the 12 picks). Before
+   anyone has bid yet (leader===null) only that side may place the opening
+   bid; once a bid exists either side can keep raising as before.
+   Safety valve: if the designated opener genuinely can't afford the
+   minimum opening bid (their budget got squeezed late in the draft), the
+   other side is allowed to open instead — otherwise the round would
+   deadlock forever with nobody able to place the first bid. */
+function canOpenBid(s, idx){
+  if(s.leader!==null) return true;
+  const designated = s.firstBidder;
+  if(canAffordBid(s, designated)) return idx===designated;
+  return idx !== designated;
+}
+
+/* Rating-bracket distribution requested for the whole platform:
+   30% rated >=90 / 30% rated 85-89 / 30% rated 80-84 / 10% rated 70-79.
+   The player being auctioned always comes from the >=85 pool (so it opens
+   at 85+), while the free consolation player handed to the losing side is
+   allowed to dip as low as 70, drawn from the full 4-band distribution
+   above — that's what actually makes the 70-79 slice appear in games. */
+function bracketOf(r){ return r>=90?90 : r>=85?85 : r>=80?80 : 70; }
+const BRACKET_WEIGHT_FULL = {90:30, 85:30, 80:30, 70:10};
+const BRACKET_WEIGHT_MAIN = {90:50, 85:50}; // only ever applied to candidates already >=85
+function weightedPick(candidates, weights){
+  if(!candidates || candidates.length===0) return null;
+  const groups = {};
+  candidates.forEach(c=>{
+    const b = bracketOf(c.rating);
+    if(!(b in weights)) return;
+    (groups[b] = groups[b] || []).push(c);
+  });
+  const avail = Object.keys(groups).filter(k=>groups[k].length>0);
+  if(avail.length===0){
+    // nothing fell into the requested bands (small pool edge case) — just
+    // pick uniformly from whatever IS available instead of freezing
+    return candidates[Math.floor(Math.random()*candidates.length)];
+  }
+  let total = 0; avail.forEach(k=>total+=weights[k]);
+  let r = Math.random()*total;
+  let chosen = avail[0];
+  for(const k of avail){ r-=weights[k]; if(r<=0){ chosen=k; break; } }
+  const group = groups[chosen];
+  return group[Math.floor(Math.random()*group.length)];
+}
+
+// [name, rating, pos, flag, countryAr, team]
+const RAW_PLAYERS = [
+["ليونيل ميسي",97,"RW","🇦🇷","الأرجنتين","إنتر ميامي","current"],
+["كريستيانو رونالدو",97,"ST","🇵🇹","البرتغال","النصر","current"],
+["رونالدو نازاريو",97,"ST","🇧🇷","البرازيل","ريال مدريد","legend"],
+["مارادونا",98,"CAM","🇦🇷","الأرجنتين","نابولي","legend"],
+["بيليه",98,"CF","🇧🇷","البرازيل","سانتوس","legend"],
+["زين الدين زيدان",96,"CAM","🇫🇷","فرنسا","ريال مدريد","legend"],
+["رونالدينيو",96,"LW","🇧🇷","البرازيل","برشلونة","legend"],
+["كيليان مبابي",96,"ST","🇫🇷","فرنسا","ريال مدريد","current"],
+["يوهان كرويف",97,"CF","🇳🇱","هولندا","أياكس","legend"],
+["فرانز بيكنباور",96,"CB","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["نيمار",94,"LW","🇧🇷","البرازيل","سانتوس","current"],
+["أندريس إنييستا",94,"CM","🇪🇸","إسبانيا","برشلونة","legend"],
+["فان باستن",94,"ST","🇳🇱","هولندا","ميلان","legend"],
+["تيري هنري",93,"ST","🇫🇷","فرنسا","أرسنال","legend"],
+["تشافي هيرنانديز",93,"CM","🇪🇸","إسبانيا","برشلونة","legend"],
+["فيرجيل فان دايك",93,"CB","🇳🇱","هولندا","ليفربول","current"],
+["باولو مالديني",95,"CB","🇮🇹","إيطاليا","ميلان","legend"],
+["أندريا بيرلو",94,"CM","🇮🇹","إيطاليا","ميلان","legend"],
+["إرلينج هالاند",93,"ST","🇳🇴","النرويج","مانشستر سيتي","current"],
+["رود خوليت",90,"ST","🇳🇱","هولندا","ميلان","legend"],
+["روبرتو باجيو",92,"CAM","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["فرانشيسكو توتي",91,"CAM","🇮🇹","إيطاليا","روما","legend"],
+["أليساندرو ديل بييرو",90,"CF","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["كاكا",92,"CAM","🇧🇷","البرازيل","ميلان","legend"],
+["ريفالدو",91,"LW","🇧🇷","البرازيل","برشلونة","legend"],
+["رومان ريكيلمي",90,"CAM","🇦🇷","الأرجنتين","بوكا جونيورز","legend"],
+["دينيس بيركامب",92,"CF","🇳🇱","هولندا","أرسنال","legend"],
+["إريك كانتونا",89,"CF","🇫🇷","فرنسا","مانشستر يونايتد","legend"],
+["لوكا مودريتش",91,"CM","🇭🇷","كرواتيا","ريال مدريد","current"],
+["توني كروس",90,"CM","🇩🇪","ألمانيا","ريال مدريد","legend"],
+["كيفن دي بروين",92,"CAM","🇧🇪","بلجيكا","مانشستر سيتي","current"],
+["ستيفن جيرارد",92,"CM","🏴","إنجلترا","ليفربول","legend"],
+["فرانك لامبارد",91,"CM","🏴","إنجلترا","تشلسي","legend"],
+["بول سكولز",90,"CM","🏴","إنجلترا","مانشستر يونايتد","legend"],
+["باتريك فييرا",90,"CDM","🇫🇷","فرنسا","أرسنال","legend"],
+["كلود ماكيليلي",88,"CDM","🇫🇷","فرنسا","تشلسي","legend"],
+["إنجولو كانتي",89,"CDM","🇫🇷","فرنسا","تشلسي","legend"],
+["سيرجيو بوسكيتس",91,"CDM","🇪🇸","إسبانيا","برشلونة","legend"],
+["رودري",90,"CDM","🇪🇸","إسبانيا","مانشستر سيتي","current"],
+["جينارو جاتوزو",84,"CDM","🇮🇹","إيطاليا","ميلان","legend"],
+["ماركو فيراتي",87,"CDM","🇮🇹","إيطاليا","باريس سان جيرمان","current"],
+["جود بيلينجهام",90,"CM","🏴","إنجلترا","ريال مدريد","current"],
+["مارتن أوديجارد",87,"CAM","🇳🇴","النرويج","أرسنال","current"],
+["بيدري",87,"CM","🇪🇸","إسبانيا","برشلونة","current"],
+["إيلكاي جوندوجان",85,"CM","🇩🇪","ألمانيا","برشلونة","current"],
+["تياجو ألكانتارا",86,"CM","🇪🇸","إسبانيا","ليفربول","legend"],
+["ميسوت أوزيل",89,"CAM","🇩🇪","ألمانيا","أرسنال","legend"],
+["أنجل دي ماريا",87,"RW","🇦🇷","الأرجنتين","بنفيكا","legend"],
+["أرين روبن",90,"RW","🇳🇱","هولندا","بايرن ميونخ","legend"],
+["فرانك ريبيري",91,"LW","🇫🇷","فرنسا","بايرن ميونخ","legend"],
+["محمد صلاح",90,"RW","🇪🇬","مصر","ليفربول","current"],
+["ساديو ماني",88,"LW","🇸🇳","السنغال","النصر","current"],
+["فينيسيوس جونيور",91,"LW","🇧🇷","البرازيل","ريال مدريد","current"],
+["رودريجو",87,"RW","🇧🇷","البرازيل","ريال مدريد","current"],
+["أنطوان جريزمان",89,"LW","🇫🇷","فرنسا","أتلتيكو مدريد","current"],
+["فيليبي كوتينيو",86,"LW","🇧🇷","البرازيل","الهلال","legend"],
+["لويس فيجو",92,"RW","🇵🇹","البرتغال","ريال مدريد","legend"],
+["مارك أوفرمارس",87,"LW","🇳🇱","هولندا","أرسنال","legend"],
+["رايان جيجز",91,"LW","🏴","ويلز","مانشستر يونايتد","legend"],
+["ديفيد بيكهام",90,"RW","🏴","إنجلترا","ريال مدريد","legend"],
+["راحيم سترلينج",85,"LW","🏴","إنجلترا","تشلسي","current"],
+["ليروي ساني",86,"LW","🇩🇪","ألمانيا","بايرن ميونخ","current"],
+["بوكايو ساكا",87,"RW","🏴","إنجلترا","أرسنال","current"],
+["فينسيوس تيكسيرا",81,"RW","🇧🇷","البرازيل","فلامنجو","legend"],
+["روبرت ليفاندوفسكي",92,"ST","🇵🇱","بولندا","برشلونة","current"],
+["كريم بنزيما",91,"CF","🇫🇷","فرنسا","النصر","current"],
+["لويس سواريز",91,"ST","🇺🇾","الأوروجواي","إنتر ميامي","legend"],
+["زلاتان إبراهيموفيتش",90,"ST","🇸🇪","السويد","ميلان","legend"],
+["جابرييل باتيستوتا",92,"ST","🇦🇷","الأرجنتين","فيورنتينا","legend"],
+["أندريه شيفتشينكو",91,"ST","🇺🇦","أوكرانيا","ميلان","legend"],
+["فيليبو إنزاجي",88,"ST","🇮🇹","إيطاليا","ميلان","legend"],
+["ديدييه دروجبا",90,"ST","🇨🇮","ساحل العاج","تشلسي","legend"],
+["فرناندو توريس",88,"ST","🇪🇸","إسبانيا","أتلتيكو مدريد","legend"],
+["سيرجيو أجويرو",90,"ST","🇦🇷","الأرجنتين","مانشستر سيتي","legend"],
+["هاري كين",90,"ST","🏴","إنجلترا","بايرن ميونخ","current"],
+["توماس مولر",89,"CF","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["ميروسلاف كلوزه",87,"ST","🇩🇪","ألمانيا","لاتسيو","legend"],
+["هيرنان كريسبو",88,"ST","🇦🇷","الأرجنتين","إنتر ميلان","legend"],
+["كريستيان فييري",89,"ST","🇮🇹","إيطاليا","إنتر ميلان","legend"],
+["إدينسون كافاني",88,"ST","🇺🇾","الأوروجواي","بوكا جونيورز","legend"],
+["جونزالو هيجواين",87,"ST","🇦🇷","الأرجنتين","يوفنتوس","legend"],
+["ألفارو موراتا",82,"ST","🇪🇸","إسبانيا","ميلان","current"],
+["ماورو إيكاردي",84,"ST","🇦🇷","الأرجنتين","جلطة سراي","current"],
+["فيكتور أوسيمين",86,"ST","🇳🇬","نيجيريا","نابولي","current"],
+["دوسان فلاهوفيتش",85,"ST","🇷🇸","صربيا","يوفنتوس","current"],
+["روميلو لوكاكو",85,"ST","🇧🇪","بلجيكا","نابولي","current"],
+["روبرتو فيرمينو",84,"CF","🇧🇷","البرازيل","الأهلي","legend"],
+["أوليفييه جيرو",84,"ST","🇫🇷","فرنسا","ميلان","current"],
+["إدين هازارد",89,"LW","🇧🇪","بلجيكا","ريال مدريد","legend"],
+["دايفد فيا",88,"ST","🇪🇸","إسبانيا","برشلونة","legend"],
+["دانييل ألفيش",91,"RB","🇧🇷","البرازيل","برشلونة","legend"],
+["كافو",92,"RB","🇧🇷","البرازيل","ميلان","legend"],
+["روبرتو كارلوس",93,"LB","🇧🇷","البرازيل","ريال مدريد","legend"],
+["مايكون",88,"RB","🇧🇷","البرازيل","إنتر ميلان","legend"],
+["مارسيلو",90,"LB","🇧🇷","البرازيل","ريال مدريد","legend"],
+["جوردي ألبا",88,"LB","🇪🇸","إسبانيا","إنتر ميامي","legend"],
+["تراند ألكسندر-أرنولد",87,"RB","🏴","إنجلترا","ريال مدريد","current"],
+["أندرو روبرتسون",87,"LB","🏴","إسكتلندا","ليفربول","current"],
+["أشرف حكيمي",86,"RB","🇲🇦","المغرب","باريس سان جيرمان","current"],
+["تيو هرنانديز",86,"LB","🇫🇷","فرنسا","الهلال","current"],
+["فيليب لام",92,"RB","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["جانلوكا زامبروتا",87,"RB","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["باتريس إيفرا",86,"LB","🇫🇷","فرنسا","مانشستر يونايتد","legend"],
+["أشلي كول",88,"LB","🏴","إنجلترا","تشلسي","legend"],
+["ديفيد ألابا",89,"CB","🇦🇹","النمسا","ريال مدريد","current"],
+["ألفونسو دايفيز",85,"LB","🇨🇦","كندا","بايرن ميونخ","current"],
+["نونو مينديز",83,"LB","🇵🇹","البرتغال","باريس سان جيرمان","current"],
+["كايل ووكر",84,"RB","🏴","إنجلترا","مانشستر سيتي","current"],
+["سيرجيو راموس",94,"CB","🇪🇸","إسبانيا","الأهلي","legend"],
+["أليساندرو نيستا",93,"CB","🇮🇹","إيطاليا","ميلان","legend"],
+["فابيو كانافارو",92,"CB","🇮🇹","إيطاليا","ريال مدريد","legend"],
+["فرانكو باريزي",94,"CB","🇮🇹","إيطاليا","ميلان","legend"],
+["تياجو سيلفا",90,"CB","🇧🇷","البرازيل","تشلسي","legend"],
+["جيرارد بيكيه",91,"CB","🇪🇸","إسبانيا","برشلونة","legend"],
+["جورجيو كيليني",90,"CB","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["ليوناردو بونوتشي",89,"CB","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["ماتس هوميلز",87,"CB","🇩🇪","ألمانيا","بوروسيا دورتموند","legend"],
+["رافائيل فاران",88,"CB","🇫🇷","فرنسا","ريال مدريد","current"],
+["روبين دياش",88,"CB","🇵🇹","البرتغال","مانشستر سيتي","current"],
+["ماركينيوس",87,"CB","🇧🇷","البرازيل","باريس سان جيرمان","current"],
+["إيدير ميليتاو",86,"CB","🇧🇷","البرازيل","ريال مدريد","current"],
+["كاليدو كوليبالي",87,"CB","🇸🇳","السنغال","النصر","current"],
+["بوبي مور",90,"CB","🏴","إنجلترا","وست هام","legend"],
+["جون تيري",90,"CB","🏴","إنجلترا","تشلسي","legend"],
+["نيمانيا فيديتش",89,"CB","🇷🇸","صربيا","مانشستر يونايتد","legend"],
+["فينسينت كومباني",88,"CB","🇧🇪","بلجيكا","مانشستر سيتي","legend"],
+["جيروم بواتنج",86,"CB","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["دييجو جودين",85,"CB","🇺🇾","الأوروجواي","أتلتيكو مدريد","legend"],
+["نيكولاس أوتامندي",82,"CB","🇦🇷","الأرجنتين","بنفيكا","current"],
+["جون ستونز",85,"CB","🏴","إنجلترا","مانشستر سيتي","current"],
+["ويليام ساليبا",85,"CB","🇫🇷","فرنسا","أرسنال","current"],
+["جيانلويجي بوفون",95,"GK","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["إيكر كاسياس",93,"GK","🇪🇸","إسبانيا","ريال مدريد","legend"],
+["مانويل نوير",93,"GK","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["تيبو كورتوا",91,"GK","🇧🇪","بلجيكا","ريال مدريد","current"],
+["أليسون بيكر",90,"GK","🇧🇷","البرازيل","ليفربول","current"],
+["يان أوبلاك",91,"GK","🇸🇮","سلوفينيا","أتلتيكو مدريد","current"],
+["إدوين فان در سار",91,"GK","🇳🇱","هولندا","مانشستر يونايتد","legend"],
+["بيتر تشيك",90,"GK","🇨🇿","التشيك","تشلسي","legend"],
+["مارك تير شتيجن",89,"GK","🇩🇪","ألمانيا","برشلونة","current"],
+["إدرسون",87,"GK","🇧🇷","البرازيل","مانشستر سيتي","current"],
+["جيانلويجي دوناروما",88,"GK","🇮🇹","إيطاليا","باريس سان جيرمان","current"],
+["هوجو لوريس",87,"GK","🇫🇷","فرنسا","توتنهام","legend"],
+["كيلور نافاس",86,"GK","🇨🇷","كوستاريكا","النصر","current"],
+["دافيد دي خيا",87,"GK","🇪🇸","إسبانيا","مانشستر يونايتد","current"],
+["وويتشيك شتشيسني",85,"GK","🇵🇱","بولندا","يوفنتوس","current"],
+["مايك ميجنان",87,"GK","🇫🇷","فرنسا","ميلان","current"],
+["أندريه أونانا",84,"GK","🇨🇲","الكاميرون","مانشستر يونايتد","current"],
+["كيبا أريزابالاجا",81,"GK","🇪🇸","إسبانيا","تشلسي","current"],
+["كلاوديو برافو",82,"GK","🇨🇱","تشيلي","ريال بيتيس","legend"],
+["روي هودجسون",80,"GK","🏴","إنجلترا","كريستال بالاس","legend"],
+["أليكس تيليس",81,"LB","🇧🇷","البرازيل","النصر","current"],
+["دانيلو",83,"RB","🇧🇷","البرازيل","يوفنتوس","current"],
+["سيزار أزبيليكويتا",84,"RB","🇪🇸","إسبانيا","تشلسي","current"],
+["بن تشيلويل",81,"LB","🏴","إنجلترا","تشلسي","current"],
+["ريس جيمس",85,"RB","🏴","إنجلترا","تشلسي","current"],
+["أشيل ثيو هيرنانديز",81,"LB","🇫🇷","فرنسا","ليون","current"],
+["فيكتور موزس",80,"RW","🇳🇬","نيجيريا","توتنهام","legend"],
+["جوناثان دوس سانتوس",80,"CM","🇲🇽","المكسيك","أمريكا","legend"],
+["توني كروس الشاب",82,"CM","🇩🇪","ألمانيا","باير ليفركوزن","legend"],
+["فلوريان فيرتز",89,"CAM","🇩🇪","ألمانيا","باير ليفركوزن","current"],
+["جود سانشو",82,"RW","🏴","إنجلترا","مانشستر يونايتد","current"],
+["فيل فودين",88,"CAM","🏴","إنجلترا","مانشستر سيتي","current"],
+["ديكلان رايس",86,"CDM","🏴","إنجلترا","أرسنال","current"],
+["موسى ديابي",81,"RW","🇫🇷","فرنسا","الاتحاد","current"],
+["كريم أديمي",82,"LW","🇩🇪","ألمانيا","بوروسيا دورتموند","current"],
+["جود بيليجهام الابن",80,"CM","🏴","إنجلترا","صندرلاند","current"],
+["إيبراهيما كوناتي",84,"CB","🇫🇷","فرنسا","ليفربول","current"],
+["أوريلين تشوامني",85,"CDM","🇫🇷","فرنسا","ريال مدريد","current"],
+["إدواردو كامافينجا",83,"CM","🇫🇷","فرنسا","ريال مدريد","current"],
+["جافي",86,"CM","🇪🇸","إسبانيا","برشلونة","current"],
+["لامين جمال",88,"RW","🇪🇸","إسبانيا","برشلونة","current"],
+["جود بيلينجهام الأصغر",80,"ST","🇪🇸","إسبانيا","إشبيلية","current"],
+["فينيسيوس الصغير",80,"LW","🇧🇷","البرازيل","بالميراس","current"],
+["إنزو فرنانديز",85,"CM","🇦🇷","الأرجنتين","تشلسي","current"],
+["جوليان ألفاريز",85,"ST","🇦🇷","الأرجنتين","مانشستر سيتي","current"],
+["رودريجو دي بول",84,"CM","🇦🇷","الأرجنتين","أتلتيكو مدريد","current"],
+["نيكولا زانيولو",81,"RW","🇮🇹","إيطاليا","فنربخشة","current"],
+["فيديريكو كييزا",83,"RW","🇮🇹","إيطاليا","ليفربول","current"],
+["ماركوس راشفورد",84,"LW","🏴","إنجلترا","برشلونة","current"],
+["أنتوني جوردون",81,"LW","🏴","إنجلترا","نيوكاسل","current"],
+["برونو فرنانديز",87,"CAM","🇵🇹","البرتغال","مانشستر يونايتد","current"],
+["برناردو سيلفا",88,"CM","🇵🇹","البرتغال","مانشستر سيتي","current"],
+["جواو فيليكس",83,"CF","🇵🇹","البرتغال","تشلسي","current"],
+["رافاييل لياو",86,"LW","🇵🇹","البرتغال","ميلان","current"],
+["خيسوس نافاس",80,"RB","🇪🇸","إسبانيا","إشبيلية","legend"],
+["مارك كوكوريا",83,"LB","🇪🇸","إسبانيا","برشلونة","current"],
+["روبن لوفتوس-تشيك",81,"CM","🏴","إنجلترا","ميلان","current"],
+["ماركو رويس",86,"CAM","🇩🇪","ألمانيا","بوروسيا دورتموند","legend"],
+["جوشوا كيميش",88,"CDM","🇩🇪","ألمانيا","بايرن ميونخ","current"],
+["ليون جوريتسكا",85,"CM","🇩🇪","ألمانيا","بايرن ميونخ","current"],
+["سيرج جنابري",86,"LW","🇩🇪","ألمانيا","بايرن ميونخ","current"],
+["جمال موسيالا",87,"CAM","🇩🇪","ألمانيا","بايرن ميونخ","current"],
+["نيكو شلوتربيك",83,"CB","🇩🇪","ألمانيا","بوروسيا دورتموند","current"],
+["أنطونيو روديجر",86,"CB","🇩🇪","ألمانيا","ريال مدريد","current"],
+["إلينج هالاند الأب",81,"CB","🇳🇴","النرويج","نوتنجهام فورست","legend"],
+["مارتن إيديجارد الابن",80,"CAM","🇳🇴","النرويج","رين","legend"],
+["فيكتور جوكيرش",83,"ST","🇩🇰","الدنمارك","برايتون","legend"],
+["كريستيان إريكسن",84,"CAM","🇩🇰","الدنمارك","مانشستر يونايتد","current"],
+["بيير إيمريك أوباميانج",86,"ST","🇬🇦","الجابون","الاتحاد","legend"],
+["ساديو التشلسي",80,"RW","🇸🇳","السنغال","الاتحاد","current"],
+["رياض محرز",86,"RW","🇩🇿","الجزائر","الأهلي","legend"],
+["حكيم زياش",83,"RW","🇲🇦","المغرب","القادسية","legend"],
+["يوسف النصيري",81,"ST","🇲🇦","المغرب","إشبيلية","current"],
+["أشرف داري",80,"CB","🇲🇦","المغرب","برايتون","current"],
+["سفيان أمرابط",83,"CDM","🇲🇦","المغرب","مانشستر يونايتد","current"],
+["كريم بقراوي",80,"CB","🇲🇦","المغرب","الرجاء","legend"],
+["محمد كنو",80,"CDM","🇸🇦","السعودية","الهلال","current"],
+["سالم الدوسري",81,"LW","🇸🇦","السعودية","الهلال","current"],
+["ياسين بونو",85,"GK","🇲🇦","المغرب","الهلال","current"],
+["فراس البريكان",80,"ST","🇸🇦","السعودية","الأهلي","legend"],
+["أحمد حجازي",80,"CB","🇸🇦","السعودية","الاتحاد","legend"],
+["محمد كريم",80,"RW","🇬🇭","غانا","الأهلي المصري","legend"],
+["إمام عاشور",80,"CM","🇪🇬","مصر","الأهلي المصري","current"],
+["أحمد فتوح",80,"LB","🇪🇬","مصر","الأهلي المصري","current"],
+["زيزو",81,"CAM","🇪🇬","مصر","الزمالك","current"],
+["أحمد سيد زيزو",80,"CAM","🇪🇬","مصر","الأهلي المصري","current"],
+["فيكتور أوليمبي",80,"CM","🇳🇬","نيجيريا","هال سيتي","legend"],
+["ساني نيالا",80,"ST","🇬🇭","غانا","نانت","legend"],
+["أندريه أياو",83,"ST","🇬🇭","غانا","ليون","legend"],
+["يايا توريه",89,"CDM","🇨🇮","ساحل العاج","مانشستر سيتي","legend"],
+["كولو توريه",84,"CB","🇨🇮","ساحل العاج","مانشستر سيتي","legend"],
+["سامويل إيتو",92,"ST","🇨🇲","الكاميرون","برشلونة","legend"],
+["جورج ويا",90,"ST","🇱🇷","ليبيريا","ميلان","legend"],
+["مايكل إيسيان",86,"CDM","🇬🇭","غانا","تشلسي","legend"],
+["سليمان ديارا",80,"CDM","🇲🇱","مالي","ريال مدريد","legend"],
+["نيكولا كانتيه",80,"CB","🇫🇷","فرنسا","نيس","current"],
+["وارن زايير-إيمري",83,"CM","🇫🇷","فرنسا","باريس سان جيرمان","current"],
+["برادلي بارول",80,"CM","🇫🇷","فرنسا","موناكو","current"],
+["إبراهيما كوناتي الأصغر",80,"CB","🇫🇷","فرنسا","لايبزيج","current"],
+["فيليكس ليمار",80,"LW","🇫🇷","فرنسا","أتلتيكو مدريد","current"],
+["أندريه فرانك زامبو أنجيسا",81,"CDM","🇨🇲","الكاميرون","نابولي","current"],
+
+["أوسمان دمبلي",90,"RW","🇫🇷","فرنسا","باريس سان جيرمان","current"],
+["كاسيميرو",89,"CDM","🇧🇷","البرازيل","مانشستر يونايتد","current"],
+["إيبراهيم كوناتي",86,"CB","🇫🇷","فرنسا","ليفربول","current"],
+["لاوتارو مارتينيز",91,"ST","🇦🇷","الأرجنتين","إنتر ميلان","current"],
+["فيكتور جيوكيريس",87,"ST","🇸🇪","السويد","أرسنال","current"],
+["برونو جيماريش",86,"CM","🇧🇷","البرازيل","نيوكاسل يونايتد","current"],
+["أليكسيس ماك أليستر",87,"CM","🇦🇷","الأرجنتين","ليفربول","current"],
+["إيمليانو مارتينيز",88,"GK","🇦🇷","الأرجنتين","أستون فيلا","current"],
+["خيسوس كورونا",81,"RW","🇲🇽","المكسيك","سيفيلا","current"],
+["نونو تافاريش",80,"LB","🇵🇹","البرتغال","ميلان","current"],
+["فيديريكو فالفيردي",90,"CM","🇺🇾","الأوروجواي","ريال مدريد","current"],
+["إبراهيم ديالو",78,"CB","🇲🇱","مالي","موناكو","current"],
+["دارويين نونيز",85,"ST","🇺🇾","الأوروجواي","ليفربول","current"],
+["رونالد أراوخو",86,"CB","🇺🇾","الأوروجواي","برشلونة","current"],
+["خوسكو جفارديول",85,"CB","🇭🇷","كرواتيا","مانشستر سيتي","current"],
+["إيفان توني",83,"ST","🏴","إنجلترا","توتنهام","current"],
+["كول بالمر",87,"CAM","🏴","إنجلترا","تشلسي","current"],
+["مويسيس كايسيدو",84,"CDM","🇪🇨","الإكوادور","تشلسي","current"],
+["أليخاندرو جارناتشو",81,"LW","🇦🇷","الأرجنتين","مانشستر يونايتد","current"],
+["كينجزلي كومان",86,"LW","🇫🇷","فرنسا","النصر","current"],
+["دايوت أوبامكانو",84,"CB","🇫🇷","فرنسا","بايرن ميونخ","current"],
+["نيكلاس زوله",82,"CB","🇩🇪","ألمانيا","إنتر ميلان","current"],
+["مانويل أكانجي",83,"CB","🇨🇭","سويسرا","مانشستر سيتي","current"],
+["أليكس جرايمالدو",83,"LB","🇪🇸","إسبانيا","باير ليفركوزن","current"],
+["جوناثان تاه",83,"CB","🇩🇪","ألمانيا","باير ليفركوزن","current"],
+["جيريمي فريمبونج",82,"RB","🇳🇱","هولندا","باير ليفركوزن","current"],
+["أمين عدلي",81,"CAM","🇫🇷","فرنسا","باير ليفركوزن","current"],
+["أوسكار جواردادو",78,"CM","🇲🇽","المكسيك","تيجواري","current"],
+["يانيك كاراسكو",83,"LW","🇧🇪","بلجيكا","الاتحاد","current"],
+["نبيل فقير",82,"CAM","🇩🇿","الجزائر","رين","current"],
+["إسماعيل بن ناصر",76,"CDM","🇲🇦","المغرب","الوداد","current"],
+["أزّان كواتي",74,"CM","🇸🇳","السنغال","نانت","current"],
+["كريم الأحمدي",80,"CDM","🇲🇦","المغرب","فيتيسه","legend"],
+["منير الحدادي",79,"RW","🇲🇦","المغرب","ليتش","current"],
+["زكريا أبو خلال",77,"LW","🇲🇦","المغرب","بروج","current"],
+["بلال الخنوس",78,"CM","🇲🇦","المغرب","ليستر سيتي","current"],
+["إلياس شعير",76,"LB","🇲🇦","المغرب","فياريال","current"],
+["نايف العقيدي",79,"GK","🇸🇦","السعودية","الهلال","current"],
+["محمد العويس",77,"GK","🇸🇦","السعودية","الأهلي السعودي","current"],
+["عبدالرحمن غريب",78,"ST","🇸🇦","السعودية","الأهلي السعودي","current"],
+["عبدالله الحمدان",77,"LW","🇸🇦","السعودية","الاتحاد","current"],
+["حسان تمبكتي",81,"CB","🇲🇦","المغرب","سبورتنج لشبونة","current"],
+["نايف الشمراني",76,"ST","🇸🇦","السعودية","أبها","current"],
+["أحمد رفعت",75,"ST","🇪🇬","مصر","بيراميدز","current"],
+["مروان حمدي",76,"LW","🇪🇬","مصر","الأهلي المصري","current"],
+["محمد الشناوي",80,"GK","🇪🇬","مصر","الأهلي المصري","current"],
+["محمد صبحي",76,"GK","🇪🇬","مصر","بيراميدز","current"],
+["حمدي فتحي",77,"CDM","🇪🇬","مصر","الأهلي المصري","current"],
+["طاهر محمد طاهر",76,"CM","🇪🇬","مصر","بيراميدز","current"],
+["ياسين مرعي",73,"CB","🇪🇬","مصر","الزمالك","current"],
+["محمود جهاد",73,"CB","🇪🇬","مصر","الزمالك","current"],
+["أشرف بن شرقي",75,"ST","🇹🇳","تونس","الترجي","current"],
+["يوسف المساكني",78,"RW","🇹🇳","تونس","دبي","current"],
+["علي معلول",76,"LB","🇹🇳","تونس","الترجي","current"],
+["ياسين براهيمي",81,"LW","🇩🇿","الجزائر","النصر السعودي","current"],
+["بغداد بونجاح",81,"ST","🇩🇿","الجزائر","الاتحاد","current"],
+["رامي بن سبعيني",80,"CB","🇩🇿","الجزائر","بشيكتاش","current"],
+["فوزي غلام",76,"LB","🇩🇿","الجزائر","فالنسيان","current"],
+["كارلوس فيلا",74,"RW","🇲🇽","المكسيك","لوس أنجلوس إف سي","legend"],
+["أندريس جوارداتشو",72,"CM","🇲🇽","المكسيك","بوماس","current"],
+["أوريبى بيرالتا",73,"ST","🇲🇽","المكسيك","تيجواري","legend"],
+["دييجو فالديز",72,"CAM","🇨🇱","تشيلي","كولو كولو","current"],
+["بابلو جالديمز",73,"CM","🇨🇱","تشيلي","بوكا جونيورز","current"],
+["إيزكييل بالما",71,"RB","🇦🇷","الأرجنتين","راسينج","current"],
+["فرانكو مانزي",72,"CB","🇦🇷","الأرجنتين","إنديبنديينتي","current"],
+["ماتياس زاراتي",70,"ST","🇦🇷","الأرجنتين","لانوس","current"],
+["جوناثان روديجيز",76,"CAM","🇺🇾","الأوروجواي","النصر","current"],
+["ماكسي جوميز",74,"ST","🇺🇾","الأوروجواي","تيجواري","current"],
+["مايكل أوليس",83,"RW","🏴","إنجلترا","بايرن ميونخ","current"],
+["كوبي مايينو",71,"CM","🏴","إنجلترا","بيرنلي","current"],
+["كارلتون مورريس",72,"ST","🏴","إنجلترا","لوتون تاون","current"],
+["أنتوني إيلانجا",78,"LW","🇸🇪","السويد","نوتنجهام فورست","current"],
+["بيوتر زيلينسكي",81,"CAM","🇵🇱","بولندا","إنتر ميلان","current"],
+["كريستيان بولينيك",76,"ST","🇵🇱","بولندا","بيلباو","current"],
+["جاكوب كيفيور",78,"CB","🇵🇱","بولندا","نابولي","current"],
+["بيوتر تشيلينسكي",71,"CM","🇵🇱","بولندا","بولونيا","current"],
+["دينزيل دومفريس",84,"RB","🇳🇱","هولندا","إنتر ميلان","current"],
+["ستيفان دي فراي",79,"CB","🇳🇱","هولندا","إنتر ميلان","current"],
+["كودي جاكبو",83,"LW","🇳🇱","هولندا","ليفربول","current"],
+["تين كوبمايرز",75,"CM","🇳🇱","هولندا","أياكس","current"],
+["يريمي بينو",78,"LW","🇪🇸","إسبانيا","فياريال","current"],
+["ياجو أسبيريكويتا",76,"RB","🇪🇸","إسبانيا","فياريال","current"],
+["روبن فارجاس",70,"LW","🇪🇸","إسبانيا","إسبانيول","current"],
+["دييجو يورينتي",73,"ST","🇪🇸","إسبانيا","لاس بالماس","current"],
+["بابلو فورنالس",78,"CAM","🇪🇸","إسبانيا","بيتيس","current"],
+["بورخا إجليسياس",76,"ST","🇪🇸","إسبانيا","سيلتا فيجو","current"],
+["سيرجي دارديه",75,"CB","🇪🇸","إسبانيا","إسبانيول","current"],
+["إيتان أمبومو",81,"LW","🇨🇲","الكاميرون","بروسيا دورتموند","current"],
+["فينسنت أبو بكر",79,"ST","🇨🇲","الكاميرون","بيشكتاش","current"],
+["فرانك زامبو أنجيسا",80,"CM","🇨🇲","الكاميرون","نابولي","current"],
+["توماس بارتيه",79,"CDM","🇬🇭","غانا","أرسنال","current"],
+["جوردان أياو",76,"ST","🇬🇭","غانا","لوهافر","current"],
+["محمد كودوس",83,"RW","🇬🇭","غانا","توتنهام","current"],
+["ألفريد دنكان",73,"CM","🇬🇭","غانا","فيورنتينا","current"],
+["صمويل تشوكويزي",77,"RW","🇳🇬","نيجيريا","نابولي","current"],
+["أليكس إيوبي",76,"LW","🇳🇬","نيجيريا","فولهام","current"],
+["ويلفريد نديدي",78,"CB","🇳🇬","نيجيريا","لايستر سيتي","current"],
+["إبراهيم سانجاري",75,"CDM","🇨🇮","ساحل العاج","نوتنجهام فورست","current"],
+["فرانك كيسييه",79,"CM","🇨🇮","ساحل العاج","الأهلي السعودي","current"],
+["نيكولا بيبيه",78,"RW","🇨🇮","ساحل العاج","تراكتور","current"],
+["سيمون أدينجرا",80,"LW","🇨🇮","ساحل العاج","برايتون","current"],
+["أمادو هيدارا",77,"CM","🇲🇱","مالي","لايبزيج","current"],
+["يوسف فوفانا",80,"CDM","🇫🇷","فرنسا","ميلان","current"],
+["بواكاي تراوري",73,"ST","🇲🇱","مالي","بيرمنجهام","current"],
+["سفيان بوفال",78,"LW","🇲🇦","المغرب","الأهلي السعودي","current"],
+["ماكس أيمار",71,"CAM","🇫🇷","فرنسا","تولوز","current"],
+["هوانج هي تشان",81,"LW","🇰🇷","كوريا الجنوبية","وولفرهامبتون","current"],
+["سون هيونج مين",89,"LW","🇰🇷","كوريا الجنوبية","لوس أنجلوس إف سي","current"],
+["كيم مين جاي",84,"CB","🇰🇷","كوريا الجنوبية","بايرن ميونخ","current"],
+["لي كانج إن",79,"CAM","🇰🇷","كوريا الجنوبية","بايرن ميونخ","current"],
+["تاكيفوسا كوبو",81,"RW","🇯🇵","اليابان","ريال سوسيداد","current"],
+["ريتسو دوان",82,"CAM","🇯🇵","اليابان","فرانكفورت","current"],
+["واتارو إندو",78,"CDM","🇯🇵","اليابان","ليفربول","current"],
+["دايتشي كامادا",80,"CAM","🇯🇵","اليابان","كريستال بالاس","current"],
+["كاورو ميتوما",81,"LW","🇯🇵","اليابان","برايتون","current"],
+["ماثيو ريان",78,"GK","🇦🇺","أستراليا","الاتحاد","current"],
+["أرون موي",73,"CM","🇦🇺","أستراليا","بورنموث","current"],
+["حسين الشحات",79,"RW","🇪🇬","مصر","الأهلي المصري","current"],
+["عمرو السولية",76,"RB","🇪🇬","مصر","الأهلي المصري","current"],
+["مصطفى محمد",78,"ST","🇪🇬","مصر","نانت","current"],
+["أحمد عبدالقادر",73,"LB","🇪🇬","مصر","الزمالك","current"],
+["أحمد ياسر ريان",71,"GK","🇪🇬","مصر","الأهلي المصري","current"],
+["أونيسيوو إيزي",70,"ST","🇳🇬","نيجيريا","الوصل","current"],
+["فيسلي فوفانا",82,"CB","🇫🇷","فرنسا","تشلسي","current"],
+["ليساندرو مارتينيز",84,"CB","🇦🇷","الأرجنتين","مانشستر يونايتد","current"],
+["نيكولاس تاجليافيكو",81,"LB","🇦🇷","الأرجنتين","ليون","current"],
+["خوان فويث",83,"CB","🇦🇷","الأرجنتين","توتنهام","current"],
+["كريستيان روميرو",84,"CB","🇦🇷","الأرجنتين","توتنهام","current"],
+["ناهويل مولينا",81,"RB","🇦🇷","الأرجنتين","أتلتيكو مدريد","current"],
+["جوفاني لو تشيلسو",79,"CAM","🇦🇷","الأرجنتين","توتنهام","current"],
+["باولو ديبالا",86,"CAM","🇦🇷","الأرجنتين","روما","current"],
+["أنخيل كوريا",78,"RW","🇦🇷","الأرجنتين","أتلتيكو مدريد","current"],
+["فاليتين كاستيلانوس",78,"ST","🇦🇷","الأرجنتين","لاتسيو","current"],
+["جيرد مولر",96,"ST","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["ليف ياشين",95,"GK","🇷🇺","روسيا","دينامو موسكو","legend"],
+["دينو زوف",93,"GK","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["بيتر شمايكل",93,"GK","🇩🇰","الدنمارك","مانشستر يونايتد","legend"],
+["أوليفر كان",93,"GK","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["بوبي تشارلتون",93,"CM","🏴","إنجلترا","مانشستر يونايتد","legend"],
+["فيرينك بوشكاش",97,"ST","🇭🇺","المجر","ريال مدريد","legend"],
+["ألفريدو دي ستيفانو",97,"CF","🇦🇷","الأرجنتين","ريال مدريد","legend"],
+["إيوسيبيو",96,"ST","🇵🇹","البرتغال","بنفيكا","legend"],
+["جورج بست",94,"RW","🏴","أيرلندا الشمالية","مانشستر يونايتد","legend"],
+["جارينشا",95,"RW","🇧🇷","البرازيل","بوتافوجو","legend"],
+["زيكو",93,"CAM","🇧🇷","البرازيل","فلامنجو","legend"],
+["سقراط",92,"CAM","🇧🇷","البرازيل","كورينثيانز","legend"],
+["لوثار ماتيوس",94,"CM","🇩🇪","ألمانيا","إنتر ميلان","legend"],
+["كارل هاينز رومينيجه",93,"ST","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["ديفيد سيلفا",91,"CAM","🇪🇸","إسبانيا","مانشستر سيتي","legend"],
+["روي كين",90,"CM","🏴","أيرلندا","مانشستر يونايتد","legend"],
+["كلارنس سيدورف",92,"CM","🇳🇱","هولندا","ميلان","legend"],
+["إدجار ديفيدز",89,"CDM","🇳🇱","هولندا","يوفنتوس","legend"],
+["مايكل لودروب",92,"CF","🇩🇰","الدنمارك","برشلونة","legend"],
+["هريستو ستويتشكوف",92,"LW","🇧🇬","بلغاريا","برشلونة","legend"],
+["جورج هاجي",92,"CAM","🇷🇴","رومانيا","برشلونة","legend"],
+["باولو روسي",91,"ST","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["جوزيه ألتافيني",90,"ST","🇧🇷","البرازيل","ميلان","legend"],
+["إيمانويل بيتيت",88,"CM","🇫🇷","فرنسا","أرسنال","legend"],
+["مارسيل ديساي",89,"CB","🇫🇷","فرنسا","تشلسي","legend"],
+["لوران بلان",90,"CB","🇫🇷","فرنسا","إنتر ميلان","legend"],
+["فابيان بارتيز",90,"GK","🇫🇷","فرنسا","مانشستر يونايتد","legend"],
+["جوزيبي بيرجومي",89,"CB","🇮🇹","إيطاليا","إنتر ميلان","legend"],
+["دانييلي ماسارو",89,"ST","🇮🇹","إيطاليا","ميلان","legend"],
+["كيني دالجليش",92,"ST","🏴","اسكتلندا","ليفربول","legend"],
+["إيان راش",91,"ST","🏴","ويلز","ليفربول","legend"],
+["جون بارنز",89,"LW","🏴","إنجلترا","ليفربول","legend"],
+["بيتر بيردسلي",88,"CAM","🏴","إنجلترا","ليفربول","legend"],
+["برايان روبسون",90,"CM","🏴","إنجلترا","مانشستر يونايتد","legend"],
+["دينيس لو",92,"ST","🏴","اسكتلندا","مانشستر يونايتد","legend"],
+["نوبي ستايلز",87,"CDM","🏴","إنجلترا","مانشستر يونايتد","legend"],
+["جوردون بانكس",93,"GK","🏴","إنجلترا","ليستر سيتي","legend"],
+["مارتن بيترز",88,"CM","🏴","إنجلترا","وست هام يونايتد","legend"],
+["جيوف هيرست",90,"ST","🏴","إنجلترا","وست هام يونايتد","legend"],
+];
+
+// coaches: [name, rating, flag, country, tactic, atk, def, poss, counter]
+const RAW_COACHES = [
+["بيب جوارديولا",95,"🇪🇸","إسبانيا","استحواذ هجومي",96,84,98,70],
+["يورجن كلوب",92,"🇩🇪","ألمانيا","جيجن برسينج",92,86,84,90],
+["كارلو أنشيلوتي",93,"🇮🇹","إيطاليا","توازن تكتيكي",88,90,85,82],
+["السير أليكس فيرجسون",96,"🏴","إسكتلندا","هجوم مرن",93,87,82,85],
+["جوزيه مورينيو",92,"🇵🇹","البرتغال","دفاعي مضاد",80,95,70,93],
+["دييجو سيميوني",88,"🇦🇷","الأرجنتين","دفاعي صارم",75,96,65,88],
+["زين الدين زيدان (مدرب)",89,"🇫🇷","فرنسا","هدوء وإدارة نجوم",89,85,83,80],
+["توماس توخيل",87,"🇩🇪","ألمانيا","تكتيكي مرن",85,88,80,84],
+["أنطونيو كونتي",87,"🇮🇹","إيطاليا","3 مدافعين منظم",84,90,78,83],
+["أرسين فينجر",90,"🇫🇷","فرنسا","هجوم جميل",90,78,86,75],
+["فابيو كابيلو",88,"🇮🇹","إيطاليا","انضباط دفاعي",78,91,74,80],
+["مارتشيلو ليبي",91,"🇮🇹","إيطاليا","صلابة إيطالية",82,93,76,84],
+["فيسنتي ديل بوسكي",88,"🇪🇸","إسبانيا","تيكي تاكا هادئ",86,84,90,72],
+["يوب هاينكس",86,"🇩🇪","ألمانيا","خبرة وتوازن",85,85,80,80],
+["فرانك ريكارد",85,"🇳🇱","هولندا","هجوم أنيق",86,80,84,74],
+["ديدييه ديشون",87,"🇫🇷","فرنسا","براجماتية فرنسية",83,88,76,86],
+["لويس إنريكي",86,"🇪🇸","إسبانيا","استحواذ سريع",88,82,88,76],
+["هانز-ديتر فليك",88,"🇩🇪","ألمانيا","ضغط عالٍ",90,85,86,78],
+["أوناي إيمري",84,"🇪🇸","إسبانيا","تنظيم أوروبي",82,86,79,81],
+["إروين فان جال",85,"🇳🇱","هولندا","تخطيط صارم",81,87,82,77],
+["ميكيل أرتيتا",86,"🇪🇸","إسبانيا","ضغط منظم",87,84,85,80],
+["تشابي ألونسو",87,"🇪🇸","إسبانيا","هجوم جريء",88,83,86,78],
+["رافائيل بينيتيز",85,"🇪🇸","إسبانيا","تكتيكي حذر",80,89,77,85],
+["روبرتو مانشيني",86,"🇮🇹","إيطاليا","توازن هجومي",86,83,83,79],
+["يوليان ناجلسمان",87,"🇩🇪","ألمانيا","أفكار حديثة",89,82,87,76],
+["إريك تين هاج",84,"🇳🇱","هولندا","استحواذ منظم",84,83,85,78],
+["أنجي بوستيكوجلو",85,"🇦🇺","أستراليا","هجوم مباشر",90,76,84,72],
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+const BUCKETS = ['GK','DEF','MID','FWD'];
+let state = null;
+
+function tierOf(r){ return r<80?1 : r<85?2 : r<90?3 : r<95?4 : 5; }
+function bucketOf(pos){ return POS_BUCKET[pos] || 'MID'; }
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function buildPlayers(){
+  return RAW_PLAYERS.map((p,i)=>({
+    id:'p'+i, name:p[0], rating:p[1], pos:p[2], flag:p[3], country:p[4], team:p[5], status:p[6]||'current',
+    tier:tierOf(p[1]), bucket:bucketOf(p[2])
+  })).filter(p=>p.rating>=70); // full platform floor is 70 (see BRACKET_WEIGHT_FULL)
+}
+function buildCoaches(){
+  return RAW_COACHES.map((c,i)=>({
+    id:'c'+i, name:c[0], rating:c[1], flag:c[2], country:c[3], tactic:c[4],
+    atk:c[5], def:c[6], poss:c[7], counter:c[8]
+  }));
+}
+
+/* ---- slot-based candidate picking (formation order + rating split + legend/current balance) ---- */
+function getSlotCandidates(slot, excludeId){
+  const strict = ALL_PLAYERS.filter(p =>
+    slot.pos.includes(p.pos) && !state.usedPlayerIds.has(p.id) && p.id !== excludeId
+  );
+  if(strict.length>0) return strict;
+  // Safety net: the exact position (e.g. RB) ran out of unused players.
+  // Without this, pickPlayerForSlot returns null, state.current stays null,
+  // and the screen freezes with no card and no way to bid (the bug reported).
+  // Broaden to any position in the same formation bucket instead (e.g. any
+  // DEF for a defensive slot) — still respects usedPlayerIds, so every
+  // player is still only ever offered once across the whole draft.
+  const bucket = bucketOf(slot.pos[0]);
+  return ALL_PLAYERS.filter(p =>
+    bucketOf(p.pos)===bucket && !state.usedPlayerIds.has(p.id) && p.id !== excludeId
+  );
+}
+function pickPlayerForSlot(slot, excludeId, isBackup){
+  let candidates = getSlotCandidates(slot, excludeId);
+  if(candidates.length===0) return null;
+  if(!isBackup){
+    // rule: the player actually put up for auction always opens at 85+
+    const strong = candidates.filter(p=>p.rating>=85);
+    if(strong.length>0) candidates = strong;
+    // if the bucket has nobody 85+ left, fall back to whoever's left rather
+    // than freezing the draft
+  }
+  const legendC = candidates.filter(p=>p.status==='legend');
+  const currentC = candidates.filter(p=>p.status==='current');
+  if(legendC.length>0 && currentC.length>0){
+    // nudge toward whichever status is currently behind the 50/50 target
+    const preferLegend = state.legendCount <= state.currentCount;
+    if(Math.random() < 0.75) candidates = preferLegend ? legendC : currentC;
+  } else if(legendC.length>0){ candidates = legendC; }
+  else if(currentC.length>0){ candidates = currentC; }
+  return weightedPick(candidates, isBackup ? BRACKET_WEIGHT_FULL : BRACKET_WEIGHT_MAIN);
+}
+function markUsedPlayer(p){
+  state.usedPlayerIds.add(p.id);
+  if(p.status==='legend') state.legendCount++; else state.currentCount++;
+}
+function getCoachCandidates(excludeId){
+  return ALL_COACHES.filter(c => !state.usedCoachIds.has(c.id) && c.id !== excludeId);
+}
+function pickCoachCandidate(excludeId){
+  return weightedPick(getCoachCandidates(excludeId), BRACKET_WEIGHT_FULL);
+}
+function markUsedCoach(c){ state.usedCoachIds.add(c.id); }
+
+/* =========================================================
+   INIT / START
+========================================================= */
+const $ = id => document.getElementById(id);
+
+/* ---- simple synthesized click/press sound for buttons ---- */
+let audioCtx = null;
+function playClickSound(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    const t = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(680, t);
+    osc.frequency.exponentialRampToValueAtTime(260, t+0.09);
+    gain.gain.setValueAtTime(0.16, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t+0.1);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(t); osc.stop(t+0.11);
+  }catch(e){ /* audio not available, ignore */ }
+}
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('button')) playClickSound();
+});
+
+/* ---- player/coach photo lookup via Wikidata (free, no API key needed) ----
+   Uses Wikidata instead of a plain Wikipedia article-title search, because a
+   name search can land on the wrong page (e.g. a country or club article),
+   which previously caused a country flag image to appear instead of a real
+   photo. Wikidata lets us verify the matched entity is actually a person
+   (P31 = Q5 "human") before using its photo (P18), so flags/logos never
+   get used as a "player photo" by mistake. */
+const wikiImageCache = new Map(); // name -> url string | null
+
+/* Step 1: Wikidata lookup, tried in Arabic then English labels. Verifies the
+   matched entity is P31=Q5 (a real human) before trusting its P18 photo, so a
+   country/club/flag entity can never be used as a "player photo". */
+async function tryWikidataImage(name){
+  for(const lang of ['ar','en']){
+    try{
+      const searchRes = await fetch(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(name)}&language=${lang}&uselang=${lang}&type=item&format=json&origin=*&limit=6`);
+      if(!searchRes.ok) continue;
+      const searchData = await searchRes.json();
+      const candidateIds = (searchData.search || []).map(c=>c.id).filter(Boolean);
+      if(!candidateIds.length) continue;
+      const entRes = await fetch(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${candidateIds.join('|')}&format=json&props=claims&origin=*`);
+      if(!entRes.ok) continue;
+      const entData = await entRes.json();
+      for(const qid of candidateIds){
+        const entity = entData.entities && entData.entities[qid];
+        const claims = entity && entity.claims;
+        if(!claims) continue;
+        const instanceOf = (claims.P31 || []).map(c=>c.mainsnak && c.mainsnak.datavalue && c.mainsnak.datavalue.value && c.mainsnak.datavalue.value.id);
+        const isHuman = instanceOf.includes('Q5'); // must be a real person, never a country/club/team
+        const imageClaim = claims.P18 && claims.P18[0];
+        if(isHuman && imageClaim){
+          const filename = imageClaim.mainsnak.datavalue.value;
+          return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(filename)}?width=300`;
+        }
+      }
+    }catch(e){ /* network/CORS issue, try next language */ }
+  }
+  return null;
+}
+
+/* Step 2 (fallback): if the player has no usable Wikidata photo, look up the
+   lead image of the matching Wikipedia article directly. Higher hit-rate for
+   footballers than Wikidata alone, since many have no Arabic Wikidata label. */
+async function tryWikipediaImage(name, lang){
+  try{
+    const url = `https://${lang}.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(name)}&gsrlimit=1&prop=pageimages&piprop=original&format=json&origin=*`;
+    const res = await fetch(url);
+    if(!res.ok) return null;
+    const data = await res.json();
+    const pages = data.query && data.query.pages;
+    if(!pages) return null;
+    const page = Object.values(pages)[0];
+    if(page && page.original && page.original.source) return page.original.source;
+  }catch(e){ /* network/CORS issue, fall back to emoji icon */ }
+  return null;
+}
+
+async function fetchWikiImage(name){
+  if(wikiImageCache.has(name)) return wikiImageCache.get(name);
+  let result = await tryWikidataImage(name);
+  if(!result) result = await tryWikipediaImage(name, 'ar');
+  if(!result) result = await tryWikipediaImage(name, 'en');
+  wikiImageCache.set(name, result);
+  return result;
+}
+
+/* fills an avatar element with a real photo when found, otherwise leaves the emoji fallback */
+function setAvatar(elId, name, fallbackEmoji){
+  const el = $(elId);
+  if(!el) return;
+  el.textContent = fallbackEmoji;
+  el.dataset.forName = name;
+  fetchWikiImage(name).then(url=>{
+    const target = $(elId);
+    if(!target || target.dataset.forName !== name) return; // card moved on, ignore stale result
+    if(url) target.innerHTML = `<img src="${url}" alt="" onerror="this.parentElement.textContent='${fallbackEmoji}';">`;
+  });
+}
+
+let ALL_PLAYERS = [];
+let ALL_COACHES = [];
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+
+/* =========================================================
+   ONLINE ROOM / MULTIPLAYER SYNC
+   Two devices connect directly to each other over WebRTC via PeerJS,
+   using PeerJS's free public broker (no account/API key needed — this
+   works from any static host, including GitHub Pages). The host device
+   is the single source of truth for the room; the guest sends action
+   requests and the host broadcasts the resulting state back.
+========================================================= */
+let roomCode = null;      // e.g. "K7X2Q" — also used as the host's Peer ID
+let myIdx = null;         // 0 = host (creator), 1 = guest (joiner), null = offline (both)
+let isOnline = true;      // false = both players share this one device
+let botMode = false;      // true = seat 1 (idx 1) is played by the AI, not a second human
+const BOT_IDX = 1;
+let localRev = -1;        // last room revision we've rendered
+let matchResultShown = false;
+
+let peer = null;          // this device's PeerJS instance
+let conn = null;           // the data connection to the other device
+let localRoom = null;      // host's authoritative room object
+let pendingResolve = null; // guest: resolves once host answers our last action
+let heartbeatTimer = null; // host: re-broadcasts the full room every 2s so a
+                            // dropped/lost 'room' message self-heals quickly
+                            // instead of leaving the guest's screen stuck
+
+function genRoomCode(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I confusion
+  let s='';
+  for(let i=0;i<5;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+function teardownConnection(){
+  if(heartbeatTimer){ clearInterval(heartbeatTimer); heartbeatTimer = null; }
+  if(conn){ try{ conn.close(); }catch(e){} conn = null; }
+  if(peer){ try{ peer.destroy(); }catch(e){} peer = null; }
+  localRoom = null; pendingResolve = null;
+}
+
+/* WebRTC needs help getting through mobile-carrier NATs — plain STUN
+   (the default) often fails on 4G/5G, so we add a public TURN relay
+   as a fallback path. This is a public demo relay (no account needed);
+   it's best-effort but dramatically improves connection success rate
+   on cellular networks compared to STUN alone. */
+const ICE_CONFIG = {
+  iceServers: [
+    { urls: 'stun:stun.relay.metered.ca:80' },
+    { urls: 'turn:global.relay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
+    { urls: 'turn:global.relay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' },
+    { urls: 'turn:global.relay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' }
+  ]
+};
+
+/* Host: applies a mutation to the authoritative room, then pushes the
+   full updated room to the guest (if connected). This replaces the old
+   read-modify-write-to-shared-storage compare-and-swap. */
+async function casUpdate(mutator){
+  if(!localRoom) return null;
+  const draft = JSON.parse(JSON.stringify(localRoom));
+  const outcome = mutator(draft, localRoom);
+  if(outcome === false){
+    // Rejected (can't afford / round already resolved elsewhere / etc).
+    // Still reply with the current room so a waiting guest's sendAction()
+    // resolves immediately instead of sitting for the full 6s timeout and
+    // showing a false "connection lost" error for a perfectly normal reject.
+    if(conn && conn.open) conn.send({type:'room', room: localRoom});
+    return localRoom;
+  }
+  draft.rev = (localRoom.rev||0) + 1;
+  localRoom = draft;
+  if(conn && conn.open) conn.send({type:'room', room: draft});
+  return draft;
+}
+
+/* Guest: since only the host may mutate the room, the guest sends a
+   named action request over the data channel and waits for the host's
+   next 'room' broadcast (which arrives as the reply). */
+function setConnStatus(text, kind){
+  const el = document.getElementById('connStatus');
+  if(!el) return;
+  if(!text){ el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.textContent = text;
+  el.style.background = kind==='bad' ? 'rgba(255,92,92,.12)' : 'rgba(231,179,76,.08)';
+  el.style.color = kind==='bad' ? 'var(--red)' : 'var(--gold)';
+  el.style.border = '1px solid ' + (kind==='bad' ? 'rgba(255,92,92,.35)' : 'rgba(231,179,76,.25)');
+}
+
+function sendAction(action){
+  return new Promise((resolve)=>{
+    if(!conn || !conn.open){
+      setConnStatus('⚠️ الاتصال بصاحبك انقطع — جرب تقفل وترجع للعبة تاني', 'bad');
+      resolve(null);
+      return;
+    }
+    let settled = false;
+    pendingResolve = (room)=>{ settled = true; resolve(room); };
+    conn.send(action);
+    setTimeout(()=>{
+      if(!settled){
+        pendingResolve = null;
+        setConnStatus('⚠️ محدش رد — الاتصال ممكن يكون بطيء أو اتقطع', 'bad');
+        resolve(null);
+      }
+    }, 6000);
+  });
+}
+
+function scheduleAdvance(){
+  setTimeout(()=>{ forceAdvanceIfDue(); }, 1900);
+}
+
+/* Mobile browsers throttle or fully suspend setTimeout on a backgrounded
+   or locked tab, so the host-only timer inside scheduleAdvance can miss
+   its 1900ms window — sometimes for minutes, sometimes forever if the
+   tab gets discarded. When that happens, draft.lastSold never clears,
+   which means isResolving() stays true and BOTH players' bid/hammer
+   buttons stay disabled indefinitely, even though nothing is actually
+   wrong with their connection.
+   Fix: instead of trusting only the timer to fire on schedule, we store
+   a wall-clock deadline (advanceAt) in the shared room and re-check it
+   from multiple independent triggers (the timer itself, the host's tab
+   regaining visibility, and the heartbeat). Any of these can push the
+   round forward the moment it's actually due, even if the original
+   timer was suspended for a while. */
+async function forceAdvanceIfDue(){
+  if(!isOnline || myIdx!==0) return; // only the host owns/mutates localRoom
+  if(!localRoom || !localRoom.lastSold) return; // nothing stuck
+  if(localRoom.advanceAt && Date.now() < localRoom.advanceAt) return; // not due yet — its own timer will handle it
+  const adv = await casUpdate((draft)=>{
+    if(!draft.lastSold) return false; // already advanced by another trigger in the meantime
+    state = deserializeGameState(draft.gameState);
+    if(state.phase==='players'){
+      state.slotIndex++;
+      if(state.slotIndex >= FORMATION_SLOTS.length) startCoachPhasePure();
+      else nextAuctionItemPure();
+    } else if(state.phase==='coaches'){
+      finishAuctionPure();
+    }
+    draft.gameState = serializeGameState(state);
+    draft.lastSold = null;
+    draft.lastSoldAt = 0;
+    draft.advanceAt = 0;
+  });
+  if(adv) applyRoom(adv);
+}
+
+/* The host's own tab is the only place lastSold ever gets cleared, so if
+   IT was the one that got backgrounded/locked, the fix above only helps
+   once that tab is actually running JS again. 'visibilitychange' fires
+   immediately (unlike setTimeout) the moment the host looks at the app
+   again, so this is what actually unsticks a stalled round in practice. */
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden) forceAdvanceIfDue();
+});
+
+/* Host-side: applies whatever action the guest asked for, exactly like
+   the host's own button clicks would. */
+async function handleGuestMessage(msg){
+  // Whatever the host's tab was doing, an incoming message means it's
+  // actively running JS right now — so this is a free chance to catch up
+  // on any advance that a throttled/backgrounded setTimeout or heartbeat
+  // missed. Ping messages (below) exist purely to create these chances.
+  await forceAdvanceIfDue();
+  if(msg.type === 'ping'){
+    if(conn && conn.open && localRoom) conn.send({type:'room', room: localRoom});
+    return;
+  }
+  if(msg.type === 'join'){
+    const updated = await casUpdate((draft)=>{
+      draft.guestName = msg.name;
+      draft.guestJoined = true;
+    });
+    if(updated) applyRoom(updated);
+  } else if(msg.type === 'bid'){
+    const updated = await casUpdate((draft)=>{
+      if(draft.lastSold) return false; // a round just resolved and hasn't advanced yet — no bidding on the item that already sold
+      const s = deserializeGameState(draft.gameState);
+      if(!canAffordBid(s, msg.idx) || !canOpenBid(s, msg.idx)) return false;
+      s.price = s.price + 1;
+      s.leader = msg.idx;
+      draft.gameState = serializeGameState(s);
+    });
+    if(updated) applyRoom(updated);
+  } else if(msg.type === 'hammer'){
+    const outcome = await casUpdate((draft)=>{
+      state = deserializeGameState(draft.gameState);
+      if(state.leader===null) return false;
+      if(state.leader===1) return false; // the guest (idx 1) can't hammer their own bid
+      const winner = state.leader, loser = winner===0?1:0, price = state.price;
+      state.budgets[winner] -= price;
+      let wonItem, freeItem, titleText;
+      if(state.phase==='players'){
+        wonItem = state.current;
+        state.teams[winner].push(wonItem);
+        markUsedPlayer(wonItem);
+        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id, true);
+        if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
+        titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
+      } else {
+        wonItem = state.current;
+        state.coaches[winner] = wonItem;
+        markUsedCoach(wonItem);
+        freeItem = pickCoachCandidate(wonItem.id);
+        if(freeItem){ state.coaches[loser] = freeItem; markUsedCoach(freeItem); }
+        titleText = `👔 نتيجة مزاد المدربين`;
+      }
+      state.leader = null;
+      draft.gameState = serializeGameState(state);
+      draft.lastSold = {winnerIdx:winner, wonItem, freeItem, price, titleText};
+      draft.lastSoldAt = Date.now();
+      draft.advanceAt = Date.now() + 1900;
+      draft._resolvedNow = true;
+    });
+    if(outcome && outcome._resolvedNow){
+      applyRoom(outcome);
+      scheduleAdvance();
+    }
+  } else if(msg.type === 'simulate'){
+    const outcome = await casUpdate((draft)=>{
+      if(draft.matchResult) return false; // already simulated
+      state = deserializeGameState(draft.gameState);
+      draft.matchResult = simulateMatch();
+    });
+    if(outcome && outcome.matchResult){
+      matchResultShown = true;
+      applyRoom(outcome);
+      setTimeout(()=>{ showResult(outcome.matchResult); }, 1400);
+    }
+  }
+}
+
+/* Guest-side: every message from the host is the freshest full room. */
+function handleHostMessage(msg){
+  if(msg.type === 'room'){
+    applyRoom(msg.room);
+    if(pendingResolve){ const r = pendingResolve; pendingResolve = null; r(msg.room); }
+  }
+}
+
+/* Guest-side watchdog: if a round is stuck waiting to advance (lastSold
+   still set) for more than a couple seconds, keep gently pinging the host.
+   Normally the host's own timer/heartbeat/visibilitychange handles this —
+   but if the HOST's tab is the one that got backgrounded or the phone got
+   locked, none of those fire until the host looks at it again, and both
+   players stay frozen. A ping is just an ordinary incoming message, and
+   handleGuestMessage() always checks forceAdvanceIfDue() first — so each
+   ping gives the host's JS a fresh chance to notice the round is overdue,
+   even while its own timers are being throttled. */
+setInterval(()=>{
+  if(isOnline && myIdx===1 && conn && conn.open && roundResolving){
+    conn.send({type:'ping'});
+  }
+}, 1500);
+
+function serializeGameState(s){
+  if(!s) return null;
+  return {...s, usedPlayerIds:[...s.usedPlayerIds], usedCoachIds:[...s.usedCoachIds]};
+}
+function deserializeGameState(o){
+  if(!o) return null;
+  return {...o, usedPlayerIds:new Set(o.usedPlayerIds||[]), usedCoachIds:new Set(o.usedCoachIds||[])};
+}
+
+function applyRoom(room){
+  if(!room) return;
+  const revChanged = room.rev !== localRev;
+  localRev = room.rev;
+
+  if(!room.started){
+    // still in the waiting room
+    if(document.getElementById('screen-waiting').classList.contains('active') || myIdx!==null){
+      $('roomCodeDisplay').textContent = roomCode;
+      $('waitHostName').textContent = '👤 ' + room.hostName + ' (المضيف)';
+      if(room.guestJoined){
+        $('waitGuestName').textContent = '👤 ' + room.guestName;
+        $('guestDot').classList.remove('pulse');
+        $('guestDot').classList.add('on');
+        if(myIdx===0) $('startAuctionBtn').disabled = false;
+      } else {
+        $('waitGuestName').textContent = 'في انتظار صديقك...';
+        $('guestDot').classList.add('pulse');
+        $('guestDot').classList.remove('on');
+        $('startAuctionBtn').disabled = true;
+      }
+    }
+    return;
+  }
+
+  // game has started — sync ALL_PLAYERS/ALL_COACHES pools once
+  if(ALL_PLAYERS.length===0){ ALL_PLAYERS = buildPlayers(); }
+  if(ALL_COACHES.length===0){ ALL_COACHES = shuffle(buildCoaches()); }
+
+  state = deserializeGameState(room.gameState);
+  // Authoritative, clock-independent: as long as the host says this round's
+  // win hasn't been advanced past yet, block further bids/hammers on both
+  // sides — regardless of whether the two phones' clocks agree.
+  roundResolving = !!room.lastSold;
+
+  if(room.matchResult){
+    if(!matchResultShown){
+      matchResultShown = true;
+      showResult(room.matchResult);
+    }
+    return;
+  }
+
+  if(state.phase==='done'){
+    // Heartbeats repeat the same room every 2s with nothing new — only
+    // rebuild the (expensive) formation cards when something actually changed.
+    if(revChanged) renderFormations('finalFormations');
+    showScreen('screen-final');
+    $('aiBtn').disabled = false;
+    $('thinking').classList.remove('show');
+    return;
+  }
+
+  const showingSoldFlash = room.lastSold && room.lastSoldAt && (Date.now()-room.lastSoldAt < 1900);
+
+  // The host re-sends the full room every 2s purely as a self-healing
+  // heartbeat. Rebuilding the whole auction screen — and every player/coach
+  // card in it, each of which kicks off an avatar lookup — on every one of
+  // those repeats is unnecessary work that visibly stutters the UI on a
+  // real phone. Only do the full rebuild when the revision actually moved.
+  if(revChanged){
+    renderAuctionScreen();
+  } else if(!document.getElementById('screen-auction').classList.contains('active')){
+    renderAuctionScreen();
+  }
+
+  // sold flash: shown for ~1.9s after a hammer resolution, driven purely by timestamp
+  // so both devices display it in sync regardless of who triggered the hammer.
+  if(showingSoldFlash){
+    $('soldMainTitle').textContent = room.lastSold.titleText;
+    fillSoldMiniFromData('W', room.lastSold.winnerIdx, room.lastSold.wonItem, `💰 ${room.lastSold.price}M`);
+    fillSoldMiniFromData('L', room.lastSold.winnerIdx===0?1:0, room.lastSold.freeItem, room.lastSold.freeItem ? '🎁 مجانًا' : '—');
+    $('soldFlash').classList.add('show');
+  } else {
+    $('soldFlash').classList.remove('show');
+  }
+}
+
+/* Renders the whole auction screen from the current global `state`.
+   Shared by both the online poller (applyRoom) and the offline (same-device)
+   flow, so the two modes stay visually identical. */
+function renderAuctionScreen(){
+  showScreen('screen-auction');
+  $('tpName1').textContent = state.names[0];
+  $('tpName2').textContent = state.names[1];
+  $('bidName1').textContent = state.names[0];
+  $('bidName2').textContent = state.names[1];
+  $('hammerName1').textContent = state.names[0];
+  $('hammerName2').textContent = state.names[1];
+  updateBudgetBar();
+  renderFormations();
+
+  if(state.phase==='players'){
+    $('stageLabel').textContent = `مزاد اللاعبين — ${state.currentSlot.label} (${state.slotIndex+1}/${FORMATION_SLOTS.length})`;
+    if(state.current) renderPlayerCard(state.current);
+  } else if(state.phase==='coaches'){
+    $('stageLabel').textContent = 'مزاد المدربين';
+    if(state.current) renderCoachCard(state.current);
+  }
+  updateStatusMsg();
+  updatePriceUI();
+  updateBidButtons();
+  updateHammer();
+}
+function fillSoldMiniFromData(suffix, idx, item, priceText){
+  const card = $('soldCard'+suffix);
+  card.className = 'sold-mini ' + (idx===0 ? 'p1' : 'p2');
+  $('smTag'+suffix).textContent = state.names[idx];
+  $('smName'+suffix).textContent = item ? item.name : '—';
+  $('smRating'+suffix).textContent = item ? item.rating : '';
+  $('smPos'+suffix).textContent = item ? (item.pos || 'COACH') : '';
+  $('smPrice'+suffix).textContent = priceText;
+  if(item) setAvatar('smAvatar'+suffix, item.name, item.flag);
+}
+
+/* No-ops kept so existing call sites don't need touching — state now
+   arrives in real time over the peer connection instead of by polling. */
+function pollRoom(){}
+function startPolling(){}
+function stopPolling(){ teardownConnection(); }
+
+/* ---- lobby UI wiring ---- */
+$('showCreateBtn').addEventListener('click', ()=> showScreen('screen-create'));
+$('showJoinBtn').addEventListener('click', ()=> showScreen('screen-join'));
+$('showOfflineBtn').addEventListener('click', ()=> showScreen('screen-offline-setup'));
+$('showBotBtn').addEventListener('click', ()=> showScreen('screen-bot-setup'));
+$('backFromBot').addEventListener('click', ()=> showScreen('screen-lobby'));
+$('backFromCreate').addEventListener('click', ()=> showScreen('screen-lobby'));
+$('backFromJoin').addEventListener('click', ()=> showScreen('screen-lobby'));
+$('backFromOffline').addEventListener('click', ()=> showScreen('screen-lobby'));
+$('backFromWaiting').addEventListener('click', ()=>{
+  stopPolling(); roomCode=null; myIdx=null;
+  showScreen('screen-lobby');
+});
+
+/* ---- offline (same-device) setup ---- */
+const offlineName1 = $('offlineName1'), offlineName2 = $('offlineName2'), offlineStartBtn = $('offlineStartBtn');
+function checkOfflineStart(){
+  offlineStartBtn.disabled = !(offlineName1.value.trim() && offlineName2.value.trim());
+}
+offlineName1.addEventListener('input', checkOfflineStart);
+offlineName2.addEventListener('input', checkOfflineStart);
+
+offlineStartBtn.addEventListener('click', ()=>{
+  isOnline = false;
+  botMode = false;
+  myIdx = null;
+  roomCode = null;
+  stopPolling();
+  ALL_PLAYERS = buildPlayers();
+  ALL_COACHES = shuffle(buildCoaches());
+  state = deserializeGameState({
+    names: [offlineName1.value.trim(), offlineName2.value.trim()],
+    budgets: [200, 200],
+    teams: [[],[]],
+    coaches: [null,null],
+    slotIndex: 0,
+    usedPlayerIds: [],
+    usedCoachIds: [],
+    legendCount: 0,
+    currentCount: 0,
+    phase: 'players',
+    current: null,
+    currentSlot: null,
+    price: 1,
+    leader: null,
+    roundNo: 0,
+    firstBidder: 0,
+  });
+  state.currentSlot = FORMATION_SLOTS[0];
+  state.current = pickPlayerForSlot(FORMATION_SLOTS[0], null);
+  renderAuctionScreen();
+});
+
+/* ---- bot (vs AI) setup ---- */
+const botName1 = $('botName1'), botStartBtn = $('botStartBtn');
+botName1.addEventListener('input', ()=>{ botStartBtn.disabled = !botName1.value.trim(); });
+
+botStartBtn.addEventListener('click', ()=>{
+  isOnline = false;
+  botMode = true;
+  myIdx = null;
+  roomCode = null;
+  stopPolling();
+  ALL_PLAYERS = buildPlayers();
+  ALL_COACHES = shuffle(buildCoaches());
+  state = deserializeGameState({
+    names: [botName1.value.trim(), '🤖 البوت الذكي'],
+    budgets: [200, 200],
+    teams: [[],[]],
+    coaches: [null,null],
+    slotIndex: 0,
+    usedPlayerIds: [],
+    usedCoachIds: [],
+    legendCount: 0,
+    currentCount: 0,
+    phase: 'players',
+    current: null,
+    currentSlot: null,
+    price: 1,
+    leader: null,
+    roundNo: 0,
+    firstBidder: 0,
+  });
+  state.currentSlot = FORMATION_SLOTS[0];
+  state.current = pickPlayerForSlot(FORMATION_SLOTS[0], null);
+  renderAuctionScreen();
+  scheduleBotTurn();
+});
+
+const hostNameInput = $('hostNameInput'), confirmCreateBtn = $('confirmCreateBtn');
+hostNameInput.addEventListener('input', ()=>{ confirmCreateBtn.disabled = !hostNameInput.value.trim(); });
+
+const guestNameInput = $('guestNameInput'), roomCodeInput = $('roomCodeInput'), confirmJoinBtn = $('confirmJoinBtn');
+function checkJoinReady(){ confirmJoinBtn.disabled = !(guestNameInput.value.trim() && roomCodeInput.value.trim()); }
+guestNameInput.addEventListener('input', checkJoinReady);
+roomCodeInput.addEventListener('input', ()=>{ roomCodeInput.value = roomCodeInput.value.toUpperCase(); checkJoinReady(); });
+
+confirmCreateBtn.addEventListener('click', async ()=>{
+  const name = hostNameInput.value.trim();
+  confirmCreateBtn.disabled = true;
+  isOnline = true;
+  myIdx = 0;
+  localRoom = {
+    rev: 1, hostName: name, guestName: null, guestJoined:false, started:false,
+    gameState:null, lastSold:null, lastSoldAt:0, matchResult:null
+  };
+  localRev = 1;
+
+  // Try a fresh random code; if that Peer ID happens to be taken, retry.
+  function tryCreate(attempt){
+    roomCode = genRoomCode();
+    peer = new Peer(roomCode, {config: ICE_CONFIG});
+    peer.on('open', ()=>{
+      $('roomCodeDisplay').textContent = roomCode;
+      $('waitHostName').textContent = '👤 ' + name + ' (المضيف)';
+      $('waitGuestName').textContent = 'في انتظار صديقك...';
+      showScreen('screen-waiting');
+    });
+    peer.on('connection', (c)=>{
+      conn = c;
+      conn.on('data', handleGuestMessage);
+      conn.on('open', ()=>{
+        conn.send({type:'room', room: localRoom});
+        setConnStatus(null);
+        if(heartbeatTimer) clearInterval(heartbeatTimer);
+        heartbeatTimer = setInterval(async ()=>{
+          await forceAdvanceIfDue(); // self-heal a stuck round if it's overdue
+          if(conn && conn.open && localRoom) conn.send({type:'room', room: localRoom});
+        }, 2000);
+      });
+      conn.on('close', ()=>{
+        conn = null;
+        if(heartbeatTimer){ clearInterval(heartbeatTimer); heartbeatTimer = null; }
+        setConnStatus('⚠️ صاحبك اتقطع الاتصال بيه — استنى يرجع أو اطلب منه يدخل تاني بنفس الكود', 'bad');
+      });
+    });
+    peer.on('error', (err)=>{
+      if(err.type === 'unavailable-id' && attempt < 5){ peer.destroy(); tryCreate(attempt+1); }
+      else console.error('peer error', err);
+    });
+  }
+  tryCreate(0);
+});
+
+$('copyLinkBtn').addEventListener('click', ()=>{
+  if(!roomCode) return;
+  const url = location.origin + location.pathname + '?room=' + roomCode;
+  const btn = $('copyLinkBtn');
+  const done = (ok)=>{ btn.textContent = ok ? '✅ اتنسخ! ابعته لصاحبك' : ('🔗 ' + url); setTimeout(()=>{ btn.textContent = '🔗 نسخ لينك الدعوة'; }, 2200); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(()=>done(true)).catch(()=>done(false));
+  } else { done(false); }
+});
+
+/* Finding the peer (host) instantly proves the room code is right — PeerJS's
+   broker replies with 'peer-unavailable' right away if the code is wrong.
+   So if we get PAST that and still never see the data channel open, the
+   room code was fine and the real problem is the WebRTC handshake itself
+   (NAT traversal failing, usually because the free public TURN relay is
+   flaky on cellular). A single attempt only gets one shot at ICE gathering,
+   and retrying with a fresh Peer often succeeds where the first try hung —
+   so we give it up to 3 tries before telling the user it's a connection
+   problem rather than a wrong-code problem. */
+confirmJoinBtn.addEventListener('click', async ()=>{
+  const name = guestNameInput.value.trim();
+  const code = roomCodeInput.value.trim().toUpperCase();
+  confirmJoinBtn.disabled = true;
+  $('joinError').style.display = 'none';
+  isOnline = true;
+  roomCode = code;
+  myIdx = 1;
+
+  let settled = false;
+  let foundRoom = false; // true once we know the code itself is valid
+  const fail = (msg)=>{
+    if(settled) return; settled = true;
+    $('joinError').textContent = msg;
+    $('joinError').style.display = 'block';
+    confirmJoinBtn.disabled = false;
+    roomCode = null; myIdx = null;
+    teardownConnection();
+  };
+
+  const MAX_ATTEMPTS = 3;
+  const ATTEMPT_TIMEOUT = 7000;
+
+  function attempt(n){
+    if(settled) return;
+    if(peer){ try{ peer.destroy(); }catch(e){} peer = null; }
+    setConnStatus(n>1 ? `🔄 بيحاول يتصل تاني (محاولة ${n}/${MAX_ATTEMPTS})...` : null);
+
+    const attemptTimeoutId = setTimeout(()=>{
+      if(settled) return;
+      if(n < MAX_ATTEMPTS){ attempt(n+1); }
+      else if(foundRoom){
+        fail('❌ لقينا الغرفة بس الاتصال المباشر بين الجهازين مبيكملش (مشكلة شبكة/NAT شائعة على شبكات الموبايل). جربوا تكونوا على نفس الواي فاي، أو جربوا تاني كام مرة.');
+      } else {
+        fail('❌ محدش رد. اتأكد من الكود واتأكد إن صاحبك فاتح الشاشة اللي فيها الكود.');
+      }
+    }, ATTEMPT_TIMEOUT);
+
+    peer = new Peer({config: ICE_CONFIG});
+    peer.on('open', ()=>{
+      conn = peer.connect(roomCode, {reliable:true});
+      conn.on('open', ()=>{
+        foundRoom = true;
+        conn.send({type:'join', name});
+      });
+      conn.on('data', (msg)=>{
+        if(!settled){
+          settled = true; clearTimeout(attemptTimeoutId);
+          $('roomCodeDisplay').textContent = roomCode;
+          showScreen('screen-waiting');
+        }
+        setConnStatus(null);
+        handleHostMessage(msg);
+      });
+      conn.on('close', ()=>{ conn = null; setConnStatus('⚠️ الاتصال بصاحبك (المضيف) اتقطع', 'bad'); });
+    });
+    peer.on('error', (err)=>{
+      clearTimeout(attemptTimeoutId);
+      if(settled) return;
+      if(err.type === 'peer-unavailable'){
+        fail('❌ مفيش غرفة بالكود ده. اتأكد من الكود مع صاحبك.');
+      } else if(n < MAX_ATTEMPTS){
+        attempt(n+1);
+      } else {
+        fail('❌ حصل خطأ في الاتصال، جرب تاني.');
+      }
+    });
+  }
+
+  attempt(1);
+});
+
+/* If someone opened this page via a shared invite link (?room=CODE),
+   pre-fill the join screen with that code. */
+(function prefillFromLink(){
+  const params = new URLSearchParams(location.search);
+  const code = params.get('room');
+  if(code){
+    showScreen('screen-join');
+    roomCodeInput.value = code.toUpperCase();
+    checkJoinReady();
+  }
+})();
+
+$('startAuctionBtn').addEventListener('click', async ()=>{
+  if(myIdx!==0) return;
+  $('startAuctionBtn').disabled = true;
+  ALL_PLAYERS = buildPlayers();
+  ALL_COACHES = shuffle(buildCoaches());
+  const updated = await casUpdate((draft)=>{
+    if(draft.started || !draft.guestJoined) return false;
+    const gameState = {
+      names: [draft.hostName, draft.guestName],
+      budgets: [200, 200],
+      teams: [[],[]],
+      coaches: [null,null],
+      slotIndex: 0,
+      usedPlayerIds: [],
+      usedCoachIds: [],
+      legendCount: 0,
+      currentCount: 0,
+      phase: 'players',
+      current: null,
+      currentSlot: null,
+      price: 1,
+      leader: null,
+      roundNo: 0,
+      firstBidder: 0,
+    };
+    state = deserializeGameState(gameState);
+    const slot = FORMATION_SLOTS[0];
+    state.currentSlot = slot;
+    state.current = pickPlayerForSlot(slot, null);
+    draft.started = true;
+    draft.gameState = serializeGameState(state);
+  });
+  if(updated) applyRoom(updated);
+});
+
+/* =========================================================
+   AUCTION FLOW
+========================================================= */
+/* Pure state mutators (no DOM) — used inside casUpdate() so both devices
+   end up rendering identical results via applyRoom()/polling. */
+function nextAuctionItemPure(){
+  state.price = 1;
+  state.leader = null;
+  state.roundNo = (state.roundNo||0) + 1;
+  state.firstBidder = state.roundNo % 2; // alternates so both sides get to open the bidding an equal number of times across the 12 picks
+  if(state.phase==='players'){
+    const slot = FORMATION_SLOTS[state.slotIndex];
+    state.currentSlot = slot;
+    state.current = pickPlayerForSlot(slot, null);
+  } else if(state.phase==='coaches'){
+    state.current = pickCoachCandidate(null);
+  }
+}
+function startCoachPhasePure(){
+  state.phase='coaches';
+  nextAuctionItemPure();
+}
+function finishAuctionPure(){
+  state.phase='done';
+}
+
+function updateStatusMsg(){
+  const msg = $('statusMsg');
+  let text = '';
+  if(state.phase==='players'){
+    text = '⚡ الفائز يدفع السعر، والطرف الآخر يحصل تلقائيًا ومجانًا على لاعب عشوائي بنفس المركز';
+  } else if(state.phase==='coaches'){
+    text = '⚡ الفائز يتعاقد بالسعر، والطرف الآخر يحصل تلقائيًا ومجانًا على مدرب عشوائي';
+  }
+  if(text){ msg.textContent = text; msg.classList.remove('hidden'); }
+  else { msg.classList.add('hidden'); }
+}
+
+function renderPlayerCard(p){
+  const el = $('playerCard');
+  el.className = 'player-card tier-'+p.tier;
+  const legendTag = p.tier===5 ? `<div class="pc-legend-tag">⭐ أسطورة</div>` : '';
+  el.innerHTML = `
+    <div class="pc-sheen"></div>
+    <div class="pc-vignette"></div>
+    <div class="pc-badge"><div class="pc-badge-rating">${p.rating}</div><div class="pc-badge-pos">${p.pos}</div></div>
+    ${legendTag}
+    <div class="pc-photo-ring"><div class="pc-avatar" id="pcAvatar">${p.flag}</div></div>
+    <div class="pc-name">${p.name}</div>
+    <div class="pc-divider"></div>
+    <div class="pc-country">${p.flag} ${p.country}</div>
+    <div class="pc-team">${p.team}</div>
+  `;
+  setAvatar('pcAvatar', p.name, p.flag);
+}
+function renderCoachCard(c){
+  const el = $('playerCard');
+  el.className = 'player-card tier-'+tierOf(c.rating);
+  el.innerHTML = `
+    <div class="pc-sheen"></div>
+    <div class="pc-vignette"></div>
+    <div class="pc-badge"><div class="pc-badge-rating">${c.rating}</div><div class="pc-badge-pos">COACH</div></div>
+    <div class="pc-legend-tag">👔 مدرب</div>
+    <div class="pc-photo-ring"><div class="pc-avatar" id="pcAvatar">${c.flag}</div></div>
+    <div class="pc-name">${c.name}</div>
+    <div class="pc-divider"></div>
+    <div class="pc-country">${c.flag} ${c.country}</div>
+    <div class="pc-team">${c.tactic}</div>
+  `;
+  setAvatar('pcAvatar', c.name, c.flag);
+}
+
+function updatePriceUI(){
+  const priceEl = $('priceAmount');
+  priceEl.textContent = `💰 ${state.price}M`;
+  const leaderLine = $('leaderLine');
+  if(state.leader===null){
+    const cls = state.firstBidder===0?'lp1':'lp2';
+    leaderLine.innerHTML = `🎯 دور البداية: <span class="${cls}">${state.names[state.firstBidder]}</span>`;
+  }
+  else{
+    const cls = state.leader===0?'lp1':'lp2';
+    leaderLine.innerHTML = `أعلى مزايدة: <span class="${cls}">${state.names[state.leader]}</span>`;
+  }
+}
+
+function updateBudgetBar(){
+  $('tpBudget1').textContent = state.budgets[0] + 'M';
+  $('tpBudget2').textContent = state.budgets[1] + 'M';
+  $('tpCount1').textContent = state.teams[0].length + '/11';
+  $('tpCount2').textContent = state.teams[1].length + '/11';
+}
+
+let roundResolving = false; // true from the moment a round is won until the
+                             // next item has fully loaded — driven by state,
+                             // not by comparing clocks between two phones
+                             // (which can drift), so it's reliable even if
+                             // the visual "sold" overlay itself is ever late.
+
+/* True while a round is won but the next player/coach hasn't loaded yet.
+   Bidding or hammering must be blocked for this whole window: state.leader
+   is already null again at this point (so the hammer buttons are naturally
+   disabled), but nothing previously stopped a fast repeated tap from placing
+   a fresh bid — and then even hammering it — on the item that was JUST sold,
+   before the screen moved on to the next one. That's what was corrupting
+   the next pick. */
+function isResolving(){
+  return roundResolving || $('soldFlash').classList.contains('show');
+}
+
+function updateBidButtons(){
+  const b1 = $('bidBtn1'), b2 = $('bidBtn2');
+  const yb1 = $('youBadge1'), yb2 = $('youBadge2');
+  const resolving = isResolving();
+  const canBid1 = !resolving && (isOnline ? myIdx===0 : true) && canOpenBid(state, 0);
+  const canBid2 = !resolving && (isOnline ? myIdx===1 : (!botMode)) && canOpenBid(state, 1);
+  b1.disabled = !canAffordBid(state, 0) || !canBid1;
+  b2.disabled = !canAffordBid(state, 1) || !canBid2;
+  b1.classList.toggle('not-you', !canBid1);
+  b2.classList.toggle('not-you', !canBid2);
+  // Make it unmistakable which button belongs to which player — without
+  // this label the two "not-you" buttons look identically disabled and
+  // it's easy for either player to assume the whole thing is broken.
+  if(isOnline){
+    yb1.textContent = myIdx===0 ? '👈 ده زرارك' : 'زرار صاحبك';
+    yb2.textContent = myIdx===1 ? 'ده زرارك 👉' : 'زرار صاحبك';
+  } else if(botMode){
+    yb1.textContent = '👈 ده زرارك';
+    yb2.textContent = '🤖 البوت';
+  } else {
+    yb1.textContent = '';
+    yb2.textContent = '';
+  }
+}
+
+function updateHammer(){
+  const b1 = $('hammerBtn1'), b2 = $('hammerBtn2');
+  // Each side gets its own hammer button now (mirrors the bid buttons), so
+  // "whoever's turn it is" is always explicit — even offline on a shared
+  // device — instead of relying on a single button anyone could tap.
+  // A side can only finalize when it is NOT the current leader: it's their
+  // turn to either counter-bid or accept, never to close out their own bid.
+  // Online, it must also be your own seat (same rule as the bid buttons);
+  // in bot mode, seat 2's hammer is only ever pressed by the bot itself.
+  if(state.leader===null || isResolving()){
+    b1.disabled = true; b2.disabled = true;
+    b1.classList.remove('not-you'); b2.classList.remove('not-you');
+    return;
+  }
+  const canHammer1 = state.leader!==0 && (!isOnline || myIdx===0);
+  const canHammer2 = state.leader!==1 && (!isOnline || myIdx===1) && !botMode;
+  b1.disabled = !canHammer1;
+  b2.disabled = !canHammer2;
+  b1.classList.toggle('not-you', isOnline && myIdx!==0);
+  b2.classList.toggle('not-you', (isOnline && myIdx!==1) || botMode);
+}
+
+/* Online: the host applies bids directly to the authoritative room;
+   the guest sends a bid request over the peer connection and the host's
+   reply (broadcast to both sides) is what actually updates the screen.
+   Offline: both players share this device, so it's a plain local update. */
+async function placeBid(idx){
+  if(isResolving()) return; // don't let a stray/queued tap land a bid on an item that already sold and hasn't advanced yet
+  if(isOnline){
+    if(idx!==myIdx) return;
+    if(myIdx===0){
+      const updated = await casUpdate((draft)=>{
+        if(draft.lastSold) return false; // a round just resolved and hasn't advanced yet
+        const s = deserializeGameState(draft.gameState);
+        if(!canAffordBid(s, idx) || !canOpenBid(s, idx)) return false;
+        s.price = s.price + 1;
+        s.leader = idx;
+        draft.gameState = serializeGameState(s);
+      });
+      if(updated) applyRoom(updated);
+    } else {
+      await sendAction({type:'bid', idx});
+    }
+  } else {
+    if(!canAffordBid(state, idx) || !canOpenBid(state, idx)) return;
+    state.price = state.price + 1;
+    state.leader = idx;
+    updatePriceUI();
+    updateBidButtons();
+    updateHammer();
+    if(botMode && idx!==BOT_IDX) scheduleBotTurn();
+  }
+  const priceEl = $('priceAmount');
+  priceEl.classList.remove('bump'); void priceEl.offsetWidth; priceEl.classList.add('bump');
+}
+$('bidBtn1').addEventListener('click', ()=>placeBid(0));
+$('bidBtn2').addEventListener('click', ()=>placeBid(1));
+
+/* Only the non-leader's hammer button can ever finalize (see updateHammer) —
+   whichever side currently holds the top bid can't close out its own bid,
+   online or offline. clickerIdx is which button was pressed (0 or 1); it's
+   rejected if that side is the leader, or (online) isn't your own seat, even
+   if the button's disabled state was somehow stale. */
+async function hammerClick(clickerIdx){
+  if(isResolving()) return; // same guard as placeBid — block stray/queued taps during the sold-flash window
+  if(state.leader===null) return;
+  if(state.leader===clickerIdx) return;
+  if(isOnline && myIdx!==clickerIdx) return;
+
+  if(!isOnline){
+    const winner = state.leader, loser = winner===0?1:0, price = state.price;
+    roundResolving = true;
+    state.budgets[winner] -= price;
+    let wonItem, freeItem, titleText;
+    if(state.phase==='players'){
+      wonItem = state.current;
+      state.teams[winner].push(wonItem);
+      markUsedPlayer(wonItem);
+      freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id, true);
+      if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
+      titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
+    } else {
+      wonItem = state.current;
+      state.coaches[winner] = wonItem;
+      markUsedCoach(wonItem);
+      freeItem = pickCoachCandidate(wonItem.id);
+      if(freeItem){ state.coaches[loser] = freeItem; markUsedCoach(freeItem); }
+      titleText = `👔 نتيجة مزاد المدربين`;
+    }
+    state.leader = null;
+    updateBudgetBar();
+    $('soldMainTitle').textContent = titleText;
+    fillSoldMiniFromData('W', winner, wonItem, `💰 ${price}M`);
+    fillSoldMiniFromData('L', loser, freeItem, freeItem ? '🎁 مجانًا' : '—');
+    $('soldFlash').classList.add('show');
+    setTimeout(()=>{
+      $('soldFlash').classList.remove('show');
+      if(state.phase==='players'){
+        state.slotIndex++;
+        if(state.slotIndex >= FORMATION_SLOTS.length) startCoachPhasePure();
+        else nextAuctionItemPure();
+      } else if(state.phase==='coaches'){
+        finishAuctionPure();
+      }
+      roundResolving = false;
+      if(state.phase==='done'){
+        renderFormations('finalFormations');
+        showScreen('screen-final');
+      } else {
+        renderAuctionScreen();
+        if(botMode) scheduleBotTurn();
+      }
+    }, 1900);
+    return;
+  }
+
+  if(myIdx===0){
+    const outcome = await casUpdate((draft)=>{
+      state = deserializeGameState(draft.gameState);
+      if(state.leader===null) return false; // already resolved by the other player
+      if(state.leader===myIdx) return false; // the leader can't hammer their own bid, even if this tab is stale
+      const winner = state.leader;
+      const loser = winner===0 ? 1 : 0;
+      const price = state.price;
+      state.budgets[winner] -= price;
+      let wonItem, freeItem, titleText;
+
+      if(state.phase==='players'){
+        wonItem = state.current;
+        state.teams[winner].push(wonItem);
+        markUsedPlayer(wonItem);
+        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id, true);
+        if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
+        titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
+      } else {
+        wonItem = state.current;
+        state.coaches[winner] = wonItem;
+        markUsedCoach(wonItem);
+        freeItem = pickCoachCandidate(wonItem.id);
+        if(freeItem){ state.coaches[loser] = freeItem; markUsedCoach(freeItem); }
+        titleText = `👔 نتيجة مزاد المدربين`;
+      }
+      state.leader = null; // marks this round as resolved
+      draft.gameState = serializeGameState(state);
+      draft.lastSold = {winnerIdx:winner, wonItem, freeItem, price, titleText};
+      draft.lastSoldAt = Date.now();
+      draft.advanceAt = Date.now() + 1900;
+      draft._resolvedNow = true;
+    });
+
+    if(outcome && outcome._resolvedNow){
+      applyRoom(outcome);
+      scheduleAdvance();
+    }
+  } else {
+    // Guest: ask the host to resolve the round. The host's broadcast
+    // (via handleHostMessage → applyRoom) updates our screen, and the
+    // host alone schedules the advance to the next item.
+    await sendAction({type:'hammer'});
+  }
+}
+$('hammerBtn1').addEventListener('click', ()=>hammerClick(0));
+$('hammerBtn2').addEventListener('click', ()=>hammerClick(1));
+
+/* =========================================================
+   BOT AI (play-vs-bot mode)
+   The bot only ever runs in offline (non-online) games where botMode is
+   true and it always occupies seat BOT_IDX (1). It reuses the exact same
+   placeBid/hammerClick offline code paths a human would use — it just
+   calls them programmatically instead of via a button click — so all the
+   normal rules (turn order, affordability, hammer-can't-be-leader) apply
+   to it too. */
+let botTimer = null;
+function botDesiredMaxBid(item){
+  // rough "how much is this worth to me" curve based on rating, plus a
+  // little randomness so the bot doesn't feel perfectly predictable
+  const rating = item.rating || 75;
+  const base = Math.max(1, Math.round((rating - 68) * 1.15));
+  const jitter = Math.round((Math.random()*6) - 2);
+  return Math.max(1, base + jitter);
+}
+function scheduleBotTurn(){
+  if(!botMode) return;
+  if(botTimer) return; // already have a bot move queued
+  botTimer = setTimeout(()=>{
+    botTimer = null;
+    botMaybeAct();
+  }, 700 + Math.random()*900);
+}
+function botMaybeAct(){
+  if(!botMode || isOnline) return;
+  if(isResolving()) return;
+  if(!state || !state.current) return;
+  if(state.leader === BOT_IDX) return; // bot is already winning, wait for the human
+
+  if(state.leader === null){
+    // only act if it's the bot's turn to open the round
+    if(!canOpenBid(state, BOT_IDX)) return;
+    if(canAffordBid(state, BOT_IDX)) placeBid(BOT_IDX);
+    return;
+  }
+
+  // human currently leads — decide whether to outbid or concede
+  const willingTo = botDesiredMaxBid(state.current);
+  const nextPrice = state.price + 1;
+  if(nextPrice <= willingTo && canAffordBid(state, BOT_IDX)){
+    placeBid(BOT_IDX);
+  } else {
+    hammerClick(BOT_IDX); // accept the human's bid and close the round
+  }
+}
+
+/* =========================================================
+   FORMATIONS RENDER
+========================================================= */
+function renderFormations(targetId){
+  const container = $(targetId || 'formations');
+  container.innerHTML = '';
+  for(let idx=0; idx<2; idx++){
+    container.appendChild(buildTeamBlock(idx));
+  }
+}
+function buildTeamBlock(idx){
+  const wrap = document.createElement('div');
+  wrap.className = 'team-block';
+  const grouped = {GK:[],DEF:[],MID:[],FWD:[]};
+  state.teams[idx].forEach(p=>grouped[p.bucket].push(p));
+
+  const head = document.createElement('div');
+  head.className = 'team-head p'+(idx+1);
+  head.innerHTML = `<span class="name">${state.names[idx]}</span><span class="count">${state.teams[idx].length}/11</span>`;
+  wrap.appendChild(head);
+
+  const pitch = document.createElement('div');
+  pitch.className = 'pitch';
+  BUCKET_ORDER.forEach(b=>{
+    const line = document.createElement('div');
+    line.className = 'pline';
+    const list = grouped[b];
+    if(list.length===0){
+      const slot = document.createElement('div');
+      slot.className = 'empty-slot';
+      slot.textContent = BUCKET_LABEL_AR[b];
+      line.appendChild(slot);
+    } else {
+      list.forEach(p=>{
+        const chip = document.createElement('div');
+        chip.className = 'pchip';
+        const avId = 'chipAv_' + p.id;
+        chip.innerHTML = `<div class="ca" id="${avId}">${p.flag}</div><div class="cn">${p.name}</div><div class="cr">${p.rating}</div><div class="cp">${p.pos}</div>`;
+        line.appendChild(chip);
+        setAvatar(avId, p.name, p.flag);
+      });
+    }
+    pitch.appendChild(line);
+  });
+  wrap.appendChild(pitch);
+
+  const coach = state.coaches[idx];
+  const coachRow = document.createElement('div');
+  coachRow.className = 'coach-row' + (coach?'':' empty');
+  coachRow.innerHTML = coach
+    ? `<span class="cico">👔</span><span class="cname">المدرب: ${coach.name}</span>`
+    : `<span class="cico">👔</span><span>لم يتم التعاقد مع مدرب بعد</span>`;
+  wrap.appendChild(coachRow);
+
+  return wrap;
+}
+
+/* =========================================================
+   AI MATCH SIMULATION
+========================================================= */
+function avgBucket(team, bucket, fallback){
+  const list = team.filter(p=>p.bucket===bucket);
+  if(list.length===0) return fallback;
+  return list.reduce((s,p)=>s+p.rating,0)/list.length;
+}
+function computeTeamStrength(idx){
+  const team = state.teams[idx];
+  const coach = state.coaches[idx];
+  const gk = avgBucket(team,'GK',72);
+  const def = avgBucket(team,'DEF',72);
+  const mid = avgBucket(team,'MID',72);
+  const fwd = avgBucket(team,'FWD',72);
+
+  const coachAtk = coach ? coach.atk : 75;
+  const coachDef = coach ? coach.def : 75;
+  const coachPoss = coach ? coach.poss : 75;
+  const coachRating = coach ? coach.rating : 75;
+
+  const attack = fwd*0.7 + mid*0.2 + coachAtk*0.1;
+  const midfield = mid*0.75 + coachPoss*0.25;
+  const defense = def*0.7 + gk*0.15 + coachDef*0.15;
+  const goalkeeper = gk;
+  const manager = coachRating;
+
+  /* IMPORTANT: overall must be built ONLY from attack/midfield/defense —
+     the exact three numbers shown to the player on the result screen.
+     goalkeeper & manager already feed into those three (see above), so
+     adding them again here as separate terms used to let a team win (or
+     be favoured) purely because of a hidden GK/manager rating even while
+     visibly trailing in attack, midfield AND defense — which looked
+     completely illogical to anyone reading the stats. Keeping overall as
+     a plain weighted blend of the visible numbers guarantees that a team
+     ahead on all three shown stats can never be rated weaker overall. */
+  const overall = attack*0.4 + midfield*0.3 + defense*0.3;
+  return {attack, midfield, defense, goalkeeper, manager, overall};
+}
+
+function simulateMatch(){
+  const s1 = computeTeamStrength(0);
+  const s2 = computeTeamStrength(1);
+
+  /* Match outcome rule (as requested): compare the two teams' overall
+     rating.
+       - equal, or within 4 points of each other  -> draw
+       - higher by more than 4 and up to 8         -> higher team wins
+       - higher by more than 8                     -> higher team wins,
+         and the goal margin grows with how big the gap is (small gap =
+         narrow win, big gap = big win), capped so scores stay realistic.
+
+     Why OUTCOME_SENSITIVITY exists: "overall" is an average across 11
+     players + a coach, and the auction itself is a self-balancing market
+     — whoever loses a bid gets a free consolation player, so two squads
+     built through real bidding land even closer together than random
+     chance alone would suggest (tested against real simulated drafts:
+     median raw gap ~1.3, and it almost never exceeds ~5.5). Applying the
+     4/8 thresholds directly to that raw gap made nearly every match
+     register as "within 4" and the game looked permanently stuck on
+     draws. Scaling the gap up first (calibrated against real simulated
+     drafts, not guesswork) restores real variety — draws still happen
+     at a realistic ~25-28% rate instead of ~90% — without changing
+     which team is favoured: it only stretches the same comparison, so a
+     team ahead on the shown stats is still always the one favoured. */
+  const OUTCOME_SENSITIVITY = 6;
+  const diff = (s1.overall - s2.overall) * OUTCOME_SENSITIVITY; // positive => team1 (p1) is stronger
+  const absDiff = Math.abs(diff);
+  let margin;
+  if(absDiff <= 4) margin = 0;
+  else if(absDiff <= 8) margin = 1;
+  else margin = Math.min(6, 2 + Math.round((absDiff-8)/3));
+  const p1Stronger = diff > 0;
+  const isDraw = margin===0;
+
+  // win-probability just for the display bar, derived from the same rule
+  let p1WinProb;
+  if(isDraw) p1WinProb = 0.5;
+  else if(p1Stronger) p1WinProb = Math.min(0.9, 0.55 + margin*0.05);
+  else p1WinProb = Math.max(0.1, 0.45 - margin*0.05);
+
+  function expectedGoals(myAtk, oppDef){
+    return Math.max(0.3, (myAtk - oppDef)/14 + 1.35);
+  }
+  function poissonRandom(lambda){
+    let L = Math.exp(-lambda), k=0, p=1;
+    do{ k++; p*=Math.random(); } while(p>L);
+    return k-1;
+  }
+
+  let g1, g2;
+  if(isDraw){
+    // both sides net the same tally, based on their blended attacking output
+    const lambda = (expectedGoals(s1.attack, s2.defense) + expectedGoals(s2.attack, s1.defense)) / 2;
+    const base = Math.min(poissonRandom(lambda), 5);
+    g1 = g2 = base;
+  } else {
+    const loserAtk  = p1Stronger ? s2.attack  : s1.attack;
+    const loserDef  = p1Stronger ? s1.defense : s2.defense;
+    let loserGoals = Math.min(poissonRandom(expectedGoals(loserAtk, loserDef)), 4);
+    const winnerGoals = Math.min(loserGoals + margin, 7);
+    if(p1Stronger){ g1 = winnerGoals; g2 = loserGoals; }
+    else { g2 = winnerGoals; g1 = loserGoals; }
+  }
+
+  const possBase1 = 50 + (s1.midfield - s2.midfield)*0.9 + (Math.random()*6-3);
+  const poss1 = Math.round(Math.min(70,Math.max(30,possBase1)));
+  const poss2 = 100-poss1;
+
+  const shots1 = Math.max(4, Math.round(8 + (s1.attack-s2.defense)/6 + g1*1.3 + Math.random()*3));
+  const shots2 = Math.max(4, Math.round(8 + (s2.attack-s1.defense)/6 + g2*1.3 + Math.random()*3));
+  const sot1 = Math.min(shots1, Math.max(g1, Math.round(shots1*0.45+Math.random()*2)));
+  const sot2 = Math.min(shots2, Math.max(g2, Math.round(shots2*0.45+Math.random()*2)));
+
+  return {s1,s2,g1,g2,poss1,poss2,shots1,shots2,sot1,sot2,p1WinProb};
+}
+
+function buildCommentary(res){
+  const {s1,s2,g1,g2} = res;
+  const n1=state.names[0], n2=state.names[1];
+  const parts = [];
+
+  if(g1>g2) parts.push(`المباراة انتهت لصالح ${n1} الذي أظهر تفوقًا واضحًا في اللحظات الحاسمة.`);
+  else if(g2>g1) parts.push(`المباراة انتهت لصالح ${n2} الذي استغل الفرص المتاحة بكفاءة عالية.`);
+  else parts.push(`انتهت المباراة بالتعادل بعد أداء متكافئ بين الفريقين.`);
+
+  const atkDiff = s1.attack - s2.attack;
+  if(Math.abs(atkDiff)>4){
+    parts.push(atkDiff>0
+      ? `تفوق هجوم ${n1} بشكل ملحوظ، وشكّل خطورة دائمة على منطقة الجزاء الخصم.`
+      : `كان هجوم ${n2} أكثر حدة وفعالية أمام المرمى.`);
+  } else {
+    parts.push(`الخط الهجومي للفريقين كان متقاربًا في المستوى، ما جعل المباراة مفتوحة.`);
+  }
+
+  const midDiff = s1.midfield - s2.midfield;
+  if(Math.abs(midDiff)>3){
+    parts.push(midDiff>0
+      ? `في المقابل، سيطر خط وسط ${n1} على الإيقاع العام للمباراة.`
+      : `بينما كان وسط ملعب ${n2} أكثر توازنًا وتحكمًا في الاستحواذ.`);
+  }
+
+  const defDiff = s1.defense - s2.defense;
+  if(Math.abs(defDiff)>3){
+    parts.push(defDiff<0
+      ? `دفاع ${n1} واجه صعوبة في التعامل مع الهجمات المرتدة السريعة.`
+      : `دفاع ${n2} عانى في وقف موجات الهجوم المتكررة.`);
+  }
+
+  const mgrDiff = s1.manager - s2.manager;
+  if(Math.abs(mgrDiff)>3){
+    parts.push(mgrDiff>0
+      ? `القرارات التكتيكية لمدرب ${n1} كان لها أثر واضح في مجريات اللقاء.`
+      : `تكتيك مدرب ${n2} نجح في كبح جماح خصمه في فترات مهمة من المباراة.`);
+  }
+
+  parts.push(`بشكل عام، كانت المباراة ممتعة ومتقاربة، وعكست جودة الفريقين اللذين تم بناؤهما بعناية خلال المزاد.`);
+  return parts.join(' ');
+}
+
+$('aiBtn').addEventListener('click', async ()=>{
+  $('aiBtn').disabled = true;
+  $('thinking').classList.add('show');
+
+  if(!isOnline){
+    setTimeout(()=>{ showResult(simulateMatch()); }, 1400);
+    return;
+  }
+
+  if(myIdx===0){
+    const outcome = await casUpdate((draft)=>{
+      if(draft.matchResult) return false; // already simulated
+      state = deserializeGameState(draft.gameState);
+      draft.matchResult = simulateMatch();
+    });
+    if(!(outcome && outcome.matchResult)) return;
+    matchResultShown = true; // set first so applyRoom's own check doesn't short-circuit our delay
+    applyRoom(outcome);
+    setTimeout(()=>{ showResult(outcome.matchResult); }, 1400);
+  } else {
+    // Guest: ask the host to run the simulation; its broadcast (handled by
+    // handleHostMessage → applyRoom) will call showResult on our screen too.
+    await sendAction({type:'simulate'});
+  }
+});
+
+function showResult(res){
+  $('resName1').textContent = state.names[0];
+  $('resName2').textContent = state.names[1];
+  $('resScore1').textContent = res.g1;
+  $('resScore2').textContent = res.g2;
+
+  let winTxt;
+  if(res.g1>res.g2) winTxt = `🏆 فوز ${state.names[0]}`;
+  else if(res.g2>res.g1) winTxt = `🏆 فوز ${state.names[1]}`;
+  else winTxt = `🤝 تعادل`;
+  $('winTag').textContent = winTxt;
+
+  const p1 = Math.round(res.p1WinProb*100);
+  const p2 = 100-p1;
+  $('probBar1').style.width = p1+'%';
+  $('probBar2').style.width = p2+'%';
+  $('probLabel1').textContent = `${state.names[0]} ${p1}%`;
+  $('probLabel2').textContent = `${p2}% ${state.names[1]}`;
+
+  const stats = [
+    ['الاستحواذ', res.poss1+'%', res.poss2+'%', res.poss1, res.poss2],
+    ['التسديدات', res.shots1, res.shots2, res.shots1, res.shots2],
+    ['تسديدات على المرمى', res.sot1, res.sot2, res.sot1, res.sot2],
+    ['قوة الهجوم', Math.round(res.s1.attack), Math.round(res.s2.attack), res.s1.attack, res.s2.attack],
+    ['قوة الوسط', Math.round(res.s1.midfield), Math.round(res.s2.midfield), res.s1.midfield, res.s2.midfield],
+    ['قوة الدفاع', Math.round(res.s1.defense), Math.round(res.s2.defense), res.s1.defense, res.s2.defense],
+  ];
+  const statsBlock = $('statsBlock');
+  statsBlock.innerHTML = '';
+  stats.forEach(([label,disp1,disp2,v1,v2])=>{
+    const total = (v1+v2)||1;
+    const f1 = Math.round(v1/total*100);
+    const row = document.createElement('div');
+    row.className='stat-row';
+    row.innerHTML = `
+      <div class="sv p1">${disp1}</div>
+      <div class="stat-mid">
+        <div class="stat-name">${label}</div>
+        <div class="stat-track"><div class="f1" style="width:${f1}%"></div><div class="f2" style="width:${100-f1}%"></div></div>
+      </div>
+      <div class="sv p2">${disp2}</div>
+    `;
+    statsBlock.appendChild(row);
+  });
+
+  $('commentaryText').textContent = buildCommentary(res);
+
+  $('aiBtn').disabled = false;
+  $('thinking').classList.remove('show');
+  showScreen('screen-result');
+}
+
+$('replayBtn').addEventListener('click', ()=>{
+  stopPolling();
+  if(botTimer){ clearTimeout(botTimer); botTimer = null; }
+  roomCode = null; myIdx = null; localRev = -1; matchResultShown = false; isOnline = true; botMode = false;
+  ALL_PLAYERS = []; ALL_COACHES = [];
+  hostNameInput.value=''; confirmCreateBtn.disabled = true;
+  guestNameInput.value=''; roomCodeInput.value=''; confirmJoinBtn.disabled = true;
+  offlineName1.value=''; offlineName2.value=''; offlineStartBtn.disabled = true;
+  botName1.value=''; botStartBtn.disabled = true;
+  showScreen('screen-lobby');
+});
+</script>
+</body>
+</html>
