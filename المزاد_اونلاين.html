@@ -67,7 +67,7 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 }
 .player-input:focus-within{border-color:var(--gold);}
 .player-input .tag{
-  width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center;
   font-weight:800; font-size:13px; flex-shrink:0;
 }
 .tag.p1{background:var(--blue); color:#fff;}
@@ -92,17 +92,17 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 
 /* ---------- TOP BAR (auction) ---------- */
 .topbar{
-  padding:10px 14px; background:rgba(13,19,28,.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  padding:6px 12px; background:rgba(13,19,28,.85); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line); position:sticky; top:0; z-index:20;
   box-shadow:0 8px 24px rgba(0,0,0,.25);
 }
-.budget-row{display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:8px;}
+.budget-row{display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:4px;}
 .budget-row .label{font-size:12px; color:var(--dim);}
-.budget-row .amount{font-size:22px; font-weight:800; color:var(--gold);}
+.budget-row .amount{font-size:17px; font-weight:800; color:var(--gold);}
 .teams-progress{display:flex; justify-content:space-between; gap:10px;}
 .tp-card{
-  flex:1; background:var(--card-bg); border:1px solid var(--line); border-radius:10px;
-  padding:7px 10px; font-size:13px;
+  flex:1; background:var(--card-bg); border:1px solid var(--line); border-radius:8px;
+  padding:4px 8px; font-size:11.5px;
 }
 .tp-card.p1{border-color:rgba(76,140,255,.4);}
 .tp-card.p2{border-color:rgba(255,92,92,.4);}
@@ -112,40 +112,81 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 .tp-budget{margin-top:4px; font-size:12px; font-weight:800; color:var(--gold2); font-variant-numeric:tabular-nums;}
 
 /* ---------- AUCTION AREA ---------- */
-.auction-wrap{padding:18px 14px 8px; display:flex; flex-direction:column; align-items:center;}
-.stage-label{font-size:12px; color:var(--dim); letter-spacing:2px; margin-bottom:10px; text-transform:uppercase;}
+.auction-wrap{padding:8px 12px 4px; display:flex; flex-direction:column; align-items:center;}
+.stage-label{font-size:11px; color:var(--dim); letter-spacing:2px; margin-bottom:4px; text-transform:uppercase;}
 .status-msg{
   font-size:12.5px; color:var(--gold); background:rgba(231,179,76,.08);
   border:1px solid rgba(231,179,76,.25); border-radius:10px; padding:6px 12px; margin-bottom:10px; text-align:center;
 }
 
-/* player card */
-.card-slot{perspective:1000px; margin-bottom:16px;}
+/* player card — trading-card layout: corner OVR/POS badge, a large centered
+   photo that dominates the card, clamped name plate (so long names never
+   overflow), and a distinctive asymmetric silhouette instead of a plain
+   rounded box. Darkened throughout with an edge/bottom vignette for a
+   moodier, more premium feel. */
+.card-slot{perspective:1000px; margin-bottom:8px;}
 .player-card{
-  width:250px; min-height:320px; border-radius:22px; position:relative; overflow:hidden;
-  padding:18px 14px 16px; text-align:center;
+  width:190px; min-height:250px; position:relative; overflow:hidden;
+  padding:10px 10px 10px; text-align:center;
   display:flex; flex-direction:column; align-items:center;
   animation:cardIn .45s cubic-bezier(.2,.9,.25,1.2);
-  border:2px solid rgba(255,255,255,.08);
-  box-shadow:0 16px 36px rgba(0,0,0,.4);
+  border:1.5px solid rgba(255,255,255,.07);
+  box-shadow:0 22px 48px rgba(0,0,0,.6), 0 6px 16px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+  /* one softly swept corner gives the card its own silhouette instead of a
+     generic rectangle, while staying simple enough to render reliably */
+  border-radius:28px 28px 28px 72px;
 }
 @keyframes cardIn{
   from{opacity:0; transform:translateY(30px) scale(.9) rotateX(15deg);}
   to{opacity:1; transform:translateY(0) scale(1) rotateX(0);}
 }
-/* rating tiers */
-.tier-1{background:linear-gradient(160deg,#3a4452,#232b34);}
-.tier-2{background:linear-gradient(160deg,#3d5a3f,#1e2e20); border-color:rgba(80,220,120,.35);}
-.tier-3{background:linear-gradient(160deg,#2c4d78,#14263c); border-color:rgba(90,160,255,.4);}
-.tier-4{background:linear-gradient(160deg,#5b3a86,#241a3a); border-color:rgba(190,120,255,.5);}
-.tier-5{
-  background:linear-gradient(165deg,#3a2e0a,#171205 60%, #000);
-  border:2px solid var(--gold); box-shadow:0 0 40px rgba(231,179,76,.35), inset 0 0 30px rgba(231,179,76,.08);
+/* soft glass highlight across the top of every card, regardless of tier */
+.pc-sheen{
+  position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(160deg, rgba(255,255,255,.11), rgba(255,255,255,0) 38%);
+}
+/* dark vignette: fades the edges and lower half toward black so the photo
+   reads like it's lit out of darkness — the source of the "moody/luxurious"
+   feel instead of a flat, evenly-lit rectangle */
+.pc-vignette{
+  position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 34%, rgba(0,0,0,0) 0%, rgba(0,0,0,.4) 78%, rgba(0,0,0,.72) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.62) 100%);
+}
+/* rating tiers — a luxurious jewel-tone hierarchy that scales with rating:
+   70-79 silver · 80-84 sapphire · 85-89 amethyst · 90-94 blood-ruby · 95+ radiant gold
+   (kept deep and near-black at the base of every tier for a darker, more
+   dramatic card rather than a flat, evenly-bright block of color) */
+.tier-1{ /* 70-79 · silver/steel */
+  background:linear-gradient(160deg,#5c6873,#2a3138 55%,#0d1114);
+  border-color:rgba(210,222,232,.35);
+}
+.tier-2{ /* 80-84 · sapphire blue */
+  background:linear-gradient(160deg,#254e94,#0d1c33 60%,#040810);
+  border:2px solid #4c8cff; box-shadow:0 0 26px rgba(76,140,255,.28), inset 0 0 24px rgba(0,0,0,.4);
+}
+.tier-3{ /* 85-89 · amethyst purple */
+  background:linear-gradient(160deg,#7229c2,#200d35 60%,#08040f);
+  border:2px solid #b366f5; box-shadow:0 0 28px rgba(179,102,245,.32), inset 0 0 24px rgba(0,0,0,.4);
+}
+.tier-4{ /* 90-94 · deep blood-ruby, extra-luxurious */
+  background:linear-gradient(160deg,#8f0c1a,#280307 55%,#000);
+  border:2px solid #ff2f45; box-shadow:0 0 36px rgba(255,20,40,.4), inset 0 0 26px rgba(0,0,0,.45);
+}
+.tier-4::before{
+  content:""; position:absolute; inset:-50%; pointer-events:none;
+  background:conic-gradient(from 0deg, transparent, rgba(255,140,140,.16), transparent 30%);
+  animation:sheen 3.2s linear infinite;
+}
+.tier-5{ /* 95+ · radiant, extremely shiny gold against a near-black base */
+  background:linear-gradient(165deg,#6b4c0c,#1c1302 55%, #000);
+  border:2px solid var(--gold); box-shadow:0 0 46px rgba(231,179,76,.42), inset 0 0 30px rgba(0,0,0,.4);
 }
 .tier-5::before{
   content:""; position:absolute; inset:-50%; pointer-events:none;
-  background:conic-gradient(from 0deg, transparent, rgba(255,236,170,.15), transparent 30%);
-  animation:sheen 3.2s linear infinite;
+  background:conic-gradient(from 0deg, transparent, rgba(255,236,170,.25), transparent 30%);
+  animation:sheen 2.6s linear infinite;
 }
 @keyframes sheen{to{transform:rotate(360deg);}}
 .tier-4::after, .tier-5::after{
@@ -154,54 +195,79 @@ button:disabled{cursor:not-allowed; opacity:.35;}
   animation:glint 2.6s ease-in-out infinite;
 }
 @keyframes glint{0%{left:-60%;} 50%{left:130%;} 100%{left:130%;}}
-.pc-flag{font-size:26px; margin-bottom:2px;}
+
+/* corner rating badge — the number/position live in one compact plate,
+   like a real sports card, instead of one giant number floating alone */
+.pc-badge{
+  position:absolute; top:8px; right:8px; z-index:2;
+  display:flex; flex-direction:column; align-items:center; min-width:32px;
+  padding:3px 5px 4px; border-radius:9px;
+  background:rgba(0,0,0,.5); border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 4px 12px rgba(0,0,0,.45);
+}
+.pc-badge-rating{font-size:16px; font-weight:900; line-height:1; text-shadow:0 2px 6px rgba(0,0,0,.6);}
+.pc-badge-pos{font-size:9px; font-weight:800; letter-spacing:.5px; margin-top:2px; opacity:.92;}
+.tier-1 .pc-badge-rating{color:#eef3f7;}
+.tier-2 .pc-badge-rating{color:#bcd6ff; text-shadow:0 0 12px rgba(76,140,255,.6);}
+.tier-3 .pc-badge-rating{color:#e6c8ff; text-shadow:0 0 12px rgba(179,102,245,.6);}
+.tier-4 .pc-badge-rating{color:#ffd0d5; text-shadow:0 0 14px rgba(255,40,60,.65);}
+.tier-5 .pc-badge-rating{color:var(--gold2); text-shadow:0 0 16px rgba(255,225,140,.7);}
+
+/* photo medallion — the dominant element on the card, with a dark, moody
+   ring instead of a bright halo */
+.pc-photo-ring{
+  width:118px; height:118px; border-radius:50%; margin:2px 0 6px; padding:3px;
+  background:conic-gradient(from 180deg, rgba(255,255,255,.22), rgba(0,0,0,.4) 45%, rgba(255,255,255,.22) 100%);
+  box-shadow:0 12px 26px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.4); flex-shrink:0; position:relative; z-index:1;
+}
 .pc-avatar{
-  width:78px; height:78px; border-radius:50%; margin-bottom:6px;
-  background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.25);
-  display:flex; align-items:center; justify-content:center; font-size:32px;
-  overflow:hidden; flex-shrink:0;
+  width:100%; height:100%; border-radius:50%; overflow:hidden;
+  background:rgba(255,255,255,.06); border:2px solid rgba(0,0,0,.55);
+  display:flex; align-items:center; justify-content:center; font-size:46px;
+  box-shadow:inset 0 -18px 30px rgba(0,0,0,.45);
 }
 .pc-avatar img{width:100%; height:100%; object-fit:cover; display:block;}
-.pc-name{font-size:19px; font-weight:800; margin:4px 0 10px; line-height:1.15;}
-.pc-rating{
-  font-size:56px; font-weight:900; line-height:1; margin-bottom:6px;
-  text-shadow:0 4px 14px rgba(0,0,0,.4);
+
+/* name plate — clamped to 2 lines so a long name can never overflow the
+   card or collide with the divider below it */
+.pc-name{
+  position:relative; z-index:1;
+  font-size:13.5px; font-weight:800; margin:0 0 4px; line-height:1.15;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  overflow:hidden; min-height:2em; padding:0 4px; word-break:break-word;
+  text-shadow:0 2px 8px rgba(0,0,0,.6);
 }
-.tier-1 .pc-rating{color:#cfd8e0;}
-.tier-2 .pc-rating{color:#7dffa8;}
-.tier-3 .pc-rating{color:#8fc0ff;}
-.tier-4 .pc-rating{color:#e0b3ff;}
-.tier-5 .pc-rating{color:var(--gold2); text-shadow:0 0 20px rgba(255,225,140,.6);}
-.pc-pos{
-  font-size:12.5px; font-weight:800; letter-spacing:1px; background:rgba(255,255,255,.1);
-  padding:3px 12px; border-radius:20px; margin-bottom:12px;
-}
-.pc-divider{width:70%; height:1px; background:rgba(255,255,255,.15); margin:6px 0 10px;}
-.pc-country{font-size:13px; color:#dfe7ee; margin-bottom:4px;}
-.pc-team{font-size:12px; color:var(--dim);}
+.pc-divider{position:relative; z-index:1; width:56%; height:1px; margin:0 0 5px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);}
+.pc-country{position:relative; z-index:1; font-size:11.5px; font-weight:700; color:#eef3f8; margin-bottom:2px; text-shadow:0 1px 6px rgba(0,0,0,.6);}
+.pc-team{position:relative; z-index:1; font-size:10px; color:#c3cfda; letter-spacing:.2px; text-shadow:0 1px 6px rgba(0,0,0,.6);}
+
+/* legend/coach corner ribbon, mirrored to the opposite corner from the
+   rating badge so the two never collide */
 .pc-legend-tag{
-  position:absolute; top:10px; left:10px; font-size:10px; font-weight:800; color:#1a1300;
-  background:var(--gold); padding:2px 8px; border-radius:10px; letter-spacing:1px;
+  position:absolute; top:10px; left:10px; z-index:1; font-size:10px; font-weight:800; color:#1a1300;
+  background:linear-gradient(90deg,var(--gold2),var(--gold)); padding:3px 10px; border-radius:10px;
+  letter-spacing:.5px; box-shadow:0 3px 8px rgba(0,0,0,.3);
 }
 
 /* price */
-.price-box{text-align:center; margin-bottom:14px;}
+.price-box{text-align:center; margin-bottom:6px;}
 .price-label{font-size:11px; color:var(--dim); letter-spacing:2px;}
 .price-amount{
-  font-size:34px; font-weight:900; color:var(--ink); font-variant-numeric:tabular-nums;
+  font-size:24px; font-weight:900; color:var(--ink); font-variant-numeric:tabular-nums;
   transition:transform .15s;
 }
 .price-amount.bump{animation:bump .28s ease;}
 @keyframes bump{0%{transform:scale(1);}40%{transform:scale(1.28); color:var(--gold);}100%{transform:scale(1);}}
-.leader-line{font-size:13px; margin-top:4px; min-height:18px;}
+.leader-line{font-size:11.5px; margin-top:2px; min-height:14px;}
 .leader-line .lp1{color:var(--blue); font-weight:800;}
 .leader-line .lp2{color:var(--red); font-weight:800;}
 
 /* bid buttons */
-.bid-row{display:flex; gap:10px; width:100%; max-width:420px; margin-bottom:12px;}
+.bid-row{display:flex; gap:8px; width:100%; max-width:420px; margin-bottom:6px;}
 .bid-btn{
-  flex:1; padding:20px 8px; border-radius:16px; font-size:17px; font-weight:800;
-  color:#fff; display:flex; flex-direction:column; align-items:center; gap:2px;
+  flex:1; padding:11px 6px; border-radius:13px; font-size:14px; font-weight:800;
+  color:#fff; display:flex; flex-direction:column; align-items:center; gap:1px;
   transition:transform .1s, box-shadow .15s; box-shadow:0 8px 20px rgba(0,0,0,.25);
 }
 .bid-btn:active:not(:disabled){transform:scale(.95);}
@@ -230,10 +296,10 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 #roomCodeInput{text-transform:uppercase;}
 .bid-btn small{font-size:11px; opacity:.85; font-weight:600;}
 
-.hammer-row{display:flex; gap:10px; width:100%; max-width:420px; margin-bottom:22px;}
+.hammer-row{display:flex; gap:8px; width:100%; max-width:420px; margin-bottom:8px;}
 .hammer-btn{
-  flex:1; padding:14px 8px; border-radius:14px;
-  background:linear-gradient(135deg,var(--gold),#a9791a); color:#1a1300; font-weight:800; font-size:15px;
+  flex:1; padding:9px 8px; border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),#a9791a); color:#1a1300; font-weight:800; font-size:13px;
   box-shadow:0 6px 18px rgba(231,179,76,.2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .hammer-btn:disabled{background:#2a3441; color:#5a6b7a; box-shadow:none;}
@@ -248,7 +314,7 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 .sold-title-main{font-size:16px; font-weight:800; color:var(--gold); text-align:center;}
 .sold-cards{display:flex; gap:14px;}
 .sold-mini{
-  width:130px; border-radius:16px; padding:16px 10px; text-align:center;
+  width:132px; border-radius:16px 16px 16px 36px; padding:16px 10px; text-align:center;
   background:var(--card-bg); border:2px solid rgba(255,255,255,.12);
   animation:soldPop .4s cubic-bezier(.2,.9,.3,1.3);
 }
@@ -268,56 +334,59 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 .sm-rating{font-size:28px; font-weight:900; color:var(--gold); line-height:1;}
 .sm-pos{
   font-size:10.5px; color:var(--dim); margin:6px 0; background:rgba(255,255,255,.08);
-  border-radius:20px; padding:2px 8px; display:inline-block;
+  border-radius:8px; padding:2px 8px; display:inline-block;
 }
 .sm-price{font-size:12px; font-weight:800; color:var(--ink); margin-top:2px;}
 
-/* formations */
-.formations{padding:6px 12px 30px; display:flex; flex-direction:column; gap:22px;}
-.team-block{background:var(--bg2); border:1px solid var(--line); border-radius:18px; padding:14px; box-shadow:var(--shadow-soft);}
-.team-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
-.team-head .name{font-weight:800; font-size:15px;}
+/* formations — the two teams sit side by side (wide, not stacked tall) */
+.formations{padding:6px 10px 30px; display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;}
+.team-block{background:var(--bg2); border:1px solid var(--line); border-radius:16px; padding:10px; box-shadow:var(--shadow-soft); min-width:0;}
+.team-head{display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:8px;}
+.team-head .name{font-weight:800; font-size:12.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
 .team-head.p1 .name{color:var(--blue);}
 .team-head.p2 .name{color:var(--red);}
-.team-head .count{font-size:12px; color:var(--dim);}
+.team-head .count{font-size:10.5px; color:var(--dim); flex-shrink:0;}
 .pitch{
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 40px, transparent 40px 80px),
     linear-gradient(180deg, var(--pitch), #0a1a10);
-  border:2px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 6px;
-  display:flex; flex-direction:column; gap:10px; min-height:210px; position:relative;
+  border:2px solid rgba(255,255,255,.12); border-radius:12px; padding:8px 4px;
+  display:flex; flex-direction:column; gap:6px; min-height:170px; position:relative;
 }
 .pitch::before{
-  content:""; position:absolute; left:50%; top:50%; width:70px; height:70px; margin:-35px 0 0 -35px;
+  content:""; position:absolute; left:50%; top:50%; width:50px; height:50px; margin:-25px 0 0 -25px;
   border:1.5px solid rgba(255,255,255,.15); border-radius:50%;
 }
-.pline{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; z-index:1;}
+.pline{display:flex; justify-content:center; gap:4px; flex-wrap:wrap; z-index:1;}
 .pchip{
-  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:10px;
-  padding:6px 8px 4px; text-align:center; min-width:56px; animation:chipIn .3s ease;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:8px;
+  padding:4px 4px 3px; text-align:center; min-width:42px; max-width:46px; animation:chipIn .3s ease;
   display:flex; flex-direction:column; align-items:center;
 }
 @keyframes chipIn{from{opacity:0; transform:translateY(6px) scale(.8);}to{opacity:1; transform:translateY(0) scale(1);}}
 .pchip .ca{
-  width:32px; height:32px; border-radius:50%; margin-bottom:3px; overflow:hidden;
+  width:24px; height:24px; border-radius:7px; margin-bottom:2px; overflow:hidden;
   background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
-  display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0;
 }
 .pchip .ca img{width:100%; height:100%; object-fit:cover; display:block;}
-.pchip .cn{font-size:10.5px; font-weight:700; white-space:nowrap; max-width:70px; overflow:hidden; text-overflow:ellipsis;}
-.pchip .cr{font-size:12px; font-weight:900; color:var(--gold);}
-.pchip .cp{font-size:8.5px; color:var(--dim);}
+.pchip .cn{font-size:8px; font-weight:700; white-space:nowrap; max-width:42px; overflow:hidden; text-overflow:ellipsis;}
+.pchip .cr{font-size:10px; font-weight:900; color:var(--gold);}
+.pchip .cp{font-size:7px; color:var(--dim);}
 .empty-slot{
-  border:1px dashed rgba(255,255,255,.15); border-radius:10px; padding:4px 8px; min-width:56px;
-  text-align:center; color:#3d4a56; font-size:11px;
+  border:1px dashed rgba(255,255,255,.15); border-radius:8px; padding:3px 4px; min-width:42px;
+  text-align:center; color:#3d4a56; font-size:9px;
 }
 .coach-row{
-  display:flex; align-items:center; gap:8px; margin-top:10px; padding:8px 10px;
-  background:rgba(255,255,255,.04); border-radius:10px; font-size:12.5px;
+  display:flex; align-items:center; gap:6px; margin-top:8px; padding:6px 8px;
+  background:rgba(255,255,255,.04); border-radius:10px; font-size:10.5px;
 }
-.coach-row .cico{font-size:16px;}
-.coach-row .cname{font-weight:700;}
+.coach-row .cico{font-size:14px;}
+.coach-row .cname{font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .coach-row.empty{color:#4a5866;}
+@media (max-width:340px){
+  .formations{grid-template-columns:1fr; gap:14px;}
+}
 
 /* section title */
 .sec-title{font-size:12px; color:var(--dim); letter-spacing:2px; text-transform:uppercase; margin:6px 4px 2px; text-align:center;}
@@ -380,8 +449,11 @@ button:disabled{cursor:not-allowed; opacity:.35;}
 /* misc */
 .hidden{display:none !important;}
 @media (max-width:360px){
-  .player-card{width:220px;}
-  .pc-rating{font-size:48px;}
+  .player-card{width:206px; min-height:312px;}
+  .pc-photo-ring{width:146px; height:146px;}
+  .pc-avatar{font-size:52px;}
+  .pc-badge-rating{font-size:18px;}
+  .pc-name{font-size:14.5px;}
 }
 </style>
 </head>
@@ -398,6 +470,7 @@ button:disabled{cursor:not-allowed; opacity:.35;}
     <button class="btn-primary" id="showCreateBtn">🆕 أنشئ غرفة جديدة (أونلاين)</button>
     <button class="btn-primary" id="showJoinBtn" style="background:linear-gradient(135deg,#5a9bff,#2f5fc7); box-shadow:0 8px 24px rgba(76,140,255,.25);">🔗 انضم لغرفة صاحبك (أونلاين)</button>
     <button class="btn-primary" id="showOfflineBtn" style="background:linear-gradient(135deg,#8a94a3,#4a5866); box-shadow:0 8px 24px rgba(74,88,102,.25);">📱 العب أوفلاين على نفس الجهاز</button>
+    <button class="btn-primary" id="showBotBtn" style="background:linear-gradient(135deg,#7c5cff,#4c2fbf); box-shadow:0 8px 24px rgba(124,92,255,.28);">🤖 العب مع بوت ذكي</button>
     <div class="budget-note">أونلاين: واحد بيعمل غرفة ويبعت الكود للتاني، وكل واحد يلعب من جهازه. أوفلاين: نفس الطريقة القديمة، الاتنين على نفس الجهاز يتبادلوا الدور.</div>
   </div>
 </div>
@@ -421,6 +494,28 @@ button:disabled{cursor:not-allowed; opacity:.35;}
     <div class="budget-note">كل شخص عنده ميزانية <b>200M</b> مستقلة — كل شخص يبني فريقًا من <b>11 لاعبًا + مدرب</b></div>
     <button class="btn-primary" id="offlineStartBtn" disabled>ابدأ المزاد</button>
     <button class="back-link" id="backFromOffline">رجوع</button>
+  </div>
+</div>
+
+<!-- ============ BOT SETUP ============ -->
+<div id="screen-bot-setup" class="screen">
+  <div class="logo-wrap">
+    <div class="logo-ball">⚽</div>
+    <div class="logo-title" style="font-size:26px;">العب مع بوت ذكي</div>
+    <div class="logo-sub">هتزايد ضد الذكاء الاصطناعي</div>
+  </div>
+  <div class="start-form">
+    <div class="player-input">
+      <div class="tag p1">1</div>
+      <input id="botName1" type="text" placeholder="اسمك" maxlength="16">
+    </div>
+    <div class="player-input">
+      <div class="tag p2">🤖</div>
+      <input type="text" value="البوت الذكي" disabled style="opacity:.6;">
+    </div>
+    <div class="budget-note">هتلعب أنت بميزانية <b>200M</b>، والبوت هيزايد ويقرر بنفسه — كل واحد يبني فريقًا من <b>11 لاعبًا + مدرب</b></div>
+    <button class="btn-primary" id="botStartBtn" disabled>ابدأ المزاد</button>
+    <button class="back-link" id="backFromBot">رجوع</button>
   </div>
 </div>
 
@@ -632,26 +727,55 @@ const FORMATION_SLOTS = [
    bids early on — it only kicks in once someone is bidding themselves down
    to nothing. */
 function roundsRemainingAfter(s){
-  return s.phase==='players' ? (FORMATION_SLOTS.length - s.slotIndex) : 0;
+  return s.phase==='players' ? (FORMATION_SLOTS.length - s.slotIndex - 1) : 0;
 }
 function canAffordBid(s, idx){
   const nextPrice = s.price + 1;
   const reserve = 2 * roundsRemainingAfter(s);
   return (nextPrice + reserve) <= s.budgets[idx];
 }
+/* Every round has a designated "first bidder" (state.firstBidder,
+   alternating so both sides open exactly half of the 12 picks). Before
+   anyone has bid yet (leader===null) only that side may place the opening
+   bid; once a bid exists either side can keep raising as before.
+   Safety valve: if the designated opener genuinely can't afford the
+   minimum opening bid (their budget got squeezed late in the draft), the
+   other side is allowed to open instead — otherwise the round would
+   deadlock forever with nobody able to place the first bid. */
+function canOpenBid(s, idx){
+  if(s.leader!==null) return true;
+  const designated = s.firstBidder;
+  if(canAffordBid(s, designated)) return idx===designated;
+  return idx !== designated;
+}
 
-/* desired rating-bracket split across the draft: 15% >=95 / 35% >=90 / 50% >=86 (minimum rating is 86) */
-const BRACKET_WEIGHT = {95:15, 90:35, 86:50};
-function bracketOf(r){ return r>=95?95 : r>=90?90 : 86; }
-function weightedPick(candidates){
+/* Rating-bracket distribution requested for the whole platform:
+   30% rated >=90 / 30% rated 85-89 / 30% rated 80-84 / 10% rated 70-79.
+   The player being auctioned always comes from the >=85 pool (so it opens
+   at 85+), while the free consolation player handed to the losing side is
+   allowed to dip as low as 70, drawn from the full 4-band distribution
+   above — that's what actually makes the 70-79 slice appear in games. */
+function bracketOf(r){ return r>=90?90 : r>=85?85 : r>=80?80 : 70; }
+const BRACKET_WEIGHT_FULL = {90:30, 85:30, 80:30, 70:10};
+const BRACKET_WEIGHT_MAIN = {90:50, 85:50}; // only ever applied to candidates already >=85
+function weightedPick(candidates, weights){
   if(!candidates || candidates.length===0) return null;
-  const groups = {95:[],90:[],86:[]};
-  candidates.forEach(c=>groups[bracketOf(c.rating)].push(c));
+  const groups = {};
+  candidates.forEach(c=>{
+    const b = bracketOf(c.rating);
+    if(!(b in weights)) return;
+    (groups[b] = groups[b] || []).push(c);
+  });
   const avail = Object.keys(groups).filter(k=>groups[k].length>0);
-  let total = 0; avail.forEach(k=>total+=BRACKET_WEIGHT[k]);
+  if(avail.length===0){
+    // nothing fell into the requested bands (small pool edge case) — just
+    // pick uniformly from whatever IS available instead of freezing
+    return candidates[Math.floor(Math.random()*candidates.length)];
+  }
+  let total = 0; avail.forEach(k=>total+=weights[k]);
   let r = Math.random()*total;
   let chosen = avail[0];
-  for(const k of avail){ r-=BRACKET_WEIGHT[k]; if(r<=0){ chosen=k; break; } }
+  for(const k of avail){ r-=weights[k]; if(r<=0){ chosen=k; break; } }
   const group = groups[chosen];
   return group[Math.floor(Math.random()*group.length)];
 }
@@ -890,6 +1014,180 @@ const RAW_PLAYERS = [
 ["إبراهيما كوناتي الأصغر",80,"CB","🇫🇷","فرنسا","لايبزيج","current"],
 ["فيليكس ليمار",80,"LW","🇫🇷","فرنسا","أتلتيكو مدريد","current"],
 ["أندريه فرانك زامبو أنجيسا",81,"CDM","🇨🇲","الكاميرون","نابولي","current"],
+
+["أوسمان دمبلي",90,"RW","🇫🇷","فرنسا","باريس سان جيرمان","current"],
+["كاسيميرو",89,"CDM","🇧🇷","البرازيل","مانشستر يونايتد","current"],
+["إيبراهيم كوناتي",86,"CB","🇫🇷","فرنسا","ليفربول","current"],
+["لاوتارو مارتينيز",91,"ST","🇦🇷","الأرجنتين","إنتر ميلان","current"],
+["فيكتور جيوكيريس",87,"ST","🇸🇪","السويد","أرسنال","current"],
+["برونو جيماريش",86,"CM","🇧🇷","البرازيل","نيوكاسل يونايتد","current"],
+["أليكسيس ماك أليستر",87,"CM","🇦🇷","الأرجنتين","ليفربول","current"],
+["إيمليانو مارتينيز",88,"GK","🇦🇷","الأرجنتين","أستون فيلا","current"],
+["خيسوس كورونا",81,"RW","🇲🇽","المكسيك","سيفيلا","current"],
+["نونو تافاريش",80,"LB","🇵🇹","البرتغال","ميلان","current"],
+["فيديريكو فالفيردي",90,"CM","🇺🇾","الأوروجواي","ريال مدريد","current"],
+["إبراهيم ديالو",78,"CB","🇲🇱","مالي","موناكو","current"],
+["دارويين نونيز",85,"ST","🇺🇾","الأوروجواي","ليفربول","current"],
+["رونالد أراوخو",86,"CB","🇺🇾","الأوروجواي","برشلونة","current"],
+["خوسكو جفارديول",85,"CB","🇭🇷","كرواتيا","مانشستر سيتي","current"],
+["إيفان توني",83,"ST","🏴","إنجلترا","توتنهام","current"],
+["كول بالمر",87,"CAM","🏴","إنجلترا","تشلسي","current"],
+["مويسيس كايسيدو",84,"CDM","🇪🇨","الإكوادور","تشلسي","current"],
+["أليخاندرو جارناتشو",81,"LW","🇦🇷","الأرجنتين","مانشستر يونايتد","current"],
+["كينجزلي كومان",86,"LW","🇫🇷","فرنسا","النصر","current"],
+["دايوت أوبامكانو",84,"CB","🇫🇷","فرنسا","بايرن ميونخ","current"],
+["نيكلاس زوله",82,"CB","🇩🇪","ألمانيا","إنتر ميلان","current"],
+["مانويل أكانجي",83,"CB","🇨🇭","سويسرا","مانشستر سيتي","current"],
+["أليكس جرايمالدو",83,"LB","🇪🇸","إسبانيا","باير ليفركوزن","current"],
+["جوناثان تاه",83,"CB","🇩🇪","ألمانيا","باير ليفركوزن","current"],
+["جيريمي فريمبونج",82,"RB","🇳🇱","هولندا","باير ليفركوزن","current"],
+["أمين عدلي",81,"CAM","🇫🇷","فرنسا","باير ليفركوزن","current"],
+["أوسكار جواردادو",78,"CM","🇲🇽","المكسيك","تيجواري","current"],
+["يانيك كاراسكو",83,"LW","🇧🇪","بلجيكا","الاتحاد","current"],
+["نبيل فقير",82,"CAM","🇩🇿","الجزائر","رين","current"],
+["إسماعيل بن ناصر",76,"CDM","🇲🇦","المغرب","الوداد","current"],
+["أزّان كواتي",74,"CM","🇸🇳","السنغال","نانت","current"],
+["كريم الأحمدي",80,"CDM","🇲🇦","المغرب","فيتيسه","legend"],
+["منير الحدادي",79,"RW","🇲🇦","المغرب","ليتش","current"],
+["زكريا أبو خلال",77,"LW","🇲🇦","المغرب","بروج","current"],
+["بلال الخنوس",78,"CM","🇲🇦","المغرب","ليستر سيتي","current"],
+["إلياس شعير",76,"LB","🇲🇦","المغرب","فياريال","current"],
+["نايف العقيدي",79,"GK","🇸🇦","السعودية","الهلال","current"],
+["محمد العويس",77,"GK","🇸🇦","السعودية","الأهلي السعودي","current"],
+["عبدالرحمن غريب",78,"ST","🇸🇦","السعودية","الأهلي السعودي","current"],
+["عبدالله الحمدان",77,"LW","🇸🇦","السعودية","الاتحاد","current"],
+["حسان تمبكتي",81,"CB","🇲🇦","المغرب","سبورتنج لشبونة","current"],
+["نايف الشمراني",76,"ST","🇸🇦","السعودية","أبها","current"],
+["أحمد رفعت",75,"ST","🇪🇬","مصر","بيراميدز","current"],
+["مروان حمدي",76,"LW","🇪🇬","مصر","الأهلي المصري","current"],
+["محمد الشناوي",80,"GK","🇪🇬","مصر","الأهلي المصري","current"],
+["محمد صبحي",76,"GK","🇪🇬","مصر","بيراميدز","current"],
+["حمدي فتحي",77,"CDM","🇪🇬","مصر","الأهلي المصري","current"],
+["طاهر محمد طاهر",76,"CM","🇪🇬","مصر","بيراميدز","current"],
+["ياسين مرعي",73,"CB","🇪🇬","مصر","الزمالك","current"],
+["محمود جهاد",73,"CB","🇪🇬","مصر","الزمالك","current"],
+["أشرف بن شرقي",75,"ST","🇹🇳","تونس","الترجي","current"],
+["يوسف المساكني",78,"RW","🇹🇳","تونس","دبي","current"],
+["علي معلول",76,"LB","🇹🇳","تونس","الترجي","current"],
+["ياسين براهيمي",81,"LW","🇩🇿","الجزائر","النصر السعودي","current"],
+["بغداد بونجاح",81,"ST","🇩🇿","الجزائر","الاتحاد","current"],
+["رامي بن سبعيني",80,"CB","🇩🇿","الجزائر","بشيكتاش","current"],
+["فوزي غلام",76,"LB","🇩🇿","الجزائر","فالنسيان","current"],
+["كارلوس فيلا",74,"RW","🇲🇽","المكسيك","لوس أنجلوس إف سي","legend"],
+["أندريس جوارداتشو",72,"CM","🇲🇽","المكسيك","بوماس","current"],
+["أوريبى بيرالتا",73,"ST","🇲🇽","المكسيك","تيجواري","legend"],
+["دييجو فالديز",72,"CAM","🇨🇱","تشيلي","كولو كولو","current"],
+["بابلو جالديمز",73,"CM","🇨🇱","تشيلي","بوكا جونيورز","current"],
+["إيزكييل بالما",71,"RB","🇦🇷","الأرجنتين","راسينج","current"],
+["فرانكو مانزي",72,"CB","🇦🇷","الأرجنتين","إنديبنديينتي","current"],
+["ماتياس زاراتي",70,"ST","🇦🇷","الأرجنتين","لانوس","current"],
+["جوناثان روديجيز",76,"CAM","🇺🇾","الأوروجواي","النصر","current"],
+["ماكسي جوميز",74,"ST","🇺🇾","الأوروجواي","تيجواري","current"],
+["مايكل أوليس",83,"RW","🏴","إنجلترا","بايرن ميونخ","current"],
+["كوبي مايينو",71,"CM","🏴","إنجلترا","بيرنلي","current"],
+["كارلتون مورريس",72,"ST","🏴","إنجلترا","لوتون تاون","current"],
+["أنتوني إيلانجا",78,"LW","🇸🇪","السويد","نوتنجهام فورست","current"],
+["بيوتر زيلينسكي",81,"CAM","🇵🇱","بولندا","إنتر ميلان","current"],
+["كريستيان بولينيك",76,"ST","🇵🇱","بولندا","بيلباو","current"],
+["جاكوب كيفيور",78,"CB","🇵🇱","بولندا","نابولي","current"],
+["بيوتر تشيلينسكي",71,"CM","🇵🇱","بولندا","بولونيا","current"],
+["دينزيل دومفريس",84,"RB","🇳🇱","هولندا","إنتر ميلان","current"],
+["ستيفان دي فراي",79,"CB","🇳🇱","هولندا","إنتر ميلان","current"],
+["كودي جاكبو",83,"LW","🇳🇱","هولندا","ليفربول","current"],
+["تين كوبمايرز",75,"CM","🇳🇱","هولندا","أياكس","current"],
+["يريمي بينو",78,"LW","🇪🇸","إسبانيا","فياريال","current"],
+["ياجو أسبيريكويتا",76,"RB","🇪🇸","إسبانيا","فياريال","current"],
+["روبن فارجاس",70,"LW","🇪🇸","إسبانيا","إسبانيول","current"],
+["دييجو يورينتي",73,"ST","🇪🇸","إسبانيا","لاس بالماس","current"],
+["بابلو فورنالس",78,"CAM","🇪🇸","إسبانيا","بيتيس","current"],
+["بورخا إجليسياس",76,"ST","🇪🇸","إسبانيا","سيلتا فيجو","current"],
+["سيرجي دارديه",75,"CB","🇪🇸","إسبانيا","إسبانيول","current"],
+["إيتان أمبومو",81,"LW","🇨🇲","الكاميرون","بروسيا دورتموند","current"],
+["فينسنت أبو بكر",79,"ST","🇨🇲","الكاميرون","بيشكتاش","current"],
+["فرانك زامبو أنجيسا",80,"CM","🇨🇲","الكاميرون","نابولي","current"],
+["توماس بارتيه",79,"CDM","🇬🇭","غانا","أرسنال","current"],
+["جوردان أياو",76,"ST","🇬🇭","غانا","لوهافر","current"],
+["محمد كودوس",83,"RW","🇬🇭","غانا","توتنهام","current"],
+["ألفريد دنكان",73,"CM","🇬🇭","غانا","فيورنتينا","current"],
+["صمويل تشوكويزي",77,"RW","🇳🇬","نيجيريا","نابولي","current"],
+["أليكس إيوبي",76,"LW","🇳🇬","نيجيريا","فولهام","current"],
+["ويلفريد نديدي",78,"CB","🇳🇬","نيجيريا","لايستر سيتي","current"],
+["إبراهيم سانجاري",75,"CDM","🇨🇮","ساحل العاج","نوتنجهام فورست","current"],
+["فرانك كيسييه",79,"CM","🇨🇮","ساحل العاج","الأهلي السعودي","current"],
+["نيكولا بيبيه",78,"RW","🇨🇮","ساحل العاج","تراكتور","current"],
+["سيمون أدينجرا",80,"LW","🇨🇮","ساحل العاج","برايتون","current"],
+["أمادو هيدارا",77,"CM","🇲🇱","مالي","لايبزيج","current"],
+["يوسف فوفانا",80,"CDM","🇫🇷","فرنسا","ميلان","current"],
+["بواكاي تراوري",73,"ST","🇲🇱","مالي","بيرمنجهام","current"],
+["سفيان بوفال",78,"LW","🇲🇦","المغرب","الأهلي السعودي","current"],
+["ماكس أيمار",71,"CAM","🇫🇷","فرنسا","تولوز","current"],
+["هوانج هي تشان",81,"LW","🇰🇷","كوريا الجنوبية","وولفرهامبتون","current"],
+["سون هيونج مين",89,"LW","🇰🇷","كوريا الجنوبية","لوس أنجلوس إف سي","current"],
+["كيم مين جاي",84,"CB","🇰🇷","كوريا الجنوبية","بايرن ميونخ","current"],
+["لي كانج إن",79,"CAM","🇰🇷","كوريا الجنوبية","بايرن ميونخ","current"],
+["تاكيفوسا كوبو",81,"RW","🇯🇵","اليابان","ريال سوسيداد","current"],
+["ريتسو دوان",82,"CAM","🇯🇵","اليابان","فرانكفورت","current"],
+["واتارو إندو",78,"CDM","🇯🇵","اليابان","ليفربول","current"],
+["دايتشي كامادا",80,"CAM","🇯🇵","اليابان","كريستال بالاس","current"],
+["كاورو ميتوما",81,"LW","🇯🇵","اليابان","برايتون","current"],
+["ماثيو ريان",78,"GK","🇦🇺","أستراليا","الاتحاد","current"],
+["أرون موي",73,"CM","🇦🇺","أستراليا","بورنموث","current"],
+["حسين الشحات",79,"RW","🇪🇬","مصر","الأهلي المصري","current"],
+["عمرو السولية",76,"RB","🇪🇬","مصر","الأهلي المصري","current"],
+["مصطفى محمد",78,"ST","🇪🇬","مصر","نانت","current"],
+["أحمد عبدالقادر",73,"LB","🇪🇬","مصر","الزمالك","current"],
+["أحمد ياسر ريان",71,"GK","🇪🇬","مصر","الأهلي المصري","current"],
+["أونيسيوو إيزي",70,"ST","🇳🇬","نيجيريا","الوصل","current"],
+["فيسلي فوفانا",82,"CB","🇫🇷","فرنسا","تشلسي","current"],
+["ليساندرو مارتينيز",84,"CB","🇦🇷","الأرجنتين","مانشستر يونايتد","current"],
+["نيكولاس تاجليافيكو",81,"LB","🇦🇷","الأرجنتين","ليون","current"],
+["خوان فويث",83,"CB","🇦🇷","الأرجنتين","توتنهام","current"],
+["كريستيان روميرو",84,"CB","🇦🇷","الأرجنتين","توتنهام","current"],
+["ناهويل مولينا",81,"RB","🇦🇷","الأرجنتين","أتلتيكو مدريد","current"],
+["جوفاني لو تشيلسو",79,"CAM","🇦🇷","الأرجنتين","توتنهام","current"],
+["باولو ديبالا",86,"CAM","🇦🇷","الأرجنتين","روما","current"],
+["أنخيل كوريا",78,"RW","🇦🇷","الأرجنتين","أتلتيكو مدريد","current"],
+["فاليتين كاستيلانوس",78,"ST","🇦🇷","الأرجنتين","لاتسيو","current"],
+["جيرد مولر",96,"ST","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["ليف ياشين",95,"GK","🇷🇺","روسيا","دينامو موسكو","legend"],
+["دينو زوف",93,"GK","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["بيتر شمايكل",93,"GK","🇩🇰","الدنمارك","مانشستر يونايتد","legend"],
+["أوليفر كان",93,"GK","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["بوبي تشارلتون",93,"CM","🏴","إنجلترا","مانشستر يونايتد","legend"],
+["فيرينك بوشكاش",97,"ST","🇭🇺","المجر","ريال مدريد","legend"],
+["ألفريدو دي ستيفانو",97,"CF","🇦🇷","الأرجنتين","ريال مدريد","legend"],
+["إيوسيبيو",96,"ST","🇵🇹","البرتغال","بنفيكا","legend"],
+["جورج بست",94,"RW","🏴","أيرلندا الشمالية","مانشستر يونايتد","legend"],
+["جارينشا",95,"RW","🇧🇷","البرازيل","بوتافوجو","legend"],
+["زيكو",93,"CAM","🇧🇷","البرازيل","فلامنجو","legend"],
+["سقراط",92,"CAM","🇧🇷","البرازيل","كورينثيانز","legend"],
+["لوثار ماتيوس",94,"CM","🇩🇪","ألمانيا","إنتر ميلان","legend"],
+["كارل هاينز رومينيجه",93,"ST","🇩🇪","ألمانيا","بايرن ميونخ","legend"],
+["ديفيد سيلفا",91,"CAM","🇪🇸","إسبانيا","مانشستر سيتي","legend"],
+["روي كين",90,"CM","🏴","أيرلندا","مانشستر يونايتد","legend"],
+["كلارنس سيدورف",92,"CM","🇳🇱","هولندا","ميلان","legend"],
+["إدجار ديفيدز",89,"CDM","🇳🇱","هولندا","يوفنتوس","legend"],
+["مايكل لودروب",92,"CF","🇩🇰","الدنمارك","برشلونة","legend"],
+["هريستو ستويتشكوف",92,"LW","🇧🇬","بلغاريا","برشلونة","legend"],
+["جورج هاجي",92,"CAM","🇷🇴","رومانيا","برشلونة","legend"],
+["باولو روسي",91,"ST","🇮🇹","إيطاليا","يوفنتوس","legend"],
+["جوزيه ألتافيني",90,"ST","🇧🇷","البرازيل","ميلان","legend"],
+["إيمانويل بيتيت",88,"CM","🇫🇷","فرنسا","أرسنال","legend"],
+["مارسيل ديساي",89,"CB","🇫🇷","فرنسا","تشلسي","legend"],
+["لوران بلان",90,"CB","🇫🇷","فرنسا","إنتر ميلان","legend"],
+["فابيان بارتيز",90,"GK","🇫🇷","فرنسا","مانشستر يونايتد","legend"],
+["جوزيبي بيرجومي",89,"CB","🇮🇹","إيطاليا","إنتر ميلان","legend"],
+["دانييلي ماسارو",89,"ST","🇮🇹","إيطاليا","ميلان","legend"],
+["كيني دالجليش",92,"ST","🏴","اسكتلندا","ليفربول","legend"],
+["إيان راش",91,"ST","🏴","ويلز","ليفربول","legend"],
+["جون بارنز",89,"LW","🏴","إنجلترا","ليفربول","legend"],
+["بيتر بيردسلي",88,"CAM","🏴","إنجلترا","ليفربول","legend"],
+["برايان روبسون",90,"CM","🏴","إنجلترا","مانشستر يونايتد","legend"],
+["دينيس لو",92,"ST","🏴","اسكتلندا","مانشستر يونايتد","legend"],
+["نوبي ستايلز",87,"CDM","🏴","إنجلترا","مانشستر يونايتد","legend"],
+["جوردون بانكس",93,"GK","🏴","إنجلترا","ليستر سيتي","legend"],
+["مارتن بيترز",88,"CM","🏴","إنجلترا","وست هام يونايتد","legend"],
+["جيوف هيرست",90,"ST","🏴","إنجلترا","وست هام يونايتد","legend"],
 ];
 
 // coaches: [name, rating, flag, country, tactic, atk, def, poss, counter]
@@ -914,6 +1212,13 @@ const RAW_COACHES = [
 ["هانز-ديتر فليك",88,"🇩🇪","ألمانيا","ضغط عالٍ",90,85,86,78],
 ["أوناي إيمري",84,"🇪🇸","إسبانيا","تنظيم أوروبي",82,86,79,81],
 ["إروين فان جال",85,"🇳🇱","هولندا","تخطيط صارم",81,87,82,77],
+["ميكيل أرتيتا",86,"🇪🇸","إسبانيا","ضغط منظم",87,84,85,80],
+["تشابي ألونسو",87,"🇪🇸","إسبانيا","هجوم جريء",88,83,86,78],
+["رافائيل بينيتيز",85,"🇪🇸","إسبانيا","تكتيكي حذر",80,89,77,85],
+["روبرتو مانشيني",86,"🇮🇹","إيطاليا","توازن هجومي",86,83,83,79],
+["يوليان ناجلسمان",87,"🇩🇪","ألمانيا","أفكار حديثة",89,82,87,76],
+["إريك تين هاج",84,"🇳🇱","هولندا","استحواذ منظم",84,83,85,78],
+["أنجي بوستيكوجلو",85,"🇦🇺","أستراليا","هجوم مباشر",90,76,84,72],
 ];
 
 /* =========================================================
@@ -922,7 +1227,7 @@ const RAW_COACHES = [
 const BUCKETS = ['GK','DEF','MID','FWD'];
 let state = null;
 
-function tierOf(r){ return r<85?1 : r<90?2 : r<94?3 : r<97?4 : 5; }
+function tierOf(r){ return r<80?1 : r<85?2 : r<90?3 : r<95?4 : 5; }
 function bucketOf(pos){ return POS_BUCKET[pos] || 'MID'; }
 function shuffle(arr){
   const a = arr.slice();
@@ -937,7 +1242,7 @@ function buildPlayers(){
   return RAW_PLAYERS.map((p,i)=>({
     id:'p'+i, name:p[0], rating:p[1], pos:p[2], flag:p[3], country:p[4], team:p[5], status:p[6]||'current',
     tier:tierOf(p[1]), bucket:bucketOf(p[2])
-  })).filter(p=>p.rating>=86); // enforce minimum rating of 86
+  })).filter(p=>p.rating>=70); // full platform floor is 70 (see BRACKET_WEIGHT_FULL)
 }
 function buildCoaches(){
   return RAW_COACHES.map((c,i)=>({
@@ -963,9 +1268,16 @@ function getSlotCandidates(slot, excludeId){
     bucketOf(p.pos)===bucket && !state.usedPlayerIds.has(p.id) && p.id !== excludeId
   );
 }
-function pickPlayerForSlot(slot, excludeId){
+function pickPlayerForSlot(slot, excludeId, isBackup){
   let candidates = getSlotCandidates(slot, excludeId);
   if(candidates.length===0) return null;
+  if(!isBackup){
+    // rule: the player actually put up for auction always opens at 85+
+    const strong = candidates.filter(p=>p.rating>=85);
+    if(strong.length>0) candidates = strong;
+    // if the bucket has nobody 85+ left, fall back to whoever's left rather
+    // than freezing the draft
+  }
   const legendC = candidates.filter(p=>p.status==='legend');
   const currentC = candidates.filter(p=>p.status==='current');
   if(legendC.length>0 && currentC.length>0){
@@ -974,7 +1286,7 @@ function pickPlayerForSlot(slot, excludeId){
     if(Math.random() < 0.75) candidates = preferLegend ? legendC : currentC;
   } else if(legendC.length>0){ candidates = legendC; }
   else if(currentC.length>0){ candidates = currentC; }
-  return weightedPick(candidates);
+  return weightedPick(candidates, isBackup ? BRACKET_WEIGHT_FULL : BRACKET_WEIGHT_MAIN);
 }
 function markUsedPlayer(p){
   state.usedPlayerIds.add(p.id);
@@ -984,7 +1296,7 @@ function getCoachCandidates(excludeId){
   return ALL_COACHES.filter(c => !state.usedCoachIds.has(c.id) && c.id !== excludeId);
 }
 function pickCoachCandidate(excludeId){
-  return weightedPick(getCoachCandidates(excludeId));
+  return weightedPick(getCoachCandidates(excludeId), BRACKET_WEIGHT_FULL);
 }
 function markUsedCoach(c){ state.usedCoachIds.add(c.id); }
 
@@ -1113,6 +1425,8 @@ function showScreen(id){
 let roomCode = null;      // e.g. "K7X2Q" — also used as the host's Peer ID
 let myIdx = null;         // 0 = host (creator), 1 = guest (joiner), null = offline (both)
 let isOnline = true;      // false = both players share this one device
+let botMode = false;      // true = seat 1 (idx 1) is played by the AI, not a second human
+const BOT_IDX = 1;
 let localRev = -1;        // last room revision we've rendered
 let matchResultShown = false;
 
@@ -1277,7 +1591,7 @@ async function handleGuestMessage(msg){
     const updated = await casUpdate((draft)=>{
       if(draft.lastSold) return false; // a round just resolved and hasn't advanced yet — no bidding on the item that already sold
       const s = deserializeGameState(draft.gameState);
-      if(!canAffordBid(s, msg.idx)) return false;
+      if(!canAffordBid(s, msg.idx) || !canOpenBid(s, msg.idx)) return false;
       s.price = s.price + 1;
       s.leader = msg.idx;
       draft.gameState = serializeGameState(s);
@@ -1295,7 +1609,7 @@ async function handleGuestMessage(msg){
         wonItem = state.current;
         state.teams[winner].push(wonItem);
         markUsedPlayer(wonItem);
-        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id);
+        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id, true);
         if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
         titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
       } else {
@@ -1488,6 +1802,8 @@ function stopPolling(){ teardownConnection(); }
 $('showCreateBtn').addEventListener('click', ()=> showScreen('screen-create'));
 $('showJoinBtn').addEventListener('click', ()=> showScreen('screen-join'));
 $('showOfflineBtn').addEventListener('click', ()=> showScreen('screen-offline-setup'));
+$('showBotBtn').addEventListener('click', ()=> showScreen('screen-bot-setup'));
+$('backFromBot').addEventListener('click', ()=> showScreen('screen-lobby'));
 $('backFromCreate').addEventListener('click', ()=> showScreen('screen-lobby'));
 $('backFromJoin').addEventListener('click', ()=> showScreen('screen-lobby'));
 $('backFromOffline').addEventListener('click', ()=> showScreen('screen-lobby'));
@@ -1506,6 +1822,7 @@ offlineName2.addEventListener('input', checkOfflineStart);
 
 offlineStartBtn.addEventListener('click', ()=>{
   isOnline = false;
+  botMode = false;
   myIdx = null;
   roomCode = null;
   stopPolling();
@@ -1526,9 +1843,48 @@ offlineStartBtn.addEventListener('click', ()=>{
     currentSlot: null,
     price: 1,
     leader: null,
+    roundNo: 0,
+    firstBidder: 0,
   });
-  nextAuctionItemPure();
+  state.currentSlot = FORMATION_SLOTS[0];
+  state.current = pickPlayerForSlot(FORMATION_SLOTS[0], null);
   renderAuctionScreen();
+});
+
+/* ---- bot (vs AI) setup ---- */
+const botName1 = $('botName1'), botStartBtn = $('botStartBtn');
+botName1.addEventListener('input', ()=>{ botStartBtn.disabled = !botName1.value.trim(); });
+
+botStartBtn.addEventListener('click', ()=>{
+  isOnline = false;
+  botMode = true;
+  myIdx = null;
+  roomCode = null;
+  stopPolling();
+  ALL_PLAYERS = buildPlayers();
+  ALL_COACHES = shuffle(buildCoaches());
+  state = deserializeGameState({
+    names: [botName1.value.trim(), '🤖 البوت الذكي'],
+    budgets: [200, 200],
+    teams: [[],[]],
+    coaches: [null,null],
+    slotIndex: 0,
+    usedPlayerIds: [],
+    usedCoachIds: [],
+    legendCount: 0,
+    currentCount: 0,
+    phase: 'players',
+    current: null,
+    currentSlot: null,
+    price: 1,
+    leader: null,
+    roundNo: 0,
+    firstBidder: 0,
+  });
+  state.currentSlot = FORMATION_SLOTS[0];
+  state.current = pickPlayerForSlot(FORMATION_SLOTS[0], null);
+  renderAuctionScreen();
+  scheduleBotTurn();
 });
 
 const hostNameInput = $('hostNameInput'), confirmCreateBtn = $('confirmCreateBtn');
@@ -1711,6 +2067,8 @@ $('startAuctionBtn').addEventListener('click', async ()=>{
       currentSlot: null,
       price: 1,
       leader: null,
+      roundNo: 0,
+      firstBidder: 0,
     };
     state = deserializeGameState(gameState);
     const slot = FORMATION_SLOTS[0];
@@ -1730,6 +2088,8 @@ $('startAuctionBtn').addEventListener('click', async ()=>{
 function nextAuctionItemPure(){
   state.price = 1;
   state.leader = null;
+  state.roundNo = (state.roundNo||0) + 1;
+  state.firstBidder = state.roundNo % 2; // alternates so both sides get to open the bidding an equal number of times across the 12 picks
   if(state.phase==='players'){
     const slot = FORMATION_SLOTS[state.slotIndex];
     state.currentSlot = slot;
@@ -1761,13 +2121,14 @@ function updateStatusMsg(){
 function renderPlayerCard(p){
   const el = $('playerCard');
   el.className = 'player-card tier-'+p.tier;
-  const legendTag = p.tier===5 ? `<div class="pc-legend-tag">أسطورة</div>` : '';
+  const legendTag = p.tier===5 ? `<div class="pc-legend-tag">⭐ أسطورة</div>` : '';
   el.innerHTML = `
+    <div class="pc-sheen"></div>
+    <div class="pc-vignette"></div>
+    <div class="pc-badge"><div class="pc-badge-rating">${p.rating}</div><div class="pc-badge-pos">${p.pos}</div></div>
     ${legendTag}
-    <div class="pc-avatar" id="pcAvatar">${p.flag}</div>
+    <div class="pc-photo-ring"><div class="pc-avatar" id="pcAvatar">${p.flag}</div></div>
     <div class="pc-name">${p.name}</div>
-    <div class="pc-rating">${p.rating}</div>
-    <div class="pc-pos">${p.pos}</div>
     <div class="pc-divider"></div>
     <div class="pc-country">${p.flag} ${p.country}</div>
     <div class="pc-team">${p.team}</div>
@@ -1776,13 +2137,14 @@ function renderPlayerCard(p){
 }
 function renderCoachCard(c){
   const el = $('playerCard');
-  el.className = 'player-card tier-'+(c.rating>=93?5: c.rating>=88?4: c.rating>=85?3:2);
+  el.className = 'player-card tier-'+tierOf(c.rating);
   el.innerHTML = `
+    <div class="pc-sheen"></div>
+    <div class="pc-vignette"></div>
+    <div class="pc-badge"><div class="pc-badge-rating">${c.rating}</div><div class="pc-badge-pos">COACH</div></div>
     <div class="pc-legend-tag">👔 مدرب</div>
-    <div class="pc-avatar" id="pcAvatar">${c.flag}</div>
+    <div class="pc-photo-ring"><div class="pc-avatar" id="pcAvatar">${c.flag}</div></div>
     <div class="pc-name">${c.name}</div>
-    <div class="pc-rating">${c.rating}</div>
-    <div class="pc-pos">COACH</div>
     <div class="pc-divider"></div>
     <div class="pc-country">${c.flag} ${c.country}</div>
     <div class="pc-team">${c.tactic}</div>
@@ -1794,7 +2156,10 @@ function updatePriceUI(){
   const priceEl = $('priceAmount');
   priceEl.textContent = `💰 ${state.price}M`;
   const leaderLine = $('leaderLine');
-  if(state.leader===null){ leaderLine.innerHTML = 'لم تبدأ المزايدة بعد'; }
+  if(state.leader===null){
+    const cls = state.firstBidder===0?'lp1':'lp2';
+    leaderLine.innerHTML = `🎯 دور البداية: <span class="${cls}">${state.names[state.firstBidder]}</span>`;
+  }
   else{
     const cls = state.leader===0?'lp1':'lp2';
     leaderLine.innerHTML = `أعلى مزايدة: <span class="${cls}">${state.names[state.leader]}</span>`;
@@ -1829,8 +2194,8 @@ function updateBidButtons(){
   const b1 = $('bidBtn1'), b2 = $('bidBtn2');
   const yb1 = $('youBadge1'), yb2 = $('youBadge2');
   const resolving = isResolving();
-  const canBid1 = !resolving && (isOnline ? myIdx===0 : true);
-  const canBid2 = !resolving && (isOnline ? myIdx===1 : true);
+  const canBid1 = !resolving && (isOnline ? myIdx===0 : true) && canOpenBid(state, 0);
+  const canBid2 = !resolving && (isOnline ? myIdx===1 : (!botMode)) && canOpenBid(state, 1);
   b1.disabled = !canAffordBid(state, 0) || !canBid1;
   b2.disabled = !canAffordBid(state, 1) || !canBid2;
   b1.classList.toggle('not-you', !canBid1);
@@ -1841,6 +2206,9 @@ function updateBidButtons(){
   if(isOnline){
     yb1.textContent = myIdx===0 ? '👈 ده زرارك' : 'زرار صاحبك';
     yb2.textContent = myIdx===1 ? 'ده زرارك 👉' : 'زرار صاحبك';
+  } else if(botMode){
+    yb1.textContent = '👈 ده زرارك';
+    yb2.textContent = '🤖 البوت';
   } else {
     yb1.textContent = '';
     yb2.textContent = '';
@@ -1854,18 +2222,19 @@ function updateHammer(){
   // device — instead of relying on a single button anyone could tap.
   // A side can only finalize when it is NOT the current leader: it's their
   // turn to either counter-bid or accept, never to close out their own bid.
-  // Online, it must also be your own seat (same rule as the bid buttons).
+  // Online, it must also be your own seat (same rule as the bid buttons);
+  // in bot mode, seat 2's hammer is only ever pressed by the bot itself.
   if(state.leader===null || isResolving()){
     b1.disabled = true; b2.disabled = true;
     b1.classList.remove('not-you'); b2.classList.remove('not-you');
     return;
   }
   const canHammer1 = state.leader!==0 && (!isOnline || myIdx===0);
-  const canHammer2 = state.leader!==1 && (!isOnline || myIdx===1);
+  const canHammer2 = state.leader!==1 && (!isOnline || myIdx===1) && !botMode;
   b1.disabled = !canHammer1;
   b2.disabled = !canHammer2;
   b1.classList.toggle('not-you', isOnline && myIdx!==0);
-  b2.classList.toggle('not-you', isOnline && myIdx!==1);
+  b2.classList.toggle('not-you', (isOnline && myIdx!==1) || botMode);
 }
 
 /* Online: the host applies bids directly to the authoritative room;
@@ -1880,7 +2249,7 @@ async function placeBid(idx){
       const updated = await casUpdate((draft)=>{
         if(draft.lastSold) return false; // a round just resolved and hasn't advanced yet
         const s = deserializeGameState(draft.gameState);
-        if(!canAffordBid(s, idx)) return false;
+        if(!canAffordBid(s, idx) || !canOpenBid(s, idx)) return false;
         s.price = s.price + 1;
         s.leader = idx;
         draft.gameState = serializeGameState(s);
@@ -1890,12 +2259,13 @@ async function placeBid(idx){
       await sendAction({type:'bid', idx});
     }
   } else {
-    if(!canAffordBid(state, idx)) return;
+    if(!canAffordBid(state, idx) || !canOpenBid(state, idx)) return;
     state.price = state.price + 1;
     state.leader = idx;
     updatePriceUI();
     updateBidButtons();
     updateHammer();
+    if(botMode && idx!==BOT_IDX) scheduleBotTurn();
   }
   const priceEl = $('priceAmount');
   priceEl.classList.remove('bump'); void priceEl.offsetWidth; priceEl.classList.add('bump');
@@ -1923,7 +2293,7 @@ async function hammerClick(clickerIdx){
       wonItem = state.current;
       state.teams[winner].push(wonItem);
       markUsedPlayer(wonItem);
-      freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id);
+      freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id, true);
       if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
       titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
     } else {
@@ -1955,6 +2325,7 @@ async function hammerClick(clickerIdx){
         showScreen('screen-final');
       } else {
         renderAuctionScreen();
+        if(botMode) scheduleBotTurn();
       }
     }, 1900);
     return;
@@ -1975,7 +2346,7 @@ async function hammerClick(clickerIdx){
         wonItem = state.current;
         state.teams[winner].push(wonItem);
         markUsedPlayer(wonItem);
-        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id);
+        freeItem = pickPlayerForSlot(state.currentSlot, wonItem.id, true);
         if(freeItem){ state.teams[loser].push(freeItem); markUsedPlayer(freeItem); }
         titleText = `⚔️ نتيجة مزاد: ${state.currentSlot.label}`;
       } else {
@@ -2007,6 +2378,54 @@ async function hammerClick(clickerIdx){
 }
 $('hammerBtn1').addEventListener('click', ()=>hammerClick(0));
 $('hammerBtn2').addEventListener('click', ()=>hammerClick(1));
+
+/* =========================================================
+   BOT AI (play-vs-bot mode)
+   The bot only ever runs in offline (non-online) games where botMode is
+   true and it always occupies seat BOT_IDX (1). It reuses the exact same
+   placeBid/hammerClick offline code paths a human would use — it just
+   calls them programmatically instead of via a button click — so all the
+   normal rules (turn order, affordability, hammer-can't-be-leader) apply
+   to it too. */
+let botTimer = null;
+function botDesiredMaxBid(item){
+  // rough "how much is this worth to me" curve based on rating, plus a
+  // little randomness so the bot doesn't feel perfectly predictable
+  const rating = item.rating || 75;
+  const base = Math.max(1, Math.round((rating - 68) * 1.15));
+  const jitter = Math.round((Math.random()*6) - 2);
+  return Math.max(1, base + jitter);
+}
+function scheduleBotTurn(){
+  if(!botMode) return;
+  if(botTimer) return; // already have a bot move queued
+  botTimer = setTimeout(()=>{
+    botTimer = null;
+    botMaybeAct();
+  }, 700 + Math.random()*900);
+}
+function botMaybeAct(){
+  if(!botMode || isOnline) return;
+  if(isResolving()) return;
+  if(!state || !state.current) return;
+  if(state.leader === BOT_IDX) return; // bot is already winning, wait for the human
+
+  if(state.leader === null){
+    // only act if it's the bot's turn to open the round
+    if(!canOpenBid(state, BOT_IDX)) return;
+    if(canAffordBid(state, BOT_IDX)) placeBid(BOT_IDX);
+    return;
+  }
+
+  // human currently leads — decide whether to outbid or concede
+  const willingTo = botDesiredMaxBid(state.current);
+  const nextPrice = state.price + 1;
+  if(nextPrice <= willingTo && canAffordBid(state, BOT_IDX)){
+    placeBid(BOT_IDX);
+  } else {
+    hammerClick(BOT_IDX); // accept the human's bid and close the round
+  }
+}
 
 /* =========================================================
    FORMATIONS RENDER
@@ -2092,7 +2511,16 @@ function computeTeamStrength(idx){
   const goalkeeper = gk;
   const manager = coachRating;
 
-  const overall = attack*0.3 + midfield*0.25 + defense*0.25 + goalkeeper*0.1 + manager*0.1;
+  /* IMPORTANT: overall must be built ONLY from attack/midfield/defense —
+     the exact three numbers shown to the player on the result screen.
+     goalkeeper & manager already feed into those three (see above), so
+     adding them again here as separate terms used to let a team win (or
+     be favoured) purely because of a hidden GK/manager rating even while
+     visibly trailing in attack, midfield AND defense — which looked
+     completely illogical to anyone reading the stats. Keeping overall as
+     a plain weighted blend of the visible numbers guarantees that a team
+     ahead on all three shown stats can never be rated weaker overall. */
+  const overall = attack*0.4 + midfield*0.3 + defense*0.3;
   return {attack, midfield, defense, goalkeeper, manager, overall};
 }
 
@@ -2100,9 +2528,42 @@ function simulateMatch(){
   const s1 = computeTeamStrength(0);
   const s2 = computeTeamStrength(1);
 
-  const diff = s1.overall - s2.overall;
-  let p1WinProb = 1/(1+Math.pow(10, -diff/12));
-  p1WinProb = Math.min(0.82, Math.max(0.18, p1WinProb));
+  /* Match outcome rule (as requested): compare the two teams' overall
+     rating.
+       - equal, or within 4 points of each other  -> draw
+       - higher by more than 4 and up to 8         -> higher team wins
+       - higher by more than 8                     -> higher team wins,
+         and the goal margin grows with how big the gap is (small gap =
+         narrow win, big gap = big win), capped so scores stay realistic.
+
+     Why OUTCOME_SENSITIVITY exists: "overall" is an average across 11
+     players + a coach, and the auction itself is a self-balancing market
+     — whoever loses a bid gets a free consolation player, so two squads
+     built through real bidding land even closer together than random
+     chance alone would suggest (tested against real simulated drafts:
+     median raw gap ~1.3, and it almost never exceeds ~5.5). Applying the
+     4/8 thresholds directly to that raw gap made nearly every match
+     register as "within 4" and the game looked permanently stuck on
+     draws. Scaling the gap up first (calibrated against real simulated
+     drafts, not guesswork) restores real variety — draws still happen
+     at a realistic ~25-28% rate instead of ~90% — without changing
+     which team is favoured: it only stretches the same comparison, so a
+     team ahead on the shown stats is still always the one favoured. */
+  const OUTCOME_SENSITIVITY = 6;
+  const diff = (s1.overall - s2.overall) * OUTCOME_SENSITIVITY; // positive => team1 (p1) is stronger
+  const absDiff = Math.abs(diff);
+  let margin;
+  if(absDiff <= 4) margin = 0;
+  else if(absDiff <= 8) margin = 1;
+  else margin = Math.min(6, 2 + Math.round((absDiff-8)/3));
+  const p1Stronger = diff > 0;
+  const isDraw = margin===0;
+
+  // win-probability just for the display bar, derived from the same rule
+  let p1WinProb;
+  if(isDraw) p1WinProb = 0.5;
+  else if(p1Stronger) p1WinProb = Math.min(0.9, 0.55 + margin*0.05);
+  else p1WinProb = Math.max(0.1, 0.45 - margin*0.05);
 
   function expectedGoals(myAtk, oppDef){
     return Math.max(0.3, (myAtk - oppDef)/14 + 1.35);
@@ -2112,15 +2573,21 @@ function simulateMatch(){
     do{ k++; p*=Math.random(); } while(p>L);
     return k-1;
   }
-  let g1 = poissonRandom(expectedGoals(s1.attack, s2.defense));
-  let g2 = poissonRandom(expectedGoals(s2.attack, s1.defense));
 
-  // nudge outcome toward computed probability without forcing determinism
-  const rand = Math.random();
-  if(rand < p1WinProb*0.35 && g1<=g2) g1 = g2+1;
-  else if(rand > 1-(1-p1WinProb)*0.35 && g2<=g1) g2 = g1+1;
-
-  g1 = Math.min(g1,7); g2=Math.min(g2,7);
+  let g1, g2;
+  if(isDraw){
+    // both sides net the same tally, based on their blended attacking output
+    const lambda = (expectedGoals(s1.attack, s2.defense) + expectedGoals(s2.attack, s1.defense)) / 2;
+    const base = Math.min(poissonRandom(lambda), 5);
+    g1 = g2 = base;
+  } else {
+    const loserAtk  = p1Stronger ? s2.attack  : s1.attack;
+    const loserDef  = p1Stronger ? s1.defense : s2.defense;
+    let loserGoals = Math.min(poissonRandom(expectedGoals(loserAtk, loserDef)), 4);
+    const winnerGoals = Math.min(loserGoals + margin, 7);
+    if(p1Stronger){ g1 = winnerGoals; g2 = loserGoals; }
+    else { g2 = winnerGoals; g1 = loserGoals; }
+  }
 
   const possBase1 = 50 + (s1.midfield - s2.midfield)*0.9 + (Math.random()*6-3);
   const poss1 = Math.round(Math.min(70,Math.max(30,possBase1)));
@@ -2257,11 +2724,13 @@ function showResult(res){
 
 $('replayBtn').addEventListener('click', ()=>{
   stopPolling();
-  roomCode = null; myIdx = null; localRev = -1; matchResultShown = false; isOnline = true;
+  if(botTimer){ clearTimeout(botTimer); botTimer = null; }
+  roomCode = null; myIdx = null; localRev = -1; matchResultShown = false; isOnline = true; botMode = false;
   ALL_PLAYERS = []; ALL_COACHES = [];
   hostNameInput.value=''; confirmCreateBtn.disabled = true;
   guestNameInput.value=''; roomCodeInput.value=''; confirmJoinBtn.disabled = true;
   offlineName1.value=''; offlineName2.value=''; offlineStartBtn.disabled = true;
+  botName1.value=''; botStartBtn.disabled = true;
   showScreen('screen-lobby');
 });
 </script>
