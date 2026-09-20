@@ -1491,49 +1491,14 @@
     --qb-panel:linear-gradient(165deg,#12402a 0%,#0c2e1e 55%,#082217 100%);
     --qb-ink:#f9efcd; --qb-ink2:#cfc7a2; --qb-gold:#e6b950; --qb-gold2:#f6d67c;
     --qb-line:rgba(230,185,80,0.38); --qb-tile:rgba(0,0,0,0.26);
-    max-width:520px; margin:0 auto; padding:14px 14px 34px; font-family:'Tajawal',sans-serif; color:var(--qb-ink);
+    max-width:520px; margin:0 auto; padding:16px 14px 34px; font-family:'Tajawal',sans-serif; color:var(--qb-ink); overflow-x:clip;
   }
   [data-theme="dark"] .qb-page { --qb-panel:linear-gradient(165deg,#161a13 0%,#0f120d 100%); --qb-line:rgba(212,168,67,0.32); }
   .qb-page * { box-sizing:border-box; }
 
-  /* الآية */
-  .qb-verse {
-    position:relative; text-align:center; padding:34px 26px 26px; border-radius:22px;
-    background:
-      radial-gradient(ellipse at 50% 0%, rgba(246,214,124,0.16), transparent 62%),
-      var(--qb-panel);
-    border:1.5px solid var(--qb-gold);
-    box-shadow:0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 6px rgba(0,0,0,0.22), inset 0 0 0 7px var(--qb-line);
-  }
-  .qb-corner { position:absolute; width:56px; height:56px; pointer-events:none; }
-  .qb-corner.tl { top:10px; left:10px; transform:scaleX(-1); }
-  .qb-corner.tr { top:10px; right:10px; }
-  .qb-corner.bl { bottom:10px; left:10px; transform:scale(-1,-1); }
-  .qb-corner.br { bottom:10px; right:10px; transform:scaleY(-1); }
-  .qb-divider { display:block; width:min(250px,70%); height:auto; margin:0 auto; }
-  .qb-verse-text {
-    font-family:'Amiri',serif; font-weight:700; font-size:clamp(1.45rem,6.6vw,1.85rem); line-height:2.15; margin:8px 0;
-    background:linear-gradient(180deg,#fff4c2 0%,#f0cc6a 48%,#c8992f 100%);
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
-    filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));
-  }
-  .qb-verse-src { font-family:'Amiri',serif; font-size:0.95rem; color:var(--qb-ink2); margin-top:4px; }
-
-  /* صورة الكعبة */
-  .qb-hero {
-    position:relative; margin-top:14px; aspect-ratio:1 / 0.86; border-radius:22px; overflow:hidden;
-    border:1.5px solid var(--qb-gold); background:#000 var(--qibla-img) 50% 62% / cover no-repeat;
-    box-shadow:0 12px 32px rgba(0,0,0,0.45);
-  }
-  .qb-hero::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(3,12,7,0.1) 0%,rgba(3,12,7,0) 45%,rgba(3,12,7,0.86) 100%); }
-  .qb-hero::after { content:''; position:absolute; inset:8px; border-radius:15px; border:1px solid rgba(246,214,124,0.55); pointer-events:none; }
-  .qb-hero-cap { position:absolute; left:0; right:0; bottom:0; z-index:1; padding:0 18px 20px; text-align:center; }
-  .qb-hero-title { font-family:'Amiri',serif; font-weight:700; font-size:1.35rem; color:#f6dfa0; text-shadow:0 2px 10px rgba(0,0,0,0.85); }
-  .qb-hero-sub { font-size:0.74rem; color:#eee2c0; margin-top:3px; text-shadow:0 1px 8px rgba(0,0,0,0.9); }
-
   /* البوصلة */
   .qb-card {
-    position:relative; margin-top:14px; padding:18px 14px 16px; border-radius:24px; background:var(--qb-panel);
+    position:relative; margin-top:0; padding:18px 14px 16px; border-radius:24px; background:var(--qb-panel);
     border:1.5px solid var(--qb-gold); box-shadow:0 12px 32px rgba(0,0,0,0.42), inset 0 0 0 5px rgba(0,0,0,0.2), inset 0 0 0 6px var(--qb-line);
   }
   .qb-status {
@@ -1544,7 +1509,7 @@
   .qb-compass { position:relative; width:min(100%,380px); aspect-ratio:1; margin:6px auto 10px; }
   .qb-compass > * { position:absolute; inset:0; }
   .qb-compass svg { width:100%; height:100%; display:block; }
-  .qb-dial { will-change:transform; }
+  .qb-dial { will-change:transform; border-radius:50%; overflow:hidden; } /* دائري كي لا تتسبب زوايا المربع المدار في اتساع الصفحة أفقيًا */
   .qb-fixed { pointer-events:none; }
   .qb-glow { inset:-3%; border-radius:50%; opacity:0; transition:opacity .3s; pointer-events:none;
     box-shadow:0 0 34px 6px rgba(246,214,124,0.75), inset 0 0 40px rgba(246,214,124,0.25); }
@@ -1966,35 +1931,7 @@
 <polygon points="0,7 15,-1 15,2.5 0,10.5" fill="#d2a238"/>
 <polygon points="5.5,17 5.5,7.5 11,4.7 11,14" fill="#f2cf70" opacity=".92"/>
 <polyline points="0,-15 15,-8 0,0 -15,-8 0,-15" fill="none" stroke="#e8bf55" stroke-width=".8" stroke-linejoin="round"/>
-</symbol><symbol id="qb-corner" viewBox="0 0 70 70">
-<path d="M4,66 L4,26 Q4,4 26,4 L66,4" fill="none" stroke="url(#qbG1)" stroke-width="2.6" stroke-linecap="round"/>
-<path d="M11,66 L11,30 Q11,11 30,11 L66,11" fill="none" stroke="url(#qbG1)" stroke-width="1" opacity=".8"/>
-<path d="M24,11 L26.3,18.46 L33.19,14.81 L29.54,21.7 L37,24 L29.54,26.3 L33.19,33.19 L26.3,29.54 L24,37 L21.7,29.54 L14.81,33.19 L18.46,26.3 L11,24 L18.46,21.7 L14.81,14.81 L21.7,18.46 Z" fill="url(#qbG1)"/>
-<circle cx="24" cy="24" r="3" fill="#0b2a1b"/>
-<circle cx="46" cy="4" r="2.2" fill="url(#qbG1)"/><circle cx="4" cy="46" r="2.2" fill="url(#qbG1)"/>
-<path d="M36,17 q6,-8 14,-3 M17,36 q-8,6 -3,14" fill="none" stroke="url(#qbG1)" stroke-width="1.4" stroke-linecap="round"/>
-</symbol><symbol id="qb-divider" viewBox="0 0 320 24">
-<path d="M8,12 L128,12" stroke="url(#qbG1)" stroke-width="1.4"/><path d="M192,12 L312,12" stroke="url(#qbG1)" stroke-width="1.4"/>
-<path d="M132,12 l6,-4 l6,4 l-6,4z M176,12 l6,-4 l6,4 l-6,4z" fill="url(#qbG1)"/>
-<path d="M160,1 L161.91,7.38 L167.78,4.22 L164.62,10.09 L171,12 L164.62,13.91 L167.78,19.78 L161.91,16.62 L160,23 L158.09,16.62 L152.22,19.78 L155.38,13.91 L149,12 L155.38,10.09 L152.22,4.22 L158.09,7.38 Z" fill="url(#qbG1)"/><circle cx="160" cy="12" r="2.4" fill="#0b2a1b"/>
-<circle cx="8" cy="12" r="2" fill="url(#qbG1)"/><circle cx="312" cy="12" r="2" fill="url(#qbG1)"/>
 </symbol></defs></svg>
-    <section class="qb-verse" aria-label="آية القبلة">
-      <svg class="qb-corner tl" aria-hidden="true"><use href="#qb-corner"/></svg>
-      <svg class="qb-corner tr" aria-hidden="true"><use href="#qb-corner"/></svg>
-      <svg class="qb-corner bl" aria-hidden="true"><use href="#qb-corner"/></svg>
-      <svg class="qb-corner br" aria-hidden="true"><use href="#qb-corner"/></svg>
-      <svg class="qb-divider" viewBox="0 0 320 24" aria-hidden="true"><use href="#qb-divider"/></svg>
-      <div class="qb-verse-text">﴿فَلَنُوَلِّيَنَّكَ قِبْلَةً تَرْضَاهَا ۚ فَوَلِّ وَجْهَكَ شَطْرَ الْمَسْجِدِ الْحَرَامِ﴾</div>
-      <div class="qb-verse-src">سورة البقرة، الآية ١٤٤</div>
-      <svg class="qb-divider" viewBox="0 0 320 24" aria-hidden="true" style="margin-top:10px"><use href="#qb-divider"/></svg>
-    </section>
-    <section class="qb-hero" role="img" aria-label="الكعبة المشرفة">
-      <div class="qb-hero-cap">
-        <div class="qb-hero-title">الكعبة المشرفة</div>
-        <div class="qb-hero-sub">المسجد الحرام، مكة المكرمة</div>
-      </div>
-    </section>
     <section class="qb-card">
       <div class="qb-status" id="qbStatus" role="status" aria-live="polite">جارٍ التجهيز...</div>
       <div class="qb-compass" id="qbCompass">
