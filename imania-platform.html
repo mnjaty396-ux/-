@@ -1546,6 +1546,11 @@
   .qb-tips li::before { content:''; position:absolute; right:2px; top:0.72em; width:8px; height:8px; transform:rotate(45deg); background:linear-gradient(135deg,#f6d67c,#b8860a); }
   .qb-method { margin-top:12px; padding-top:10px; border-top:1px solid var(--qb-line); font-size:0.7rem; line-height:1.7; color:var(--qb-ink2); opacity:0.85; text-align:center; }
   @media (prefers-reduced-motion:reduce) { .qb-glow, .qb-status { transition:none; } }
+
+  /* ساحة المنافسة: إزالة الخلفية الزرقاء المخضرّة من الصفحة الرئيسية للساحة ولوبي المعركة ولوبي من أنا */
+  #page-arena-home.arena-fun, #page-battle-lobby.arena-fun, #page-whoami-lobby.arena-fun { background:transparent !important; }
+  /* عناوين اللوبي كانت بلون داكن مخصص للخلفية الزرقاء، فنفتّحها لتُقرأ على خلفية المنصة */
+  #page-battle-lobby .arena-section-label, #page-whoami-lobby .arena-section-label { color:#f3e7c0; text-shadow:0 1px 6px rgba(0,0,0,0.5); }
 </style>
 </head>
 <body>
