@@ -8191,6 +8191,7 @@ function acctErr(e) {
   if (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') return '';
   if (c === 'auth/unauthorized-domain') return 'نطاق هذا الموقع غير مضاف في Firebase (Authentication ← Settings ← Authorized domains).';
   if (c === 'auth/operation-not-allowed') return 'تسجيل الدخول بجوجل غير مفعّل في Firebase (Authentication ← Sign-in method ← Google).';
+  if (c === 'auth/popup-blocked') return 'المتصفح منع نافذة اختيار الحساب. اسمح بالنوافذ المنبثقة (Pop-ups) لهذا الموقع من إعدادات الموقع في كروم ثم أعد المحاولة.';
   if (c === 'auth/network-request-failed') return 'لا يوجد اتصال بالإنترنت. حاول مرة أخرى.';
   if (c === 'auth/operation-not-supported-in-this-environment') return 'تسجيل الدخول لا يعمل من هذا المتصفح أو من ملف محلي. افتح المنصة من رابط https.';
   return 'تعذّر تسجيل الدخول' + (c ? ' (' + c + ')' : '') + '.';
@@ -8199,13 +8200,10 @@ async function acctSignIn() {
   if (!acctFbOk()) { acctSay('خدمة الحساب غير متاحة الآن (تحقق من الاتصال ثم أعد فتح المنصة).'); return; }
   acctSay('');
   const provider = new firebase.auth.GoogleAuthProvider();
+  try { provider.setCustomParameters({ prompt: 'select_account' }); } catch (e) {}   // تظهر قائمة حسابات جوجل دائمًا
+  _acct.justSignedIn = true;
   try { await firebase.auth().signInWithPopup(provider); }
-  catch (e) {
-    if (e && (e.code === 'auth/popup-blocked')) {
-      try { await firebase.auth().signInWithRedirect(provider); return; } catch (e2) { e = e2; }
-    }
-    acctSay(acctErr(e));
-  }
+  catch (e) { _acct.justSignedIn = false; acctSay(acctErr(e)); }
 }
 async function acctSignOut() {
   try { if (acctFbOk()) await firebase.auth().signOut(); } catch (e) {}
@@ -8235,11 +8233,12 @@ async function acctLoadRecord(user) {
     try { localStorage.setItem('imania_arena_myname', _acct.rec.name); } catch (e) {}
     acctSetCache({ uid: user.uid, name: _acct.rec.name, photo: _acct.rec.photo, equipped: _acct.rec.equipped });
     _acct.ready = true; acctSay('');
+    if (_acct.justSignedIn) { _acct.justSignedIn = false; if (typeof showImaniaToast === 'function') showImaniaToast('تم تسجيل الدخول بنجاح ✅', 3200); }
     if (typeof arenaRenderCoinBalance === 'function') { try { arenaRenderCoinBalance(); } catch (e) {} }
     const el = document.getElementById('arenaHemmaBalance'); if (el) el.textContent = total;
   } catch (e) {
     console.warn('acctLoadRecord failed', e);
-    _acct.ready = false;
+    _acct.ready = false; _acct.justSignedIn = false;
     acctSay('تعذّر تحميل بيانات حسابك (تحقق من الاتصال وقواعد قاعدة البيانات).');
   }
   acctRenderAll();
