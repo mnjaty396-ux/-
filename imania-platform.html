@@ -8204,29 +8204,34 @@ function acctSyncText() {
 function acctRenderPage() {
   const body = document.getElementById('acctBody'); if (!body) return;
   const msg = _acct.msg ? `<div class="acct-msg" id="acctMsg">${escapeHtml(_acct.msg)}</div>` : '<div class="acct-msg" id="acctMsg" style="display:none"></div>';
+  const guestBal = (arenaLoadStats().hemma || 0);
+  const shopFor = (rec, guest) => ACCT_PERKS.length ? `
+    <div class="acct-card" style="text-align:right">
+      <div class="acct-h" style="text-align:center">🛍️ متجر المميزات</div>
+      <div class="acct-p" style="text-align:center">${guest ? 'سجّل الدخول بحساب Google لتتمكن من الشراء بعملات همة.' : 'تشتري بعملات همة التي تكسبها من ساحة المنافسة.'}</div>
+      ${acctShopHtml(rec)}
+    </div>` : '';
   if (!_acct.user || !_acct.rec) {
     const cached = acctCache();
     const waiting = _acct.user && !_acct.rec;
     body.innerHTML = `
       <div class="acct-card">
         <div style="font-size:2.4rem;margin-bottom:6px">👤</div>
-        <div class="acct-h">${waiting ? 'جارٍ تحميل حسابك...' : 'سجّل الدخول بحساب Google'}</div>
-        <div class="acct-p">اربط المنصة بحسابك ليكون لك اسم وصورة، ويُحفظ تقدمك وعملات همة على كل أجهزتك، وتفتح المنصة على حسابك مباشرة في كل مرة.</div>
+        <div class="acct-h">${waiting ? 'جارٍ تحميل حسابك...' : 'أنت تتصفح كضيف'}</div>
+        <div class="acct-balance">🌙 <b>${guestBal}</b> عملة همة</div>
+        <div class="acct-p" style="margin-top:8px">سجّل الدخول بحساب Google ليكون لك اسم وصورة، ويُحفظ تقدمك وعملات همة على كل أجهزتك، وتفتح المنصة على حسابك مباشرة في كل مرة.</div>
         ${waiting ? '' : `<button class="acct-google" id="acctGoogleBtn" onclick="playClickSound();acctSignIn()">${acctGoogleSvg()}<span>الدخول بحساب Google</span></button>`}
         ${msg}
+        ${waiting ? '' : `<div><button class="kbc-btn" style="margin-top:12px" onclick="playClickSound();acctLeaveGuest()">الخروج من وضع الضيف</button></div>`}
         ${cached && !_acct.user ? `<div class="acct-p" style="margin-top:10px;font-size:.72rem">آخر حساب على هذا الجهاز: ${escapeHtml(cached.name || '')}</div>` : ''}
-      </div>`;
+      </div>
+      ${waiting ? '' : shopFor({}, true)}`;
     return;
   }
   const p = acctProfile();
   const bal = (arenaLoadStats().hemma || 0);
   const custom = !!(_acct.rec && _acct.rec.photoCustom);
-  const shop = ACCT_PERKS.length ? `
-    <div class="acct-card" style="text-align:right">
-      <div class="acct-h" style="text-align:center">🛍️ متجر المميزات</div>
-      <div class="acct-p" style="text-align:center">تشتري بعملات همة التي تكسبها من ساحة المنافسة.</div>
-      ${acctShopHtml(_acct.rec)}
-    </div>` : '';
+  const shop = shopFor(_acct.rec, false);
   body.innerHTML = `
     <div class="acct-card">
       <div class="acct-av-wrap" onclick="playClickSound();acctPickPhoto()">
@@ -8274,15 +8279,24 @@ async function acctSignIn() {
     _acct.justSignedIn = false; acctSay(acctErr(e));
   }
 }
+function acctLeaveGuest() {   // من وضع الضيف: العودة لشاشة الدخول
+  window._gateGuest = false;
+  if (typeof showPage === 'function') showPage('page-home');
+  gateShow();
+}
 async function acctSignOut() {
+  if (_acct.signingOut) return;
+  _acct.signingOut = true;
+  window._gateGuest = false;
+  if (typeof showPage === 'function') showPage('page-home');
+  gateShow();   // تظهر شاشة الدخول فورًا، والباقي يكتمل في الخلفية
   try { await Promise.race([syncPush(), new Promise(r => setTimeout(r, 4000))]); } catch (e) {}   // نحفظ آخر تقدم قبل الخروج
   try { if (acctFbOk()) await firebase.auth().signOut(); } catch (e) {}
   _acct.user = null; _acct.rec = null; _acct.ready = false; acctSetCache(null);
   try { localStorage.removeItem('imania_signed_in'); } catch (e) {}
-  window._gateGuest = false; _sync.pulled = false; _sync.dirty = {};
+  _sync.pulled = false; _sync.dirty = {};
   acctRenderTop(); acctRenderPage();
-  if (typeof showPage === 'function') showPage('page-home');
-  gateShow();
+  _acct.signingOut = false;
 }
 function acctWithTimeout(p, ms) { return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms || 15000))]); }
 async function acctLoadRecord(user) {
