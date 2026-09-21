@@ -650,6 +650,45 @@
   .acct-perk { background:transparent; border:1.5px solid var(--bg3); border-radius:var(--radius-sm); padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; }
   .acct-perk .acct-av { margin:0; }
   .acct-perk-name { font-size:0.78rem; font-weight:700; color:var(--text); }
+
+  /* ===== صفحة الحساب: أخضر بدل الأبيض ===== */
+  #page-account { --bg2:#14532d; --bg3:rgba(244,239,220,0.18); --text:#f4efdc; --text2:#b9d4c1; --gold-light:rgba(212,168,67,0.3); --green-light:rgba(255,255,255,0.1); --card-shadow:0 8px 26px rgba(0,0,0,0.38); }
+  #page-account .inner-content { min-height:calc(100vh - 64px); background:linear-gradient(180deg,#0d2415 0%,#0f3a20 100%); }
+  #page-account .acct-card { background:linear-gradient(165deg,#1b6d3c 0%,#14532d 55%,#0f4024 100%); border-color:rgba(212,168,67,0.38); }
+  #page-account .acct-av { background:rgba(255,255,255,0.12); color:#f0c060; }
+  #page-account .acct-title { background:rgba(212,168,67,0.18); color:#f0c060; }
+  #page-account .acct-msg { color:#fde68a; }
+  #page-account .acct-namebox input { background:rgba(0,0,0,0.2); }
+  #page-account .acct-namebox input::placeholder { color:#8fb59b; }
+  #page-account .kbc-btn:focus-visible, #page-account .acct-namebox input:focus-visible { outline:2px solid #f0c060; outline-offset:2px; }
+  .acct-av-wrap { position:relative; width:96px; margin:0 auto 8px; cursor:pointer; }
+  .acct-av-wrap .acct-av { margin:0; }
+  .acct-cam { position:absolute; bottom:0; left:0; width:30px; height:30px; border-radius:50%; background:#f0c060; color:#3d2a00; display:flex; align-items:center; justify-content:center; font-size:0.9rem; border:2px solid #14532d; }
+  .acct-photo-actions { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+  .acct-sync { margin-top:12px; font-size:0.74rem; color:var(--text2); min-height:1.2em; }
+
+  /* ===== شاشة البداية: تسجيل بجوجل أو دخول كضيف ===== */
+  .welcome-gate { display:none; position:fixed; inset:0; z-index:10000; flex-direction:column; overflow-y:auto;
+    padding:max(28px,env(safe-area-inset-top)) 24px max(28px,env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,#0f2d1b 0%,#0a1f13 55%,#07160e 100%); }
+  .welcome-gate.show { display:flex; }
+  .wg-inner { flex:1; display:flex; flex-direction:column; width:100%; max-width:420px; margin:0 auto; text-align:right; animation:wgIn 0.5s ease both; }
+  .wg-head { flex:1; display:flex; flex-direction:column; justify-content:center; padding:32px 0 24px; }
+  .wg-emblem { width:56px; height:56px; display:block; margin-bottom:28px; }
+  .wg-title { font-family:'Amiri',serif; font-size:2rem; font-weight:700; line-height:1.35; color:#f4efdc; }
+  .wg-p { margin-top:12px; max-width:30ch; color:#a9c2b1; font-size:0.95rem; line-height:1.95; }
+  .wg-actions { padding-top:8px; }
+  .wg-btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; min-height:52px; padding:12px 18px; border-radius:12px; font-family:'Tajawal',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; transition:transform 0.15s, background 0.15s; }
+  .wg-btn:active { transform:scale(0.98); }
+  .wg-btn[disabled] { opacity:0.65; cursor:default; }
+  .wg-btn:focus-visible { outline:2px solid #e9c46a; outline-offset:3px; }
+  .wg-google { background:#fff; color:#3c4043; border:1px solid #dadce0; }
+  .wg-google svg { display:block; }
+  .wg-guest { margin-top:12px; background:rgba(255,255,255,0.05); color:#f4efdc; border:1px solid rgba(244,239,220,0.22); }
+  .wg-msg { margin-top:14px; color:#fde68a; font-size:0.82rem; line-height:1.8; }
+  .wg-note { margin-top:18px; color:#7fa08b; font-size:0.78rem; line-height:1.9; }
+  @keyframes wgIn { from { opacity:0; } to { opacity:1; } }
+  @media (prefers-reduced-motion: reduce) { .wg-inner { animation:none; } }
   .kbc-src { font-size:0.68rem; color:var(--text2); opacity:0.8; margin:-6px 0 10px; }
   .kr-bar { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:0; }
   .kr-range { font-size:0.75rem; color:var(--text2); text-align:center; margin:2px 0 12px; }
@@ -1693,6 +1732,31 @@
 </style>
 </head>
 <body>
+<div class="welcome-gate" id="welcomeGate" role="dialog" aria-modal="true" aria-labelledby="wgTitle">
+  <div class="wg-inner">
+    <div class="wg-head">
+      <svg class="wg-emblem" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="wgGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9c46a"/><stop offset="1" stop-color="#b8892b"/></linearGradient>
+          <mask id="wgCres"><rect width="100" height="100" fill="#fff"/><circle cx="60" cy="42" r="30" fill="#000"/></mask>
+        </defs>
+        <circle cx="46" cy="52" r="36" fill="url(#wgGold)" mask="url(#wgCres)"/>
+        <polygon points="72.00,22.00 74.35,28.90 81.65,29.00 75.80,33.40 77.92,40.40 72.00,36.20 66.08,40.40 68.20,33.40 62.35,29.00 69.65,28.90" fill="url(#wgGold)"/>
+      </svg>
+      <h1 class="wg-title" id="wgTitle">منصة إيمانية</h1>
+      <p class="wg-p">سجّل الدخول بحساب Google ليُحفظ تقدمك وتفتح المنصة على حسابك مباشرة في كل مرة.</p>
+    </div>
+    <div class="wg-actions">
+      <button type="button" class="wg-btn wg-google" id="wgGoogleBtn" onclick="gateGoogle()"><span id="wgGoogleIcon" aria-hidden="true"></span><span id="wgGoogleLabel">الدخول بحساب Google</span></button>
+      <button type="button" class="wg-btn wg-guest" onclick="gateGuest()">الدخول كضيف</button>
+      <div class="wg-msg" id="wgMsg" role="alert"></div>
+      <p class="wg-note">كضيف يبقى تقدمك على هذا الجهاز فقط، ويمكنك التسجيل لاحقًا من صفحة «حسابي».</p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){var g=document.getElementById('welcomeGate');try{if(!(localStorage.getItem('imania_signed_in')||localStorage.getItem('imania_account')))g.classList.add('show');}catch(e){g.classList.add('show');}})();
+</script>
 <div class="font-size-control" id="fontSizeControl">
   <button class="font-btn" onclick="playClickSound();changeFontScale(0.1)">A+</button>
   <button class="font-btn" onclick="playClickSound();changeFontScale(-0.1)">A-</button>
@@ -8062,32 +8126,16 @@ document.addEventListener('selectstart', function (e) {
 </script>
 <script id="acct-module">
 /* ============================================================================
-   حساب المستخدم (Google) + متجر المميزات بعملة همة
+   حساب المستخدم (Google) + مزامنة التقدم + متجر المميزات بعملة همة (فارغ حاليًا)
    - الدخول: Firebase Auth (Google) — يحتاج تفعيل المزوّد وإضافة نطاق الموقع في لوحة Firebase.
    - البيانات: users/{uid} في Realtime Database: name, photo, hemma, owned{}, equipped{}
    - الرصيد: نفس عملة همة الموجودة في ساحة المنافسة (تُزامَن بالفرق delta عبر transaction).
    ============================================================================ */
 const ACCT_LS = 'imania_account';
 const ACCT_LINK = 'imania_acct_link';
-const ACCT_PERKS = [
-  { slot:'frame', label:'إطارات الصورة', items:[
-    { id:'fr-gold', name:'إطار ذهبي', price:30 },
-    { id:'fr-emerald', name:'إطار زمردي', price:30 },
-    { id:'fr-crescent', name:'إطار الهلال', price:60 },
-    { id:'fr-royal', name:'إطار ملكي', price:120 } ] },
-  { slot:'color', label:'ألوان الاسم', items:[
-    { id:'nc-gold', name:'اسم ذهبي', price:20 },
-    { id:'nc-emerald', name:'اسم أخضر', price:20 },
-    { id:'nc-sky', name:'اسم سماوي', price:20 },
-    { id:'nc-rose', name:'اسم وردي', price:20 },
-    { id:'nc-violet', name:'اسم بنفسجي', price:40 } ] },
-  { slot:'title', label:'الألقاب', items:[
-    { id:'t-himma', name:'صاحب همة', price:25 },
-    { id:'t-mutha', name:'مثابر', price:25 },
-    { id:'t-quran', name:'محب القرآن', price:40 },
-    { id:'t-star', name:'نجم الساحة', price:50 },
-    { id:'t-khayr', name:'سفير الخير', price:60 } ] }
-];
+/* المميزات القابلة للشراء بعملة همة: أُزيلت مؤقتًا. أضف عناصر هنا لاحقًا فيظهر متجر المميزات تلقائيًا في صفحة الحساب.
+   الشكل: { slot:'frame' | 'color' | 'title', label:'اسم القسم', items:[ { id:'...', name:'...', price:30 } ] } */
+const ACCT_PERKS = [];
 const _acct = { user:null, rec:null, ready:false, busy:false, applying:false, lastHemma:0, chain:Promise.resolve(), msg:'' };
 function acctFbOk() {
   return typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && typeof firebase.auth === 'function' && typeof firebase.database === 'function';
@@ -8146,6 +8194,13 @@ function acctShopHtml(rec) {
       return `<div class="acct-perk">${acctPerkPreview(g.slot, p)}<div class="acct-perk-name">${escapeHtml(p.name)}</div>${btn}</div>`;
     }).join('')}</div>`).join('');
 }
+function acctSyncText() {
+  const s = _sync.state;
+  if (s === 'ok') return '✅ تقدمك محفوظ على حسابك';
+  if (s === 'syncing') return 'جارٍ مزامنة تقدمك...';
+  if (s === 'error') return 'تعذّرت مزامنة التقدم الآن، وهو محفوظ على هذا الجهاز.';
+  return '';
+}
 function acctRenderPage() {
   const body = document.getElementById('acctBody'); if (!body) return;
   const msg = _acct.msg ? `<div class="acct-msg" id="acctMsg">${escapeHtml(_acct.msg)}</div>` : '<div class="acct-msg" id="acctMsg" style="display:none"></div>';
@@ -8156,7 +8211,7 @@ function acctRenderPage() {
       <div class="acct-card">
         <div style="font-size:2.4rem;margin-bottom:6px">👤</div>
         <div class="acct-h">${waiting ? 'جارٍ تحميل حسابك...' : 'سجّل الدخول بحساب Google'}</div>
-        <div class="acct-p">اربط المنصة بحسابك ليكون لك اسم وصورة، وتُحفظ عملات همة ومشترياتك على كل أجهزتك، وتشتري بها إطارات وألوانًا وألقابًا لملفك.</div>
+        <div class="acct-p">اربط المنصة بحسابك ليكون لك اسم وصورة، ويُحفظ تقدمك وعملات همة على كل أجهزتك، وتفتح المنصة على حسابك مباشرة في كل مرة.</div>
         ${waiting ? '' : `<button class="acct-google" id="acctGoogleBtn" onclick="playClickSound();acctSignIn()">${acctGoogleSvg()}<span>الدخول بحساب Google</span></button>`}
         ${msg}
         ${cached && !_acct.user ? `<div class="acct-p" style="margin-top:10px;font-size:.72rem">آخر حساب على هذا الجهاز: ${escapeHtml(cached.name || '')}</div>` : ''}
@@ -8165,27 +8220,38 @@ function acctRenderPage() {
   }
   const p = acctProfile();
   const bal = (arenaLoadStats().hemma || 0);
+  const custom = !!(_acct.rec && _acct.rec.photoCustom);
+  const shop = ACCT_PERKS.length ? `
+    <div class="acct-card" style="text-align:right">
+      <div class="acct-h" style="text-align:center">🛍️ متجر المميزات</div>
+      <div class="acct-p" style="text-align:center">تشتري بعملات همة التي تكسبها من ساحة المنافسة.</div>
+      ${acctShopHtml(_acct.rec)}
+    </div>` : '';
   body.innerHTML = `
     <div class="acct-card">
-      ${acctAvatarHtml(p, 92)}
+      <div class="acct-av-wrap" onclick="playClickSound();acctPickPhoto()">
+        ${acctAvatarHtml(p, 96)}
+        <span class="acct-cam" aria-hidden="true">📷</span>
+      </div>
       ${acctNameHtml(p)}
       <div class="acct-email">${escapeHtml(_acct.user.email || '')}</div>
       <div class="acct-balance">🌙 <b id="acctBalance">${bal}</b> عملة همة</div>
+      <div class="acct-photo-actions">
+        <button class="kbc-btn" onclick="playClickSound();acctPickPhoto()">📷 تغيير الصورة</button>
+        ${custom ? `<button class="kbc-btn" onclick="playClickSound();acctResetPhoto()">استرجاع صورة Google</button>` : ''}
+      </div>
       <div class="acct-namebox">
         <input id="acctNameInput" maxlength="24" value="${escapeHtml(p.name || '')}" placeholder="اسمك">
         <button class="kbc-btn" onclick="playClickSound();acctSaveName()">حفظ الاسم</button>
       </div>
       ${msg}
+      <div class="acct-sync" id="acctSyncNote">${acctSyncText()}</div>
       <button class="kbc-btn" style="margin-top:12px" onclick="playClickSound();acctSignOut()">تسجيل الخروج</button>
     </div>
-    <div class="acct-card" style="text-align:right">
-      <div class="acct-h" style="text-align:center">🛍️ متجر المميزات</div>
-      <div class="acct-p" style="text-align:center">تشتري بعملات همة التي تكسبها من ساحة المنافسة.</div>
-      ${acctShopHtml(_acct.rec)}
-    </div>`;
+    ${shop}`;
 }
 function acctRenderAll() { acctRenderTop(); if (document.getElementById('page-account') && document.getElementById('page-account').classList.contains('active')) acctRenderPage(); }
-function acctSay(m) { _acct.msg = m || ''; const el = document.getElementById('acctMsg'); if (el) { el.textContent = _acct.msg; el.style.display = _acct.msg ? '' : 'none'; } if (m && typeof showImaniaToast === 'function') showImaniaToast(m, 3200); }
+function acctSay(m) { _acct.msg = m || ''; const wg = document.getElementById('wgMsg'); if (wg) wg.textContent = _acct.msg; const el = document.getElementById('acctMsg'); if (el) { el.textContent = _acct.msg; el.style.display = _acct.msg ? '' : 'none'; } if (m && typeof showImaniaToast === 'function') showImaniaToast(m, 3200); }
 function acctErr(e) {
   const c = e && e.code;
   if (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') return '';
@@ -8203,12 +8269,20 @@ async function acctSignIn() {
   try { provider.setCustomParameters({ prompt: 'select_account' }); } catch (e) {}   // تظهر قائمة حسابات جوجل دائمًا
   _acct.justSignedIn = true;
   try { await firebase.auth().signInWithPopup(provider); }
-  catch (e) { _acct.justSignedIn = false; acctSay(acctErr(e)); }
+  catch (e) {
+    if (e && e.code === 'auth/popup-blocked') { try { await firebase.auth().signInWithRedirect(provider); return; } catch (e2) { e = e2; } }
+    _acct.justSignedIn = false; acctSay(acctErr(e));
+  }
 }
 async function acctSignOut() {
+  try { await Promise.race([syncPush(), new Promise(r => setTimeout(r, 4000))]); } catch (e) {}   // نحفظ آخر تقدم قبل الخروج
   try { if (acctFbOk()) await firebase.auth().signOut(); } catch (e) {}
   _acct.user = null; _acct.rec = null; _acct.ready = false; acctSetCache(null);
+  try { localStorage.removeItem('imania_signed_in'); } catch (e) {}
+  window._gateGuest = false; _sync.pulled = false; _sync.dirty = {};
   acctRenderTop(); acctRenderPage();
+  if (typeof showPage === 'function') showPage('page-home');
+  gateShow();
 }
 function acctWithTimeout(p, ms) { return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms || 15000))]); }
 async function acctLoadRecord(user) {
@@ -8217,22 +8291,25 @@ async function acctLoadRecord(user) {
     const snap = await acctWithTimeout(ref.once('value'));
     let rec = snap.val();
     const s = arenaLoadStats(), localH = s.hemma || 0, link = acctLink();
+    const prevUid = localStorage.getItem('imania_sync_uid') || (link && link.uid) || null;
     let delta = 0;
     if (!link) delta = localH;                                   // أول ربط على هذا الجهاز: تُنقل العملات المحلية مرة واحدة
     else if (link.uid === user.uid) delta = localH - (link.last || 0);   // نفس الحساب: نضيف ما كُسب منذ آخر مزامنة
-    const base = { photo: acctSafeUrl(user.photoURL) || '', updatedAt: Date.now() };
+    const base = { updatedAt: Date.now() };
+    if (!rec || !rec.photoCustom) base.photo = acctSafeUrl(user.photoURL) || '';   // لا نستبدل الصورة التي اختارها المستخدم
     if (!rec || !rec.name) base.name = (rec && rec.name) || (user.displayName || 'لاعب').slice(0, 24);
     if (!rec) base.createdAt = Date.now();
     await acctWithTimeout(ref.update(base));
     const res = await acctWithTimeout(ref.child('hemma').transaction(v => Math.max(0, (v || 0) + delta)));
     const total = res.snapshot.val() || 0;
     rec = (await acctWithTimeout(ref.once('value'))).val() || {};
-    _acct.rec = { name: rec.name, photo: rec.photo, hemma: total, owned: rec.owned || {}, equipped: rec.equipped || {} };
+    _acct.rec = { name: rec.name, photo: rec.photo, photoCustom: !!rec.photoCustom, hemma: total, owned: rec.owned || {}, equipped: rec.equipped || {} };
     _acct.lastHemma = total; acctSetLink(user.uid, total);
     if (total !== localH) { s.hemma = total; _acct.applying = true; arenaSaveStats(s); _acct.applying = false; }
     try { localStorage.setItem('imania_arena_myname', _acct.rec.name); } catch (e) {}
     acctSetCache({ uid: user.uid, name: _acct.rec.name, photo: _acct.rec.photo, equipped: _acct.rec.equipped });
     _acct.ready = true; acctSay('');
+    syncPull(user, prevUid);
     if (_acct.justSignedIn) { _acct.justSignedIn = false; if (typeof showImaniaToast === 'function') showImaniaToast('تم تسجيل الدخول بنجاح ✅', 3200); }
     if (typeof arenaRenderCoinBalance === 'function') { try { arenaRenderCoinBalance(); } catch (e) {} }
     const el = document.getElementById('arenaHemmaBalance'); if (el) el.textContent = total;
@@ -8314,14 +8391,243 @@ async function acctSaveName() {
   } catch (e) { acctSay('تعذّر حفظ الاسم، تحقق من الاتصال.'); }
   acctRenderAll();
 }
+/* ---------- تغيير صورة الحساب ---------- */
+function acctResizeImage(file, size, quality) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      try {
+        const s = Math.min(img.naturalWidth, img.naturalHeight);
+        if (!s) throw new Error('bad-image');
+        const cv = document.createElement('canvas'); cv.width = cv.height = size;
+        const cx = cv.getContext('2d');
+        cx.fillStyle = '#fff'; cx.fillRect(0, 0, size, size);
+        cx.drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+        resolve(cv.toDataURL('image/jpeg', quality));
+      } catch (e) { URL.revokeObjectURL(url); reject(new Error('bad-image')); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('bad-image')); };
+    img.src = url;
+  });
+}
+function acctPickPhoto() {
+  if (!_acct.user || !_acct.ready) { acctSay('سجّل الدخول أولًا.'); return; }
+  const old = document.getElementById('acctPhotoTmp'); if (old) old.remove();
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*'; inp.id = 'acctPhotoTmp'; inp.style.display = 'none';
+  inp.onchange = () => { const f = inp.files && inp.files[0]; inp.remove(); if (f) acctSetPhotoFromFile(f); };
+  document.body.appendChild(inp); inp.click();
+}
+async function acctSetPhotoFromFile(file) {
+  if (!_acct.user || !_acct.ready || _acct.busy) return;
+  _acct.busy = true;
+  try {
+    let data = await acctResizeImage(file, 320, 0.85);
+    if (data.length > 150000) data = await acctResizeImage(file, 256, 0.7);
+    await acctWithTimeout(firebase.database().ref('users/' + _acct.user.uid).update({ photo: data, photoCustom: true }));
+    _acct.rec.photo = data; _acct.rec.photoCustom = true;
+    acctSetCache({ uid: _acct.user.uid, name: _acct.rec.name, photo: data, equipped: _acct.rec.equipped });
+    acctSay('تم تغيير الصورة ✅');
+  } catch (e) {
+    acctSay(e && e.message === 'bad-image' ? 'تعذّر قراءة هذه الصورة، جرّب صورة بصيغة JPG أو PNG.' : 'تعذّر حفظ الصورة، تحقق من الاتصال ثم أعد المحاولة.');
+  }
+  _acct.busy = false; acctRenderAll();
+}
+async function acctResetPhoto() {
+  if (!_acct.user || !_acct.ready || _acct.busy) return;
+  _acct.busy = true;
+  try {
+    const url = acctSafeUrl(_acct.user.photoURL) || '';
+    await acctWithTimeout(firebase.database().ref('users/' + _acct.user.uid).update({ photo: url, photoCustom: null }));
+    _acct.rec.photo = url; _acct.rec.photoCustom = false;
+    acctSetCache({ uid: _acct.user.uid, name: _acct.rec.name, photo: url, equipped: _acct.rec.equipped });
+    acctSay('تم استرجاع صورة Google ✅');
+  } catch (e) { acctSay('تعذّر استرجاع الصورة، تحقق من الاتصال ثم أعد المحاولة.'); }
+  _acct.busy = false; acctRenderAll();
+}
+
+/* ---------- مزامنة التقدم مع الحساب ----------
+   كل مفتاح imania_* في التخزين المحلي (مفضلات، تقدم الأذكار، إحصائيات وسجل الساحة...) يُنسخ إلى users/{uid}/progress
+   ويُستعاد عند الدخول من أي جهاز. تُستثنى إعدادات الجهاز (الصوت، حجم الخط، الموقع، الكاش، التنزيلات). */
+const SYNC_EXCLUDE = /^imania_(account|acct_link|sync_ts|sync_uid|signed_in|arena_myid|arena_myname|arena_muted|font_scale|surah_downloads|prayer_cache.*|qibla_loc.*)$/;
+const _sync = { dirty:{}, timer:null, applying:false, pulled:false, state:'' };
+const _lsSet = Storage.prototype.setItem, _lsRem = Storage.prototype.removeItem;
+function syncIsKey(k) { return typeof k === 'string' && k.indexOf('imania_') === 0 && !SYNC_EXCLUDE.test(k); }
+function syncSK(k) { return encodeURIComponent(k).replace(/\./g, '%2E'); }
+function syncMeta() { try { return JSON.parse(localStorage.getItem('imania_sync_ts')) || {}; } catch (e) { return {}; } }
+function syncSaveMeta(m) { try { _lsSet.call(localStorage, 'imania_sync_ts', JSON.stringify(m)); } catch (e) {} }
+function syncState(s) {
+  _sync.state = s;
+  const el = document.getElementById('acctSyncNote'); if (el) el.textContent = acctSyncText();
+}
+function syncTouch(k, removed) {
+  if (!syncIsKey(k) || _sync.applying) return;
+  const m = syncMeta(); m[k] = { t: Date.now() }; if (removed) m[k].d = 1; syncSaveMeta(m);
+  _sync.dirty[k] = 1;
+  if (_acct.user && _acct.ready && _sync.pulled) { clearTimeout(_sync.timer); _sync.timer = setTimeout(syncPush, 2500); }
+}
+Storage.prototype.setItem = function (k) {
+  _lsSet.apply(this, arguments);
+  try { if (this === window.localStorage) syncTouch(k, false); } catch (e) {}
+};
+Storage.prototype.removeItem = function (k) {
+  _lsRem.apply(this, arguments);
+  try { if (this === window.localStorage) syncTouch(k, true); } catch (e) {}
+};
+function syncPush() {
+  if (!_acct.user || !_acct.ready || !_sync.pulled || _sync.applying || !acctFbOk()) return Promise.resolve();
+  const keys = Object.keys(_sync.dirty); if (!keys.length) return Promise.resolve();
+  const uid = _acct.user.uid, m = syncMeta(), upd = {};
+  keys.forEach(k => {
+    const raw = localStorage.getItem(k), t = (m[k] && m[k].t) || Date.now();
+    if (raw === null) upd[syncSK(k)] = { d: 1, t };
+    else if (raw.length <= 200000) upd[syncSK(k)] = { v: raw, t };
+  });
+  _sync.dirty = {};
+  if (!Object.keys(upd).length) return Promise.resolve();
+  syncState('syncing');
+  return acctWithTimeout(firebase.database().ref('users/' + uid + '/progress').update(upd), 20000)
+    .then(() => syncState('ok'))
+    .catch(e => { keys.forEach(k => { _sync.dirty[k] = 1; }); console.warn('progress push failed', e); syncState('error'); });
+}
+function syncUnion(k, cloudArr, localArr) {
+  const seen = new Set(), out = [];
+  cloudArr.concat(localArr).forEach(x => {
+    const id = (x && typeof x === 'object' && x.id) ? 'id:' + x.id : JSON.stringify(x);
+    if (!seen.has(id)) { seen.add(id); out.push(x); }
+  });
+  if (k === 'imania_arena_history') out.sort((a, b) => String((b && b.date) || '').localeCompare(String((a && a.date) || '')));
+  return k === 'imania_arena_history' ? out.slice(0, 50) : out;
+}
+function syncMergeStats(l, c) {
+  const out = Object.assign({}, c, l);
+  Object.keys(c).forEach(f => {
+    const a = l[f], b = c[f];
+    if (f === 'hemma') { out.hemma = l.hemma; return; }   // الرصيد تديره وحدة همة الخاصة به
+    if (typeof a === 'number' && typeof b === 'number') out[f] = Math.max(a, b);
+    else if (Array.isArray(a) && Array.isArray(b)) out[f] = syncUnion(f, b, a);
+    else if (a && b && typeof a === 'object' && typeof b === 'object' && !Array.isArray(a) && !Array.isArray(b)) {
+      const o = Object.assign({}, b);
+      Object.keys(a).forEach(x => { o[x] = (typeof a[x] === 'number' && typeof b[x] === 'number') ? Math.max(a[x], b[x]) : a[x]; });
+      out[f] = o;
+    } else if (a === undefined) out[f] = b;
+  });
+  return out;
+}
+function syncMerge(k, lRaw, cRaw, lt, ct, first) {
+  let l, c;
+  try { l = JSON.parse(lRaw); c = JSON.parse(cRaw); } catch (e) { return lt >= ct ? lRaw : cRaw; }
+  const isObj = x => x && typeof x === 'object' && !Array.isArray(x);
+  if (Array.isArray(l) && Array.isArray(c)) {
+    // أول ربط للجهاز بالحساب أو سجل الساحة: ندمج القائمتين. غير ذلك: الأحدث يفوز (ليُحترم حذف مفضلة مثلًا)
+    if (first || k === 'imania_arena_history') return JSON.stringify(syncUnion(k, c, l));
+    return lt >= ct ? lRaw : cRaw;
+  }
+  if (k === 'imania_arena_stats' && isObj(l) && isObj(c)) return JSON.stringify(syncMergeStats(l, c));
+  return lt >= ct ? lRaw : cRaw;
+}
+function syncWipeLocal() {   // جهاز كان مربوطًا بحساب آخر: نمسح تقدمه المحلي قبل تحميل تقدم الحساب الجديد
+  _sync.applying = true;
+  try {
+    const rm = [];
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (syncIsKey(k)) rm.push(k); }
+    rm.forEach(k => _lsRem.call(localStorage, k));
+    _lsRem.call(localStorage, 'imania_sync_ts');
+    _lsSet.call(localStorage, 'imania_arena_stats', JSON.stringify(Object.assign(arenaDefaultStats(), { hemma: _acct.lastHemma || 0 })));
+  } catch (e) {}
+  _sync.applying = false;
+}
+async function syncPull(user, prevUid) {
+  _sync.pulled = false; syncState('syncing');
+  try {
+    const uid = user.uid, first = prevUid !== uid;
+    if (prevUid && prevUid !== uid) syncWipeLocal();
+    const ref = firebase.database().ref('users/' + uid + '/progress');
+    const snap = await acctWithTimeout(ref.once('value'), 20000);
+    if (!_acct.user || _acct.user.uid !== uid) return;
+    const cloud = snap.val() || {}, m = syncMeta(), upd = {}, seen = {};
+    _sync.applying = true;
+    try {
+      Object.keys(cloud).forEach(sk => {
+        let k; try { k = decodeURIComponent(sk); } catch (e) { return; }
+        if (!syncIsKey(k)) return;
+        seen[k] = 1;
+        const c = cloud[sk] || {}, ct = c.t || 0, local = localStorage.getItem(k);
+        const lt = (m[k] && m[k].t) || 0, lDel = !!(m[k] && m[k].d);
+        if (c.d) {
+          if (local !== null && lt > ct) upd[sk] = { v: local, t: lt };
+          else { if (local !== null) _lsRem.call(localStorage, k); m[k] = { t: ct, d: 1 }; }
+          return;
+        }
+        if (typeof c.v !== 'string') return;
+        if (local === null) {
+          if (lDel && lt > ct) upd[sk] = { d: 1, t: lt };
+          else { _lsSet.call(localStorage, k, c.v); m[k] = { t: ct }; }
+          return;
+        }
+        if (local === c.v) { m[k] = { t: Math.max(lt, ct) }; return; }
+        const merged = syncMerge(k, local, c.v, lt, ct, first);
+        if (merged !== local) _lsSet.call(localStorage, k, merged);
+        if (merged !== c.v) { const now = Date.now(); upd[sk] = { v: merged, t: now }; m[k] = { t: now }; }
+        else m[k] = { t: Math.max(lt, ct) };
+      });
+      for (let i = 0; i < localStorage.length; i++) {   // مفاتيح محلية غير موجودة في السحابة: تُرفع
+        const k = localStorage.key(i);
+        if (!syncIsKey(k) || seen[k]) continue;
+        const raw = localStorage.getItem(k);
+        if (raw && raw.length <= 200000) { const t = (m[k] && m[k].t) || Date.now(); m[k] = { t }; upd[syncSK(k)] = { v: raw, t }; }
+      }
+    } finally { _sync.applying = false; }
+    syncSaveMeta(m);
+    if (Object.keys(upd).length) await acctWithTimeout(ref.update(upd), 20000);
+    _lsSet.call(localStorage, 'imania_sync_uid', uid);
+    _sync.pulled = true;
+    syncState('ok');
+    syncPush();
+  } catch (e) { console.warn('progress pull failed', e); syncState('error'); }
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') syncPush(); });
+window.addEventListener('pagehide', () => { syncPush(); });
+window.addEventListener('online', () => { syncPush(); });
+
+/* ---------- شاشة البداية (Google / ضيف) ---------- */
+function gateShow() { const g = document.getElementById('welcomeGate'); if (g) g.classList.add('show'); }
+function gateHide() { const g = document.getElementById('welcomeGate'); if (g) g.classList.remove('show'); }
+function gateInit() {
+  const ic = document.getElementById('wgGoogleIcon'); if (ic) ic.innerHTML = acctGoogleSvg();
+}
+async function gateGoogle() {
+  playClickSound();
+  const btn = document.getElementById('wgGoogleBtn'), lb = document.getElementById('wgGoogleLabel');
+  if (btn) btn.disabled = true; if (lb) lb.textContent = 'جارٍ فتح حساب Google...';
+  await acctSignIn();
+  if (btn) btn.disabled = false; if (lb) lb.textContent = 'الدخول بحساب Google';
+}
+function gateGuest() {
+  playClickSound();
+  window._gateGuest = true;
+  gateHide();
+}
+
 function acctInit() {
   acctRenderTop();
+  gateInit();
   if (!acctFbOk()) return;
+  try { firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {}); } catch (e) {}   // تبقى الجلسة محفوظة بين مرات فتح المنصة
   try { firebase.auth().getRedirectResult().catch(e => { const m = acctErr(e); if (m) acctSay(m); }); } catch (e) {}
   firebase.auth().onAuthStateChanged(user => {
     _acct.user = user || null; _acct.rec = null; _acct.ready = false;
-    if (user) { acctRenderAll(); acctLoadRecord(user); }
-    else { acctSetCache(null); acctRenderAll(); }
+    _sync.pulled = false; _sync.dirty = {}; clearTimeout(_sync.timer);
+    if (user) {
+      try { localStorage.setItem('imania_signed_in', '1'); } catch (e) {}
+      window._gateGuest = false; gateHide();
+      acctRenderAll(); acctLoadRecord(user);
+    } else {
+      try { localStorage.removeItem('imania_signed_in'); } catch (e) {}
+      acctSetCache(null); acctRenderAll();
+      if (!window._gateGuest) gateShow();
+    }
   });
 }
 acctInit();
