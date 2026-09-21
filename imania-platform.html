@@ -621,6 +621,49 @@
   }
   .kbc-btn:active { transform:scale(0.95); }
   .kbc-btn.download { background:var(--blue-light); }
+  .acct-top { padding:0; overflow:hidden; font-weight:800; }
+  .acct-top img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+  .acct-top.fr-gold { border:2px solid #d4a843; } .acct-top.fr-emerald { border:2px solid #22c55e; }
+  .acct-top.fr-crescent { border:2px solid #60a5fa; } .acct-top.fr-royal { border:2px solid #8b5cf6; }
+  .acct-card { background:var(--bg2); border:1.5px solid var(--bg3); border-radius:var(--radius); padding:18px 16px; box-shadow:var(--card-shadow); margin-bottom:14px; text-align:center; }
+  .acct-h { font-size:1rem; font-weight:800; color:var(--text); margin-bottom:6px; }
+  .acct-p { font-size:0.8rem; color:var(--text2); line-height:1.9; }
+  .acct-google { display:inline-flex; align-items:center; gap:10px; margin-top:14px; padding:11px 20px; border-radius:50px; border:1.5px solid #dadce0; background:#fff; color:#3c4043; font-family:'Tajawal',sans-serif; font-size:0.9rem; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.12); }
+  .acct-google:active { transform:scale(0.97); }
+  .acct-msg { margin-top:12px; font-size:0.78rem; color:#dc2626; line-height:1.8; }
+  .acct-av { position:relative; border-radius:50%; margin:0 auto 8px; overflow:hidden; background:var(--gold-light); display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--gold3); box-sizing:border-box; border:3px solid transparent; }
+  .acct-av img { width:100%; height:100%; object-fit:cover; display:block; }
+  .acct-av.fr-gold { border-color:#d4a843; box-shadow:0 0 12px rgba(212,168,67,0.65); }
+  .acct-av.fr-emerald { border-color:#22c55e; box-shadow:0 0 12px rgba(34,197,94,0.6); }
+  .acct-av.fr-crescent { border-color:#60a5fa; box-shadow:0 0 0 3px rgba(212,168,67,0.9), 0 0 16px rgba(96,165,250,0.6); }
+  .acct-av.fr-royal { border-color:transparent; background:linear-gradient(var(--bg2),var(--bg2)) padding-box, conic-gradient(#d4a843,#7c3aed,#22c55e,#d4a843) border-box; box-shadow:0 0 16px rgba(124,58,237,0.5); }
+  .acct-name { font-size:1.15rem; font-weight:800; color:var(--text); }
+  .acct-name.nc-gold { color:#d4a843; } .acct-name.nc-emerald { color:#16a34a; } .acct-name.nc-sky { color:#0ea5e9; } .acct-name.nc-rose { color:#e11d48; } .acct-name.nc-violet { color:#8b5cf6; }
+  .acct-title { display:inline-block; margin-top:4px; font-size:0.72rem; font-weight:700; padding:2px 12px; border-radius:20px; background:var(--gold-light); color:var(--gold3); }
+  [data-theme="dark"] .acct-title { color:var(--gold); }
+  .acct-email { font-size:0.72rem; color:var(--text2); margin-top:4px; direction:ltr; }
+  .acct-balance { margin-top:10px; font-size:0.95rem; color:var(--text); }
+  .acct-namebox { display:flex; gap:8px; margin-top:12px; justify-content:center; align-items:center; }
+  .acct-namebox input { flex:1; min-width:0; max-width:220px; padding:8px 12px; border-radius:50px; border:1.5px solid var(--gold-light); background:transparent; color:var(--text); font-family:'Tajawal',sans-serif; font-size:0.85rem; text-align:center; }
+  .acct-sec-title { font-size:0.85rem; font-weight:800; color:var(--text); margin:14px 0 8px; }
+  .acct-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .acct-perk { background:transparent; border:1.5px solid var(--bg3); border-radius:var(--radius-sm); padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; }
+  .acct-perk .acct-av { margin:0; }
+  .acct-perk-name { font-size:0.78rem; font-weight:700; color:var(--text); }
+  .kbc-src { font-size:0.68rem; color:var(--text2); opacity:0.8; margin:-6px 0 10px; }
+  .kr-bar { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:0; }
+  .kr-range { font-size:0.75rem; color:var(--text2); text-align:center; margin:2px 0 12px; }
+  .kr-intro { font-size:0.9rem; color:var(--text); text-align:center; line-height:1.8; margin-bottom:12px; }
+  .kr-msg { font-size:0.8rem; color:var(--text2); line-height:1.8; }
+  .kr-retry { margin-top:8px; }
+  .kr-empty { font-size:0.8rem; color:var(--text2); opacity:0.85; }
+  .jz-intro { text-align:center; font-weight:700; line-height:2; font-size:1rem; }
+  .jz-sec { text-align:center; font-weight:800; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid rgba(128,128,128,0.25); }
+  .jz-verse { padding:8px 0; border-top:1px dashed rgba(128,128,128,0.25); text-align:center; }
+  .jz-verse:first-of-type { border-top:none; }
+  .jz-l { text-align:center; line-height:2.1; font-size:1.05rem; }
+  .jz-note { font-size:0.75rem; color:var(--text2); line-height:1.9; text-align:center; margin-top:8px; }
+  .jz-sub { font-size:0.7rem; opacity:0.7; margin-top:4px; }
   .book-reader-note {
     font-size:0.72rem; color:var(--text2); text-align:center; padding:8px 16px 14px;
   }
@@ -1551,6 +1594,102 @@
   #page-arena-home.arena-fun, #page-battle-lobby.arena-fun, #page-whoami-lobby.arena-fun { background:transparent !important; }
   /* عناوين اللوبي كانت بلون داكن مخصص للخلفية الزرقاء، فنفتّحها لتُقرأ على خلفية المنصة */
   #page-battle-lobby .arena-section-label, #page-whoami-lobby .arena-section-label { color:#f3e7c0; text-shadow:0 1px 6px rgba(0,0,0,0.5); }
+
+  /* ============== الأذكار والأدعية والمناجاة: إطارات ذهبية وتوحيد اللون ============== */
+  .azkar-luxe-scope, body {
+    --gf-border:linear-gradient(150deg,#f8de8e 0%,#c9962b 26%,#8a6510 50%,#e9be56 74%,#a97c1c 100%);
+    --gf-fill:linear-gradient(170deg,var(--bg2),var(--bg3));            /* نفس درجة لون بطاقة المناجاة */
+    --gf-line:rgba(201,150,43,0.55);
+    --gf-diamond:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 .6 L11.4 6 L6 11.4 L.6 6Z' fill='%23f0c866' stroke='%238a6510' stroke-width='.8'/%3E%3Ccircle cx='6' cy='6' r='1.5' fill='%236d4c0a'/%3E%3C/svg%3E");
+    --gf-corners:
+      var(--gf-diamond) left -1px top -1px / 12px 12px no-repeat,
+      var(--gf-diamond) right -1px top -1px / 12px 12px no-repeat,
+      var(--gf-diamond) left -1px bottom -1px / 12px 12px no-repeat,
+      var(--gf-diamond) right -1px bottom -1px / 12px 12px no-repeat;
+    --gf-shadow:0 8px 24px rgba(0,0,0,0.30), 0 0 0 1px rgba(240,192,96,0.10);
+    --gf-label:#f3e7c0;
+    --hub-fill:linear-gradient(160deg,#155a3d 0%,#0e3f2b 55%,#082217 100%);
+    --hub-pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg fill='none' stroke='%23f0c866' stroke-width='.8' opacity='.55'%3E%3Cpath d='M23 3 L27 15 L39 11 L31 21 L43 23 L31 25 L39 35 L27 31 L23 43 L19 31 L7 35 L15 25 L3 23 L15 21 L7 11 L19 15Z'/%3E%3Ccircle cx='23' cy='23' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  [data-theme="dark"] { --gf-label:var(--text); --hub-fill:linear-gradient(160deg,#1c2116 0%,#12150e 60%,#0a0c08 100%); --gf-line:rgba(212,168,67,0.5); }
+
+  /* إطار ذهبي مزدوج: خط خارجي متدرج + خط داخلي رفيع + معينات في الأركان */
+  .azkar-card.azkar-card, .duaa-card.duaa-card, .munajat-reader-card.munajat-reader-card,
+  .munajat-group-header.munajat-group-header, .duaa-source-box.duaa-source-box, .duaa-chip-row.duaa-chip-row, .duaa-quick-btn.duaa-quick-btn {
+    position:relative; border:2px solid transparent;
+    background:var(--gf-corners), var(--gf-fill) padding-box, var(--gf-border) border-box;
+    box-shadow:var(--gf-shadow);
+  }
+  .azkar-card.azkar-card::after, .duaa-card.duaa-card::after, .munajat-reader-card.munajat-reader-card::after,
+  .munajat-group-header.munajat-group-header::after, .duaa-source-box.duaa-source-box::after, .duaa-chip-row.duaa-chip-row::after, .duaa-quick-btn.duaa-quick-btn::after {
+    content:''; position:absolute; inset:4px; border:1px solid var(--gf-line); border-radius:calc(var(--gf-r,14px) - 5px); pointer-events:none;
+  }
+  .azkar-card.azkar-card { --gf-r:14px; }
+  .duaa-card.duaa-card, .duaa-source-box.duaa-source-box, .duaa-chip-row.duaa-chip-row, .duaa-quick-btn.duaa-quick-btn, .munajat-group-header.munajat-group-header { --gf-r:var(--radius-sm); border-radius:var(--radius-sm); }
+  .munajat-reader-card.munajat-reader-card { --gf-r:22px; }
+  .azkar-card.azkar-card:hover, .duaa-card.duaa-card:hover, .munajat-group-header.munajat-group-header:hover,
+  .duaa-source-box.duaa-source-box:hover, .duaa-chip-row.duaa-chip-row:hover, .duaa-quick-btn.duaa-quick-btn:hover {
+    box-shadow:0 10px 30px rgba(0,0,0,0.36), 0 0 22px rgba(240,192,96,0.22);
+  }
+  .azkar-card.azkar-card.done {
+    background:var(--gf-corners), var(--gf-fill) padding-box, linear-gradient(160deg,rgba(184,134,26,0.4),rgba(240,192,96,0.4)) border-box; box-shadow:none;
+  }
+  .azkar-card.azkar-card.done::after { opacity:0.45; }
+  /* معين الذكر العلوي على بطاقات الأدعية والمناجاة أيضًا */
+  .duaa-card.duaa-card::before, .munajat-reader-card.munajat-reader-card::before {
+    content:''; position:absolute; top:-7px; left:50%; transform:translateX(-50%) rotate(45deg); width:11px; height:11px; border-radius:2px; z-index:1;
+    background:linear-gradient(135deg,var(--gold3),var(--gold2)); box-shadow:0 2px 6px rgba(0,0,0,0.35);
+  }
+  .munajat-reader-card.munajat-reader-card { box-shadow:0 10px 34px rgba(0,0,0,0.32), 0 0 0 1px rgba(240,192,96,0.10); }
+
+  /* الخيارات (أذكار متفرقة / المناجاة): عنوان بخط أميري وعدّاد بحبة ذهبية */
+  .munajat-group-header.munajat-group-header { padding:17px 20px; font-size:1.12rem; }
+  .munajat-group-header .ghcount {
+    color:var(--gold3); background:var(--gold-light); border:1px solid rgba(201,150,43,0.55); border-radius:50px; padding:2px 11px; font-size:0.7rem;
+  }
+  [data-theme="dark"] .munajat-group-header .ghcount { color:var(--gold2); }
+
+  /* واجهة الأذكار الرئيسية */
+  .azkar-grid { gap:16px; }
+  .azkar-box.azkar-box {
+    position:relative; overflow:hidden; flex-direction:column; gap:10px; min-height:128px; padding:18px 10px 16px; border-radius:var(--radius);
+    border:2px solid transparent;
+    background:var(--hub-fill) padding-box, var(--gf-border) border-box;
+    box-shadow:0 12px 30px rgba(0,0,0,0.38), 0 0 0 1px rgba(240,192,96,0.12);
+  }
+  .azkar-box.azkar-box::before { content:''; position:absolute; inset:0; background:var(--hub-pattern); opacity:0.16; pointer-events:none; }
+  .azkar-box.azkar-box::after { content:''; position:absolute; inset:5px; border:1px solid var(--gf-line); border-radius:calc(var(--radius) - 6px); pointer-events:none; }
+  .azkar-box:nth-child(1) { background:radial-gradient(circle at 50% -12%, rgba(255,198,90,0.34), transparent 62%), var(--hub-fill) padding-box, var(--gf-border) border-box; }
+  .azkar-box:nth-child(2) { background:radial-gradient(circle at 50% -12%, rgba(132,150,255,0.30), transparent 62%), var(--hub-fill) padding-box, var(--gf-border) border-box; }
+  .azkar-box:nth-child(n+3) { background:radial-gradient(circle at 50% -12%, rgba(240,192,96,0.20), transparent 62%), var(--hub-fill) padding-box, var(--gf-border) border-box; }
+  .azkar-box-icon {
+    position:relative; z-index:1; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.75rem; margin:0;
+    background:radial-gradient(circle at 35% 30%, #1f7150, #0a2c1d 72%); border:2px solid #e2b84f;
+    box-shadow:0 0 0 3px rgba(0,0,0,0.28), 0 0 18px rgba(240,192,96,0.28), inset 0 0 12px rgba(0,0,0,0.5);
+  }
+  .azkar-box-title {
+    position:relative; z-index:1; font-family:'Amiri',serif; font-size:1.2rem; font-weight:700; color:#f7e3a3; text-shadow:0 2px 8px rgba(0,0,0,0.5);
+  }
+  .azkar-box:last-child { grid-column:1 / -1; flex-direction:row; min-height:92px; gap:18px; }
+  .azkar-box.azkar-box:hover { box-shadow:0 14px 34px rgba(0,0,0,0.44), 0 0 26px rgba(240,192,96,0.28); }
+
+  /* صفحة الأدعية: العناوين والأزرار السريعة بوضوح لا شفافية فيه */
+  .duaa-section-label { color:var(--gf-label); font-family:'Amiri',serif; font-size:1.12rem; }
+  .duaa-section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(240,192,96,0.55),transparent); margin-inline-start:6px; }
+  .duaa-quick-btn.duaa-quick-btn { padding:14px 8px; color:var(--text); font-size:0.86rem; }
+  .duaa-quick-btn .qicon { position:relative; z-index:1; }
+  .duaa-search-input {
+    border:2px solid transparent; background:linear-gradient(var(--bg2),var(--bg2)) padding-box, var(--gf-border) border-box;
+  }
+  .duaa-source-box.duaa-source-box { padding:20px 10px; }
+  .duaa-source-box .stitle { font-family:'Amiri',serif; font-size:1rem; }
+  .duaa-chip-row.duaa-chip-row { padding:14px 18px; }
+  .duaa-chip-row .arrow { color:var(--gold3); font-weight:800; }
+  [data-theme="dark"] .duaa-chip-row .arrow { color:var(--gold2); }
+  .munajat-intro { color:var(--gf-label); opacity:0.85; }
+  .munajat-group-header .ghcount:empty { display:none; }
+  /* إصلاح: صفحة الأدعية كانت لا تُخفي قسم نتائج البحث الفارغ ولا الأقسام الافتراضية أثناء البحث */
+  #duaaSearchResultsWrap.hidden, #duaaDefaultSections.hidden { display:none; }
 </style>
 </head>
 <body>
@@ -1566,6 +1705,7 @@
 <div class="topbar">
   <div class="topbar-logo"><span class="logo-icon">🕌</span> منصة إيمانية</div>
   <div class="topbar-actions">
+    <button class="notif-btn acct-top" id="acctTopBtn" onclick="playClickSound();showPage('page-account')" aria-label="حسابي">👤</button>
     <button class="notif-btn" onclick="playClickSound();toggleNotif()">🔔<span class="notif-dot" id="notifDot"></span></button>
     <button class="theme-toggle" onclick="playClickSound();toggleTheme()" id="themeBtn">🌙</button>
   </div>
@@ -2259,8 +2399,16 @@
     <div class="arena-achv-grid" id="arenaAchievementsGrid"></div>
   </div>
 </div>
+<div class="page" id="page-account">
+  <div class="inner-topbar">
+    <button class="back-btn" onclick="playClickSound();showPage('page-home')">←</button>
+    <span class="inner-title">👤 حسابي</span>
+  </div>
+  <div class="inner-content" id="acctBody"></div>
+</div>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyDpH64HnPaPgWvq5EF0ifRsIuQw8kWprak",
@@ -2330,6 +2478,7 @@ function showPage(id, opts) {
   if (id === 'page-quran') loadQuran('تلاوة');
   if (id === 'page-ilm') loadIlm();
   if (id === 'page-books') renderBooksHub();
+  if (id === 'page-account' && typeof acctRenderPage === 'function') { if (window._acct) _acct.msg = ''; acctRenderPage(); }
   if (id === 'page-duaa') renderDuaaHub();
   if (id === 'page-azkar-misc') renderAzkarMiscHub();
   if (id === 'page-munajat') renderMunajatHub();
@@ -3571,8 +3720,156 @@ const KUTUB_STRUCTURE = [
     subs:[] },
 ];
 let _kutubCurrentCategoryKey = null;
+/* ============================================================================
+   المكتبة الإسلامية — سجل الكتب (بيانات وصفية + معرّفات المصادر فقط)
+   لا تُخزَّن أي نصوص كتب داخل المنصة: تُجلب كل آية/صفحة عند الطلب من المصدر.
+   readType:
+     'ayah'     → قارئ داخلي يجلب تفسير/إعراب/غريب الآية المطلوبة فقط (10 آيات في الصفحة)
+     'external' → صفحة القراءة الرسمية للمصدر تُفتح في تبويب جديد
+   src / fallback:
+     { type:'tafsirapi', slug }  → spa5k/tafsir_api عبر jsDelivr (ملف JSON صغير لكل آية)
+     { type:'quranpedia', id }   → Quranpedia API: /v1/ayah/{سورة}/{آية}/book/{id}
+   downloadUrl يوضع فقط عند وجود رابط تنزيل رسمي تم التحقق منه.
+   ========================================================================== */
+const TAFSIR_CDN = 'https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir';
+const KUTUB_PAGE_SIZE = 10;
+const KUTUB_AYAH_COUNTS = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+const SRC_TAFSIRAPI_NAME = 'spa5k/tafsir_api';
+const SRC_TAFSIRAPI_URL = 'https://github.com/spa5k/tafsir_api';
+const SRC_QP_NAME = 'Quranpedia API';
+const SRC_QP_URL = 'https://api.quranpedia.net/';
+const SRC_IH_NAME = 'IslamHouse';
 const KUTUB_BOOKS = {
+  'التفسير': [
+    { bookId:'tafsir-muyassar', title:'التفسير الميسر', author:'نخبة من العلماء — مجمع الملك فهد لطباعة المصحف الشريف',
+      category:'quran', subcategory:'التفسير', order:1, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'ar-tafsir-muyassar',
+      src:{ type:'tafsirapi', slug:'ar-tafsir-muyassar' }, fallback:{ type:'quranpedia', id:32 } },
+    { bookId:'tafsir-mukhtasar', title:'المختصر في تفسير القرآن الكريم', author:'مركز تفسير للدراسات القرآنية',
+      category:'quran', subcategory:'التفسير', order:2, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'ar-tafsir-al-mukhtasar',
+      src:{ type:'tafsirapi', slug:'ar-tafsir-al-mukhtasar' }, fallback:{ type:'quranpedia', id:2003 } },
+    { bookId:'tafsir-saadi', title:'تيسير الكريم الرحمن في تفسير كلام المنان — تفسير السعدي', author:'عبد الرحمن بن ناصر السعدي',
+      category:'quran', subcategory:'التفسير', order:3, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'ar-tafseer-al-saddi',
+      src:{ type:'tafsirapi', slug:'ar-tafseer-al-saddi' }, fallback:{ type:'quranpedia', id:3 } },
+    { bookId:'tafsir-aysar', title:'أيسر التفاسير لكلام العلي الكبير', author:'أبو بكر جابر الجزائري',
+      category:'quran', subcategory:'التفسير', order:4, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:201',
+      src:{ type:'quranpedia', id:201 } },
+    { bookId:'tafsir-baghawi', title:'معالم التنزيل — تفسير البغوي', author:'الحسين بن مسعود البغوي',
+      category:'quran', subcategory:'التفسير', order:5, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'ar-tafsir-al-baghawi',
+      src:{ type:'tafsirapi', slug:'ar-tafsir-al-baghawi' }, fallback:{ type:'quranpedia', id:2 } },
+    { bookId:'tafsir-ibn-kathir-mukhtasar', title:'مختصر تفسير ابن كثير', author:'اختصار لتفسير الحافظ ابن كثير',
+      category:'quran', subcategory:'التفسير', order:6, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:521',
+      src:{ type:'quranpedia', id:521 } },
+    { bookId:'tafsir-ibn-kathir', title:'تفسير ابن كثير', author:'إسماعيل بن عمر بن كثير',
+      category:'quran', subcategory:'التفسير', order:7, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'ar-tafsir-ibn-kathir',
+      src:{ type:'tafsirapi', slug:'ar-tafsir-ibn-kathir' }, fallback:{ type:'quranpedia', id:136 } },
+    { bookId:'tafsir-adwa-al-bayan', title:'أضواء البيان في إيضاح القرآن بالقرآن', author:'محمد الأمين الشنقيطي',
+      category:'quran', subcategory:'التفسير', order:8, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'adwa-al-bayan',
+      src:{ type:'tafsirapi', slug:'adwa-al-bayan' }, fallback:{ type:'quranpedia', id:27796 } },
+    { bookId:'tafsir-ibn-abi-hatim', title:'تفسير ابن أبي حاتم', author:'ابن أبي حاتم الرازي',
+      category:'quran', subcategory:'التفسير', order:9, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'tafsir-ibn-abi-hatim',
+      src:{ type:'tafsirapi', slug:'tafsir-ibn-abi-hatim' }, fallback:{ type:'quranpedia', id:149 } },
+    { bookId:'tafsir-tabari', title:'تفسير الطبري (جامع البيان في تأويل آي القرآن)', author:'محمد بن جرير الطبري',
+      category:'quran', subcategory:'التفسير', order:10, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'ar-tafsir-al-tabari',
+      src:{ type:'tafsirapi', slug:'ar-tafsir-al-tabari' }, fallback:{ type:'quranpedia', id:4 } }
+  ],
+  'علوم القرآن': [
+    { bookId:'ulum-asbab-wahidi', title:'أسباب نزول القرآن', author:'أبو الحسن الواحدي',
+      category:'quran', subcategory:'علوم القرآن', order:1, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:2919',
+      src:{ type:'quranpedia', id:2919 } },
+    { bookId:'ulum-nasikh-makki', title:'الإيضاح لناسخ القرآن ومنسوخه', author:'مكي بن أبي طالب القيسي',
+      category:'quran', subcategory:'علوم القرآن', order:2, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:2391',
+      src:{ type:'quranpedia', id:2391 } }
+  ],
+  'القراءات': [
+    { bookId:'qiraat-mawsuah-quraniyyah', title:'القراءات — الموسوعة القرآنية', author:'الموسوعة القرآنية',
+      category:'quran', subcategory:'القراءات', order:1, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'al-qira-at-al-mawsoo-ah-al-qur-aniyyah',
+      src:{ type:'tafsirapi', slug:'al-qira-at-al-mawsoo-ah-al-qur-aniyyah' } },
+    { bookId:'qiraat-nashr-ibn-jazari', title:'النشر (لابن الجزري)', author:'ابن الجزري',
+      category:'quran', subcategory:'القراءات', order:2, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'al-nashr-li-ibn-al-jazari',
+      src:{ type:'tafsirapi', slug:'al-nashr-li-ibn-al-jazari' } },
+    { bookId:'qiraat-tayyibat-al-nashr', title:'طيبة النشر في القراءات العشر', author:'ابن الجزري (ت 833 هـ)',
+      category:'quran', subcategory:'القراءات', order:3, isAvailable:true, readType:'local',
+      source:'نص مضاف من صاحب المنصة — يعمل بدون إنترنت', apiId:'local:tayyibat-al-nashr' }
+  ],
+  'التجويد': [
+    { bookId:'tajweed-tuhfat-al-atfal', title:'تحفة الأطفال والغلمان في تجويد القرآن', author:'سليمان الجمزوري',
+      category:'quran', subcategory:'التجويد', order:1, isAvailable:true, readType:'local',
+      source:'نص مضاف من صاحب المنصة — يعمل بدون إنترنت', apiId:'local:tuhfat-al-atfal' },
+    { bookId:'tajweed-jazariyyah', title:'المقدمة الجزرية فيما يجب على قارئ القرآن أن يعلمه', author:'ابن الجزري (ت 833 هـ)',
+      category:'quran', subcategory:'التجويد', order:2, isAvailable:true, readType:'local',
+      source:'نص مضاف من صاحب المنصة (نسخة مشكولة) — يعمل بدون إنترنت', apiId:'local:jazariyyah' }
+  ],
+  'غريب القرآن': [
+    { bookId:'gharib-al-siraj', title:'السراج في بيان غريب القرآن', author:'محمد بن عبد العزيز الخضيري',
+      category:'quran', subcategory:'غريب القرآن', order:1, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'asseraj-fi-bayan-gharib-alquran',
+      src:{ type:'tafsirapi', slug:'asseraj-fi-bayan-gharib-alquran' } },
+    { bookId:'gharib-nuzhat-al-qulub', title:'نزهة القلوب في تفسير غريب القرآن', author:'أبو بكر محمد بن عزيز السجستاني',
+      category:'quran', subcategory:'غريب القرآن', order:2, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:27760',
+      src:{ type:'quranpedia', id:27760 } },
+    { bookId:'gharib-tadhkirat-al-arib', title:'تذكرة الأريب في تفسير الغريب', author:'ابن الجوزي',
+      category:'quran', subcategory:'غريب القرآن', order:3, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:27761',
+      src:{ type:'quranpedia', id:27761 } },
+    { bookId:'gharib-tibyan-ibn-al-haim', title:'التبيان في تفسير غريب القرآن', author:'ابن الهائم',
+      category:'quran', subcategory:'غريب القرآن', order:4, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:27784',
+      src:{ type:'quranpedia', id:27784 } }
+  ],
+  'إعراب القرآن': [
+    { bookId:'irab-mujtaba', title:'المجتبى من مشكل إعراب القرآن الكريم', author:'أحمد بن محمد الخراط',
+      category:'quran', subcategory:'إعراب القرآن', order:1, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:180',
+      src:{ type:'quranpedia', id:180 } },
+    { bookId:'irab-tibyan', title:'التبيان في إعراب القرآن', author:'أبو البقاء العكبري',
+      category:'quran', subcategory:'إعراب القرآن', order:5, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:309',
+      src:{ type:'quranpedia', id:309 } },
+    { bookId:'irab-maani-zajjaj', title:'معاني القرآن وإعرابه', author:'أبو إسحاق الزجاج',
+      category:'quran', subcategory:'إعراب القرآن', order:6, isAvailable:true, readType:'ayah',
+      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:546',
+      src:{ type:'quranpedia', id:546 } },
+    { bookId:'irab-darwish', title:'إعراب القرآن وبيانه', author:'محيي الدين الدرويش',
+      category:'quran', subcategory:'إعراب القرآن', order:2, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'i-rab-al-quran-li-al-darwish',
+      src:{ type:'tafsirapi', slug:'i-rab-al-quran-li-al-darwish' }, fallback:{ type:'quranpedia', id:64 } },
+    { bookId:'irab-daas', title:'إعراب القرآن الكريم', author:'أحمد عبيد الدعاس وآخرون',
+      category:'quran', subcategory:'إعراب القرآن', order:3, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'alrab-al-quran-li-da-as',
+      src:{ type:'tafsirapi', slug:'alrab-al-quran-li-da-as' } },
+    { bookId:'irab-jadwal', title:'الجدول في إعراب القرآن', author:'محمود صافي',
+      category:'quran', subcategory:'إعراب القرآن', order:4, isAvailable:true, readType:'ayah',
+      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'al-jadwal-fi-i-rab-al-quran',
+      src:{ type:'tafsirapi', slug:'al-jadwal-fi-i-rab-al-quran' } }
+  ]
 };
+/* متون قصيرة مضافة داخل المنصة (تعمل بدون إنترنت). النص كما وصل من صاحب المنصة. */
+const KUTUB_LOCAL_TEXTS = {
+  'tajweed-jazariyyah': {"intro":["المُقَدِّمَةُ فِيمَا عَلَى قَارِئِ القُرْآنِ أَنْ يَعْلَمَهُ","(الجَزَرِيَّةُ)","للإمام مُحَمَّدِ بْنِ مُحَمَّدِ بْنِ مُحَمَّدٍ ابْنِ الجَزَرِيِّ","رحمه الله (ت 833 هـ)","[البحر: الرّجز]","بسم الله الرحمن الرحيم"],"sections":[{"title":"المقدمة","verses":[{"n":1,"a":"يَقُولُ رَاجِي عَفْوِ رَبٍّ سَامِعِ","b":"مُحَمَّدُ ابْنُ الجَزَرِيِّ الشَّافِعِي"},{"n":2,"a":"الحَمْدُ لِلَّهِ وَصَلَّى اللَّهُ","b":"عَلَى نَبِيِّهِ وَمُصْطَفَاهُ"},{"n":3,"a":"مُحَمَّدٍ وَآلِهِ وَصَحْبِهِ","b":"وَمُقْرِئِ القُرْآنِ مَعْ مُحِبِّهِ"},{"n":4,"a":"وَبَعْدُ: إِنَّ هَذِهِ «مُقَدِّمَهْ","b":"فِيمَا عَلَى قَارِئِهِ أَنْ يَعْلَمَهْ»"},{"n":5,"a":"إِذْ وَاجِبٌ عَلَيْهِمُ مُحَتَّمُ","b":"قَبْلَ الشُّرُوعِ أَوَّلاً أَنْ يَعْلَمُوا"},{"n":6,"a":"مَخَارِجَ الحُرُوفِ وَالصِّفَاتِ","b":"لِيَلْفِظُوا بِأَفْصَحِ اللُّغَاتِ"},{"n":7,"a":"مُحَرِّرِي التَّجْوِيدِ وَالمَوَاقِفِ","b":"وَمَا الَّذِي رُسِمَ فِي المَصَاحِفِ"},{"n":8,"a":"مِنْ كُلِّ مَقْطُوعٍ وَمَوْصُولٍ بِهَا","b":"وَتَاءِ أُنْثَى لَمْ تَكُنْ تُكْتَبْ بِـ «هَا»"}]},{"title":"باب مَخَارِجِ الحُرُوفِ","verses":[{"n":9,"a":"مَخَارِجُ الحُرُوفِ سَبْعَةَ عَشَرْ","b":"عَلَى الَّذِي يَخْتَارُهُ مَنِ اخْتَبَرْ"},{"n":10,"a":"فَأَلِفُ الجَوْفِ وَأُخْتَاهَا وَهِي","b":"حُرُوفُ مَدٍّ لِلْهَوَاءِ تَنْتَهِي"},{"n":11,"a":"ثُمَّ لِأَقْصَى الحَلْقِ: هَمْزٌ هَاءُ","b":"ثُمَّ لِوَسْطِهِ: فَعَيْنٌ حَاءُ"},{"n":12,"a":"أَدْنَاهُ: غَيْنٌ خَاؤُهَا، وَالقَافُ","b":"أَقْصَى اللِّسَانِ فَوْقُ، ثُمَّ الكَافُ"},{"n":13,"a":"أَسْفَلُ، وَالوَسْطُ: فَجِيمُ الشِّينُ يَا","b":"وَالضَّادُ: مِنْ حَافَتِهِ إِذْ وَلِيَا"},{"n":14,"a":"لَاضْرَاسَ مِنْ أَيْسَرَ أَوْ يُمْنَاهَا","b":"وَاللَّامُ: أَدْنَاهَا لِمُنْتَهَاهَا"},{"n":15,"a":"وَالنُّونُ: مِنْ طَرَفِهِ تَحْتُ اجْعَلُوا","b":"وَالرَّا: يُدَانِيهِ لِظَهْرٍ أَدْخَلُ"},{"n":16,"a":"وَالطَّاءُ وَالدَّالُ وَتَا: مِنْهُ وَمِنْ","b":"عُلْيَا الثَّنَايَا، وَالصَّفِيرُ: مُسْتَكِنْ"},{"n":17,"a":"مِنْهُ وَمِنْ فَوْقِ الثَّنَايَا السُّفْلَى","b":"وَالظَّاءُ وَالذَّالُ وَثَا: لِلْعُلْيَا"},{"n":18,"a":"مِنْ طَرَفَيْهِمَا، وَمِنْ بَطْنِ الشَّفَهْ","b":"فَالْفَا مَعَ اطْرَافِ الثَّنَايَا المُشْرِفَهْ"},{"n":19,"a":"لِلشَّفَتَيْنِ: الوَاوُ بَاءٌ مِيمُ","b":"وَغُنَّةٌ: مَخْرَجُهَا الخَيْشُومُ"}]},{"title":"باب صِفَاتِ الحُرُوفِ","verses":[{"n":20,"a":"صِفَاتُهَا: جَهْرٌ، وَرِخْوٌ، مُسْتَفِلْ","b":"مُنْفَتِحٌ، مُصْمَتَةٌ، وَالضِّدَّ: قُلْ"},{"n":21,"a":"مَهْمُوسُهَا: «فَحَثَّهُ شَخْصٌ سَكَتْ»","b":"شَدِيدُهَا: لَفْظُ «أَجِدْ قَطٍ بَكَتْ»"},{"n":22,"a":"وَبَيْنَ رِخْوٍ وَالشَّدِيدِ: «لِنْ عُمَرْ»","b":"وَسَبْعُ عُلْوٍ: «خُصَّ ضَغْطٍ قِظْ» حَصَرْ"},{"n":23,"a":"وَصَادُ ضَادٌ طَاءُ ظَاءٌ: مُطْبَقَهْ","b":"وَ «فَرَّ مِنْ لُبِّ»: الحُرُوفُ المُذْلَقَهْ"},{"n":24,"a":"صَفِيرُهَا: صَادٌ وَزَايٌ سِينُ","b":"قَلْقَلَةٌ: «قُطْبُ جَدٍ»، وَاللِّينُ"},{"n":25,"a":"وَاوٌ وَيَاءٌ سُكِّنَا وَانْفَتَحَا","b":"قَبْلَهُمَا، وَالِانْحِرَافُ صُحِّحَا"},{"n":26,"a":"فِي اللَّامِ وَالرَّا، وَبِتَكْرِيرٍ جُعِلْ","b":"وَلِلتَّفَشِّي: الشِّينُ، ضَاداً: اسْتَطِلْ"}]},{"title":"باب التَّجْوِيدِ","verses":[{"n":27,"a":"وَالأَخْذُ بِالتَّجْوِيدِ حَتْمٌ لَازِمُ","b":"مَنْ لَمْ يُصَحِّحِ القُرَانَ آثِمُ"},{"n":28,"a":"لِأَنَّهُ بِهِ الإِلَهُ أَنْزَلَا","b":"وَهَكَذَا مِنْهُ إِلَيْنَا وَصَلَا"},{"n":29,"a":"وَهُوَ أَيْضاً حِلْيَةُ التِّلَاوَةِ","b":"وَزِينَةُ الأَدَاءِ وَالقِرَاءَةِ"},{"n":30,"a":"وَهُوَ: «إِعْطَاءُ الحُرُوفِ حَقَّهَا","b":"مِنْ صِفَةٍ لَهَا وَمُسْتَحَقَّهَا"},{"n":31,"a":"وَرَدُّ كُلِّ وَاحِدٍ لِأَصْلِهِ","b":"وَاللَّفْظُ فِي نَظِيرِهِ كَمِثْلِهِ"},{"n":32,"a":"مُكَمَّلاً مِنْ غَيْرِ مَا تَكَلُّفِ","b":"بِاللُّطْفِ فِي النُّطْقِ بِلَا تَعَسُّفِ»"},{"n":33,"a":"وَلَيْسَ بَيْنَهُ وَبَيْنَ تَرْكِهِ","b":"إِلَّا رِيَاضَةُ امْرِئٍ بِفَكِّهِ"}]},{"title":"باب التَّرْقِيقَاتِ","verses":[{"n":34,"a":"فَرَقِّقَنْ مُسْتَفِلاً مِنْ أَحْرُفِ","b":"وَحَاذِرَنْ تَفْخِيمَ لَفْظِ الأَلِفِ"},{"n":35,"a":"وَهَمْزَ: «أَلْحَمْدُ، أَعُوذُ، إِهْدِنَا","b":"أَللَّهِ» ثُمَّ لَامَ: «لِلَّهِ، لَنَا"},{"n":36,"a":"وَلْيَتَلَطَّفْ، وَعَلَى اللَّهِ، وَلَا الضْ»","b":"وَالمِيمَ مِنْ «مَخْمَصَةٍ» وَمِنْ «مَرَضْ»"},{"n":37,"a":"وَبَاءَ: «بَرْقٍ، بَاطِلٍ، بِهِمْ، بِذِي»","b":"وَاحْرِصْ عَلَى الشِّدَّةِ وَالجَهْرِ الَّذِي"},{"n":38,"a":"فِيهَا وَفِي الجِيمِ؛ كَـ «حُبِّ، الصَّبْرِ","b":"رَبْوَةٍ، اجْتُثَّتْ، وَحَجِّ، الفَجْرِ»"},{"n":39,"a":"وَبَيِّنَنْ مُقَلْقَلاً إِنْ سَكَنَا","b":"وَإِنْ يَكُنْ فِي الوَقْفِ كَانَ أَبْيَنَا"},{"n":40,"a":"وَحَاءَ: «حَصْحَصَ، أَحَطْتُ، الحَقُّ»","b":"وَسِينَ: «مُسْتَقِيمِ، يَسْطُو، يَسْقُو»"}]},{"title":"باب الرَّاءَاتِ","verses":[{"n":41,"a":"وَرَقِّقِ الرَّاءَ إِذَا مَا كُسِرَتْ","b":"كَذَاكَ بَعْدَ الكَسْرِ حَيْثُ سَكَنَتْ"},{"n":42,"a":"إِنْ لَمْ تَكُنْ مِنْ قَبْلِ حَرْفِ اسْتِعْلَا","b":"أَوْ كَانَتِ الكَسْرَةُ لَيْسَتْ أَصْلَا"},{"n":43,"a":"وَالخُلْفُ فِي «فِرْقٍ»؛ لِكَسْرٍ يُوجَدُ","b":"وَأَخْفِ تَكْرِيراً إِذَا تُشَدَّدُ"}]},{"title":"باب فِي اللَّامَاتِ","verses":[{"n":44,"a":"وَفَخِّمِ اللَّامَ مِنِ اسْمِ «اللَّهِ»","b":"عَنْ فَتْحٍ اَوْ ضَمٍّ كَـ «عَبْدُ اللَّهِ»"}]},{"title":"باب أحكام متفرقة","verses":[{"n":45,"a":"وَحَرْفَ الِاسْتِعْلَاءِ فَخِّمْ، وَاخْصُصَا","b":"لِاطْبَاقَ أَقْوَى؛ نَحْوُ: «قَالَ» وَ «العَصَا»"},{"n":46,"a":"وَبَيِّنِ الإِطْبَاقَ مِنْ «أَحَطْتُ» مَعْ","b":"«بَسَطْتَ»، وَالخُلْفُ بِـ «نَخْلُقْكُمْ» وَقَعْ"},{"n":47,"a":"وَاحْرِصْ عَلَى السُّكُونِ فِي «جَعَلْنَا»","b":"«أَنْعَمْتَ» وَ «المَغْضُوبِ» مَعْ «ضَلَلْنَا»"},{"n":48,"a":"وَخَلِّصِ انْفِتَاحَ «مَحْذُوراً، عَسَى»","b":"خَوْفَ اشْتِبَاهِهِ بِـ «مَحْظُوراً، عَصَى»"},{"n":49,"a":"وَرَاعِ شِدَّةً بِكَافٍ وَبِتَا","b":"كَـ «شِرْكِكُمْ» وَ «تَتَوَفَّى، فِتْنَتَا»"},{"n":50,"a":"وَأَوَّلَيْ مِثْلٍ وَجِنْسٍ إِنْ سَكَنْ","b":"أَدْغِمْ؛ كَـ «قُلْ رَبِّ» وَ «بَلْ لَا»، وَأَبِنْ"},{"n":51,"a":"«فِي يَوْمِ» مَعْ «قَالُوا وَهُمْ» وَ «قُلْ نَعَمْ»","b":"«سَبِّحْهُ، لَا تُزِغْ قُلُوبَ، فَالْتَقَمْ»"}]},{"title":"باب الضاد والظَّاء","verses":[{"n":52,"a":"وَالضَّادَ بِاسْتِطَالَةٍ وَمَخْرَجِ","b":"مَيِّزْ مِنَ الظَّاءِ، وَكُلُّهَا تَجِي"},{"n":53,"a":"فِي «الظَّعْنِ، ظِلُّ، الظُّهْرِ، عُظْمُ، الحِفْظِ","b":"أَيْقِظْ، وَأَنْظِرْ، عَظْمَ، ظَهْرِ، اللَّفْظِ"},{"n":54,"a":"ظَاهِرْ، لَظَى، شُوَاظُ، كَظْمٍ، ظَلَمَا","b":"أُغْلُظْ، ظَلَامَ، ظُفْرٍ، انْتَظِرْ، ظَمَا"},{"n":55,"a":"أَظْفَرَ، ظَنّاً كَيْفَ جَا، وَعِظْ» سِوَى","b":"«عِضِينَ»، «ظَلَّ»: النَّحْلِ، زُخْرُفٍ؛ سَوَا"},{"n":56,"a":"وَ «ظَلْتَ، ظَلْتُمْ» وَبِرُومٍ: «ظَلُّوا»","b":"كَالحِجْرِ: «ظَلَّتْ» شُعَرَا: «نَظَلُّ»"},{"n":57,"a":"«يَظْلَلْنَ، مَحْظُوراً» مَعَ «المُحْتَظِرِ»","b":"وَ «كُنْتَ فَظّاً» وَجَمِيعَ «النَّظَرِ»"},{"n":58,"a":"إِلَّا بِـ «وَيْلٌ» «هَلْ» وَأُولَى «نَاضِرَهْ»","b":"وَ «الغَيْظُ» لَا الرَّعْدُ وَهُودٌ؛ قَاصِرَهْ"},{"n":59,"a":"وَ «الحَظُّ» لَا «الحَضُّ عَلَى الطَّعَامِ»","b":"وَفِي «ظَنِينٍ»: الخِلَافُ سَامِي"}]},{"title":"باب التَّحْذِيرَاتِ","verses":[{"n":60,"a":"وَإِنْ تَلَاقَيَا: البَيَانُ لَازِمُ","b":"«أَنْقَضَ ظَهْرَكَ، يَعَضُّ الظَّالِمُ»"},{"n":61,"a":"وَ «اضْطُرَّ» مَعْ «وَعَظْتَ» مَعْ «أَفَضْتُمُ»","b":"وَصَفِّ «هَا»: «جِبَاهُهُمْ، عَلَيْهِمُ»"}]},{"title":"باب النون والميم المشددتين والميم الساكنة","verses":[{"n":62,"a":"وأَظْهِرِ الغُنَّةَ مِنْ: نُونٍ، وَمِنْ","b":"مِيمٍ؛ إِذَا مَا شُدِّدَا، وَأَخْفِيَنْ"},{"n":63,"a":"المِيمَ إِنْ تَسْكُنْ بِغُنَّةٍ لَدَى","b":"بَاءٍ عَلَى المُخْتَارِ مِنْ أَهْلِ الأَدَا"},{"n":64,"a":"وَأَظْهِرَنْهَا عِنْدَ: بَاقِي الأَحْرُفِ","b":"وَاحْذَرْ لَدَى وَاوٍ وَفَا: أَنْ تَخْتَفِي"}]},{"title":"باب أحكام النُّونِ السَّاكِنَةِ وَالتَّنْوِينِ","verses":[{"n":65,"a":"وَحُكْمُ تَنْوِينٍ وَنُونٍ يُلْفَى","b":"إِظْهَارٌ، ادْغَامٌ، وَقَلْبٌ، إِخْفَا"},{"n":66,"a":"فَعِنْدَ حَرْفِ الحَلْقِ: أَظْهِرْ، وَادَّغِمْ","b":"فِي اللَّامِ وَالرَّا لَا بِغُنَّةٍ لَزِمْ"},{"n":67,"a":"وَأَدْغِمَنْ بِغُنَّةٍ فِي: «يُومِنُ»","b":"إِلَّا بِكِلْمَةٍ؛ كَـ «دُنْيَا، عَنْوَنُوا»"},{"n":68,"a":"وَالقَلْبُ عِنْدَ: البَا بِغُنَّةٍ، كَذَا","b":"لِاخْفَا لَدَى: بَاقِي الحُرُوفِ؛ أُخِذَا"}]},{"title":"باب المَدّ","verses":[{"n":69,"a":"وَالمَدُّ: لَازِمٌ، وَوَاجِبٌ أَتَى","b":"وَجَائِزٌ، وَهْوَ وَقَصْرٌ ثَبَتَا"},{"n":70,"a":"فَلَازِمٌ: إِنْ جَاءَ بَعْدَ حَرْفِ مَدْ","b":"سَاكِنُ حَالَيْنِ، وَبِالطُّولِ يُمَدْ"},{"n":71,"a":"وَوَاجِبٌ: إِنْ جَاءَ قَبْلَ هَمْزَةِ","b":"مُتَّصِلاً؛ إِنْ جُمِعَا بِكِلْمَةِ"},{"n":72,"a":"وَجَائِزٌ: إِذَا أَتَى مُنْفَصِلَا","b":"أَوْ عَرَضَ السُّكُونُ وَقْفاً مُسْجَلَا"}]},{"title":"باب معرفة الوقف والابتداء","verses":[{"n":73,"a":"وَبَعْدَ تَجْوِيدِكَ لِلْحُرُوفِ","b":"لَا بُدَّ مِنْ مَعْرِفَةِ الوُقُوفِ"},{"n":74,"a":"وَالِابْتِدَاءِ، وَهْيَ تُقْسَمُ إِذَنْ","b":"ثَلَاثَةً: تَامٌ، وَكَافٍ، وَحَسَنْ"},{"n":75,"a":"وَهْيَ لِمَا تَمَّ؛ فَإِنْ لَمْ يُوجَدِ","b":"تَعَلُّقٌ، أَوْ كَانَ مَعْنىً؛ فَابْتَدِي"},{"n":76,"a":"فَالتَّامُ، فَالكَافِي، وَلَفْظاً: فَامْنَعَنْ","b":"إِلَّا رُؤُوسَ الآيِ جَوِّزْ، فَالحَسَنْ"},{"n":77,"a":"وَغَيْرُ مَا تَمَّ قَبِيحٌ، وَلَهُ","b":"الوَقْفُ مُضْطَرّاً؛ وَيَبْدَا قَبْلَهُ"},{"n":78,"a":"وَلَيْسَ فِي القُرْآنِ مِنْ وَقْفٍ وَجَبْ","b":"وَلَا حَرَامٌ؛ غَيْرُ مَا لَهُ سَبَبْ"}]},{"title":"باب المَقْطُوعِ وَالمَوْصُولِ","verses":[{"n":79,"a":"وَاعْرِفْ لِمَقْطُوعٍ وَمَوْصُولٍ وَ «تَا»","b":"فِي المُصْحَفِ الإِمَامِ فِيمَا قَدْ أَتَى"},{"n":80,"a":"فَاقْطَعْ بِعَشْرِ كَلِمَاتٍ: «أَنْ لَا»","b":"مَعْ «مَلْجَأً» وَ «لَا إِلَهَ إِلَّا»"},{"n":81,"a":"وَ «تَعْبُدُوا» يَاسِينَ، ثَانِي هُودَ «لَا","b":"يُشْرِكْنَ، تُشْرِكْ، يَدْخُلَنْ، تَعْلُوا عَلَى"},{"n":82,"a":"أَنْ لَا يَقُولُوا، لَا أَقُولَ»، «إِنْ مَا»","b":"بِالرَّعْدِ، وَالمَفْتُوحَ صِلْ، وَ «عَنْ مَا"},{"n":83,"a":"نُهُوا» اقْطَعُوا؛ «مِنْ مَا» بِرُومٍ وَالنِّسَا","b":"خُلْفُ المُنَافِقِينَ، «أَمْ مَنْ»: «أَسَّسَا»"},{"n":84,"a":"فُصِّلَتِ، النِّسَا، وَذِبْحٍ، «حَيْثُ مَا»","b":"وَ «أَنْ لَمِ» المَفْتُوحَ، كَسْرَ «إِنَّ مَا»"},{"n":85,"a":"لَانْعَامَ، وَالمَفْتُوحَ «يَدْعُونَ» مَعَا","b":"وَخُلْفُ الَانْفَالِ، وَنَحْلٍ وَقَعَا"},{"n":86,"a":"وَ «كُلِّ مَا سَأَلْتُمُوهُ»، وَاخْتُلِفْ","b":"«رُدُّوا» كَذَا «قُلْ بِئْسَمَا»، وَالوَصْلَ صِفْ"},{"n":87,"a":"«خَلَفْتُمُونِي» وَ «اشْتَرَوْا»، «فِي مَا» اقْطَعَا","b":"«أُوحِي، أَفَضْتُمُ، اشْتَهَتْ، يَبْلُو» مَعَا"},{"n":88,"a":"ثَانِي «فَعَلْنَ» وَقَعَتْ، رُومٌ، كِلَا","b":"تَنْزِيلُ، ظُلَّةٍ، وَغَيْرَهَا: صِلَا"},{"n":89,"a":"«فَأَيْنَمَا» كَالنَّحْلِ: صِلْ، وَمُخْتَلِفْ","b":"فِي: الشُّعَرَا، الأَحْزَابِ، وَالنِّسَا؛ وُصِفْ"},{"n":90,"a":"وَصِلْ: «فَإِلَّمْ» هُودَ «أَلَّنْ نَجْعَلَا»","b":"«نَجْمَعَ» «كَيْلَا تَحْزَنُوا، تَأْسَوْا عَلَى"},{"n":91,"a":"حَجٌّ، عَلَيْكَ حَرَجٌ»، وَقَطْعُهُمْ","b":"«عَنْ مَنْ يَشَاءُ، مَنْ تَوَلَّى» «يَوْمَ هُمْ»"},{"n":92,"a":"«وَمَالِ هَذَا، وَالَّذِينَ، هَؤُلَا»","b":"«تَحِينَ» فِي الإِمَامِ صِلْ؛ وَوُهِّلَا"},{"n":93,"a":"وَ «وَزَنُوهُمُ، وَكَالُوهُمْ»: صِلِ","b":"كَذَا مِنَ «الْ» وَ «هَا» وَ «يَا»؛ لَا تَفْصِلِ"}]},{"title":"باب التَّاءَاتِ","verses":[{"n":94,"a":"وَ «رَحْمَتُ»: الزُّخْرُفِ بِالتَّا زَبَرَهْ","b":"لَاعْرَافِ، رُومٍ، هُودَ، كَافَ، البَقَرَهْ"},{"n":95,"a":"«نِعْمَتُـ» ـهَا: ثَلَاثُ نَحْلٍ، إِبْرَهَمْ","b":"مَعاً أَخِيرَاتٌ، عُقُودُ الثَّانِ «هَمْ»"},{"n":96,"a":"لُقْمَانُ، ثُمَّ فَاطِرٌ، كَالطُّورِ","b":"عِمْرَانَ، «لَعْنَتٌ»: بِهَا، وَالنُّورِ"},{"n":97,"a":"وَ «امْرَأَتٌ»: يُوسُفَ، عِمْرَانَ، القَصَصْ","b":"تَحْرِيمُ، «مَعْصِيَتْ»: بِقَدْ سَمِعْ يُخَصْ"},{"n":98,"a":"«شَجَرَتُ»: الدُّخَانِ، «سُنَّتْ»: فَاطِرِ","b":"كُلّاً، وَالَانْفَالِ، وَأُخْرَى غَافِرِ"},{"n":99,"a":"«قُرَّتُ عَيْنٍ»، «جَنَّتٌ»: فِي وَقَعَتْ","b":"«فِطْرَتْ، بَقِيَّتْ، وَابْنَتٌ»، وَ «كَلِمَتْ»"},{"n":100,"a":"أَوْسَطَ الَاعْرَافِ، وَكُلُّ مَا اخْتُلِفْ","b":"جَمْعاً وَفَرْداً فِيهِ: بِالتَّاءِ عُرِفْ"}]},{"title":"باب هَمز الوَصْلِ","verses":[{"n":101,"a":"وَابْدَأْ بِهَمْزِ الوَصْلِ مِنْ فِعْلٍ بِضَمْ","b":"إِنْ كَانَ ثَالِثٌ مِنَ الفِعْلِ يُضَمْ"},{"n":102,"a":"وَاكْسِرْهُ حَالَ الكَسْرِ وَالفَتْحِ، وَفِي","b":"لَاسْمَاءِ - غَيْرِ اللَّامِ - كَسْرُهَا وَفِيّْ"},{"n":103,"a":"ابْنٍ، مَعَ ابْنَةِ، امْرِئٍ، وَاثْنَيْنِ","b":"وَامْرَأَةٍ، وَاسْمٍ، مَعَ اثْنَتَيْنِ"}]},{"title":"باب الوَقْفِ عَلَى أَوَاخِرِ الكَلِمِ","verses":[{"n":104,"a":"وَحَاذِرِ الوَقْفَ بِكُلِّ الحَرَكَهْ","b":"إِلَّا إِذَا رُمْتَ فَبَعْضُ الحَرَكَهْ"},{"n":105,"a":"إِلَّا بِفَتْحٍ أَوْ بِنَصْبٍ، وَأَشِمْ","b":"إِشَارَةً بِالضَّمِّ: فِي رَفْعٍ وَضَمْ"}]},{"title":"خَاتِمَةٌ","verses":[{"n":106,"a":"وَقَدْ تَقَضَّى نَظْمِيَ «المُقَدِّمَهْ»","b":"مِنِّي لِقَارِئِ القُرَانِ تَقْدِمَهْ"},{"n":107,"a":"أَبْيَاتُهَا قَافٌ وَزَاىٌ فِي الْعَدَدْ","b":"مَنْ يُحْسِنِ التَّجْوِيدَ يَظْفَرْ بِالرَّشَدْ"},{"n":108,"a":"وَالحَمْدُ لِلَّهِ لَهَا خِتَامُ","b":"ثُمَّ الصَّلَاةُ بَعْدُ وَالسَّلَامُ"},{"n":109,"a":"عَـلَى النَّبِـىِّ المُـصْطَـفى وَآلِـهِ","b":"وَصَــحْـبِـهِ وتـابـعِ منوالــهِ"}]}]},
+  'qiraat-tayyibat-al-nashr': {"paged":true,"intro":["بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ","مَتْنُ «طَيِّبَةِ النَّشْرِ» فِي الْقِرَاءَاتِ الْعَشْرِ","تَأْلِيفُ: إِمَامِ الْحُفَّاظِ وَشَيْخِ الْقُرَّاءِ / مُحَمَّدِ بْنِ مُحَمَّدِ بْنِ مُحَمَّدِ بْنِ عَلِيِّ بْنِ يُوْسُفَ الْمَعْرُوفُ بِابْنِ الْجَزَرِيِّ - رَحِمَهُ اللهُ تعالى - (٧٥١-٨٣٣)."],"note":"ملحوظة: الرَّقَمُ الَّذِي عَلَى يَمِينِ الْبَيْتِ هُوَ رَقَمُ الْبَيْتِ، وَالرَّقَمُ الَّذِي عَلَى شِمَالِ الْعُنْوَانِ هُوَ عَدَدُ أَبْيَاتِ الْبَابِ أَوِ الْفَصْلِ.","sections":[{"title":"الْمُقَدِّمَةُ (١٠٢)","verses":[{"n":1,"a":"قَالَ مُحَمَّدٌ هُوَ ابْنُ الْجَزَريِ","b":"يَاذَا الجَلالِ ارْحَمْهُ وَاسْتُر وَاغْفِرِ"},{"n":2,"a":"الْحَمْدُِ للهِ عَلىَ مَا يَسَّرَهْ","b":"مِنْ نَشْرِ مَنْقُولِ حُرُوفِ العَشَرَه"},{"n":3,"a":"ثُمَّ الصَّلاَةُ والسَّلامُ السَّرْمَدِي","b":"عَلىَ النَّبِىِّ المُصْطَفَى مُحَمَّدِ"},{"n":4,"a":"وَآلِهِ وَصَحْبِهِ وَمَنْ تَلاَ","b":"كِتَابَ رَبِّنَا عَلَى مَا أَنْزَلا"},{"n":5,"a":"وَبَعْدُ: فَالإْنْسَانُ لَيْسَ يَشْرُفُ","b":"إِلاَّ بِمَا يَحْفَظُهُ وَيَعْرِفُ"},{"n":6,"a":"لِذَاكَ كَانَ حَامِلُو الْقُرآنِ","b":"أَشْرَافَ الاُمَّةِ أُوليِ الإحْسَانِ"},{"n":7,"a":"وَإنَّهُمْ فِي النَّاسِ أَهْلُ اللهِ","b":"وَإنَّ رَبَّنا بِهِمْ يُبَاهِي"},{"n":8,"a":"وَقَالَ فِي الْقُرآنِ عَنْهُمْ وَكَفَى","b":"بِأنَّهُ أْوَرثَهُ مَنِ اصْطَفىَ"},{"n":9,"a":"وَهْوَ فِي الاُخْرَى شَافِعٌ مُشَفَّعُ","b":"فِيْهِ وَقَوْلُهُ عَليْهِ يُسْمَعُ"},{"n":10,"a":"يُعْطَى بِهِ المُلْكَ مَعَ الْخُلْدِ إِذَا","b":"تَوَّجَهُ تَاجَ الْكَرامَةِ كَذَا"},{"n":11,"a":"يَقْرَا وَيْرقَى دَرَجَ الجِنانِ","b":"وَأبَوَاهُ مِنْهُ يُكْسَيَانِ"},{"n":12,"a":"فَلْيَحِرصِ السَّعِيدُ فِي تَحْصِيْلِهِ","b":"وَلا يَمَلَّ قَطُّ مِنْ تَرْتِيْلِهِ"},{"n":13,"a":"وَليَجْتَهدْ فَيهِ وَفِي تَصحِيحِهِ","b":"عَلى الَّذِىِ نُقِلَ مِنْ صَحِيحِهِ"},{"n":14,"a":"فَكُلُّ مَا وَافَقَ وَجْهَ نَحْوِ","b":"وَكَانَ لِلرَّسْمِ احْتِمَالًا يَحْوِي"},{"n":15,"a":"وَصَحَّ إسْنادًا هُوَ الْقُرآنُ","b":"فَهَذِهِ الثَّلاثَةُ الأَرْكَانُ"},{"n":16,"a":"وَحَيثُماَ يَخْتَلُّ رُكْنٌ أَثْبِتِ","b":"شُذُوذَهُ لَوْ أنَّهُ فِي السَّبعَةِ"},{"n":17,"a":"فَكُنْ عَلى نَهْجِ سَبِيلِ السَّلفِ","b":"فِى مُجْمَعٍ عَلَيْهِ أوْ مُخْتَلَفِ"},{"n":18,"a":"وَأَصْلُ الاخْتِلافِ أنَّ رَبَّنًا","b":"أْنزَلَهُ بِسَبْعَةٍ مُهَوِّنَا"},{"n":19,"a":"وَِقيلَ فِي الْمُرَادِ مِنْهَا أَوْجُهُ","b":"وَكَونُهُ اخْتِلاَفَ لَفْظٍ أوْجَهُ"},{"n":20,"a":"قَامَ بِهَا أِئمَّةُ القُرَآنِ","b":"وَُمحرِزُو التَّحْقِيْقِ وَاْلإتْقَانِ"},{"n":21,"a":"وَمِنْهُمُ عَشْرٌ شُمُوسٌ ظَهَرا","b":"ضَِياؤُهُمْ وَفِي الأنَامِ انْتَشَرَا"},{"n":22,"a":"حَتَّى اسْتَمَدَّ نُوْرُ كُلِّ بَدْرِ","b":"مِنْهُمْ وَعَنْهُمْ كُلُّ نَجْمٍ دُرِّي"},{"n":23,"a":"وَهَا هُمُو يَذْكُرْهُمُو بَيَانِيْ","b":"كُلُّ إمَامٍ عَنْهُ رَاوِيَانِ"},{"n":24,"a":"فَنَافِعٌ بِطَيْبَةٍ قَدْ حَظِيَا","b":"فَعَنْهُ قَالُونُ وَوَرْشٌ رَوَيَا"},{"n":25,"a":"وَاْبنُ كَثِيرٍ مَكَّةٌ لَهُ بَلَدْ","b":"بَزٍّ وَقُنْبُلٌ لهُ عَلىَ سَنَدْ"},{"n":26,"a":"ثُمَّ أبُوعَمْرٍو فَيَحْيىَ عَنْهُ","b":"وََنقَلَ الدُّورِي وَسُوسٍ مِنْهُ"},{"n":27,"a":"ثُمَّ ابْنُ عَامِرِ الدِّمشْقِيْ بِسَندْ","b":"عَنْهُ هِشَامٌ وابْنُ ذكْوَانَ وَرَدْ"},{"n":28,"a":"ثَلاَثَةٌ مِنْ كُوفَةٍ فَعَاِصِمُ","b":"فَعَنْهُ شُعْبَةٌ وَحَفْصٌ قَائِمُ"},{"n":29,"a":"وَحَمْزَةٌ عَنْهُ سُليْمٌ فَخَلَفْ","b":"مِنْهُ وَخَلاَّدٌ كِلاهُمِاَ اغْتَرَفْ"},{"n":30,"a":"ثمَّ الكِسَائِيُّ الفَتَى عَلِيُّ","b":"عَنْهُ أبُو الْحَارِثِ والدُّورِيُّ"},{"n":31,"a":"ثمَّ أبُو جَعْفَرٍ الحَبْرُ الرِّضَى","b":"فَعَنْهُ عِيسَى وابْنُ جَمَّازٍ مَضَى"},{"n":32,"a":"تَاسِعُهُمْ يَعْقوُبُ وَهْوَ الحَضْرمِي","b":"لَهُ رُوَيْسٌ ثُمَّ رَوْحٌ يَنْتَمِى"},{"n":33,"a":"وَالْعَاشِرُ البَزَّارُ وَهْوَ خَلَفُ","b":"إسْحَاقُ مَعْ إِدْرِيِسَ عَنْهُ يُعْرفُ"},{"n":34,"a":"وَهذِهِ الرُّوَاُة عَنْهُمْ طُرُقُ","b":"أصَحُّهَا فى نَشْرِنَا يُحَقَّقُ"},{"n":35,"a":"بِاثْنَيْنِ فى اثْنيَنِ وَإلاَّ أَرْبَعُ","b":"فَهْىَ زُهَا أَلْفِ طَرِيقٍ تَجْمَعُ"},{"n":36,"a":"جَعَلْتُ رَمْزَهُمْ عَلىَ التَّرْتِيبِ","b":"مِنْ نَافِعٍ كذَاَ إلىَ يَعْقُوبِ"},{"n":37,"a":"أبَجْ دَهَزْ حُطِّيْ كَلَمْ نَصَعْ فَضَقْ","b":"رَسَتْ ثَخَذْ ظَغَشْ عَلَى هَذَا النَّسَقْ"},{"n":38,"a":"وَاْلوَاوُ فَاصِلٌ وَلاَ رَمْزَ يَرِدْ","b":"عَنْ خَلَفٍِ لأَنَّهُ لَمْ يَنْفَرِدْ"},{"n":39,"a":"وَحَيْثُ جَا رَمْزٌ لِوَرْشٍ فَهْوَا","b":"لأَرْزَقٍ لَدَى اْلأُصُولِ يُرْوَى"},{"n":40,"a":"وَالاَصْبَهَاِنيُّ كَقَالُوْنَ وَإِنْ","b":"سَمَّيْتُ وَرْشًا فَالطَّرِيقَانِ إِذَنْ"},{"n":41,"a":"فَمَدَنِىٌّ ثَامِنٌ وَنَافِعُ","b":"بَصْرِيُّهُمْ ثَالِثُهُمْ وَالتَّاسِعُ"},{"n":42,"a":"وَخَلَفٌ فِى الكُوفِ وَالرَّمْزُ كَفَى","b":"وَهُمْ بِغَيْرِ عَاصِمٍ لَهُمْ شَفَا"},{"n":43,"a":"وَهُمْ وَحَفْصٌ صَحْبُ ثُمَّ صُحْبَهْ","b":"مَعْ شُعْبَةٍ وخَلَفٌ وَشُعْبَهْ"},{"n":44,"a":"صَفَا وَحَمْزَةٌ وَبَزَّارٌ فَتَى","b":"حَمْزَةُ مَعْ عَليِهَّمِْ رِضىً أَتَى"},{"n":45,"a":"وَخَلَفٌ مَعَ اْلكِسَائِيِّ رَوَى","b":"وَثَامِنٌ مَعْ تَاسِعٍ فَقُلْ ثَوىَ"},{"n":46,"a":"وَمَدنٍ مَدًا وَبَصْرِىٌّ حِمَا","b":"وَالمَدَنِي وَالمَكِّ والْبَصْرِي سَمَا"},{"n":47,"a":"مَكٍّ وَبَصْرٍ حَقُّ مَكٍّ مَدَنِي","b":"حِرْمٌ وَعَمَّ شَامُهُمْ وَالمَدَنِي"},{"n":48,"a":"وَحَبْرُ ثَالِثٌ وَمَكٍّ كَنْزُ","b":"كُوفٍ وَشَامٍ وَيَجِيءُ الرَّمزُ"},{"n":49,"a":"قَبْلُ وَبَعْدُ وَبِلَفْظٍ أَغْنَى","b":"عَنْ قَيْدِهِ عِنْدَ اتِضَّاحِ الْمَعْنىَ"},{"n":50,"a":"وَاكْتَفيِ بِضِدِّهَا عَنْ ضِدِّ","b":"كَالْحَذْفِ وَالْجَزْمِ وَهَمْزٍ مَدِّ"},{"n":51,"a":"وَمُطْلَقُ التَّحرِيكِ فَهْوَ فَتْحُ","b":"وَهْوَ لِلاسْكَانِ كَذَاكَ الْفَتْحُ"},{"n":52,"a":"لِلْكَسْرِ والنَّصْبُ لِخَفْضٍ إِخْوَةُ","b":"كَالنُّونِ لِلْيَا وَلِضَمٍّ فَتْحَةُ"},{"n":53,"a":"كَالرَّفْعِ لِلنَّصْبِ اطْرُدًا وَأَطْلِقَا","b":"رَفْعًا وَتَذكِيًرا وَغَيْبًا حُقِّقَا"},{"n":54,"a":"وَكُلُّ ذَا اتَّبَعْتُ فِيهِ الشَّاطِبِيْ","b":"لِيَسْهُلَ اسْتِحْضَارُ كُلِّ طَالِبِ"},{"n":55,"a":"وهذِهِ أُرْجُوزَةٌ وَجِيزَهْ","b":"جَمَعْتُ فِيهَا طَرُقًا عَزِيزَهْ"},{"n":56,"a":"وَلاَ أَقُولُ إِنَّهاَ قَدْ فَضَلَتْ","b":"حِرْزَ الأَمَانِي بَلْ بِه قَدْ كَمَلَتْ"},{"n":57,"a":"حَوَتْ لِمَا فِيهِ مَعَ التَّيْسِيرِ","b":"وَضِعْفِ ضِعْفِهِ سِوَى التَّحرِيرِ"},{"n":58,"a":"ضَمَّنْتُهَا كِتَابَ نَشْرِ الْعَشْرِ","b":"فَهْيَ بِهِ طَيِّبَةٌ فِي النَّشْرِ"},{"n":59,"a":"وَهَا أَنَا مُقدِّمٌ عَلَيْهَا","b":"فَوَائدًا مُهِمِّةً لَدَيْهَا"},{"n":60,"a":"كَالْقَوْلِ فِى مَخَارِجِ الْحُرُوفِ","b":"وَكيْفَ يُتْلَى الذِّكْرُ والْوُقُوفِ"},{"n":61,"a":"مخَاَرِجُ الحْرُوُفِ سَبْعَةَ عَشَرْ","b":"عَلى الَّذِى يَخْتَارُهُ مَنِ اْختَبَرْ"},{"n":62,"a":"فَالْجَوْفُ لِلْهَاوِي وَأُخْتَيْهِ وَهِيْ","b":"حُرُوفُ مَدٍّ لِلْهَوَاءِ تَنْتَهِي"},{"n":63,"a":"وَقُلْ لِأَقَصَى الْحَلْقِ هَمْزٌ هَاءُ","b":"ثُمَّ لِوَسْطِهِ فَعيْنٌ حَاءُ"},{"n":64,"a":"أَدناهُ غَيْنٌ خَاؤُهَا وَالْقَافُ","b":"أَقْصَى اللِّسَانِ فَوْقُ ثُمَّ اْلكَافُ"},{"n":65,"a":"أَسْفَلُ وَالْوَسْطُ فَجِيمُ الشِّينُ يَا","b":"وَالضَّادُ مِنْ حَافَتِهِ إذْ وَلِيَا"},{"n":66,"a":"لَاضْرَاسَ مِنْ أَيْسَرَ أَوْ يُمْنَاهَا","b":"وَاللاَّمُ أَدْنَاهَا لِمُنْتَهَاهَا"},{"n":67,"a":"وَالنُّونُ مِنْ طَرَفِهِ تَحْتُ اجْعَلُوا","b":"والرَّا يُدَانِيْهِ لِظَهْرٍ أَدْخَلُ"},{"n":68,"a":"وَالطَّاءُ وَالدَّالُ وَتَا مِنْهُ وَمِنْ","b":"عُلْيَا الثَّنَايَاَ وَالصَّفِيرُ مُسْتَكِنْ"},{"n":69,"a":"مِنْهُ وَمِنْ فَوْقِ الثَّنَايَا السُّفْلَى","b":"والظَّاءُ والذَّالُ وَثَا لِلْعُلْيَا"},{"n":70,"a":"مِنْ طَرَفَيْهِمَا وَمِنْ بَطْنِ الشَّفَهْ","b":"فَالْفَا مَعْ أطْرَافِ الثَّنَايَا الْمُشْرِفَهْ"},{"n":71,"a":"لِلشَّفَتَيْنِ الْوَاوُ بَاءٌ مِيمُ","b":"وغُنَّةٌ مَخْرَجُهَا الْخَيْشُومُ"},{"n":72,"a":"صِفَاتُهَا جَهْرٌ وَرَخْوٌ مُسْتَفِلْ","b":"مُنْفَتِحٌ مُصْمَتَةُ وَالضِّدَّ قُلْ"},{"n":73,"a":"مَهْمُوسُهَا فَحَثَّهُ شَخْصٌ سَكَتْ","b":"شدِيدُهَا لَفْظُ أَجِدْ قَطِ بَكَتْ"},{"n":74,"a":"وَبَيْنَ رِخْوٍ وَالشَّدِيدِ لِنْ عُمَرْ","b":"وَسَبْعُ عُلْوٍ خُصَّ ضَغْطٍ قِظْ حَصَرْ"},{"n":75,"a":"وَصَادُ ضَادٌ طَاءُ ظَاءٌ مُطبَقَهْ","b":"وَفِرَّ مِنْ لُبِّ الْحُرُوفُ المُذْلَقَهْ"},{"n":76,"a":"صَفِيرُهَا صَادٌ وَزَايٌ سِينُ","b":"قَلْقَلَةٌ قُطْبُ جَدٍ وَالِّلِيْنُ"},{"n":77,"a":"وَاوٌ وَيَاءٌ سَكَنَا وَانْفَتَحَا","b":"قَبْلَهُمَا والاِنْحِراَفُ صُحِّحَا"},{"n":78,"a":"فِى اللاَّمِ وَالرَّا وَبِتَكْرِيرٍ جُعِلْ","b":"وَللِتَّفَشِّي الشِّينُ ضَادًا اسْتَطِلْ"},{"n":79,"a":"وَيُقْرَأُ الْقُرآنُ بِالتَّحْقِيقِ مَعْ","b":"حَدْرٍ وَتَدْوِيرٍ وَكُلٌّ مُتَّبَعْ"},{"n":80,"a":"مَعْ حُسْنِ صَوْتٍ بِلُحُونِ الْعَرَبِ","b":"مُرَتَّلًا مُجَوَّدًا بِالْعَرَبِي"},{"n":81,"a":"وَاْلأَخْذُ بِالتَّجْوِيدِ حَتْمٌ لاَزِمُ","b":"مَنْ لَمْ يُجَوِّدِ الْقُرَآنَ آثِمُ"},{"n":82,"a":"لِأَنَّهُ بِهِ اْلإلَهُ أَنْزَلاَ","b":"وَهكَذَا عَنْهُ إِلَيْنَا وَصَلاَ"},{"n":83,"a":"وَهُوَ إِعْطَاءُ الحُرُوفِ حَقَّهَا","b":"مِنْ صِفَةٍ لهَاَ وَمُسْتَحَقَّهَا"},{"n":84,"a":"مُكَمَّلًا مِنْ غَيْرِمَا تَكَلُّفِ","b":"بِاللُّطْفِ فِى النُّطْقِ بِلاَ تَعَسُّفِ"},{"n":85,"a":"فَرَقِّقَنْ مُسْتَفِلًا مِنْ أَحْرُفِ","b":"وَحَاذِرَنْ تَفْخِيمَ لَفْظِ اْلأَلِفِ"},{"n":86,"a":"كَهَمْزِ أَلْحَمْدُ أَعُوذُ إِهْدِنَا","b":"اللهُ ثُمَّ لاَمِ لِلَّهِ لَنَا"},{"n":87,"a":"وَلْيَتَلَطَّفْ وَعَلَى اللهِ وَلاَ الضْ","b":"وَالْمِيمِ مِنْ مَخْمَصَةٍ وَمِنْ مَرَضْ"},{"n":88,"a":"وَبَاءِ بِسْمِ بَاطِلٌ وَبَرْقُ","b":"وَحَاءِ حَصْحَصَ أَحَطْتُ الْحَقُّ"},{"n":89,"a":"وَبَيِّنِ اْلأِطْبَاقَ مِنْ أَحَطْتُ مَعْ","b":"بَسَطْتَ وَالْخُلْفُ بِنَخْلُقْكُمْ وَقَعْ"},{"n":90,"a":"وَأَظْهِرِ الْغُنَّةَ مِنْ نُونٍ وَمِنْ","b":"مِيمٍ إِذَا مَا شُدِّدَا وَأخْفِيَنْ"},{"n":91,"a":"اَلْمِيْمَ إِنْ تَسْكُنْ بِغُنَّةٍ لَدَى","b":"بَاءٍ عَلى المُخْتَارِ مِنْ أَهْلِ اْلأَدَا"},{"n":92,"a":"وَأَظْهِرَنْهاَ عِنْدَ بَاقِي اْلأَحْرُفِ","b":"وَاحْذَرْ لَدىَ وَاوٍ وَفَا أَنْ تَخْتَفِي"},{"n":93,"a":"وَأَوَّلَيْ مِثْلٍ وَجِنْسٍ إنْ سَكَنْ","b":"أَدْغِمْ كَقُلْ رَبِّ وَبَلْ لاَ وَأَبِنْ"},{"n":94,"a":"سَبِّحْهُ فَاصْفَحْ عَنْهُمُ قَالُوا وَهُمْ","b":"فِى يَوْمِ لاَ تُزِغْ قُلُوبَ قُلْ نَعَمْ"},{"n":95,"a":"وَبَعْدَ مَا تُحْسِنُ أَنْ تَجَوِّدَا","b":"لاَبُدَّ أَنْ تَعْرِفَ وَقْفًا وَابْتِدَا"},{"n":96,"a":"فاَلَّلفْظُ إِنْ تَمَّ وَلاَ تَعَلُّقَا","b":"تَامٌّ وَكَافٍ إِنْ بِمَعْنىً عُلِّقَا"},{"n":97,"a":"قِفْ وَابْتَدِئْ وَإِنْ بِلَفْظٍ فَحَسَنْ","b":"فَقِفْ وَلاَ تَبْدَا سِوَى الآيِ يُسَنْ"},{"n":98,"a":"وَغَيْرُ مَاَ تَمَّ قَبِيحٌ وَلَهُ","b":"يُوقَفُ مُضْطَرًّا وَيُبْدَا قَبْلَهُ"},{"n":99,"a":"وَلَيْسَ فِى الْقُرآنِ مِنْ وَقْفٍ يَجِبْ","b":"وَلاَ حَرَامٍ غَيْرَ مَالَهُ سَبَبْ"},{"n":100,"a":"وَفِيهِمَا رِعَايَةُ الرَّسْمِ اشْتُرِطْ","b":"وَالْقَطْعُ كَالْوَقْفِ وَبِالآيِ شُرِطْ"},{"n":101,"a":"والسَّكْتُ مِنْ دُونِ تَنَفُّسٍ وَخُصْ","b":"بِذِيْ اتِصَالٍ وَانْفِصَالٍ حَيْثُ نُصْ"},{"n":102,"a":"وَالآنَ حِينُ اْلأَخْذِ فى المُرَاد","b":"والله حَُسْبِيْ وَهُوَ اعْتِمادِيْ"}]},{"title":"بَابُ الاسْتِعَاذَة (٤)","verses":[{"n":103,"a":"وَقُلْ أَعُوذُ إِنْ أَرَدتَ تَقْرَا","b":"كَالنَّحْلِ جَهْرًا لِجَمِيعِ الْقُرَّا"},{"n":104,"a":"وَإِنْ تُغَيِّرْ أَوْ تَزِدْ لَفْظًا فَلاَ","b":"تَعْدُ الَّذِى قَدْ صَحَّ مِمَّا نُقِلاَ"},{"n":105,"a":"وَقِيلَ يُخْفِي حَمْزَةٌ حَيْثُ تَلاَ","b":"وَقِيلَ لاَ فَاتِحَةٌ وَعُلِّلاَ"},{"n":106,"a":"وَقِفْ لَهُمْ عَلَيْهِ أَوْ صِلْ وَاسْتُحِبْ","b":"تَعُوُّذٌ وَقالَ بَعْضُهُمْ يَجِبْ"}]},{"title":"بَابُ الْبَسْمَلَةِ (٥)","verses":[{"n":107,"a":"بَسْمَلَ بَيْنَ السُّوَرتَيْنِ بِي نَصَفْ","b":"دُمْ ثِقْ رَجا وَصِلْ فَشَا وَعَنْ خَلَفْ"},{"n":108,"a":"فاَسْكُتْ فَصِلْ وَالخُلْفُ كَمْ حِمًا جَلاَ","b":"وَاخْتِيْرَ لِلسَّاكِتِ فى وَيْلٌ وَلاَ"},{"n":109,"a":"بَسْمَلَةٌ، وَالسَّكْتُ عَمَّنْ وَصَلاَ","b":"وَفِي اْبتِدَا السُّورَةِ كُلٌّ بَسْمَلاَ"},{"n":110,"a":"سِوَى بَرَاءَةٍ فَلاَ وَلَوْ وُصِلْ","b":"وَوَسَطًا خَيِّرْ وَفِيهَا يَحْتَمِلْ"},{"n":111,"a":"وَإِنْ وَصَلْتَهَا بِآخِرِ السُّوَرْ","b":"فَلاَ تَقِفْ وَغَيْرُهُ لاَ يُحْتَجَرْ"}]},{"title":"سُورَةُ أُمِّ الْقُرْآنِ (١٠)","verses":[{"n":112,"a":"مَالِكِ نَلْ ظِلًاّ رَوَى السِّرَاطَ مَعْ","b":"سِرَاطَ زِنْ خُلْفًا غَلاَ كَيْفَ وَقَعْ"},{"n":113,"a":"وَالصَّادُ كَالزَّايِ ضَفَا اْلأَوَّلُ قِفْ","b":"وَفِيهِ وَالثَّانِيْ وَذِيْ اللاَّمِ اخْتُلِفْ"},{"n":114,"a":"وَبَابُ أَصْدَقُ شَفَا وَالْخُلْفُ غَرْ","b":"يُصْدِرَ غِثْ شَفَا المُصَيْطِروُنَ ضَرْ"},{"n":115,"a":"قِ الْخُلْفَ مَعْ مُصَيْطِرٍ وَالسِّينُ لِي","b":"وَفِيهِما الْخُلْفُ زَكِيٌّ عَنْ مَلِي"},{"n":116,"a":"عَلَيْهِمُو إلَيْهِمُو لَدَيْهِمُو","b":"بِضَمِّ كَسْرِ الْهَاَءِ ظَبْيٌ فَهِمُ"},{"n":117,"a":"وَبَعْدَ يَاءٍ سَكَنَتْ لاَ مُفْرَدَا","b":"ظَاهِرْ وَإِنْ تَزُلْ كَيُخْزِهْمِ غَدَا"},{"n":118,"a":"وَخُلْفُ يُلْهِهِمْ قِهِمْ ويُغْنِهِمْ","b":"عَنْهُ وَلاَ يَضُمُّ مَنْ يُوَلِّهِمْ"},{"n":119,"a":"وَضَمَّ مِيمَ الْجَمْعِ صِلْ ثَبْتٌ دَرَا","b":"قَبْلَ مُحَرَّكٍ وَبِالْخُلْفِ بَرَا"},{"n":120,"a":"وَقَبْلَ هَمْزِ الْقَطْعِ وَرْشٌ وَاكْسِرُوا","b":"قَبْلَ السُّكُونِ بَعْدَ كَسْرٍ حَرَّرُوا"},{"n":121,"a":"وَصْلًا وَبَاقِيهِمْ بِضَمٍ وَشَفَا","b":"مَعْ مِيمٍ الهْاَءَ وَأَتْبِعْ ظُرَفَا"}]},{"title":"بَابُ الإِدْغَامِ الْكَبِيرِ (٢٩)","verses":[{"n":122,"a":"إِذَا الْتَقَى خَطًّا مُحَرَّكَانِ","b":"مِثْلاَنِ جِنْسَانِ مُقَارِبَانِ"},{"n":123,"a":"أَدْغِمْ بِخُلْفِ الدُّورِ وَالسُّوسِي مَعَا","b":"لَكِنْ بِوَجْهِ الْهَمْزِ وَالمَدِّ امْنَعَا"},{"n":124,"a":"فَكِلْمَةً مِثْلَيْ مَنَاسِككُّمْ وَما","b":"سَلَكَكُمْ وَكِلْمَتَيْنِ عَمِّمَا"},{"n":125,"a":"مَا لَمْ يُنَوَّنْ أَوْ يَكُنْ تَا مُضْمَرِ","b":"وَلاَ مُشَدَّدًا وَفى الْجَزْمِ انْظُرِ"},{"n":126,"a":"فإِنْ تَمَاثَلاَ فَفِيْهِ خُلْفُ","b":"وَإِنْ تقَارَبَا فَفِيْهِ ضُعْفُ"},{"n":127,"a":"والْخُلْفُ فِى وَاوِ هُوَ المضْمُومِ هَا","b":"وَآلَ لُوطٍ جِئْتِ شَيْئًا كَافَ هَا"},{"n":128,"a":"كالَّلآءِ لاَ يَحْزُنْكَ فَامْنَعْ وَكَلِمْ","b":"رُضْ سَنَشُدُّ حُجَّتَكْ بَذْلُ قُثَمْ"},{"n":129,"a":"تُدْغَمُ فِى جِنْسٍ وَقُرْبٍ فُصِّلاَ","b":"فَالرَّاءُ فِى اللاَّمِ وَهِي فى الرَّاءِ لاَ"},{"n":130,"a":"إِن فُتِحَا عَنْ سَاكِنٍ لاَ قَالَ ثُمْ","b":"لاَ عَنْ سُكُونٍ فِيهِمَا النُّونُ اُدُّغِمْ"},{"n":131,"a":"وَنَحْنُ أَدْغِمْ ضَادَ بَعْضِ شَانِ نُصْ","b":"سِينُ النُّفُوسِ الرَّاسُ بِالْخُلْفِ يُخَصْ"},{"n":132,"a":"مَعْ شِينِ عَرْشِ الدِّالُ فِى عَشْرٍ سَنَا","b":"ذَا ضِقْ تَرَى شِدْ ثِقْ ظُبًا زِدْ صِفْ جَنَا"},{"n":133,"a":"إِلاَّ بِفَتْحٍ عَنْ سُكُونٍ غَيْرَ تَا","b":"وَالتَّاءُ فِى الْعَشْرِ وَفِي الطَّا ثَبَتَا"},{"n":134,"a":"وَالخُلْفُ فِى الزَّكَاةَ وَالتَّوْرَاةَ حَلْ","b":"وَلْتَأْتِ آتٍ وَلِثَا الخَمْسُ اْلأُوَلْ"},{"n":135,"a":"وَالكَافُ فِى الْقَافِ وَهِي فِيهَا وَإِنْ","b":"بِكِلْمَةٍ فَمِيمُ جَمْعٍ وَاشْرُطَنْ"},{"n":136,"a":"فِيهِنَّ عَنْ مُحَرَّكٍ وَالْخُلْفُ فِي","b":"طَلَّقَكُنَّ وَلِحَا زُحْزِحَ فِي"},{"n":137,"a":"وَالذَّالُ فِى سِينٍ وَصَادِ الجْيِمُ صَحْ","b":"مِنْ ذِي المَعَارِجِ وَشَطْأَهُ رَجَحْ"},{"n":138,"a":"وَالْبَاءُ فِى مِيمِ يُعَذِّبْ مَنْ فَقَطْ","b":"وَالْحَرْفُ بِالصِّفَةِ إِنْ يُدْغَمْ سَقَطْ"},{"n":139,"a":"وَالمْيِمُ عِنْدَ الْبَاءِ عَنْ مُحَرَّكِ","b":"تَخْفَى وَأَشْمِمَنْ وَرُمْ أَوِ اتْرُكِ"},{"n":140,"a":"فِى غَيْرِ بَا وَالمْيِمِ عَنْهُماَ وَعَنْ","b":"بَعْضٍ بِغَيْرِ الْفَا وَمُعْتَلٌّ سَكَنْ"},{"n":141,"a":"قَبْلُ امْدُدَنْ وَاقْصُرْهُ وَالصَّحِيحُ قَلْ","b":"إِدْغَامُهُ لِلْعُسْرِ وَاْلإِخْفَا أَجَلْ"},{"n":142,"a":"وَافَقَ فِى إِدْغَامِ صَفًاّ زَجْرَا","b":"ذِكْرًا وَذَرْوًا فِدْ وَذِكْرًا الاُخْرَى"},{"n":143,"a":"صُبْحًا قَرَا خُلْفٍ وَبَا وَالصَّاحِبِ","b":"بِكَ تَّمَارَى ظَنَّ أَنْسَابَ غَبِي"},{"n":144,"a":"ثُمَّ تَّفَكَّروُا نُسَبِّحَكْ كِلاَ","b":"بَعْدُ وَرَجِّحْ لَذَهَبْ وَقِبَلاَ"},{"n":145,"a":"جَعَلَ نَحْلٍ أَنَّهُ النَّجْمِ مَعَا","b":"وَخُلْفُ الاَوَّلَيْنِ مَعْ لِتُصْنَعَا"},{"n":146,"a":"مُبَدِّلَ الْكَهْفِ وَبَا الْكِتَابَا","b":"بِأَيْدِ بِالْحَقِّ وَإِنْ عَذَبَا"},{"n":147,"a":"وَالْكَافُ فِى كَانُوا وَكَلاَّ أَنْزَلاَ","b":"لَكُمْ تَمَثَّلْ وَجَهَنَّمْ جَعَلاَ"},{"n":148,"a":"شُورى وَعَنْهُ (رويس) الْبَعْضُ فِيهَا أَسْجَلاَ","b":"وقِيلَ عَنْ يَعْقُوبَ مَا لِاْبنِ الْعَلاَ"},{"n":149,"a":"بَيَّتَ حُزْ فُزْ تَعِدَانِنِي لَطُفْ","b":"وَفِى تُمِدُّونَنِ فَضْلُهُ ظَرُفْ"},{"n":150,"a":"مَكَّنِّ غَيْرُ الْمَكِّ تَأْمَنَّا أَشِمْ","b":"وَرُمْ لِكُلِّهِمْ وَبِالْمَحْضِ ثَرِمْ"}]},{"title":"بَابُ هَاءِ الْكِنَايَةِ (١١)","verses":[{"n":151,"a":"صِلْ هَا الضَّمِيرِ عَنْ سُكُوِنٍ قَبْل مَا","b":"حُرِّكَ دِنْ فِيْهِ مُهَانًا عَنْ دُمَا"},{"n":152,"a":"سَكِّنْ يُؤَدِّهْ نُصْلِهِ نُؤْتِهْ نُوَلْ","b":"صِف لِيْ ثَنًا خُلْفُهُمَا فِنَاهُ حَلْ"},{"n":153,"a":"وَهُمْ وَحَفْصٌ أَلْقِهِ اِقْصُرْهُنَّ كَمْ","b":"خُلْفٌ ظُبىً بِنْ ثِقْ وَيَتَّقِهْ ظُلَمْ"},{"n":154,"a":"بَلْ عُدْ وَخُلْفًا كَمْ ذَكَا وَسَكِّنَا","b":"خَفْ لَوْمَ قَوْمٍ خُلْفُهُمْ صَعْبٌ حَنَا"},{"n":155,"a":"وَالْقَافَ عُدْ يَرْضَهْ يَفِي وَالْخُلْفُ لَا","b":"صُنْ ذاَ طُوَى اقْصُرْ فِى ظُبىً لُذْ نَلْ أَلاَ"},{"n":156,"a":"واَلْخُلْفُ خَلْ مِزْ يَأْتِهِ الْخُلْفُ بُرَهْ","b":"خُذْ غِثْ سُكُونُ الْخُلْفِ يَا وَلَمْ يَرَهْ"},{"n":157,"a":"لِي الْخُلْفُ زُلْزِلَتْ خَلاَ الْخُلْفُ لِمَا","b":"وَاقْصُرْ بخُلْفِ السَّورَتَيْنِ خَفْ ظَمَا"},{"n":158,"a":"بِيَدِهِ غِثْ تُرْزَقَانِهِ اْختُلِفْ","b":"بِنْ خُذْ عَلَيْهِ اللهَ أَنْسَانِيهِ عِفْ"},{"n":159,"a":"بِضَمِّ كَسْرٍ أَهْلِهِ امْكُثُوا فِدَا","b":"وَاَلاصْبَهَانِيُّ بِهِ انْظُرْ جَوَّدَا"},{"n":160,"a":"وَهَمْزُ أَرْجِئْهُ كَسَا حَقًّا وَهَا","b":"فَاقْصُرْ حِمًا بِنْ مِلْ وَخُلْفٌ خُذْ لَهَا"},{"n":161,"a":"وَأَسْكِنَنْ فُزْ نَلْ وَضُمَّ الكَسْرَ لِيْ","b":"حَقٌّ وَعَنْ شُعْبَةَ كَالْبَصْرِ انْقُلِ"}]},{"title":"بَابُ الْمَدِّ وَالْقَصْرِ (١٣)","verses":[{"n":162,"a":"إِنْ حَرْفُ مَدٍّ قَبْلَ هَمْزٍ طَوَّلاَ","b":"جُدْ فِدْ وَمِزْ خُلْفًا وَعَنْ بَاقِي الْمَلاَ"},{"n":163,"a":"وَسِّطْ وَقِيلَ دُونَهُمْ نَلْ ثُمَّ كَلْ","b":"رَوَى فَبَاقِيهِمْ أَوَ اشْبِعْ مَا اتَّصَلْ"},{"n":164,"a":"لِلْكُلِّ عَنْ بَعْضٍ وَقَّصْرُ المنُفْصِلْ","b":"بِنْ لِي حِمًا عَنْ خُلْفِهِمْ دَاعٍ ثَمِلْ"},{"n":165,"a":"وَالْبَعْضُ للِتَّعْظِيمِ عَن ذِي الْقَصْرِ مَدْ","b":"وَأَزْرَقٌ إِنْ بَعْدَ هَمْزٍ حَرْفُ مَدْ"},{"n":166,"a":"مُدَّ لَهُ وَاقْصُرْ وَوَسِّطْ كَنَأَى","b":"فَاْلآنَ أُوتُوا إِيْءَءَامَنْتُمْ رَأَى"},{"n":167,"a":"لاَ عَنْ مُنَوَّنٍ وَلاَ السَّاكِنِ صَحْ","b":"بِكلْمِةٍ أَوْ هَمْزِ وَصْلٍ فِي اْلأَصَحْ"},{"n":168,"a":"وَامْنَعْ يُؤَاخِذْ وَبِعَادًا الاُوْلَى","b":"خُلْفٌ وَآلآنَ وَإِسْرَائِيلاَ"},{"n":169,"a":"وَحَرْفَيِ اللِّينِ قُبَيْلَ هَمْزَةِ","b":"عَنْهُ امْدُدَنْ وَوَسِّطَنْ بِكِلْمَةِ"},{"n":170,"a":"لاَ مَوْئِلًا مَوْءُودَةٌ وَالْبَعْضُ قَدْ","b":"قَصَّرَ سَوْءاتٍ وَبَعْضٌ خَصَّ مَدْ"},{"n":171,"a":"شَيْئٍ لَهُ مَعْ حَمْزَةٍ وَالْبَعْضُ مَدْ","b":"لِحَمْزَةٍ فِى نَفْيِ لاَ كَلاَ مَرَدْ"},{"n":172,"a":"وَأَشْبِعِ الْمَدَّ لِسَاكِنٍ لَزِمْ","b":"وَنَحْوُ عَيْنٍ فَالثَّلاَثَةُ لَهُمْ"},{"n":173,"a":"كَسَاكِنِ الْوَقْفِ وَفِي اللِّينِ يَقِلْ","b":"طُولٌ وَأَقْوىَ السَّبَبَيْنِ يَسْتَقِلْ"},{"n":174,"a":"وَالْمَدُّ أَوْلَى إِنْ تَغَيَّرَ السَّبَبْ","b":"وَبَقِيَ اْلأَثَرُ أَوْ فَاقْصُرْ أَحَبْ"}]},{"title":"بَابُ الهَمْزَتَيْنِ مِنْ كَلِمَةٍ (٢٢)","verses":[{"n":175,"a":"ثَانِيهِمَا سَهِّلْ غِنَى حِرْمٍ حَلاَ","b":"وَخُلْفُ ذِي الْفَتْحِ لَوىَ أَبْدِلْ جَلاَ"},{"n":176,"a":"خُلْفًا وَغَيْرُ المَكِّ أَنْ يُؤْتَى أَحَدْ","b":"يُخْبِرُ أَنْ كَانَ رَوَى اعْلَمْ حَبْرُ عَدْ"},{"n":177,"a":"وَحُقِّقَتْ شِمْ فِي صَبَا وَأَعْجَمِي","b":"حَم شِدْ صُحْبَةَ أَخْبِرْ زِدْ لُمِ"},{"n":178,"a":"غُصْ خُلْفُهُمْ أَذْهَبْتُمُ اتْلُ حُزْ كَفَا","b":"وَدِنْ ثَنَا إِنَّكْ لَأَنْتَ يُوسُفَا"},{"n":179,"a":"وَءَائِذَا مَامُتُّ بِالْخُلْفِ مَتَى","b":"إِنَّا لَمُغْرَمُونَ غَيْرُ شُعْبَتَا"},{"n":180,"a":"أَئِنَّكُمْ لَاْعَرافَ عَنْ مَدًا أَئِنْ","b":"لَناَ بِهَا حِرْمٌ عَلاَ وَالْخُلْفُ زِنْ"},{"n":181,"a":"آمَنْتُمُو طَهَ وَفِي الثَّلاَثِ عَنْ","b":"حَفْصٍ رُوَيْسٍ اَلاصْبَهَانِيْ أَخْبِرَنْ"},{"n":182,"a":"وَحَقَّقَ الثَّلاَثَ لِي الْخُلْفُ شَفَا","b":"صِفْ شِمْءَآلِهَتُنَا شَهْدٌ كَفَا"},{"n":183,"a":"وَالْمُلْكَ وَالأَعْرَافَ الاُولى أَبْدِلاَ","b":"فِى الْوَصْلِ وَاوًا زُرْ وَثَانٍ سَهَّلاَ"},{"n":184,"a":"بِخُلْفِهِ أَئِنَّ الاَنْعَامَ اخْتُلِفْ","b":"غَوْثٌ أَئِنَّ فُصِّلَتْ خُلْفٌ لَطُفْ"},{"n":185,"a":"أَأَسْجُدُ الْخِلاَفُ مِزْ وَأَخْبِرَا","b":"بِنَحْوَءَائِذَا أَئِنَّا كُرِّرا"},{"n":186,"a":"أَوَّلُه ثَبْتُ كَمَا الثَّانِي رُدِ","b":"إِذْ ظَهَرُوا وَالنَّمْلُ مَعْ نُونٍ زِدِ"},{"n":187,"a":"رُضْ كِسْ وَأُولاَهَا مَدًا وَالسَّاهِرَهْ","b":"ثَنَا وَثَانِيهَا ظُبىً إِذْ رُمْ كَرَهْ"},{"n":188,"a":"وَأَوَّلَ اْلأَوَّلِ مِنْ ذِبْحٍ كَوَى","b":"ثَانِيَهُ مَعْ وَقَعَتْ رُدْ إِذْ ثَوَى"},{"n":189,"a":"وَالكُلُّ أُولاَهَا وَثَانِي العَنْكَباَ","b":"مُسْتَفْهِمُ اَلأَوَّلِ صُحْبَةٌ حَبَا"},{"n":190,"a":"وَالمَدُّ قَبْلَ الْفَتْحِ وَالكَسْرِ حَجَرْ","b":"بِنْ ثِقْ لَهُ الخُلْفُ وَقَبْلَ الضَّمِّ ثَرْ"},{"n":191,"a":"وَالْخُلْفُ حُزْ بِي لُذْ وَعَنْهُ أَوَّلاَ","b":"كَشُعْبَةٍ وَغَيْرُهُ امْدُدْ سَهِّلاَ"},{"n":192,"a":"وَهَمْزَ وَصْلٍ مِنْ كآللهُ أَذِنْ","b":"أَبْدِلْ لكُلٍّ أَوْ فَسَهِّلْ وَاقْصُرَنْ"},{"n":193,"a":"كَذَا بِهِ السِّحْرُ ثَنَا حُزْ وَالْبَدَلْ","b":"وَالْفَصْلُ مِنْ نَحْوِءَءَامَنْتُمْ خَطَلْ"},{"n":194,"a":"أَئِمَّةً سَهِّلْ أَوَ ابْدِلْ حُطْ غِنَا","b":"حِرْمٍ وَمَدٌّ لَاحَ بالْخُلْفِ ثَنَا"},{"n":195,"a":"مُسَهِّلًا وَالأَصْبَهَانِي بِالْقَصَصْ","b":"فِى الثَّانِ وَالسَّجْدَةِ مَعْهُ المَدُّ نَصْ"},{"n":196,"a":"أَنْ كَانَ أَعْجَمِىُّ خُلْفٌ مُلِيَا","b":"وَالكُلُّ مُبْدِلٌ كَآسَى أُوتِيَا"}]},{"title":"بَابُ الهَمْزَتَيْنِ مِنْ كَلِمَتَيْنِ (٦)","verses":[{"n":197,"a":"أَسْقَطَ الاُوْلَى فِى اتِّفَاَقٍ زِنْ غَدَا","b":"خُلْفُهُمَا حُزْ وَبِفَتْحٍ بِنْ هُدَى"},{"n":198,"a":"وَسَهَّلًا فِى الكَسْرِ وَالضَّمِّ وَفِي","b":"بِالسُّوءِ وَالنَّبِيءِ اِلادْغَامُ اصْطُفِي"},{"n":199,"a":"وَسَهَّلَ الأُخْرَى رُوَيْسٌ قُنْبُلُ","b":"وَرْشٌ وَثَامِنٌ وَقِيلَ تُبْدَلُ"},{"n":200,"a":"مَدًّا زَكَا جُودًا وَعَنْهُ هَؤُلاَ","b":"إِنْ وَالْبِغَا إِنْ كَسْرَ يَاءٍ أَبْدِلاَ"},{"n":201,"a":"وَعِنْدَ الاِخْتِلاَفِ الاُخْرَى سَهِّلَنْ","b":"حِرْمٌ حَوَى غِنًا وَمِثْلُ السُّوءُ إِنْ"},{"n":202,"a":"فَالْوَاوُ أَوْ كَالْيا وَكَالسَّمَاءِ أَوْ","b":"تَشَاءُ أَنْتَ فَباِلاِبْدَالِ وَعَوْا"}]},{"title":"بَابُ الْهَمْزِ المُفْرَدِ (٢٦)","verses":[{"n":203,"a":"وَكُلَّ هَمْزٍ سَاكِنٍ أَبْدِلْ حِذَا","b":"خُلْفٍ سِوَى ذِي الْجَزْمِ وَاْلأَمْرِ كَذَا"},{"n":204,"a":"مُؤْصَدَةٌ رِئْيًا وَتُؤْوِي وَلِفَا","b":"فِعْلٍ سِوَى اْلإِيوَاءِ اْلأَزْرَقُ اقْتَفَى"},{"n":205,"a":"وَاْلأَصْبَهَانِيْ مُطْلَقًا لاَ كَاسُ","b":"وَلُؤْلُؤًا وَالرَّأْسُ رِئْيًا بَاسُ"},{"n":206,"a":"تُؤْوِي وَمَايَجِيءُ مِنْ نَبَأْتُ","b":"هَيِّيءْ وَجِئْتُ وَكَذَا قَرَأْتُ"},{"n":207,"a":"وَالكُلَّ ثِقْ مَعْ خُلْفِ نَبِّئْناَ وَلَنْ","b":"يُبْدَلَ أَنْبِئْهُمْ وَنَبِّئْهُمْ إِذَنْ"},{"n":208,"a":"وَافَقَ فِى مُؤْتَفِكٍ بِالْخُلْفِ بَرْ","b":"وَالذِّئْبُ جَانِيهِ رَوَى اللُّؤْلُؤُ صَرْ"},{"n":209,"a":"وَبئْسَ بِئْرٍ جُدْ وَرُؤْيَا فَأدَّغِمْ","b":"كُلًاّ ثَنَا رِئْيًا بِهِ ثَاوٍ مُلِمْ"},{"n":210,"a":"مُؤْصَدَةٌ بِالْهَمْزِ عَنْ فَتًى حِمًا","b":"ضِئْزَى دَرَى يَأْجُوجَ مَأْجُوجَ نَمَا"},{"n":211,"a":"وَالْفَاءَ مِنْ نَحْوِ يُؤَدِّهْ أَبْدِلوُا","b":"جُدْ ثِقْ يُؤَيِّدْ خُلْفُ خُذْ وَيُبْدَلُ"},{"n":212,"a":"لِْلأَصْبَهَانِيْ مَعْ فُؤَادٍ إِلاَّ","b":"مُؤَذِّنٌ وَأَزْرَقٌ لِيَلاَّ"},{"n":213,"a":"وَشَانِئَكْ قُرِيْ نُبَوِّيْ اسْتُهْزِئَا","b":"بَابُ مِائَهْ فِئَهْ وَخَاطِئَهْ رِئَا"},{"n":214,"a":"يُبَطِّئَنْ ثُبْ وَخِلاَفُ مَوْطِيَا","b":"وَاْلاَصْبَهَانِي وَهْوَ (أبو جعفر) قَالاَ خَاسِيَا"},{"n":215,"a":"مُلِي وَنَاشِيَهْ وَزَادَ فَبِأَيْ","b":"بِالْفاَ بِلاَ خُلْفٍ وَخُلْفُهُ بِأَيْ"},{"n":216,"a":"وَعَنْهُ سَهِّلِ اطْمَأَنَّ وَكَأَنْ","b":"أُخْرَى فَأَنْتَ فَأَمِنْ لأَمْلأَنْ"},{"n":217,"a":"أَصْفَا رَأَيْتَهُمْ رَآهَا بِالْقَصَصْ","b":"لمَاَّ رَأَتْهُ وَرَآهُ النَّمْلَ خُصْ"},{"n":218,"a":"رَأَيْتَهُمْ تُعْجِبْ رَأَيْتَ يُوسُفَا","b":"تَأَذَّنَ اْلأَعْراَفَ بَعْدُ اخْتَلَفَا"},{"n":219,"a":"وَالْبَزِّ بِالْخُلْفِ لأَعْنَتَ وَفِي","b":"كَائِنْ وَإِسْرَائِيلَ ثَبْتٌ وَاحْذِفِ"},{"n":220,"a":"كَمُتَّكُونَ اسْتَهْزِءُوا يُطْفُوا ثَمَدْ","b":"صَابُونَ صَابِينَ مَدًا مُنْشُونَ خَدْ"},{"n":221,"a":"خُلْفًا وَمُتَكِينَ مُسْتَهْزِينَ ثَلْ","b":"وَمُتَّكًا تَطَوْ يَطَوْ خَاطِينَ وَلْ"},{"n":222,"a":"أَرَيْتَ كُلًاّ رُمْ وَسَهِّلْهَا مَدَا","b":"هَا أَنْتُمُ حَازَ مَدًا أَبْدِلْ جَدَا"},{"n":223,"a":"بِالْخُلْفِ فِيهِمَا وَيَحْذِفُ اْلأَلِفْ","b":"وَرْشٌ وَقُنْبُلٌ وَعَنْهُمَا اخْتُلِفْ"},{"n":224,"a":"وَحَذْفُ يَا اللاَّئِيْ سمَاَ وَسَهَّلُوا","b":"غَيْرَ ظُبىً بِهِ زَكَا وَالْبَدَلُ"},{"n":225,"a":"سَاكِنَةَ الْيَا خُلْفُ هَادِيْهِ حَسَبْ","b":"وَبَابَ يَيْأَسِ اقْلِبَ ابْدِلْ خُلْفُ هَبْ"},{"n":226,"a":"هَيْئَةَ أَدْغِمْ مَعْ بَرِيْ مَرِيْ هَنِيْ","b":"خُلْفٌ ثَنَا النَّسِيْءُ ثَمْرُهُ جَنِي"},{"n":227,"a":"جُزًّا ثَنَا وَاهْمِزْ يُضَاهُوَن نَدَى","b":"بَابَ النَّبِيِّ وَالنُّبُوَّةِ الْهُدَى"},{"n":228,"a":"ضِيَاءَ زِنْ مُرْجُونَ تُرْجِي حَقَّ صُمْ","b":"كَسَا الْبَرِيَّةُ اتْلُ مِزْ بَادِيَ حُمْ"}]},{"title":"بَابُ نَقْلِ حَرَكَةِ الهَمْزةِ إِلىَ السَّاكِنِ قَبْلَهَا (٦)","verses":[{"n":229,"a":"وَانْقُلْ إِلَى الآخِرِ غَيْرَ حَرْفِ مَدْ","b":"لِوَرْشٍ إِلاَّ هَا كِتَابِيَهْ أَسَدْ"},{"n":230,"a":"وَافَقَ مِنْ إِسْتَبْرَقٍ غَرْ وَاخْتُلفْ","b":"فِى اْلآنَ خُذْ وَيُونُسٍ بِهِ خَطِفْ"},{"n":231,"a":"وَعَادًا اْلأُولى فَعَادًا لُولَى","b":"مَدًا حِمَاهُ مُدْغَمًا مَنْقُولاَ"},{"n":232,"a":"وَخُلْفُ هَمْزِ الْوَاوِ فِى النَّقْلِ بَسَمْ","b":"وَابْدَا لِغَيْرِ وَرْشِ بِاْلأَصْلِ أَتَمْ"},{"n":233,"a":"وَابْدَأَ بِهَمْزِ الْوَصْلِ فِى النَّقْلِ أَجَلْ","b":"وَانْقُلْ مَدًا رِدًا وَثَبْتٌ الْبَدَلْ"},{"n":234,"a":"وَمِلْءُ اْلاَصْبَهَانِي مَعْ عِيسَى اخْتُلِفْ","b":"وَسَلْ رَوَى دُمْ كَيْفَ جَا الْقُرَانُ دُفْ"}]},{"title":"بَابُ السَّكْتِ عَلىَ السَّاكِنِ قَبْلَ الهَمْزِ وَغَيْرِهِ (٥)","verses":[{"n":235,"a":"وَالسَّكْتُ عَنْ حَمْزةَ فِى شَيْءٍ وَأَلْ","b":"وَالْبَعْضُ مَعْهُمَا لَهُ فِيْمَا انْفَصَلْ"},{"n":236,"a":"وَالْبَعْضُ مُطْلَقًا وَقِيلَ بَعْدَ مَدْ","b":"أَوْ لَيْسَ عَنْ خَلاَّدٍ السَّكْتُ اطَّرَدْ"},{"n":237,"a":"قِيلَ وَلاَ عَنْ حَمْزَةٍ وَالْخُلْفُ عَنْ","b":"إِدْرِيسَ غَيْرَ المَدَّ أَطْلِقْ وَاخْصُصَنْ"},{"n":238,"a":"وَقِيلَ حَفْصٌ وَابْنُ ذَكْوَانَ وَفيْ","b":"هِجَا الْفَوَاتِحِ كَطَهَ ثَقِّفِ"},{"n":239,"a":"وَأَلِفَيْ مَرْقَدِنَا وَعِوَجًا","b":"بَل رَّانَ مَن رَّاقٍ لِحَفْصِ الْخُلْفُ جَا"}]},{"title":"بَابُ وَقفِ حَمْزَةَ وَهِشَامٍ عَلىَ الهَمْزِ (١٤)","verses":[{"n":240,"a":"إِذَا اعْتَمَدْتَ الْوَقْفَ خَفِّفْ هَمْزَهْ","b":"تَوَسُّطًا أَوْ طَرَفًا لِحَمْزَةْ"},{"n":241,"a":"فَإِنْ يُسَكَّنْ بِالّذِيْ قَبْلُ ابْدِلِ","b":"وَإِنْ يُحَرَّكْ عَنْ سُكُونٍ فَانْقُلِ"},{"n":242,"a":"إلاَّ مُوَسَّطًا أَتى بَعْدَ أَلِفْ","b":"سَهِّلْ وَمِثْلَهُ فَأَبْدِلْ فى الطَّرَفْ"},{"n":243,"a":"وَالْوَاوُ وَالْيَا إِنْ يزُاَداَ أَدْغِماَ","b":"وَالْبَعْضُ فِي اْلأَصْلِيِّ أَيْضًا أَدْغَماَ"},{"n":244,"a":"وَبَعْدَ كَسْرَةٍ وَضَمٍ أَبْدِلاَ","b":"إِنْ فُتِحَتْ يَاءً وَوَاوًا مُسْجَلًا"},{"n":245,"a":"وَغَيْرُ هُذَا بَيْنَ بَيْنَ وَنُقِلْ","b":"يَاءٌ كَيُطْفِئُوا وَوَاوٌ كَسُئِلْ"},{"n":246,"a":"وَالْهَمْزُ اَلاَوَّلُ إِذَا مَا اتَّصَلاَ","b":"رَسْمًا فَعَنْ جُمْهُورِهِمْ قَدْ سُهِّلاَ"},{"n":247,"a":"أَوْ يَنْفَصِلْ كَاسْعَوْا إِلَى قُلْ إِنْ رجَحْ","b":"لاَ مِيمَ جَمْعٍ وَبِغَيْرِ ذَاكَ صَحْ"},{"n":248,"a":"وَعَنْهُ تَسَهِيلٌ كَخَطِّ المُصْحَفِ","b":"فَنَحُو مُنْشُونَ مَعَ الضَّمِّ احْذِفِ"},{"n":249,"a":"وَأَلِفُ النَّشْأَةِ مَعْ وَاوِكُفَا","b":"هُزْؤًا وَيَعْبَؤُا الْبَلَؤُا الضُعَفَا"},{"n":250,"a":"وَيَاءَ مِنْ آنَا نَباَ الْ وَرِيَّا","b":"تُدْغَمُ مَعْ تُؤْوِي وَقِيلَ رُؤْيَا"},{"n":251,"a":"وَبَيْنَ بَيْنَ إِنْ يُوَافِقْ وَاتْرُكِ","b":"مَا شَذَّ وَاكْسِرْهَا كَأَنْبِئْهُمْ حُكِي"},{"n":252,"a":"وَأَشْمِمَنْ وَرُمْ بِغَيْرِ المُبْدَلِ","b":"مَدًّا وَآخِرًا بِرَوْمٍ سَهِّلِ"},{"n":253,"a":"بَعْدَ مُحَرَّكٍ كَذَا بَعْدَ أَلِفْ","b":"وَمِثْلُهُ خُلْفُ هِشَامٍ فِى الطَّرَفْ"}]},{"title":"بَابُ الإدْغَاِمِ الصِّغِيرِ: فَصْلُ ذَالِ إذْ (٢)","verses":[{"n":254,"a":"إِذْ فِي الصَّفِيرِ وَتَجِدْ أَدْغِمْ حَلاَ","b":"لِيْ وَبِغَيْرِ الْجِيمِ قَاضٍ رَتَّلاَ"},{"n":255,"a":"وَالْخُلْفُ فِي الدَّالِ مُصِيبٌ وَفَتَى","b":"قَدْ وَصَّلَ اْلإدْغَامَ فِى دَالٍ وَتَا"}]},{"title":"فَصْلُ دَالِ قَدْ (٣)","verses":[{"n":256,"a":"بِالْجِيمِ وَالصَّفِيرِ وَالذَّالِ ادُّغِمْ","b":"قَدْ وَبِضَادِ الشِّينِ وَالظَّا تَنْعَجِمْ"},{"n":257,"a":"حُكْمٌ شَفَا لَفْظًا وَخُلْفُ ظَلَمَكْ","b":"لَهُ وَوَرْشُ الظَّاءَ وَالضَّادَ مَلَكْ"},{"n":258,"a":"وَالضَّادُ وَالظَّا الذَّالُ فِيهَا وَافَقَا","b":"مَاضٍ وَخُلْفُهُ بِزَايٍ وُثِّقَا"}]},{"title":"فَصْلُ تَاءِ التَّأْنِيثِ (٣)","verses":[{"n":259,"a":"وَتَاءُ تَأْنِيثٍ بِجِيمِ الظَّا وَثَا","b":"مَعَ الصَّفِيرِ ادْغِمْ رِضىً حُزْ وَجَثَا"},{"n":260,"a":"بِالظَّا وَبَزَّارٌ بِغَيْرِ الثَّا وَكَمْ","b":"بِالصَّادِ وَالظَّا وَسَجَزْ خُلْفٌ لَزِمْ"},{"n":261,"a":"كَهُدِّمَتْ وَالثَّا لَناَ والْخُلْفُ مِلْ","b":"مَعْ أَنْبَتَتْ لاَ وَجَبَتْ وَإِنْ نُقِلْ"}]},{"title":"فَصْلُ لاَمِ هَلْ وَبَلْ (٣)","verses":[{"n":262,"a":"وَبَلْ وَهَلْ فِى تَا وَثَا السِّينِ ادُّغِمْ","b":"وَزَايِ طَا ظَا النُّونِ وَالضَّادِ رُسِمْ"},{"n":263,"a":"وَالسِّينُ مَعْ تَاءٍ وَثَا فِدْ وَاخْتُلِفْ","b":"بِالطَّاءِ عَنْهُ هَلْ تَرَى الادْغَامُ حِفْ"},{"n":264,"a":"وَعَنْ هِشَامٍ غَيْرُ نَضٍّ يُدَّغَمْ","b":"عَنْ جُلِّهِمْ لاَحَرْفُ رَعْدٍ فِى اْلأَتَمْ"}]},{"title":"بَابُ حُروفٍ قَرُبَتْ مَخَارِجُهَا (٨)","verses":[{"n":265,"a":"إِدْغَامُ بَاءِ الْجَزْمِ فِى الْفَا لِيْ قَلاَ","b":"خُلْفُهُمَا رُمْ حُزْ يُعَذِّبْ مَنْ حَلاَ"},{"n":266,"a":"رَوَى وَخُلْفٌ فِى دَوًا بِنْ وَلِرَا","b":"فِى اللاَّمِ طِبْ خُلفٌ يَدٍ يَفْعَلْ سَرَا"},{"n":267,"a":"نَخْسِفْ بِهِمْ رُبًا وَفِى ارْكَبْ رُضْ حِمَا","b":"وَالخُلْفُ دِنْ بِي نَلْ قُوًى عُذْتُ لُمَا"},{"n":268,"a":"خُلْفٌ شَفَا حُزْ ثِقْ وَصَادَ ذِكْرُ مَعْ","b":"يُرِدْ شَفَا كَمْ حُطْ نَبَذْتُ حُزْ لُمَعْ"},{"n":269,"a":"خُلْفٌ شَفَا أُورِثْتُمُو رِضىً لَجَا","b":"حُزْ مِثْلَ خُلْفٍ وَلَبِثْتُ كَيْفَ جَا"},{"n":270,"a":"حُطْ كَمْ ثَنَا رِضىً وَيَس رَوَى","b":"ظَعْنٌ لِوًى وَالْخُلْفُ مِزْ نَلْ إِذْ هوَى"},{"n":271,"a":"كَنُونَ لاَ قَالُونَ يَلْهَثْ أَظْهِرِ","b":"حِرْمٍ لَهُمْ نَالَ خَلاَفُهُم وُرِيْ"},{"n":272,"a":"وَفى أَخَذْتُ وَاتَّخَذْتُ عَنْ دَرَى","b":"وَالْخُلْفُ غِثْ طَس مِيْمٍ فِدْ ثَرَى"}]},{"title":"بَابُ أَحْكَامِ النُّونِ السَّاكِنَةِ وَالتَّنْوِينِ (٥)","verses":[{"n":273,"a":"أَظْهِرْهُمَا عِنْدَ حُرُوفِ الْحَلْقِ عَنْ","b":"كُلٍّ وَفِي غَيْنٍ وَخَا أَخْفَى ثَمَنْ"},{"n":274,"a":"لَا مُنْخَنِقْ يُنْغِضْ يَكُنْ بَعْضٌ أًبَى","b":"وَاقْلِبْهُمَا مَعْ غُنَّةٍ مِيمًا بِبَا"},{"n":275,"a":"وَادْغِمْ بِلاَغُنِّةِ فِى لاَمٍ وَرَا","b":"وَهْيَ لِغَيْرِ صُحْبَةٍ أيْضًا تُرَى"},{"n":276,"a":"وَالْكُلُّ فِى يَنْمُو بِهَا وَضِقْ حَذَفْ","b":"فِى الْوَاوِ وَالْيَا وَتَرَى فِى الْيَا اخْتَلَفْ"},{"n":277,"a":"وَأَظْهَرُوا لَدَيْهِمَا بِكِلْمَةِ","b":"وَفِي الْبَوَاقِي أَخْفِيَنْ بِغُنَّةِ"}]},{"title":"بَابُ الفَتْحِ وَاْلإِمَالَةِ وَبَيْنَ اللَّفْظَيْنِ (٤٩)","verses":[{"n":278,"a":"أَمِلْ ذَوَاتِ الْيَاءِ فِى الْكُلِّ شَفَا","b":"وَثَنِّ اَلاَسْمَا إِنْ تُرِدْ أَنْ تَعْرِفَا"},{"n":279,"a":"وَرُدَّ فِعْلَهَا إِلَيْكَ كَالْفَتىَ","b":"هُدَى الْهَوَى اشْتَرَى مَعَ اسْتَعْلَى أَتَى"},{"n":280,"a":"وَكَيْفَ فَعْلَى وَفُعَالَى ضَمُّهُ","b":"وَفَتْحُهُ وَمَا بِيَاءٍ رَسْمُهُ"},{"n":281,"a":"كَحَسْرَتَى أَنَّى ضُحًى مَتَى بَلَى","b":"غَيْرَ لَدَى زَكَى عَلَى حَتَّى إِلَى"},{"n":282,"a":"وَمَيَّلُوا الرِّباَ الْقُوَى الْعُلَى كِلاَ","b":"كَذَا مَزِيدًا مِنْ ثُلاَثِي كَابْتَلَى"},{"n":283,"a":"مَعْ رُوسِ آيِ النَّجْمِ طَهَ اقْرَأَ مَعَ الَ","b":"قِيَامَةِ اللَّيْلِ الضُّحَى الشَّمْسِ سَأَلْ"},{"n":284,"a":"عَبَسَ وَالنَّزْعِ وَسَبِّحْ وَعَلِي","b":"أَحْيَا بِلاَ وَاوٍ وَعَنْهُ مَيِّلِ"},{"n":285,"a":"محَيْاهُمُ تَلاَ خَطَايَا وَدَحَا","b":"تُقَاتِه مَرْضَاتِ كَيْفَ جَا طَحَا"},{"n":286,"a":"سَجى وَأَنْسَانِيهِ مَنْ عَصَانِي","b":"أَتَانِ لاَ هُودَ وَقَدْ هَدَانِي"},{"n":287,"a":"أَوْصَانِ رُؤْيَايَ لَهُ الرُّؤْيَا رَوَى","b":"رُؤْيَاكَ مَعْ هُدَايَ مَثْوَايَ تَوَى"},{"n":288,"a":"مَحْيَايَ مَعْ آذَانِنَا آذَانِهِمْ","b":"جَوَارِ مَعْ بَارِئْكُمُ طُغْيَانِهِمْ"},{"n":289,"a":"مِشْكَاةِ جَبَّارِينَ مَعْ أَنْصَارِيْ","b":"وَبابِ سَارِعُوا وَخُلْفُ الْبَارِيْ"},{"n":290,"a":"تمُارِ مَعْ أُوَارِ مَعْ يُوَارِ مَعْ","b":"عَيْنِ يَتَامَى عَنْهُ الاِتْبَاعُ وَقَعْ"},{"n":291,"a":"وَمِنْ كُسَالَى وَمِنَ النَّصَارَى","b":"كَذَا أُسَارَى وَكَذَا سُكَارَى"},{"n":292,"a":"وَافَقَ فِي أَعْمَى كِلاَ اْلإسْرَى صَدَا","b":"وَأَوَّلًا حمًِا وَفي سِوًى سُدًى"},{"n":293,"a":"رَمىَ بَلى صُنْ خُلْفُهُ وَمُتَّصِفْ","b":"مُزْجَا يُلَقَّاهُ أَتَى أَمْرُ اخْتُلِفْ"},{"n":294,"a":"إِنَاهُ لِي خُلْفٌ نَأَى اْلإِسْرَا صِفِ","b":"مَعْ خُلْفِ نُونِهِ وَفيِهِمَا ضِفِ"},{"n":295,"a":"رَوَى وَفِيمَا بَعْدَ رَاءٍ حُطْ مَلاَ","b":"خُلْفٌ وَمَجْرَى عُدْ وَأَدْرَى أَوَّلاَ"},{"n":296,"a":"صِلْ وَسِوَاهَا مَعَ يَابُشْرَى اخْتَلَفْ","b":"وَافْتَحْ وَقَلِّلْهَا وَأَضْجِعْهَا حَتَفْ"},{"n":297,"a":"وَقَلِّلِ الرَّا وَرُءُوسَ الآي جِفْ","b":"وَما بِه هَا غَيْرَ ذِي الرَّا يَخْتَلِفْ"},{"n":298,"a":"مَعْ ذَاتِ ياءٍ مَعْ أَرَاكَهُمْ وَرَدْ","b":"وَكَيْفَ فُعْلى مَعْ رُءُوسِ الآيِ حَدْ"},{"n":299,"a":"خُلْفٌ سِوَى ذِي الرَّا وَأَنَّى وَيْلَتَى","b":"ياحَسْرَتَى الْخُلْفُ طَوَى قيلَ مَتىَ"},{"n":300,"a":"بَلى عَسَى وَأَسَفَى عَنْهُ نُقِلْ","b":"وَعَنْ جَمَاعَةٍ لَهُ دُنْيَا أَمِلْ"},{"n":301,"a":"حَرْفَيْ رَأَى مِنْ صُحْبَةٍ لَناَ اْخْتُلِفْ","b":"وَغَيْرَ الاُولَى الْخُلْفُ صِفْ وَالْهَمْزَ حِفْ"},{"n":302,"a":"وَذُو الضَّمِيرِ فيهِ أَوْ هَمْزٍ وَرَا","b":"خُلْفٌ مُنىً قَلِّلْهُمَا كُلًاّ جَرَى"},{"n":303,"a":"وَقَبْلَ سَاكِنٍ أَمِلْ لِلرَّا صَفَا","b":"فِي وَكَغَيْرِهِ الجَمِيعُ وَقَفَا"},{"n":304,"a":"وَاْلأَلِفَاتُ قَبْلَ كَسْرِ رَا طَرَفْ","b":"كَالدَّارِ نَارٍ حُزْ تَفُزْ مِنْهُ اخْتَلَفْ"},{"n":305,"a":"وَخُلْفُ غَارٍ تَمَّ وَالجَارِ تَلاَ","b":"طِبْ خُلْفَ هَارٍ صِفْ حَلاَ رُمْ بِنْ مَلاَ"},{"n":306,"a":"خُلفُهُماَ وَإِنْ تَكَرَّرْ حُطْ رَوَى","b":"وَالخُلْفُ مِنْ فَوْزٍ وَتَقْليلٌ جَوَى"},{"n":307,"a":"لِلْبَابِ جَبَّارِينَ جَارِ اخْتَلَفَا","b":"وَافَقَ فى التّكْرِيرِ قِسْ خُلْفٌ ضَفَا"},{"n":308,"a":"وَخُلْفُ قَهَّارِ الْبَوَارِ فُضِّلاَ","b":"تَوْرَاةَ جُدْ وَالْخُلْفُ فَضْلٌ بُجِّلاَ"},{"n":309,"a":"وَكَيْفَ كَافِرِينَ جَادَ وَأَمِلْ","b":"تُبْ حُزْ مُنَا خُلْفٍ غَلاَ وَرْوحُ قُلْ"},{"n":310,"a":"مَعْهُمْ بِنَمْلٍ وَالثُّلاَثِيْ فُضِّلاَ","b":"فِي خَافَ طَابَ ضَاقَ حَاقَ زَاغَ لاَ"},{"n":311,"a":"زَاغَتْ وَزَادَ خَابَ كَمْ خُلْفٌ فِنَا","b":"وَشَاءَ جَا لِيْ خُلْفُهُ فَتىً مُنَا"},{"n":312,"a":"وَخُلْفُهُ اْلإِكْرَامَ شَارِبِيْنَا","b":"إِكْرَاهِهِنَّ وَالحْوَاَرِيِّيْنَا"},{"n":313,"a":"عِمْرَانَ وَالْمِحْرابَ غَيْرَ مَا يُجَرْ","b":"فَهْوَ وَأُولَى زَادَ لاَخُلْفَ اسْتَقَرْ"},{"n":314,"a":"مَشَارِبُ كَمْ خُلْفُ عَيْنٍ آنِيَهْ","b":"مَعْ عَابِدُونَ عَابِدُ الْجَحْدِ لِيَهْ"},{"n":315,"a":"خُلْفٌ تَرَاءَى الرَّا فَتَى النَّاسِ بِجَرْ","b":"طَيِّبُ خُلْفًا رَانَ رُدْ صَفَا فَخَرْ"},{"n":316,"a":"وَفِى ضِعَافًا قَامَ بِالْخُلْفِ ضَمَرْ","b":"آتِيْكَ فى النَّمْلِ فَتىً وَالْخُلْفُ قَرْ"},{"n":317,"a":"وَرَا الْفَوَاتِحِ أَمِلْ صُحْبَةُ كَفْ","b":"حُلًا وَهَا كَافَ رَعَى حَافِظَ صِفْ"},{"n":318,"a":"وَتَّحْتُ صُحْبَةٌ جَنَا الخُلْفُ حَصَلْ","b":"يَا عَيْنَ صُحْبَةٌ كَسَاَ وَالخُلْفُ قَلْ"},{"n":319,"a":"لِثَالِثٍ (أبوعمرو) لاَ عَنْ هِشَامٍ طَا شَفَا","b":"صِفْ حَا مُنَى صُحْبَةُ يَس صَفَا"},{"n":320,"a":"رُدْ شُدْ فَشَا وَبَيْنَ بَيْنَ فِى أَسَفْ","b":"خُلْفُهُمَا رَا جُدْ وَإِذْ هَا يَا اخْتَلَفْ"},{"n":321,"a":"وَتَحْتُ هَا جِئْ حَا حُلًا خُلْفٌ جَلاَ","b":"تَوْرَاةَ مِنْ شَفَا حَكِيمًا مَيَّلاَ"},{"n":322,"a":"وَغَيْرُهَا لِلأَصْبَهَانِي لَمْ يُمَلْ","b":"وَخُلْفُ إِدْرِيسَ بِرُؤْيَا لاَ بِأَلْ"},{"n":323,"a":"وَلَيْسَ إَدْغَامٌ وَوَقفٌ إِنْ سَكَنْ","b":"يَمْنَعُ مَا يُمَالُ لِلْكَسْرِ وَعَنْ"},{"n":324,"a":"سُوسٍ خِلاَفٌ وَلِبَعْضٍ قُلِّلاَ","b":"وَمَا بِذِي التَّنْوِينِ خُلْفٌ يُعْتَلاَ"},{"n":325,"a":"بَلْ قَبْلَ سَاكِنٍ بِمَا أُصِّلَ قِفْ","b":"وَخُلْفُ كَالْقُرَى الَّتِي وَصْلًا يَصِفْ"},{"n":326,"a":"وَقِيلَ قَبْلَ سَاكِنٍ حَرْفَيْ رَأَى","b":"عَنْهُ وَرَا سِوَاهُ مَعْ هَمْزِ نَأَى"}]},{"title":"بَابُ إمَالَةِ هَاءِ التّأنِيثِ وَمَا قَبْلَهَا فِي الوَقْفِ (٤)","verses":[{"n":327,"a":"وَهَاءَ تَأْنِيثٍ وَقَبْلُ مَيِّلِ","b":"لاَ بَعْدَ الاِسْتِعْلاَ وحَاعٍ لِعَلِي"},{"n":328,"a":"وَأَكْهَرٍ لاَ عَنْ سُكُونِ يَا وَلاَ","b":"عَنْ كَسْرَةٍ وَسَاكِنٌ إِنْ فَصَلاَ"},{"n":329,"a":"لَيْسَ بِحَاجِزٍ وَفِطْرَتَ اخْتُلِفْ","b":"وَالْبَعْضُ أَهْ كَالْعَشْرِ أَوْ غَيْرِ اْلأَلِفْ"},{"n":330,"a":"يُمَالُ وَالمُخْتَارُ مَا تَقَدَّماَ","b":"وَالْبَعْضُ عَنْ حَمْزَةَ مِثْلُهُ نَمَا"}]},{"title":"بَابُ مَذَاهِبِهِمْ فِي الرَّاءَاتِ (١٥)","verses":[{"n":331,"a":"وَالرَّاءَ عَنْ سُكُونِ يَاءٍ رَقِّقِ","b":"أَوْ كَسْرَةٍ مِنْ كِلْمَةٍ لِلأزْرَقِ"},{"n":332,"a":"وَلَمْ يَرَالسَّاكِنَ فَصلًا غَيْرَ طَا","b":"وَالصَّادِ وَالْقَافِ عَلَى مَا اشتُرِطَا"},{"n":333,"a":"وَرَقِّقَنْ بِشَرَرٍ لِلأَكْثَرِ","b":"وَاْلأَعْجَمِيْ فَخِّمْ مَعَ المُكَرَّرِ"},{"n":334,"a":"وَنَحْوُ سِتْرًا غَيْرَ صِهْرًا فِى اْلأَتَمْ","b":"وَخُلْفُ حَيْرَانَ وَذِكْرَكَ إِرَمْ"},{"n":335,"a":"وَزْرَ وَحِذْرَكُمْ مِرَاءً وَافْتِرَا","b":"تَنْتَصِرَانِ سَاحِرَانِ طَهِّرَا"},{"n":336,"a":"عَشِيَرَةُ التَّوْبَةِ مَعْ سِرَاعَا","b":"وَمَعْ ذِرَاعَيْهِ فَقُلْ ذِرَاعَا"},{"n":337,"a":"إِجْرَامِ كِبْرَهُ لَعِبْرَةً وَجَلَ","b":"تَفْخِيمُ مَا نُوِّنَ عَنْهُ إِنْ وَصَلْ"},{"n":338,"a":"كَشَاكِرًا خَيْرًا خَبِيًرا خَضِرَا","b":"وَحَصِرَتْ كَذَاكَ بَعْضٌ ذَكَراَ"},{"n":339,"a":"كَذَاكَ ذَاتَ الضَّمِّ رَقِّقْ فِي الأَصَحْ","b":"والْخُلْفُ فِى كِبْرٌ وَعِشْرُونَ وَضَحْ"},{"n":340,"a":"وإِنْ تَكُنْ سَاكِنَةً عَنْ كَسْرِ","b":"رَقَّقَهَا يَا صَاحِ كُلُّ مُقْرِي"},{"n":341,"a":"وَحَيْثُ جَاءَ بَعْدُ حَرْفُ اسْتِعْلاَ","b":"فَخِّمْ وَفِي ذِي الْكَسْرِ خُلْفٌ إِلاَّ"},{"n":342,"a":"صِرَاطِ وَالصَّوَابُ أَنْ يُفَخَّماَ","b":"عَنْ كُلٍ الْمَرْءُ وَنَحْوُ مَرْيَمَا"},{"n":343,"a":"وَبَعْدَ كَسْرٍ عَارِضٍ أَوْ مُنْفَصِلْ","b":"فَخِّمْ وَإِنْ تَرُمْ فَمِثْلَ مَا تَصِلْ"},{"n":344,"a":"وَرَقِّقِ الرَّا إِنْ تُمَلْ أَوْ تُكْسَرِ","b":"وَفِي سُكُونِ الْوَقْفِ فَخِّمْ وَانْصُرِ"},{"n":345,"a":"مَا لَمْ تَكُنْ مِنْ بَعْدِ يَا سَاكِنَةِ","b":"أَوْ كَسْرٍ اَوْ تَرْقِيقٍ اَوْ إِمَالَةِ"}]},{"title":"بَابُ اللاَّمَاتِ (٥)","verses":[{"n":346,"a":"وَأَزْرَقٌ لِفَتْحِ لاَمٍ غَلَّظَا","b":"بَعْدَ سَكُونِ صَادٍ اَوْ طَاءٍ وَظَا"},{"n":347,"a":"أَوْ فَتْحِهَا وَإِنْ يَحُلْ فِيهَا أَلِفْ","b":"أَوْ إِنْ تُمَلْ مَعْ سَاكِنِ الْوَقْفِ اخْتُلِفْ"},{"n":348,"a":"وَقِيلَ عِنْدَ الطَّاءِ وَالظَّا واْلأَصَحْ","b":"تَفْخِيمُها وَالْعَكْسُ فِى الآيِ رجَحْ"},{"n":349,"a":"كَذَاكَ صَلْصَالٍ وَشَذَّ غَيْرُ مَا","b":"ذكَرْتُ وَاسْمَ اللهِ كُلٌّ فَخَّمَا"},{"n":350,"a":"مِنْ بَعْدِ فَتْحَةٍ وَضَمٍّ واخْتُلِفْ","b":"بَعْدَ مُمَالِ لاَ مُرَقَّقٍ وُصِفْ"}]},{"title":"بَابُ الْوَقْفِ عَلَى أَوَاخِرِ الْكَلِمِ (٦)","verses":[{"n":351,"a":"وَالأَصْلُ فِى الوَقْفِ السُّكُونُ وَلَهُمْ","b":"فىِ الرَّفْعِ وَالضَّمِ اشْمِمَنَّهُ ورُمْ"},{"n":352,"a":"وَامْنَعْهُمَا فِى النَّصْبِ وَالْفَتْحِ بَلَى","b":"فىِ الجَرِّ وَالكَسْرِ يُرَامُ مُسْجَلاَ"},{"n":353,"a":"وَالرَّوْمُ اِلاتْيَانُ بِبَعْضِ الحَرَكَةْ","b":"إِشْمَامُهُمْ إِشَاَرةٌ لَا حَرَكَةْ"},{"n":354,"a":"وَعَنْ أَبِى عَمْرٍو وَكُوفٍ وَرَدَا","b":"نَصًّا وَلِلْكُلِّ اخْتِيَارًا أُسْنِداَ"},{"n":355,"a":"وَخُلْفُ هَا الضَّمِيرِ وَامْنَعْ فِى اْلأَتَمْ","b":"مِنْ بَعْدِ يَا أَوْ وَاوٍ اَوْكَسْرٍ وَضَمْ"},{"n":356,"a":"وَهَاءُ تَأْنِيثٍ وَمِيمُ الْجَمْعِ مَعْ","b":"عَارِضِ تَحْرِيكٍ كِلاَهُمَا امْتَنَعْ"}]},{"title":"بَابُ الْوَقْفِ عَلَى مَرْسُومِ الْخَطِّ (١٧)","verses":[{"n":357,"a":"وَقِفْ لِكُلٍّ باِتّبَاعِ مَا رُسِمْ","b":"حَذْفًا ثُبُوتَا اتِصَّالًا فِى الْكَلِمْ"},{"n":358,"a":"لَكِنْ حُروفٌ عَنْهُمُو فِيهَا اخْتُلِفْ","b":"كَهَاءِ أُنْثى كُتِبَتْ تَاءً فَقِفْ"},{"n":359,"a":"بِالْهَا رَجَا حَقٍّ وَذَاتَ بَهْجَه","b":"والَّلاتَ مَرْضَاتِ وَلاَتَ رَجَّهْ"},{"n":360,"a":"هَيْهَاتَ هُدْ زِنْ خُلْفَ رَاضٍ يَا أَبَهْ","b":"دُمْ كَمْ ثَوىَ فِيمَهْ لِمَهْ عَمَّهُ بِمَهْ"},{"n":361,"a":"مِمَّهْ خِلاَفٌ هَبْ ظُبىً وَهْيَ وَهُو","b":"ظِلٌّ وَفى مُشَدَّدِ اسْمٍ خُلْفُهُ"},{"n":362,"a":"نَحوُ إِلَىَّ هُنَّ وَالْبَعْضُ نَقَلْ","b":"بِنَحْوِ عَالَمِينَ مُوفُونَ وَقَلْ"},{"n":363,"a":"وَوَيْلَتىَ وَحَسْرَتَى وَأَسَفَى","b":"وَثَمَّ غَرْ خُلْفًا وَوَصْلًا حَذَفَا"},{"n":364,"a":"سُلْطَانِيَهْ وَمَالِيَهْ وَمَاهِيَهْ","b":"فِي ظَاهِرٍ كِتَابِيَهْ حِسَابِيَهْ"},{"n":365,"a":"ظَنَّ اقْتَدِهْ شَفَا ظُبَا وَيَتَسَنْ","b":"عَنْهُمْ وَكَسْرُهَا اقْتَدِهْ كِسْ أَشْبِعَنْ"},{"n":366,"a":"مِنْ خُلْفِهِ أَيًّا بِأَيًّا مَا غَفَلْ","b":"رِضىً وَعَنْ كُلٍّ كَمَا الرَّسْمُ أَجَلْ"},{"n":367,"a":"كَذَاكَ وَيْكَأَنَّهُ وَوَيْكَأَنْ","b":"وَقِيْلَ بِالْكَافِ حَوَى وَالْيَاءِ رَنْ"},{"n":368,"a":"وَمَالِ سَالَ الْكَهْفِ فُرْقَانِ النِّسَا","b":"قِيلَ عَلَى مَا حَسْبُ حِفْظُهُ رَسَا"},{"n":369,"a":"هَا أَيُّهَ الرحَّمْنِ نُورِ الزُّخْرُفِ","b":"كَمْ ضَمَّ قِفْ رَجَا حِمًا بِاْلأَلِفِ"},{"n":370,"a":"كَأَيِّنِ النُّونُ وَبِالْيَاءِ حِمَا","b":"وَالْيَاءُ إِنْ تُحْذَفْ لِسَاكِنٍ ظَمَا"},{"n":371,"a":"يُرِدْنِ يُؤْتِ يَقْضِ تُغْنِ الْوَادِ","b":"صَالِ الْجَوَارِ اخْشَوْنِ نُنْجِ هَادِ"},{"n":372,"a":"وَافَقَ وَادِ النَّمْلِ هَادِ الرُّومِ رُمْ","b":"تَهْدِ بِهَا فَوزٌ يُنَادِ قَافَ دُمْ"},{"n":373,"a":"بِخُلْفِهِمْ وَقِفْ بِهَادٍ بَاقِ","b":"بِالْيَا لِمَكٍّ مَعَ وَالٍ وَاقِ"}]},{"title":"بَابُ مَذَاهِبِهِمْ فِى يَاءَاتِ الإِضَافَةِ (٣٠)","verses":[{"n":374,"a":"لَيْسَتْ بِلاَمِ الْفِعْلِ يَا المُضَافِ","b":"بَلْ هِيَ فىِ الْوَضْعِ كَهَا وَكَافِ"},{"n":375,"a":"تِسْعٌ وَتِسْعُونَ بِهَمْزٍ انْفَتَحْ","b":"ذَرُونِ اَلاصْبَهَانِ مَعْ مَكيِّ فَتَحْ"},{"n":376,"a":"وَاجْعَلْ لِي ضَيْفِي دُونِي يَسِّرْ لِيْ وَلِيْ","b":"يُوسُفَ إِنِّي أَوَّلاَهَا حَلِّلِ"},{"n":377,"a":"مَدًا وَهُمْ وَالْبَزِّ لَكِنِّيْ أَرَى","b":"تَحْتِيَ مَعْ إِنِّيْ أَرَاكُمْ وَدَرَى"},{"n":378,"a":"أُدعُونِي وَاْذكُرُونِي ثُمَّ المَدَنِي","b":"وَالمَكِّ قُلْ حَشَرْتَنِي يَحْزُنُنِي"},{"n":379,"a":"مَعْ تَأْمُروُنِي تَعِدَانِنْ وَمَدَا","b":"يَبْلُوَنِيْ سَبِيلِيْ وَاتْلُ ثِقْ هُدَا"},{"n":380,"a":"فَطَرَنِي وَفَتْحُ أَوْزِعْنِيْ جَلاَ","b":"هَوَى وَبَاقِي البَابِ حِرْمٌ حَمَّلاَ"},{"n":381,"a":"وَافَقَ فِي مَعِي عُلَى كُفْؤٍ وَمَا","b":"لِي لُذْ مِنَ الخُلْفِ لَعَلِّيْ كُرِّمَا"},{"n":382,"a":"رَهْطِيَ مَنْ لِي الخُلْفُ عِنْدِي دُوِّنَا","b":"خُلْفٌ وَعَنْ كُلِّهِمُ تَسَكَّنَا"},{"n":383,"a":"تَرْحَمْنِي تَفْتِنِّي اتَّبِعْنِي أَرِنِي","b":"وَاْثنَانِ مَعْ خَمْسِينَ مَعْ كَسْرٍ عُنِي"},{"n":384,"a":"وافْتَحْ عِبَادِيْ لَعْنَتِي تَجِدُنِي","b":"بَنَاتِ أَنْصَارِي مَعًا لِلْمَدَنِي"},{"n":385,"a":"وَإِخْوَتِي ثِقْ جُدْ وَعَمَّ رُسُلِي","b":"وَبَاقِيَ الْبَابِ إِلَى ثَنًا حُلِي"},{"n":386,"a":"وَافَقَ فِي حُزْنِي وَتَوْفِيْقِي كَلاَ","b":"يَدِي عُلًا أُمِّي وَأَجْرِي كَمْ عَلاَ"},{"n":387,"a":"دُعَائِي آبَاءِي دمًا كِسْ وَبَنَا","b":"خُلْفٌ إِلىَ رَبِّي وَكُلٌّ أَسْكَنَا"},{"n":388,"a":"ذُرِيَّتِي يَدْعُونَنِي تَدْعُونَنِي","b":"أَنْظِرنِ مَعْ بَعْدَ رِدًا أَخَّرْتَنِي"},{"n":389,"a":"وَعِنْدَ ضَمِّ الْهَمْزِ عَشْرٌ فَافْتَحَنْ","b":"مَدًا وَأَنِّي أُوفِ بِالْخُلْفِ ثَمَنْ"},{"n":390,"a":"لِلْكُلِّ آتُونِي بِعَهْدِي سَكَنَتْ","b":"وَعِنْدَ لاَمِ الْعُرْفِ أَرْبَعْ عَشَرَتْ"},{"n":391,"a":"رَبِّي الَّذِي حَرَّمَ رَبِّي مَسَّنِي","b":"اَلآخَراَنِ آتَانِ مَعْ أَهْلَكَنِي"},{"n":392,"a":"أَرَادَنِي عِبَادِ اْلاَنْبِيَا سَبَا","b":"فُزْ لِعَبادِي شُكْرُهُ رِضًى كَبَا"},{"n":393,"a":"وَفِى النِّدَا حِمًا شَفَا عَهْديِ عَسَى","b":"فَوْزٌ وَآيَاتِي اسْكنَِنَّ فِي كَسَا"},{"n":394,"a":"وَعِنْدَ هَمْزِ الْوْصْلِ سَبْعٌ لَيْتَنِي","b":"فَافْتَحْ حُلًا قَوْمِي مَدًا حُزْ شِمْ هَنِي"},{"n":395,"a":"إِنِّي أَخِي حَبْرٌ وَبَعْدِي صِفْ سَمَا","b":"ذِكْرِي لِنَفْسِي حَافِظٌ مَدًا دُمَا"},{"n":396,"a":"وَفِي ثَلاَثِينَ بِلاَ هَمْزٍ فَتَحْ","b":"بَيْتِي سِوَى نُوحٍ مَدًا لُذْ عُدْ وَلَحْ"},{"n":397,"a":"عَوْنٌ بِهَا لىِ دِينِ هَبْ خُلْفًا عَلاَ","b":"إِذْ لَاَذَ لِي فِي النَّمْلِ رُدْ نَوَى دَلاَ"},{"n":398,"a":"وَالخْلْفُ خُذْ لَنَا مَعِي مَا كَانَ لِي","b":"عُدْ مَنْ مَعِي مِنْ مَعْهُ وَرْشٌ فَانْقُلِ"},{"n":399,"a":"وَجْهِي عُلًا عَمَّ وَلِي فِيهَا جَنَا","b":"عُدْ شُرَكَائِي مِنْ وَرَائِي دَوَّنَا"},{"n":400,"a":"أَرْضِي صِرَاطِي كَمْ مَمَاتِي إِذْ ثَنَا","b":"لِي نَعْجَهٌ لََاذَ بِخُلْفٍ عَيَّنَا"},{"n":401,"a":"وَلْيُؤْمِنُوا بِي تُؤْمِنُوا لِي وَرْشُ يا","b":"عِبَادِ لاَ غَوْثٌ بِخُلْفٍ صَلِيَا"},{"n":402,"a":"وَالْحَذْفُ عَنْ شُكْرٍ دُعَا شَفَا وَلِي","b":"يَس سَكِّنْ لَاَحَ خُلْفٌ ظُلَلِ"},{"n":403,"a":"فَتىً وَمَحْيَايَ بِهِ ثَبْتٌ جَنَحْ","b":"خُلْفٌ وَبَعْدَ سَاكِنٍ كُلٌّ فَتَحْ"}]},{"title":"بَابُ مَذَاهِبِهِمْ فِي الزَّوَائِدِ (٢١)","verses":[{"n":404,"a":"وَهْىَ الَّتِي زَادُوا عَلَى مَا رُسِمَا","b":"تَثْبُتُ فِى الْحَالَيْنِ لِي ظِلٌّ دُمَا"},{"n":405,"a":"وَأَوَّلَ النَّمْلِ فِدًا وَتَثْبُتُ","b":"وَصْلًا رِضىً حِفْظٍ مَدًا وَمِائَةُ"},{"n":406,"a":"إِحْدَى وَعِشْرُونَ أَتَتْ تُعَلِّمَنْ","b":"يَسْرِ إِلَى الدَّاعِ الْجَوارِ يَهْدِيَنْ"},{"n":407,"a":"كَهْفُ المُنَادِ يُؤْتِيَنْ تَتَّبِعَنْ","b":"أَخَّرْتَنِ اْلإِسْرَا سَمَا وَفِي تَرَنْ"},{"n":408,"a":"وَاتَّبِعُونِ أَهْدِ بِي حَقٌّ ثَمَا","b":"وَيَأْتِ هُوْدَ نَبْغِ كَهْفِ رُمْ سَمَا"},{"n":409,"a":"تُؤْتُونِ ثُِبْ حَقًّا وَيَرْتَعْ يَتَّقِي","b":"يُوسُفَ زِنْ خُلْفًا وَتَسَأَلْنِ ثِقِ"},{"n":410,"a":"حمًِا جَنَا الدَّاعِي إِذَا دَعَانِ هُمْ","b":"مَعْ خُلْفِ قَالوُنَ وَيَدْعُ الدَّاعِ حُمْ"},{"n":411,"a":"هُدْ جُدْ ثَوَى وَالْبَادِ ثِقْ حَقٌّ جَنَنْ","b":"وَالْمُهْتَدِي لاَ أَوَّلًا وَاتَّبَعَنْ"},{"n":412,"a":"وَقُلْ حِمًا مَدًا وَكَالْجَوَابِ جَا","b":"حَقٌّ تُمِدُّونَنِ فِى سَمَا وَجَا"},{"n":413,"a":"تُخْزُونِ فِى اتَّقُونِ يَا اخْشَوْنِ وَلاَ","b":"وَاتَّبِعُونِ زُخْرُفٍ ثَوَى حَلاَ"},{"n":414,"a":"خَافُونِ إِنْ أَشْرَكْتُمُونِ قَدْ هَدَا","b":"نِ عَنْهُمُ كِيدُونِ اَلاعْرَافِ لَدَى"},{"n":415,"a":"خُلْفٌ حِمًا ثَبْتٌ عِبَادِ فَاتَّقُو","b":"خُلْفٌ غِنىً بَشِّرْ عِبَادِ افْتَحْ يَقُو"},{"n":416,"a":"بِالْخُلْفِ وَالْوَقْفُ يَلِي خُلْفَ ظُبَى","b":"آتَانِ نَمْلٍ وافْتَحُوا مَدًا غَبَى"},{"n":417,"a":"حُزْ عُدْ وَقِفْ ظَعْنًا وَخُلْفٌ عَنْ حَسَنْ","b":"بِنْ زُرْ يُرِدْنِ افْتَحْ كَذَا تَتَّبِعَنْ"},{"n":418,"a":"وَقِفْ ثَنَا وَكُلَّ روُسِ الآيِ ظَلْ","b":"وَافَقَ بِالْوَادِ دَنَا جُدْ وَزُحَلْ"},{"n":419,"a":"بِخُلْفِ وَقْفٍ وَدُعَاءٍ فِي جَمَعَ","b":"ثِقْ حُطْ زَكَا الْخُلْفُ هُدَى التَّلاَقِ مَعْ"},{"n":420,"a":"تَنَادِ خُذْ دُمْ جُلْ وَقِيلَ الْخُلْفُ بَرْ","b":"وَالمُتَعَالِ دِنْ وَعِيدِ وَنُذُرْ"},{"n":421,"a":"يُكَذِّبُوَنِ قَالَ مَعْ نَذِيرِي","b":"فَاعْتَزِلُونِ تَرْجُمُو نَكِيرِي"},{"n":422,"a":"تُرْدِينِ يُنْقِذُونِ جُودٌ أَكْرَمَنْ","b":"أَهَانَنِيْ هَدَا مَدًا وَالْخُلْفُ حَنْ"},{"n":423,"a":"وَشَذَّ عَنْ قُنْبُلَ غَيْرُ مَا ذُكِرْ","b":"وَاْلاَصْبَهَانِيُّ كَاْلاَزْرَقِ اسْتَقَرْ"},{"n":424,"a":"مَعْ تَرَنِ وَاتَّبِعُونِ وَثَبَتْ","b":"تَسْأَلْنِ فِى الكَهْفِ وَخُلْفُ الْحَذْفِ مَتْ"}]},{"title":"بَابُ إِفرادِ القِراءَاتِ وَجَمْعِهَا (٨)","verses":[{"n":425,"a":"وَقَدْ جَرَى مِنْ عَادَةِ الأَئِمَّهْ","b":"إِفْرَادُ كُلِّ قَارِىءٍ بِخَتْمَهْ"},{"n":426,"a":"حَتَّى يُؤَهَّلُوا لِجَمْعِ الْجَمْعِ","b":"بِالْعَشْرِ أَوْ أَكْثَرَ أَوْ بِالسَّبْعِ"},{"n":427,"a":"وَجَمْعُنَا نَخْتَارُهُ بِالْوَقْفِ","b":"وَغَيْرُنَا يَأْخُذُهُ بِالْحَرْفِ"},{"n":428,"a":"بِشَرْطِهِ فَلْيَرْعَ وَقْفًا وَابْتِدَا","b":"وَلاَ يُرَكِّبْ وَلْيُجِدْ حُسْنَ اْلأَدَا"},{"n":429,"a":"فَالْمَاهِرُ الَّذِي إِذَا مَا وَقَفَا","b":"يَبْدَا بِوَجْهِ مَنْ عَلَيْهِ وَقَفَا"},{"n":430,"a":"يَعْطِفُ أَقْرَبًا بِهِ فَأَقْرَبَا","b":"مُخْتَصِرًا مُسْتَوْعِبًا مُرَتِّبَا"},{"n":431,"a":"وَلْيَلْزَمِ الْوَقَارَ وَالتَّأَدُّبَا","b":"عِنْدَ الشُّيُوخِ إِنْ يُرِدْ أَنْ يَنْجَبَا"},{"n":432,"a":"وَبَعْدَ إِتْمَامِ اْلأُصُولِ نَشْرَعُ","b":"فِى الْفَرْشِ وَاللهُ إِلَيْهِ نَضْرَعُ"}]},{"title":"بَابُ فَرْشِ الحُرُوفِ: سُورَةُ البَقَرَةِ (٨٩)","verses":[{"n":433,"a":"وَمَا يُخَادِعُونَ يَخْدَعُونَا","b":"كَنْزٌ ثَوىَ اضْمُمْ شُدَّ يَكْذِبُونَا"},{"n":434,"a":"كَمَا سَمَا وَقِيلَ غِيضَ جِي أَشِمْ","b":"فِي كَسْرِهَا الضَّمَّ رَجَا غِنىً لَزِمْ"},{"n":435,"a":"وَحِيلَ سِيقَ كَمْ رَسَا غَيْثٌ وَسِي","b":"سِيئَتْ مَدًا رَحْبٍ غَلاَلَةٌ كُسِيِ"},{"n":436,"a":"وَتُرْجَعُوا الضَّمَّ افْتَحًا واكْسِرْ ظَمَا","b":"إِنْ كَانَ لِلأُخْرَى وَذُو يَوْمًا حِمَا"},{"n":437,"a":"والْقَصَصُ اْلأُولَى أَتَى ظُلْمًا شَفَا","b":"وَالْمُؤْمِنُونَ ظِلُّهُمْ شَفَا وَفَا"},{"n":438,"a":"الاُمُورُ هُمْ والشَّامِ وَاعْكِسْ إِذْ عَفَا","b":"الاَمْرُ وَسَكِّنْ هَاءَ هُوْ هِيْ بَعْدَ فَا"},{"n":439,"a":"وَاوٍ وَلاَمٍ رُدْ ثَنَا بَلْ حُزْ وَرُمْ","b":"ثُمَّ هْوَ وَالْخُلْفُ يُمِلَّ هُوْ وَثُمْ"},{"n":440,"a":"ثَبْتٌ بَدَا وَكَسْرُ تَا الْمَلاَئِكَتْ","b":"قَبْلَ اسْجُدُوا اضْمُمْ ثِقْ وَالاِشْمَامُ خَفَتْ"},{"n":441,"a":"خُلْفًا بِكُلٍّ وَأَزَالَ فِى أَزَلْ","b":"فَوْزٌ وَآدَمُ انْتِصَابُ الرَّفْعِ دَلْ"},{"n":442,"a":"وَكَلِمَاَتٌ رَفْعُ كَسْرٍ دِرْهَمِ","b":"لاَخَوْفَ نَوِّنْ رَافِعًا لاَ الْحَضْرَمِي"},{"n":443,"a":"رَفَثَ لاَ فُسُوقَ ثِقْ حَقًّا وَلاَ","b":"جِدَالَ ثَبْتٌ بَيْعَ خُلَّةٌ وَلاَ"},{"n":444,"a":"شَفَاعَةٌ لاَ بَيْعَ لاَ خِلاَلَ لاَ","b":"تَأْثِيمَ لاَ لَغْوَ مَدًا كَنْزٌ وَلاَ"},{"n":445,"a":"يُقْبَلُ أَنِّثْ حَقُّ وَاعَدْنَا اقْصُرَا","b":"مَعْ طَهَ اَلاَعْرَافِ حَلاَ ظُلْمٌ ثَرَا"},{"n":446,"a":"بَارِئْكُمُ يَأْمُرْكُمُ يَنْصُرْكُمْ","b":"يَأْمُرْهُمُ تَأْمُرْهُمُ يُشْعِرْكُمُ"},{"n":447,"a":"سَكِّنْ أَوِ اخْتَلِسْ حُلًا وَالخُلْفُ طِبْ","b":"يُغْفَرْ مَدًا أَنِّثْ هُنَا كَمْ وَظَرِبْ"},{"n":448,"a":"عَمَّ بِاْلاَعْرَافِ وَنُونُ الْغَيْرِ لاَ","b":"تُضَمُّ وَاكْسِرْ فَاءَهُمْ وَأَبْدِلاَ"},{"n":449,"a":"عُدْ هُزُؤًا مَعْ كُفُؤًا هُزْؤًا سَكَنْ","b":"ضُمَّ فَتىً كُفْؤًا فَتىً ظَنَّ اْلأُذُنْ"},{"n":450,"a":"أُذْنَ اتْلُ وَالسُّحْتُ ابْلُ نَلْ فَتىً كَسَا","b":"وَالْقُدْسِ نُكْرٍ دُمْ وَثُلْثَيْ لَبْسَا"},{"n":451,"a":"عُقْبًا نُهًى فَتىً وَعُرْبًا فِي صَفَا","b":"خُطْوَاتِ إِذْ هُدْ خُلْفُ صِفْ فَتىً حَفَا"},{"n":452,"a":"وَرُسْلُنَا مَعْ هُمْ وَكُمْ وَسُبْلَنَا","b":"حُزْ جُرُفٍ لِي الْخُلْفُ صِفْ فَتىً مُنَا"},{"n":453,"a":"وَاْلأُكْلُ أَكْلٌ إِذْ دَنَا وَأُكْلُهَا","b":"شُغْلٌ أَتَى حَبْرٍ وَخُشْبٌ حُطْ رَهَا"},{"n":454,"a":"زِدْ خُلْفُ نُذْرًا حِفْظُ صَحْبٍ وَاعْكِسَا","b":"رُعْبُ الرُّعُبْ رُمْ كَمْ ثَوى رُحْمًا كَسَا"},{"n":455,"a":"ثَوى وَجُزْأً صِفْ وَعُذْرًا أَوْ شَرَطْ","b":"وَكَيْفَ عُسْرُ الْيُسْرِ ثِقْ وَخُلْفُ خَطْ"},{"n":456,"a":"بِالذَّرْوُ سُحْقًا ذُقْ وَخُلْفًا رُمْ خَلاَ","b":"قُرْبَةُ جُدْ نُكْرًا ثَوَى صُنْ إِذْ مَلاَ"},{"n":457,"a":"مَاَ يَعْمَلُونَ دُمْ وَثَانٍ إِذْ صَفَا","b":"ظِلٌّ دَنَا بَابُ اْلأَمَانِيْ خُفِّفَا"},{"n":458,"a":"أُمْنِيِّةٌ وَالرَّفْعَ وَالْجَرَّ اسْكِنَا","b":"ثَبْتٌ خَطِيئَاتُهُ جَمْعُ إِذْ ثَنَا"},{"n":459,"a":"لاَ يَعْبُدُونَ دُمْ رِضىً وَخُفِّفَا","b":"تَظَّاهَرُونَ مَعَ تَحْرِيمٍ كَفَا"},{"n":460,"a":"حُسْنًا فَضُمَّ اسْكِنْ نُهىً حُزْ عَمَّ دَلْ","b":"أَسْرَى فَشَا تَفْدُو تُفَادُو رُدْ ظَلَلْ"},{"n":461,"a":"نَالَ مَدًا يُنْزِلُ كُلًاّ خِفَّ حَقْ","b":"لاَ الْحِجْرِ وَاْلأَنْعَامِ أَنْ يُنْزِلَ دَقْ"},{"n":462,"a":"لاسْرَى حِمًا وَالنَّحْلِ الاُخْرَى حُزْ دَفَا","b":"وَالْغَيْثُ مَعْ مُنْزِلُهَا حَقٌّ شَفَا"},{"n":463,"a":"وَيَعْمَلُون قُلْ خِطَابٌ ظَهَرَا","b":"جِبْرِيلَ فَتْحُ الْجِيمِ دُمْ وَهْيَ وَرَا"},{"n":464,"a":"فَافْتَحْ وَزِدْ هَمْزًا بِكَسْرٍ صُحْبَهْ","b":"كُلًاّ وَحَذْفُ الْيَاءِ خُلْفُ شُعْبَهْ"},{"n":465,"a":"مِيْكَالَ عَنْ حِمًا وَمِيكَائِيلَ لاَ","b":"يَا بَعْدَ هَمْزٍ زِنْ بِخُلْفٍ ثِقْ أَلاَ"},{"n":466,"a":"وَلَكِنِ الْخِفُّ وَبَعْدُ ارْفَعْهُ مَعْ","b":"أَوَّلَيِ اْلأَنْفَالِ كَمْ فَتىً رَتَعْ"},{"n":467,"a":"وَلَكِنِ النَّاسُ شَفَا وَالْبِرُّ مَنْ","b":"كَمْ أَمَّ نَنْسَخْ ضُمَّ وَاكَسِرْ مَنْ لَسَنْ"},{"n":468,"a":"خُلْفٍ كَنُنْسِهَا بِلاَ هَمْزٍ كَفَى","b":"عَمَّ ظُبىً بَعْدَ عَلِيمٌ احْذِفَا"},{"n":469,"a":"وَاوًا كَسَا كُنْ فَيَكُونُ فَانْصِبَا","b":"رَفْعًا سِوَى الْحَقِّ وَقَوْلُهُ كَبَا"},{"n":470,"a":"وَالنَّحْلُ مَعْ يَس رُدْ كَمْ تُسْئَلُ","b":"لِلضَّمِّ فَافْتَحْ وَاجْزِمَنْ إِذْ ظَلَّلُوا"},{"n":471,"a":"وَيْقَرا إِبْرَاهِيمَ ذِيْ مَعْ سُورَتِهْ","b":"مَعْ مَرْيَمَ النَّحْلِ أَخِيرَا تَوْبَتِهْ"},{"n":472,"a":"آخِرَ اَلانْعَامِ وَعَنْكَبُوتِ مَعْ","b":"أَوَاخِرِ النِّسا ثَلاَثَةٌ تَبَعْ"},{"n":473,"a":"وَالذَّرْوِ وَالشُّوْرَى امْتِحَانٍ أَوَّلاَ","b":"وَالنَّجْمِ وَالْحَدِيدِ مَازَ الْخُلْفُ لَا"},{"n":474,"a":"وَاتَّخِذُوا بِالْفَتْحِ كَمْ أَصْلٍ وَخِفْ","b":"أُمْتِعُهُ كَمْ أَرِنَا أَرْنِي اخْتُلِفْ"},{"n":475,"a":"مُخْتَلِسًا حُزْ وَسُكُونُ الْكَسْرِ حَقْ","b":"وَفُصِّلَتْ لِي الْخلْفُ مِنْ حَقٍّ صَدَقْ"},{"n":476,"a":"أَوْصَى بِوَصَّى عَمَّ أَمْ يَقْولُ حُفْ","b":"صِفْ حِرْمُ شِمْ وَصُحْبَةٌ حِمًا رَؤُفْ"},{"n":477,"a":"فاقْصُرْ وَعَمَّا يَعْمَلُونَ إِذْ صَفَا","b":"حَبْرٌ غَدَا عَوْنًا وَثانِيْهِ حَفَا"},{"n":478,"a":"وَفِى مُوَلِّيْهَا مُوَلاَّهَا كَنَا","b":"تَطَوَّعَ التَّا يَا وَشَدِّدْ مُسْكِنَا"},{"n":479,"a":"ظُبىً شَفَا الثَّانِي شَفَا وَالَّريحُ هُمْ","b":"كَالْكَهْفِ مَعْ جَاثِيَةٍ تَوْحِيدُهُمْ"},{"n":480,"a":"حِجْرٍ فَتىً اْلاَعْرَافَ ثَانِي الرُّومِ مَعْ","b":"فَاطِرِ نمْلٍ دُمْ شَفَا الْفُرْقَانُ دَعْ"},{"n":481,"a":"وَاجْمَعْ بِإِبْرَاهِيمَ شُورَى إِذْ ثَنَا","b":"وَصَادَ الاِسْرَى اْلأَنبِيَا سَبَا ثَنَا"},{"n":482,"a":"وَالْحَجُّ خُلْفُهُ تَرَى الْخِطَابُ ظَلْ","b":"إِذْ كَمْ خَلاَ خُلْفٌ يَرَوْنَ الضِّمَّ كَلْ"},{"n":483,"a":"أَنَّ وَأَنَّ اكْسِرْ ثَوى وَمَيِّتَةْ","b":"وَالْمَيْتَةُ اشْدُدْ ثُبْ وَالارْضُ الَمَيِّتَةْ"},{"n":484,"a":"مَدًا وَمَيْتًا ثِقْ وَالاَنْعَامُ ثَوَى","b":"إِذْ حُجُرَاتٍ غِثْ مَدًا وَثُبْ أَوَى"},{"n":485,"a":"صَحْبٍ بِمَيْتِ بَلَدٍ وَالْمَيْتِ هُمْ","b":"وَالْحَضْرَمِي وَالسَّاكِنَ اْلأَوَّلَ ضُمْ"},{"n":486,"a":"لِضَمِّ هَمْزِ الْوَصْلِ وَاكْسِرْهُ نَمَا","b":"فُزْ غَيْرَ قُلْ حَلاَ وَغَيْرُ أَوْ حِمَا"},{"n":487,"a":"وَالْخُلْفُ فِى التَّنْوِينِ مِزْ وَإِنْ يُجَرْ","b":"زِنْ خُلْفُهُ وَاضْطُرَّ ثِقْ ضَمًّا كَسَرْ"},{"n":488,"a":"وَمَا اضْطُرِرْ خُلْفٌ خَلاَ وَالْبِرُّ أَنْ","b":"بِنَصْبِ رَفْعٍ فِي عُلًا مُوصٍ ظَعَنْ"},{"n":489,"a":"صُحْبَةُ ثَقِّلْ لاَ تُنَوِّنْ فِدْيَةُ","b":"طَعَامُ خَفْضُ الرَّفْعِ مِلْ إِذْ ثَبَّتُوا"},{"n":490,"a":"مِسْكِينٍ اجْمَعْ لَا تُنَوِّنْ وَافْتَحَا","b":"عَمَّ لِتُكْمِلُوا اشْدُدَنْ ظَنَّا صَحَا"},{"n":491,"a":"بُيُوتِ كَيْفَ جَا بِكَسْرِ الضَّمِّ كَمْ","b":"دِنْ صُحْبَةٌ بَلَى غُيُوبِ صَوْنُ فَمْ"},{"n":492,"a":"عُيُونِ مَعْ شُيُوخِ مَعْ جُيُوبِ صِفْ","b":"مِزْ دُمْ رِضًا وَالْخُلْفُ فِى الْجِيمِ صُرِفْ"},{"n":493,"a":"لاَ تَقْتَلُوهُمْ وَمَعًا بَعْدُ شَفَا","b":"فَاقْصُرْ وَفَتْحُ السِّلْمِ حِرْمٌ رَشَفَا"},{"n":494,"a":"عَكْسُ الْقِتَالِ فِى صَفَا اْلأَنْفَالِ صُرْ","b":"وَخَفْضُ رَفْعِ وَالْمَلاَئِكَةُ ثُرْ"},{"n":495,"a":"لِيَحْكُمَ اضْمُمْ وَافْتَحِ الضَّمَّ ثَنَا","b":"كُلًاّ يَقُولُ ارْفَعْ أَلاَ الْعَفْوُ حَنَا"},{"n":496,"a":"إِثْمٌ كَبِيرٌ ثَلِّثِ الْباَ فِي رفَا","b":"يَطْهُرْنَ يَطَّهَّرْنَ فِى رَخَا صَفَا"},{"n":497,"a":"ضَمَّ يَخَافَا فُزْ ثَوَى تُضَارَ حَقْ","b":"رَفْعٌ وَسَكِّنْ خَفِّفِ الْخُلْفَ ثَدَقْ"},{"n":498,"a":"مَعْ لَا يُضَارَ وَأَتَيْتُمْ قَصْرُهُ","b":"كَأَوَّلِ الرُّومِ دَنَا وَقَدْرُهُ"},{"n":499,"a":"حَرِّكْ مَعًا مِنْ صَحْبِ ثَابِتٍ وَفَا","b":"كُلُّ تَمَسُّوهُنَّ ضُمَّ امْدُدْ شَفَا"},{"n":500,"a":"وَصِيَّةٌ حِرْمٌ صَفَا ظِلًاّ رَفَهْ","b":"وَارْفَعْ شَفَا حِرْمٍ حَلاَ يُضَاعِفَهْ"},{"n":501,"a":"مَعًا وَثَقِّلْهُ وَبَابَهُ ثَوَىَ","b":"كِسْ دِنْ وَيبْصُطْ سِينَهُ فَتىً حوًى"},{"n":502,"a":"لِيْ غِثْ وَخُلْفٌ عَنْ قُوًى زِنْ مَنْ يَصُرْ","b":"كَبَسْطَةِ الْخَلْقِ وَخُلْفُ الْعِلْمِ زُرْ"},{"n":503,"a":"عَسَيْتُمُ اكْسِرْ سِينَهُ مَعًا أَلاَ","b":"غَرْفَةً اضْمُمْ ظِلُّ كَنْزٍ وَكِلاَ"},{"n":504,"a":"دَفْعُ دِفَاعُ وَاكْسِرِ اِذْ ثَوَى امْدُدَا","b":"أَنَا بِضَمِّ الْهَمْزِ أَوْ فَتْحٍ مَدَا"},{"n":505,"a":"وَالْكَسْرِ بِنْ خُلْفًا وَرَا فِى نُنْشِزُ","b":"سَمَا وَوَصْلُ اعْلَمْ بِجَزْمٍ فِي رُزُوا"},{"n":506,"a":"صُرْهُنَّ كَسْرُ الضَّمِّ غِثْ فَتىً ثُمَا","b":"رَبْوَةٌ الضَّمُ مَعًا شَفَا سَمَا"},{"n":507,"a":"فِى الْوَصْلِ تَاتَيَمَّمُوا اشْدُدْ تَلْقَفُ","b":"تَلَهَّ لاَ تَنَازَعُوا تَعَارَفُوا"},{"n":508,"a":"تَفَرَّقُوا تَعَاوَنُوا تَنَابَزُوا","b":"وَهَلْ تَرَبَصَّوُنَ مَعْ تَمَيَّزوُا"},{"n":509,"a":"تَبَرَّجُ اذْ تَلَقَّوُا التَّجَسُّسَا","b":"وَفَتَّفَرَّقَ تَوَفَّى فِي النِّسَا"},{"n":510,"a":"تَنَزَّلُ اْلأَرْبَعُ أَنْ تَبَدَّلاَ","b":"تَخَيَّرُونَ مَعْ تَوَلَّوْا بَعْدَ لاَ"},{"n":511,"a":"مَعْ هُودَ وَالنُّورِ وَاِلامْتِحَانِ لَا","b":"تَكَلَّمُ الْبَزِّي تَلَظَّى هَبْ غَلاَ"},{"n":512,"a":"تَنَاصَرُوا ثِقْ هُدْ وَفِي الْكُلِّ اخْتُلِفْ","b":"لَهُ (البزي) وَبَعْدَ كُنْتُمُ ظَلْتُمْ وُصِفْ"},{"n":513,"a":"وَلِلسُّكُونِ الصِّلَةِ امْدُدْ واْلأَلِفْ","b":"مِنْ يُؤْتَ كَسْرُ التَّا ظُبىً بِاليَاءِ قِفْ"},{"n":514,"a":"مَعًا نِعِمَّا افْتَحْ كَمَا شَفَا وفِي","b":"إِخْفَاءِ كَسْرِ الْعَيْنِ حُزْ بِهَا صَفِي"},{"n":515,"a":"وَعَنْ أَبِي جَعْفَرَ مَعْهُمْ سَكِّنَا","b":"وَيَا نُكَفِّرْ شَامُهُمْ وَحَفْصُنَا"},{"n":516,"a":"وَجَزْمُهُ مَدًا شَفَا وَيحْسِبُ","b":"مُسْتَقْبَلًا بِفَتْحِ سِينٍ كَتَبُوا"},{"n":517,"a":"فِي نَصِّ ثَبْتٍ فَأْذَنُوا امْدُدْ واكْسِرِ","b":"فِى صَفْوَةٍ مَيْسَرَةِ الضَّمَّ انْصُرِ"},{"n":518,"a":"تَصَّدَّقُوا خِفٌّ نَمَا وَكَسْرُ أَنْ","b":"تَضِلَّ فُزْ تُذْكِرَ حَقًّا خَفِّفَنْ"},{"n":519,"a":"وَالرَّفْعَ فِدْ تِجَارَةٌ حَاضِرَةُ","b":"لِنَصْبِ رَفْعٍ نَلْ رِهَانٌ كَسْرَةُ"},{"n":520,"a":"وَفَتْحَةٌ ضَمًّا وَقَصْرُ حُزْ دَوَا","b":"يَغْفِرْ يُعَذِّبْ رَفْعُ جَزْمٍ كَمْ ثَوَى"},{"n":521,"a":"نَصُّ كِتَابِه بِتَوحِيدٍ شَفَا","b":"وَلاَ نُفَرِّقُ بِيَاءٍ ظَرُفَا"}]},{"title":"سُورَةُ آلِ عِمْرَانَ (٣٠)","verses":[{"n":522,"a":"سَيُغْلَبُونَ يُحْشَرُونَ رُد فَتىَ","b":"يَرَوْنَهُمْ خَاطِبْ ثَنَا ظِلٌّ أَتَى"},{"n":523,"a":"رِضْوَانُ ضَمُّ الكَسْرِ صِفْ وَذُو السُّبُلْ","b":"خُلْفٌ وَإِنَّ الدِّينَ فَافْتَحْهُ رَجُلْ"},{"n":524,"a":"يُقَاتِلُونَ الثَّانِ فُزْ فِي يَقْتُلوُ","b":"تَقِيَّةً قُلْ فِي تُقَاةً ظُلَلُ"},{"n":525,"a":"كَفَّلَهَا الثِّقْلُ كَفَى واسْكِنْ وضُمْ","b":"سُكُونَ تَا وَضَعْتُ صُنْ ظَهْرًا كَرُمْ"},{"n":526,"a":"وَحَذْفُ هَمْزِ زَكَرِيَّا مُطْلَقَا","b":"صَحْبٌ وَرَفْعُ اْلأَوَّلِ انْصِبْ صَدِّقَا"},{"n":527,"a":"ناَدَتْهُ نَادَاهُ شَفَا وَكَسْرُ أَنْ","b":"نَ اللهَ فِى كَمْ يَبْشُرُ اضْمُمْ شَدِّدَنْ"},{"n":528,"a":"كَسْرًا كَاِلاسْرَى الكَهْفِ وَالْعَكْسُ رِضَى","b":"وَكَافَ أُولَى الْحِجْرِ تَوْبَةٌ فَضَا"},{"n":529,"a":"وَدُمْ رِضىً حَلاَ الَّذِى يُبَشِّرُ","b":"نُعَلِّمُ الْياَ إِذ ثَوَى نَلْ وَاكْسِرُوا"},{"n":530,"a":"أَنِّيَ أَخْلُق اتْلُ ثُبْ والطَّائِرِ","b":"فِي الطَّيْرِ كَالْعُقُودِ خَيْرَ ذَاكِرِ"},{"n":531,"a":"وَطَائِرًا مَعًا بَِطْيرًا إِذْ ثَنَا","b":"ظُبىً نُوَفِّيْهِمْ بِيَاءٍ عَنْ غِنَا"},{"n":532,"a":"وَتَعْلَمُونَ ضُمَّ حَرِّكْ واكْسِرَا","b":"وَشُدَّ كَنْزًا وَارْفَعُوا لاَ يَأْمُرَا"},{"n":533,"a":"حِرْمٌ حَلاَ رُحْبًا لِمَا فَاكْسِرْ فِدَا","b":"آتَيْتُكُمْ يُقْرَأُ آتَيْنَا مَدَا"},{"n":534,"a":"وَيُرْجَعُونَ عَنْ ظُبىً يَبْغُونَ عَنْ","b":"حِمًا وَكَسْرُ حَجَّ عَنْ شَفَا ثَمَنْ"},{"n":535,"a":"مَا يَفْعَلُوا لَنْ يُكْفَرُوا صَحْبٌ طَلاَ","b":"خُلْفًا يَضِرْكُمُ اكْسِرِ اجْزِمْ أَوْصِلاَ"},{"n":536,"a":"حَقًّا وَضُمَّ اشْدُدْ لِبَاقٍ واشْدُدُوا","b":"مُنَزَّلِينَ مُنْزِلُونَ كَبَّدُوا"},{"n":537,"a":"وَمُنْزَلٌ عَنْ كَمْ مُسَوَّمِينَ نَمْ","b":"حَقُّ اكْسِرِ الوَاوَ وَحَذْفُ الْوَاوِ عَمْ"},{"n":538,"a":"مِنْ قَبْلِ سَارِعُوا وَقُرْحُ الْقُرْحُ ضُمْ","b":"صُحْبَةُ كَائِنْ فِي كَأَيِّنْ ثَلَّ دُمْ"},{"n":539,"a":"قَاتَلَ ضُمَّ اكسِرْ بِقَصْرٍ أُوجَفَا","b":"حَقًاّ وَكُلُّهُ حِمًا يَغْشَى شَفَا"},{"n":540,"a":"أَنِّثْ وَيَعْمَلُونَ دُمْ شَفَا اكْسِرِ","b":"ضَمًّا هُنَا فِي مُتُّمُ شَفَا أُرِيْ"},{"n":541,"a":"وَحَيْثُ جَا صَحْبٌ أَتى وَفَتْحُ ضَمْ","b":"يُغَلَّ وَالضَّمُ حَلاَ نَصْرٍ دَعَمْ"},{"n":542,"a":"وَيَجْمَعُونَ عَالِمٌ مَا قُتِلُوا","b":"شُدَّ لَدَى خُلْفٍ وَبَعْدُ كَفَلوُا"},{"n":543,"a":"كَالْحَجِّ واَلآخِرُ وَاْلأَنْعَامُ","b":"دُمْ كَمْ وَخُلْفُ يَحْسَبَنَّ لَاَمُوا"},{"n":544,"a":"وَخَاطِبَنْ ذَا الْكُفْرِ وَالْبُخْلِ فَنَنْ","b":"وَفَرَحٍ ظَهْرٌ كَفَى واكْسِرْ وأنْ"},{"n":545,"a":"الله رُمْ يَحْزُنُ فِي اْلكُلِّ اضْمُمَا","b":"مَعْ كَسْرِ ضَمٍّ أَمَّ اْلاَنْبِيَا ثَمَا"},{"n":546,"a":"يَمِيزَ ضُمَّ افْتَحْ وَشَدِّدْهُ ظَعَنْ","b":"شَفَا مَعًا يَكْتُبُ يَا وَجَهِّلَنْ"},{"n":547,"a":"قَتْلَ ارْفَعُوا يَقُولُ يَا فُزْ يَعْمَلو","b":"حَقٌّ وَفي الزُّبُرِ بِالْبَا كَمَّلُوا"},{"n":548,"a":"وَبالكِتُابِ الْخُلْفِ لُذ يُبَيِّنُنْ","b":"وَيَكْتُمُوُنَ حَبْرُ صِفْ ويَحْسَبَنْ"},{"n":549,"a":"غَيْبٌ وَضَمُّ البَاءِ حَبْرٌ قُتِّلوُا","b":"قَدِّمْ وَفِى التَّوْبَةِ أَخِّرْ يَقْتُلُوا"},{"n":550,"a":"شَفَا يَغُرَّنْكَ الْخَفِيفُ يَحْطِمَنْ","b":"أَوْ نُرِيَنْ وَيَسْتَخِفَّنْ نَذْهَبَنْ"},{"n":551,"a":"وَقِفْ بِذَا بِأَلِفٍ غُصْ وَثَمَرْ","b":"شَدَّدَ لَكِنَّ الَّذِينَ كَالزُّمَرْ"}]},{"title":"سُورَةُ النِّسَاءِ (٢٥)","verses":[{"n":552,"a":"تَسَاءَلُونَ الْخِفُّ كُوفٍ واجْرُرَا","b":"الاَرْحَامُ فُقْ وَاحِدَةٌ رَفْعٌ ثَرَا"},{"n":553,"a":"الاُخْرَى مَدًا وَاقْصُرْ قِيَامًا كُنْ أَبَا","b":"وَتَحْتُ كَمْ يَصْلَوْنَ ضُمَّ كَمْ صَبَا"},{"n":554,"a":"يُوصَى بِفَتْحِ الصَّادِ صِفْ كِفْلًا دَرَا","b":"وَمَعْهُمُ حَفْصٌ فِي الاُخْرَى قَدْ قَرَا"},{"n":555,"a":"لِأُمِّهِ فِى أُمِّ أُمِّهَا كَسَرْ","b":"ضَمًّا لَدَى الْوَصْلِ رِضًى كَذَا الزُّمَرْ"},{"n":556,"a":"وَالنَّحْلُ نُورُ النَّجْمِ والْمِيمُ تَبَعْ","b":"فَاشٍ وَنُدْخِلْهُ مَعَ الطَّلاَقِ مَعْ"},{"n":557,"a":"فَوْقُ يُكَفِرْ وَيُعَذِّبْ مَعْهُ فِي","b":"إِنَّا فَتَحْنَا نُونُهَا عَمَّ وَفِي"},{"n":558,"a":"لَذَانِ ذَانِ ولَذَيْنِ تَيْنِ شَدْ","b":"مَكٍّ فَذَانِكَ غَنًا دَاعٍ حَفَدْ"},{"n":559,"a":"كُرْهًا مَعَا ضَمٌّ شَفَا اْلأَحْقَافُ","b":"كَفَى ظَهِيًرا مَنْ لَهُ خِلاَفُ"},{"n":560,"a":"وَصِفْ دُمًا بِفَتْحِ يَا مُبَيِّنَهْ","b":"وَالْجَمْعُ حِرْمٍ صُنْ حِمًا وَمُحْصَنَهْ"},{"n":561,"a":"فِي الْجَمْعِ كَسْرُ الصَّادِ لاَ الأُولَى رَمَا","b":"أَحْصَّنَّ ضُمَّ اكْسِرْ عَلَى كَهْفٍ سَمَا"},{"n":562,"a":"أَحَلَّ ثُبْ صَحْبًا تِجَارَةٌ عَدَا","b":"كُوفٍ وَفَتْحُ ضَمِّ مَدْخَلًا مَدَا"},{"n":563,"a":"كَالْحَجِّ عَاقَدَتْ لِكُوفٍ قُصِرَا","b":"وَنَصْبُ رَفْعِ حَفِظَ اللهُ ثَرَا"},{"n":564,"a":"وَالْبُخْلِ ضُمَّ اسْكِنْ مَعًا كَمْ نَلْ سَمَا","b":"حَسَنَةٌ حِرْمٌ تَسَوَّى اضْمُمْ نَمَا"},{"n":565,"a":"حَقٌّ وَعَمَّ الثِّقْلُ لاَمَسْتُمْ قَصَرْ","b":"مَعًا شَفَا إِلاَّ قَلِيلًا نَصْبُ كَرْ"},{"n":566,"a":"فِى الرِّفْعِ تَأْنِيثُ تَكُنْ دِنْ عَنْ غَفَا","b":"لاَ يُظْلَمُو دُمْ ثِقْ شَذَا الْخُلْفُ شَفَا"},{"n":567,"a":"وَحَصِرَتْ حَرِّكْ وَنَوِّنْ ظَلَماَ","b":"تَثَبَّتُوا شَفَا مِنَ الثَّبْتِ مَعَا"},{"n":568,"a":"مَعْ حُجُرَاتٍ وَمِنَ الْبَيَانِ عَنْ","b":"سِوَاهُمُ السَّلاَمَ لَسْتَ فَاقْصُرَنْ"},{"n":569,"a":"عَمَّ فَتىً وَبَعْدُ مُؤْمِنًا فَتَحْ","b":"ثَالِثَهُ بِالْخُلْفِ ثَابِتًا وَضَحْ"},{"n":570,"a":"غَيْرَ ارْفعُوا فِى حَقِّ نَلْ نُؤْتِيْهِ يَا","b":"فَتىً حُلًا وَيَدْخُلُونَ ضَمَّ يَا"},{"n":571,"a":"وَفَتْحُ ضَمٍّ صِفْ ثَنَا حَبْرٍ شُفِي","b":"وَكَافَ أُولَى الطَّوْلِ ثُبْ حَقٌّ صُفِي"},{"n":572,"a":"وَالثَّانِ دَعْ ثَطَا صَبَا خُلْفًا غَدَا","b":"وَفَاطِرٍ حُز يُصْلِحَا كُوفٍ لَدَا"},{"n":573,"a":"يصَّالَحَا تَلْوُوا تَلُوا فَضْلٌ كَلاَ","b":"نَزَّلَ أَنْزَلَ اضْمُمِ اكْسِرْ كَم حَلاَ"},{"n":574,"a":"دُمْ وَاعكِسِ اْلأُخْرى ظُبىً نَلْ وَالدَّرَكْ","b":"سَكِنْ كَفَى نُؤْتِيهِمُ الْيَاءُ عَرَكْ"},{"n":575,"a":"تَعْدُوا فَحَرِّكْ جُدْ وَقَالوُنُ اخْتَلَسْ","b":"بِالْخُلْفِ واشْدُدَنْ لَهُ ثُمَّ أَنَسْ"},{"n":576,"a":"وَيَا سَنُؤْتِيهِمْ فَتىً وَعَنْهُمَا","b":"زَايَ زَبُورًا كَيْفَ جَاءَ فَاضْمُمَا"}]},{"title":"سُورَةُ المَائِدَةِ (١٣)","verses":[{"n":577,"a":"سَكِّنْ مَعًا شَنْآنُ كَمْ صَحَّ خَفَا","b":"ذَا الْخُلْفِ أَنْ صَدُّوكُمُ اكْسِرْ حُز دَفَا"},{"n":578,"a":"أَرْجُلِكُمْ نَصْبُ ظُبىً عَنْ كَمْ أَضَا","b":"رُدْ وَاقْصُرِ اشْدُدْ يَا قَسِيَّةً رِضَى"},{"n":579,"a":"مِنْ أَجْلِ كَسْرُ الْهَمْزِ والنَّقْلِ ثَنَا","b":"والْعَيْنَ والْعَطْفَ ارْفَعِ الخَمْسَ رَنَا"},{"n":580,"a":"وَفىِ الجُرُوحَ ثَعْبُ حَبْرٍ كَمْ رَكَا","b":"وَلْيَحْكُمَ اكسِرْ وَانْصِبَنْ مُحَرِّكَا"},{"n":581,"a":"فُقْ خَاطَبُوا يَبْغُونَ كَمْ وقَبْلاَ","b":"يَقُولُ وَاوُهُ كَفَى حُزْ ظِلاَّ"},{"n":582,"a":"وَارْفَعْ سِوَى الْبَصْرِي وَعَمَّ يَرْتَدِدْ","b":"وَخَفْضُ وَالْكُفَّارِ رُمْ حِمًا عَبُدْ"},{"n":583,"a":"بِضَمِّ بَائِهِ وَطَاغُوتَ اجْرُرِ","b":"فَوْزًا رِسَالاَتِهِ فَاجْمَعْ وَاكْسِرِ"},{"n":584,"a":"عَمَّ صَرَا ظُلْمٌ وَاَلاْنَعَامِ اعْكِسَا","b":"دِنْ عُدْ تَكُونُ ارْفَعْ حِمًا فتىً رَسَا"},{"n":585,"a":"عَقَدْتُمُ الْمَدُّ مُنىً وَخَفَّفَا","b":"مِنْ صُحْبَةٍ جَزَاءُ تَنْوِينٌ كَفَى"},{"n":586,"a":"ظَهْرًا وَمِثْلِ رَفْعُ خَفْضِهِمْ وَسَمْ","b":"وَالْعَكْسُ فِى كَفَّارَةٍ طَعَامُ عَمْ"},{"n":587,"a":"ضَمَّ اسْتُحِقَّ افْتَحْ وَكَسْرَهُ عُلاَ","b":"وَالأَوْلَيَانِ اْلأَوَّليِنَ ظُلِلاَ"},{"n":588,"a":"صَفْوٌ فَتَى وَسِحْرُ سَاحِرٌ شَفَا","b":"كَالصَّفِّ هُودٍ وَبِيُونُسٍ دَفَا"},{"n":589,"a":"كَفَى وَيَسْتَطِيعُ رَبُّكَ سِوَى","b":"عَليِّهِمْ يَوْمُ انْصِبِ الرَّفْعَ أَوَى"}]},{"title":"سُورَةُ الأنعَامُ (٣٨)","verses":[{"n":590,"a":"يُصْرَفْ بِفَتْحِ الضَّمِّ وَاكْسِرْ صُحْبَةُ","b":"ظَعْنٍ وَيَحْشُرْ يَا يَقُولُ ظُنَّةُ"},{"n":591,"a":"وَمَعْهُ حَفْصٌ فىِ سَبَا يَكُنْ رِضَا","b":"صِفْ خُلْفَ ظَامٍ فِتْنَةُ ارْفَعْ كَمْ عَضَا"},{"n":592,"a":"دُمْ رَبَّنَا النَّصْبُ شَفَا نُكَذِّبُ","b":"بِنَصْبِ رَفْعٍ فَوْزُ ظُلْمٍ عَجَبُ"},{"n":593,"a":"كَذَا نَكُونُ مَعْهُمُ شَامٍ وَخَفْ","b":"لَلدَّارُ الآخِرَةُ خَفْضُ الرَّفْعِ كَفْ"},{"n":594,"a":"لاَ يَعْقِلُونَ خَاطَبُوا وَتَحْتُ عَمْ","b":"عَنْ ظَفَرٍ يُوسُفَ شُعْبَةُ وَهُمْ"},{"n":595,"a":"يس كَمْ خُلْفٍ مَدَا ظِلٍّ وَخِفْ","b":"يُكَذِّبُ اتْلُ رُمْ فَتَحْناَ اشْدُدْ كَلَفْ"},{"n":596,"a":"خُذْهُ كَالاعْرَافِ وخُلْفًا ذُقْ غَدَا","b":"وَاقْتَرَبَتْ كَمْ ثِقْ غَلاَ الخُلْفُ شَدَا"},{"n":597,"a":"وَفُتِّحَتْ يَأْجُوجَ كَمْ ثَوَى وَضَمْ","b":"غُدْوَةَ فِى غَدَاةَ كَالْكَهْفِ كَتَمْ"},{"n":598,"a":"وَإِنَّهُ افْتَحْ عَمَّ ظِلًاّ نَلْ فإِنْ","b":"نَلْ كَمْ ظُبىً وَيَسْتَبِينَ صَوْنُ فَنْ"},{"n":599,"a":"رَوى سَبِيلَ لاَ الْمَدِينِي وَيَقُصْ","b":"فِى يَقْضِ أَهْمِلَنْ وَشَدِّدْ حِرْمُ نَصْ"},{"n":600,"a":"وَذَكِّرِ اسْتَهوَى تَوَفَّى مُضْجِعَا","b":"فَضْلٌ وَنُنْجِي الْخِفُّ كَيْفَ وَقَعَا"},{"n":601,"a":"ظِلَّ وَفِي الثَّانِ اتْلُ مِنْ حَقٍّ وَفِي","b":"كَافَ ظُبىً رُضْ تَحْتَ صَاد شَرِّفِ"},{"n":602,"a":"وَالحِجْرِ أُولَى الْعَنْكَباَ ظُلْمٌ شَفَا","b":"والثَّانِ صُحْبَةٌ ظَهيرٌ دَلَفَا"},{"n":603,"a":"وَيوُنُسَ اْلأُخْرَى عَلاَ ظَبْىٌ رَعَا","b":"وَثِقْلُ صَفٍّ كَمْ وَخُفْيَةً مَعَا"},{"n":604,"a":"بِكَسْرِ ضَمٍّ صِفْ وأنْجَانَا كَفَى","b":"أَنْجَيْتَنَا الْغَيْرُ وَيُنْسِي كَيَّفَا"},{"n":605,"a":"ثِقْلًا وَآزَرَ ارْفَعُوا ظُلْمًا وَخِفْ","b":"نُونَ تُحَاجُّونِي مَدًا مَنْ لِى اخْتُلِفْ"},{"n":606,"a":"وَدَرَجَاتِ نَوَّنُوا كَفَا مَعَا","b":"يَعْقُوبَ مَعْهُمُ هُنَا وَاللَّيْسَعَا"},{"n":607,"a":"شَدِّدْ وَحَرِّكْ سَكِّنَنْ مَعًا شَفَا","b":"وَيَجْعَلُوا يُبْدُو وَيُخْفُو دَعْ حَفَا"},{"n":608,"a":"يُنْذِرَ صِفْ بَيْنَكُمُ ارْفَعْ فِي كَلاَ","b":"حَقٍّ صَفَا وَجَاعِلُ اقْرَأْ جَعَلاَ"},{"n":609,"a":"وَاللَّيْلُ نَصْبُ الكُوفِ قَافَ مُسْتَقِرْ","b":"فَاكْسِرْ شَذَا حَبْرٍ وَفىِ ضَمَّيْ ثَمَرْ"},{"n":610,"a":"شَفَا كَيَس وَخَرَّقُوا اشْدُدِ","b":"مَدًا وَدَارَسْتَ لِحَبْرٍ فَامْدُدِ"},{"n":611,"a":"وَحَرِّكِ اسْكِنْ كَمْ ظُبىً وَالْحَضْرَمِي","b":"عَدْوًا عُدُوًّا كَعُلُوًّا فَاعْلَمِ"},{"n":612,"a":"وَإِنَّهاَ افْتَحْ عَنْ رِضىً عَمَّ صَدَا","b":"خُلْفٍ وَتُؤمِنُونَ خَاطِبْ فِى كُدَا"},{"n":613,"a":"وَقِبَلًا كَسْرًا وَفَتْحًا ضَمَّ حَقْ","b":"كَفَى وَفِي الْكَهْفِ كَفَى ذِكْرًا خَفَقْ"},{"n":614,"a":"وَكَلِمَاتُ اقْصُرْ كَفَى ظِلًاّ وَفِي","b":"يُونُسَ وَالطَّوْلِ شَفَا حَقًاّ نُفِي"},{"n":615,"a":"فُصِّلَ فَتْحُ الضَّمِّ والْكَسْرِ أَوَى","b":"ثَوَى كَفَى وَحُرِّمَ اتْلُ عَنْ ثَوى"},{"n":616,"a":"وَاضْمُمْ يَضِلُّوا مَعَ يُونُسٍ كَفَى","b":"ضَيْقًا مَعًا فِى ضَيِّقًا مَكٍّ وَفَى"},{"n":617,"a":"رَا حَرَجًا بِالْكَسْرِ صُنْ مَدًا وَخِفْ","b":"سَاكِنَ يَصْعَدُ دَنَا وَالْمَدُّ صِفْ"},{"n":618,"a":"وَالْعَيْنَ خَفِّفْ صُنْ دُمًا يَحْشُرُ يَا","b":"حَفْصٌ وَرَوْحٌ ثَانِ يُونُسٍ عَيَا"},{"n":619,"a":"خِطَابَ عَمَّا تَعْمَلو كَمْ هُودَ مَعْ","b":"نَمْلِ اذْ ثَوَى عُدْ كِسْ مَكَانَاتٍ جَمَعْ"},{"n":620,"a":"فِي الْكُلِّ صِفْ وَمَنْ يَكُونُ كَالْقَصَصْ","b":"شَفَا بِزَعْمِهِمْ مَعًا ضُمَّ رَمَصْ"},{"n":621,"a":"زُيِّنَ ضُمَّ اكْسِرْ وَقَتْلُ الرَّفْعُ كَرْ","b":"أَوْلاَدُ نَصْبُ شُرَكَائِهِمْ بِجَرْ"},{"n":622,"a":"رَفْعٍ كُدًا أَنِّثْ يَكُنْ لِي خُلْفُ مَا","b":"صِبْ ثِقْ وَمَيْتَةٌ كَسَا ثَنَا دُمَا"},{"n":623,"a":"والثَّانِ كَمْ ثَنَّى حِصَادِ افْتَحْ كَلاَ","b":"حِمًا نَمَا وَالمَعْزِ حَرِّكْ حَقُّ لَا"},{"n":624,"a":"خُلْفٌ مُنىً يَكُونُ إِذْ حِمًا نَفَا","b":"رَوَى تَذَكَّرُونَ صَحْبٌ خَفَّفَا"},{"n":625,"a":"كُلًاّ وَأَنْ كَمْ ظَنَّ وَاكْسِرْهَا شَفَا","b":"يَأْتِيَهُمْ كَالنَّحْلِ عَنْهُمْ وُصِفَا"},{"n":626,"a":"وَفَرَّقُوا امْدُدْهُ وخَفِّفْهُ مَعَا","b":"رِضىً وَعَشْرٌ نَوِّنَنْ بَعْدُ ارْفَعَا"},{"n":627,"a":"خَفْضًا لِيَعْقُوبَ وَدِينًا قَيِّمَا","b":"فَافْتَحْهُ مَعْ كَسْرٍ بِثِقْلِهِ سَمَا"}]},{"title":"سُورَةُ الأعْرَافِ (٢٨)","verses":[{"n":628,"a":"تَذَكَّرُونَ الْغَيْبَ زِدْ مِنْ قَبْلُ كَمْ","b":"وَالْخِفُّ كُنْ صَحْبًا وَتُخْرَجُونَ ضَمْ"},{"n":629,"a":"فَافْتَحْ وَضُمَّ الرَّا شَفَا ظِلٌّ مَلاَ","b":"وَزُخْرَفٌ مَنٌّ شَفَا وَأَوَّلاَ"},{"n":630,"a":"رُومٍ شَفَا مِنْ خُلْفِهِ الْجَاثِيَةَ","b":"شَفَا لِبَاسُ الرَّفْعِ نَلْ حَقًّا فَتَى"},{"n":631,"a":"خَالِصَةٌ إِذْ يَعْلَمُو الرَّابِعَ صِفْ","b":"يُفْتَحُ فِي رَوَى وَحُزْ شَفَا يَخِفْ"},{"n":632,"a":"وَاوَ وَمَا احْذِفْ كَمْ نَعَمْ كُلًاّ كَسَرْ","b":"عَيْنًا رَجَا أَنْ خِفَّ نَلْ حِمَا زَهَرْ"},{"n":633,"a":"خُلْفَ اتْلُ لَعْنَةُ لهُمْ يُغْشِي مَعَا","b":"شَدِّدْ ظَمَا صُحْبَةُ وَالشَّمْسَ ارْفَعَا"},{"n":634,"a":"كَالنَّحْلِ مَعْ عَطْفِ الثَّلاَثِ كَمْ وَثَمْ","b":"مَعْهُ فِي الآخِرَيْنِ عُدْ نُشْرًا يَضُمْ"},{"n":635,"a":"فَافْتَحْ شَفَا كُلًاّ وسَاكِنًا سَمَا","b":"ضَمَّ وَبَا نَلْ نَكِدًا فَتْحٌ ثَمَا"},{"n":636,"a":"وَرَا إِلهٍ غَيْرِهِ اخْفِضْ حَيْثُ جَا","b":"رَفعًا ثَنا رُدْ أُبْلِغَ الْخِفُّ حَجَا"},{"n":637,"a":"كُلًاّ وَبَعْدَ المُفْسِدِيِنَ الْوَاوُ كَمْ","b":"أَوْ أَمِنَ الإِْسْكَانُ كَمْ حِرْمٌ وَسَمْ"},{"n":638,"a":"عَلَى عَلَىَّ اتْلُ وسَحَّارٍ شَفَا","b":"مَعْ يُونُسٍ فى سَاحِرِ وَخَفَّفَا"},{"n":639,"a":"تَلْقَفُ كُلًاّ عُدْ سَنَقْتُلُ اضْمُمَا","b":"وَاشْدُدْهُ واكْسِرْ ضَمَّهُ كَنْزٌ حِمَا"},{"n":640,"a":"وَيقْتُلُونَ عَكْسُهُ انْقُلْ يَعْرِشُو","b":"مَعًا بِضَمِّ الْكَسْرِ صَافٍ كَمَشُوا"},{"n":641,"a":"وَيَعْكُفُو اكْسِرْ ضَمَّهُ شَفَا وَعَنْ","b":"إِدْرِيسَ خُلْفُهُ وَأَنْجَانَا احْذِفَنْ"},{"n":642,"a":"يَاءً وَنُونًا كَمْ وَدَكَّاءَ شَفَا","b":"فى دَكًّا المَدُّ وَفِي الْكَهْفِ كَفَى"},{"n":643,"a":"رِسَالَتِي اجْمَعْ غَيْثُ كَنْزٍ حَجَفَا","b":"وَالرُّشْدِ حَرِّكْ وَافْتَحِ الضَّمَ شَفَا"},{"n":644,"a":"وَآخِرَ الكَهْفِ حِمًا وَخَاطَبُوا","b":"يَرْحَمْ وَيَغْفِرْ رَبُّنَا الرَّفْعَ انْصِبُوا"},{"n":645,"a":"شَفَا وَحَلْيِهِمْ مَعَ الْفَتْحِ ظَهَرْ","b":"وَاكْسِرْ رِضَى وَأُمَّ مِيمَهُ كَسَرْ"},{"n":646,"a":"كَمْ صُحْبَةٍ مَعًا وَآصَارَ اجْمَعِ","b":"وَاعْكِسْ خَطِيئَاتِ كَمَا الْكَسْرَ ارْفَعِ"},{"n":647,"a":"عَمَّ ظُبىً وَقُلْ خَطَايَا حَصَرَهْ","b":"مَعْ نُوحَ وَارْفَعْ نَصْبَ حَفْصٍ مَعْذِرَهْ"},{"n":648,"a":"بِيْسَ بِيَاءٍ لَاَحَ بِالْخُلْفِ مَدَا","b":"وَالهَمْزُ كَمْ وَبَيْئَسٍ خُلْفٌ صَدَا"},{"n":649,"a":"بَئِيْسٍ الْغَيْرُ وَصِفْ يُمْسِكُ خِفْ","b":"ذُرِّيَّةَ اقْصُرْ وَافْتَحِ التَّاءَ دَنِفْ"},{"n":650,"a":"كَفَى كَثَانِ الطُّورِ يَاسِينَ لَهُمْ","b":"وَابْنِ الْعَلاَ كِلاَ تَقُولُ الْغَيْبُ حُمْ"},{"n":651,"a":"وَضَمَّ يُلْحِدُونَ وَالكَسْرَ فَتَحْ","b":"كَفُصِّلَتْ فَشَا وَفِي النَّحْلِ رَجَحْ"},{"n":652,"a":"فَتىً يَذَرْهُمُ اجْزِمَوا شَفَا وَيَا","b":"كَفَى حِمًا شِرْكًا مَدَاهُ صَلِيَا"},{"n":653,"a":"فِي شُرَكَاءَ يَتْبَعُوا كْالظُّلَّهْ","b":"بِالْخِفِّ والْفَتْحِ اتْلُ يَبْطِشْ كُلَّهْ"},{"n":654,"a":"بِضَمِّ كَسْرٍ ثِقْ وَلِيِّيَ احْذِفِ","b":"بِالْخُلْفِ وَافْتَحْهُ أَوِ اكْسِرْهُ يَفِي"},{"n":655,"a":"وَطَائِفٌ طَيْفٌ رَعَى حَقًّا وَضُمْ","b":"وَاكْسِرْ يُمِدُّونَ لِضَمٍّ ثَدْيَ أُمْ"}]},{"title":"سُورَةُ اَلأنفَالِ (١٠)","verses":[{"n":656,"a":"وَمُرْدِفي افْتَحْ دَالَهُ مَدًا ظُمِي","b":"رَفْعَ النُّعَاسَ حَبْرُ يَغْشَى فَاضْمُمِ"},{"n":657,"a":"وَاكْسِرْ لِبَاقٍ واشْدُدَنْ مَعْ مُوهِنُ","b":"خَفِّفْ ظُبىَ كَنْزٍ وَلاَ يُنَوَّنُ"},{"n":658,"a":"مَعْ خَفْضِ كَيْدِ عُدْ وَبَعْدُ افْتَحْ وَأَنْ","b":"عَمَّ عُلًا وَيَعْمَلُوا الْخِطَابُ غَنْ"},{"n":659,"a":"بِالْعُدْوَةِ اكْسِرْ ضَمَّهُ حَقًّا مَعَا","b":"وَحَيِيَ اكْسِرْ مُظْهِرًا صَفَا زَعَا"},{"n":660,"a":"خُلْفٌ ثَوَى إِذْ هَبْ وَيَحْسَبَنَّ فِي","b":"عَنْ كَمْ ثَنَا وَالنُّورُ فَاشِيهِ كُفِي"},{"n":661,"a":"وَفِيهِمَا خِلاَفُ إِدْرِيسَ اتَّضَحْ","b":"وَيَتَوَفَّى أَنِّثِ انَّهُمْ فَتَحْ"},{"n":662,"a":"كِفْلٌ وَتُرْهِبُونَ ثِقْلُهُ غَفَا","b":"ثَانِي يَكُنْ حِمًا كَفَى بَعْدُ كَفَا"},{"n":663,"a":"ضُعْفًا فَحَرِّكْ لاَ تُنَوِّنْ مُدَّ ثُبْ","b":"وَالضَّمَّ فافْتَحْ نَلْ فَتىً وَالرُّومُ صِبْ"},{"n":664,"a":"عَنْ خُلْفِ فَوْزٍ أَنْ يَكُونَ أَنِّثَا","b":"ثَبْتُ حِمًا أَسْرَى أُسَارَى ثَلِّثَا"},{"n":665,"a":"مِنَ اْلأُسَارَى حُزْ ثَنَا وَلاَيَةُ","b":"فَاكْسِرْ فَشَا الكَهْفِ فَتىً رِوَايةُ"}]},{"title":"سُورَةُ التَّوْبَةِ (١١)","verses":[{"n":666,"a":"وَكسْرَ لاَ أَيْمَانَ كَمْ مَسْجِدَ حَقّْ","b":"الاَوَّلَ وَحِّدْ وَعَشِيرَاتٌ صَدَقْ"},{"n":667,"a":"جَمْعًا عُزَيْرٌ نَوِّنُوا رُمْ نَلْ ظُبَى","b":"عَيْنَ عَشَرْ فى الكُلِّ سَكِّنْ ثَغَبَا"},{"n":668,"a":"يُضَلُّ فَتْحُ الضَّادِ صَحْبٌ ضَمَّ يَا","b":"صَحْبٌ ظُبىً كَلِمَةُ انْصِبْ ثَانِيَا"},{"n":669,"a":"رَفْعًا وَمَدْخَلًا مَعَ الفَتْحِ لِضَمُ","b":"يَلْمِزُ ضَمُّ الكَسْرِ فىِ الكُلِّ ظُلَمْ"},{"n":670,"a":"يُقْبَلُ رُدْ فَتىً وَرَحْمَةٌ رَفَعْ","b":"فَاخْفِضْ فَشَا يُعْفَ بِنُونٍ سَمِّ مَعْ"},{"n":671,"a":"نُونٍ لَدَى اُنْثَى تُعَذَّبْ مِثْلَهُ","b":"وَبَعْدُ نَصْبُ الرَّفْعِ نَلْ وَظِلَّهُ"},{"n":672,"a":"المُعْذِرُونَ الخِفُّ والسُّوءِ اضْمُمَا","b":"كَثَانِ فَتْحٍ حَبْرُ اْلانْصَارِ ظَمَا"},{"n":673,"a":"بِرَفْعِ خَفْضٍ تَحْتَهَا اخْفِضْ وَزِدِ","b":"مِنْ دُمْ صَلاَتَكَ لِصَحْبٍ وَحِّدِ"},{"n":674,"a":"مَعْ هُودَ وَافْتَحْ تَاءَهُ هُنَا وَدَعْ","b":"وَاوَ الَّذِينَ عَمَّ بُنْيَانَ ارْتَفَعْ"},{"n":675,"a":"مَعْ أُسِّسَ اضْمُمْ وَاكْسِرِ اعْلَمْ كَمْ مَعَا","b":"إِلاَّ إِلَى أَنْ ظُفَرٌ تَقَطَّعَا"},{"n":676,"a":"ضُمَّ اَتْلُ صِفْ حَبْرًا رَوَى يَزِيغُ عَنْ","b":"فَوْزٍ يَرَوْنَ خَاطِبُوا فِيهِ ظَعَنْ"}]},{"title":"سُورَةُ يُونُسَ عليه السلام (١٠)","verses":[{"n":677,"a":"وَإِنَّهُ افْتَحْ ثِقْ وَيَا يُفَصِّلُ","b":"حَقٌّ عَلاَ قُضِيَ سَمَّى أَجَلُ"},{"n":678,"a":"فِي رَفْعِهِ انْصِبْ كَمْ ظُبىً وَاقْصُرْ وَلاَ","b":"أَدْرَى وَلاَ أُقْسِمُ الاُولَى زِنْ هَلاَ"},{"n":679,"a":"خُلْفٌ وَعَماَّ يُشْرِكُوا كَالنَّحْلِ مَعْ","b":"رُومٍ سَمَا نَلْ كَمْ وَيمْكُرو شَفَعْ"},{"n":680,"a":"وَكَمْ ثَنَا يَنْشُرُ فىِ يُسَيِّرُ","b":"مَتَاعُ لاَ حَفْصٌ وَقِطْعًا ظُفَرُ"},{"n":681,"a":"رُمْ دِنْ سُكُونًا بَاءَ تَبْلوُ التَّا شَفَا","b":"لاَ يَهْدِ خِفُّهُمْ وَيَا اكْسِرْ صُرِفَا"},{"n":682,"a":"وَالْهَاءَ نَلْ ظُلْمًا وَأَسْكِنْ ذَا بَدَا","b":"خُلْفُهُمَا شَفَا خُذِ الإِْخْفَا حَدَا"},{"n":683,"a":"خُلْفٌ بهِ ذُقْ تَفْرَحُوا غِثْ خَاطَبُوا","b":"وَتَجْمَعُوا ثِبْ كَمْ غَوَى اكْسِرْ يَعْزُبُ"},{"n":684,"a":"ضَمًا مَعًا رُمْ أَصْغَرَ ارْفَعْ أَكْبَراَ","b":"ظِلٌّ فَتىً صِلْ فَاجْمَعُوا وافْتَحْ غَرَا"},{"n":685,"a":"خُلْفٌ وَظَنَّ شُرَكَاؤُكُمْ وَخِفْ","b":"تَتَّبِعَانِ النُّونُ مَنْ لَهُ اخْتُلِفْ"},{"n":686,"a":"يَكُونَ صِفْ خُلْفًا وَأَنَّهُ شَفَا","b":"فَاكْسِرْ وَيَجْعَلُ بِنُونٍ صُرِّفَا"}]},{"title":"سُورَةُ هوُدٍ عليه السلام (١٢)","verses":[{"n":687,"a":"إِنِّي لَكُمْ فَتْحًا رَوَى حَقٌّ ثَنَا","b":"عُمِّيَتِ اضْمُمْ شُدَّ صَحْبٌ نَوِّنَا"},{"n":688,"a":"مِنْ كُلِّ فِيهِمَا عَلاَ مَجْرَى اضْمُمَا","b":"صِفْ كَمْ سَمَا وَيَابُنَيِّ افْتَحْ نَمَا"},{"n":689,"a":"وَحَيْثُ جَا حَفْصٌ وَفِي لُقْمَانَا","b":"الاُخْرَى هُدَى عِلْمٍ وَسَكِّنْ زَانَا"},{"n":690,"a":"وَأَوَّلًا دِنْ عَمَلٌ كَعَلِمَا","b":"غَيْرُ انْصِبِ الرَّفعَ ظَهِيرٌ رَسَمَا"},{"n":691,"a":"تَسْئَلْنِ فَتْحُ النُّونِ دُمْ لِي الخُلْفُ","b":"واشْدُدْ كَمَا حِرْمٍ وَعَمَّ الكَهْفُ"},{"n":692,"a":"يَوْمَئِذٍ مَعْ سَالَ فَافْتَحْ إِذْ رَفَا","b":"ثِقْ نَمْلِ كُوفٍ مَدَنٍ نَوِّنْ كَفَا"},{"n":693,"a":"فَزَعِ وَاعْكِسُوا ثَمُودَ هَا هُنَا","b":"وَالعَنْكَبَا الفُرْقَانِ عُجْ ظُبىً فِنَا"},{"n":694,"a":"وَالنَّجْمِ نَلْ فِي ظَنِّهِ اكْسِرْ نَوِّنِ","b":"رُدْ لِثَمُودَ قَالَ سِلْمٌ سَكِّنِ"},{"n":695,"a":"وَاكْسِرْهُ وَاقْصَرْ مَعَ ذَرْوٍ فِى رُبَا","b":"يَعْقُوبَ نَصْبُ الرَّفْعِ عَنْ فَوْزٍ كَبَا"},{"n":696,"a":"وَامْرَأَتُكْ حَبْرٌ أَنِ اسْرِ فَاسْرِ صِلْ","b":"حِرْمٌ وَضَمَّ سَعِدُوا شَفَا عُدِلْ"},{"n":697,"a":"إِنْ كُلًاّ الخِفُّ دَنَا اتْلُ صُنْ وَشُدْ","b":"لَماَّ كَطَارِقٍ نُهًى كُنْ فِى ثَمَدْ"},{"n":698,"a":"يَس فِي ذَا كَمْ نَوَى لاَمَ زُلَفْ","b":"ضُمَّ ثَنَا بِقْيَةِ ذُقْ كَسْرٌ وَخَفْ"}]},{"title":"سُورَةُ يُوسُفَ عليه السلام (٩)","verses":[{"n":699,"a":"يا أَبَتِ افْتَحْ حَيْثُ جَا كَمْ ثَطَعَا","b":"آيَاتٌ افْرِدْ دِنْ غَيَاباتِ مَعَا"},{"n":700,"a":"فَاجْمَعْ مَدًا يَرْتَعْ وَيَلْعَبْ نُونُ دَا","b":"حُزْ كَيْفَ يَرْتَعْ كَسْرُ جَزْمٍ دُمْ مَدَا"},{"n":701,"a":"بُشْرَايَ حَذْفُ الْيَا كَفَى هَيْتَ اكْسِرَا","b":"عَمَّ وَضَمُّ التَّا لَدَى الخُلْفِ دَرَى"},{"n":702,"a":"وَاهْمِزْ لَنَا وَالمُخْلِصِينَ الْكَسْرُ كَمْ","b":"حَقٌّ وَمُخْلِصًا بِكَافٍ حَقُّ عَمْ"},{"n":703,"a":"حَاشَا مَعًا صِلْ حُزْ وَسِجْنٌ أوَّلاَ","b":"افْتَحْ ظُبىً وَدأَبًا حَرِّكْ عُلاَ"},{"n":704,"a":"وَيَعْصِرُو خَاطِبْ شَفَا حَيْثُ يَشَا","b":"نُونٌ دَنَا وَيَاءُ يَرْفَعْ مَنْ يَشَا"},{"n":705,"a":"ظِلٌّ وَيَا نَكْتَلْ شَفَا فِتْيَانِ فِي","b":"فِتْيَةِ حِفْظًا حَافِظًا صَحْبٌ وَفِي"},{"n":706,"a":"يُوحَى إِلَيْهِ النَّونُ والْحَاءَ اكْسِرَا","b":"صَحْبٌ وَمَعْ إِلَيْهِمُ الْكُلُّ عَرَا"},{"n":707,"a":"وَكُذِّبوا الْخِفُّ ثَنَا شَفَا نَوَى","b":"نُنْجِي فَقُلْ نُجِّيَ نَلْ ظِلُّ كَوَى"}]},{"title":"سُورَةُ الرَّعْدِ وَأَخْتَيْهَا [أي: وَإِبْرَاهِيْمَ وَالْحِجْرِ] (١٢)","verses":[{"n":708,"a":"زَرْعٌ وَبَعْدَهُ الثَّلاَثُ الخَفْضُ عَنْ","b":"حَقِّ ارْفَعُوا يُسْقَى كَمَا نَصْرٍ ظَعَنْ"},{"n":709,"a":"يُفَضِّلُ الْيَاءُ شَفَا وَيُوقِدُو","b":"صَحْبٌ وَأَمْ هَلْ يَسْتَوِى شَفَا صُدُوا"},{"n":710,"a":"يُثْبِتُ خَفِّفْ نَصُّ حَقٍّ وَاضْمُمِ","b":"صَدُّوا وَصَدَّ الطَّوْلِ كُوفِ الْحَضْرَمي"},{"n":711,"a":"والكَافِرُ الْكُفَّارُ شُدْ كَنْزَ غُذِي","b":"وَعَمَّ رَفْعُ الخَفْضِ فِي اللهِ الَّذِي"},{"n":712,"a":"وَالاِبْتِدَا غَرْ خَالِقُ امْدُدْ وَاكْسِرِ","b":"وَارْفَعْ كَنُورٍ كُلَّ وَاْلأَرْضَ اَجْرُرِ"},{"n":713,"a":"شَفَا وَمُصْرِخِيَّ كَسْرُ الْيَا فَخَرْ","b":"يُضِلَّ فَتْحُ الضَّمِ كَالْحَجِّ الزُّمَرْ"},{"n":714,"a":"حَبْرٌ غِنًا لُقْمَانَ حَبْرٌ وَأَتَى","b":"عَكْسَ رُوَيْسٍ وَاشْبِعَنْ أَفْئِدَتَا"},{"n":715,"a":"لِي الخُلْفُ وَافْتَحْ لِتَزُولَ ارْفَعْ رُمَا","b":"وَرُبَّمَا الخِفُّ مَدًا نَلْ وَاضْمُمَا"},{"n":716,"a":"تُنَزَّلُ الكُوفِيْ وَفِي التَّا النُّونُ مَعْ","b":"زَاهَا اكْسِرًا صَحْبًا وَبَعْدُ مَا رَفَعْ"},{"n":717,"a":"وَخِفُّ سُكِّرَتْ دَنَا وَلاَمَا","b":"عَلَىَّ فَاكْسِرْ نَوِّنِ ارْفَعْ ظَامَا"},{"n":718,"a":"هَمْزَ ادْخُلُوا انْقُلِ اكْسِرِ الضَّمَ اخْتُلفْ","b":"غَيْثُ تُبَشِّرونِ ثِقْلُ النُّونِ دِفْ"},{"n":719,"a":"وَكَسْرُهَا اعْلَمْ دُمْ كَيَقْنَطُ اجْمَعَا","b":"رَوَى حِمًا خِفُّ قَدَرْنَا صِفْ مَعَا"}]},{"title":"سُورَةُ النَّحْلِ (٨)","verses":[{"n":720,"a":"يُنْزِلُ مَعْ مَا بَعْدُ مِثْلُ الْقَدْرِ عَنْ","b":"رَوحٍ بِشِقِّ فَتْحُ شِينِهِ ثَمَنْ"},{"n":721,"a":"يُنْبِتُ نُونٌ صَحَّ يَدْعُونَ ظِبَا","b":"نَلْ وَتُشَاقُّوْنَ اكْسِرِ النُّونَ أَبَا"},{"n":722,"a":"وَيَتَوَفَّاهْمْ مَعًا فَتىً وَضَمْ","b":"وَفَتْحُ يَهْدِي كَمْ سَمَا تَرَوْا فَعَمْ"},{"n":723,"a":"رَوَى الخِطَابُ وَاْلأَخِيْرُ كَمْ ظَرُفْ","b":"فَتًى تَرَوْا كَيْفَ شَفَا وَالْخُلْفَ صِفْ"},{"n":724,"a":"وَيَتَفَيَّؤُا سِوْى البَصْرِي وَرَا","b":"مُفَرِّطُونَ اكْسِرْ مَدًا وَاشْدُدْ ثَرَا"},{"n":725,"a":"وَنُونَ نُسْقِيكُمْ مَعًا أَنِّثْ ثَنَا","b":"وَضَمَّ صَحْبٌ حَبْرُ يَجْحَدُوا غِنَا"},{"n":726,"a":"صَبَا الْخِطَابُ ظَعْنِكُمْ حَرِّكْ سَمَا","b":"لَيَجْزِيَنَّ النُّونُ كَمْ خُلْفٌ نَمَا"},{"n":727,"a":"دُمْ ثِقْ وَضُمَّ فَتَنُوا واكْسِرْ سِوَى","b":"شَامٍ وَضَيْقٍ كَسْرُهَا مَعًا دَوَى"}]},{"title":"سُورَةُ الإسْرَاءِ (١٤)","verses":[{"n":728,"a":"يَتَّخِذُوا حَلا يَسُوءَ فَاضْمُمَا","b":"هَمْزًا وَأَشْبِعْ عَنْ سَمَا النُّونُ رَمَى"},{"n":729,"a":"وَنُخْرِجُ الْيَاءُ ثَوى وَفَتْحُ ضَمْ","b":"وَضَمُّ رَاءٍ ظَنَّ فَتْحُهَا ثَكَمْ"},{"n":730,"a":"يَلْقَا اضْمُمِ اشْدُدْ كمْ ثَنَا مَدَّ أَمَرْ","b":"ظَهْرٌ وَيَبْلُغَنَّ مَدَّ وَكَسَرْ"},{"n":731,"a":"شَفَا وَحَيْثُ أُفِّ نَوِّنْ عَنْ مَدَا","b":"وَفَتْحُ فَائِهِ دَنَا ظِلُّ كَدَا"},{"n":732,"a":"وَفَتْحُ خِطْئًا مَنْ لَهُ الخُلْفُ ثَرَا","b":"حَرِّك لَهُمْ وَالمَكِّ والمَدُِّ دَرَى"},{"n":733,"a":"يُسْرِفْ شَفَا خَاطِبْ وَقُسْطَاسِ اكْسِرِ","b":"ضَمَّا مَعًا صَحْبٌ وَضُمَّ ذَكِّرِ"},{"n":734,"a":"سَيِّئَةً وَلاَ تُنَوِّنْ كَمْ كَفَى","b":"لِيَذْكُرُوا اضْمُمْ خَفِّفَنْ مَعًا شَفَا"},{"n":735,"a":"وَبَعْدَ أَنْ فَتىً وَمَرْيَمٌ نَمَا","b":"إِذْ كَمْ يَقُولُ عَنْ دُعَا الثَّانِي سَمَا"},{"n":736,"a":"نَلْ كَمْ يُسَبِحُ صَدَا عَمَّ دُعَا","b":"وَفِيهِمَا خُلْفُ رُوَيْسٍ وَقَعَا"},{"n":737,"a":"وَرَجِْلِكَ اكْسِرْ سَاكِنًا عُدْ نَخْسِفَا","b":"وَبَعْدَهُ اْلأَرْبَعُ نُونٌ حُزْ دَفَا"},{"n":738,"a":"يُغْرِقَكُمْ مِنْهَا فَأَنِّثْ ثِقْ غِنَا","b":"خَلْفَكَ فِي خِلاَفَكَ اتْلُ صِفْ ثَنَا"},{"n":739,"a":"حَبْرٌ نَأَى نَاءَ مَعًا مِنْهُ ثُبَا","b":"تَفْجُرَ فِي اْلأُولَى كَتَقْتُلَ ظُبَا"},{"n":740,"a":"كَفَى وَكِسْفًا حَرِّكَنْ عَمَّ نَفَسْ","b":"وَالشُّعَرَا سَبَا عَلاَ الرُّومِ عَكَسْ"},{"n":741,"a":"مَنْ لِي بِخُلْفٍ ثِقْ وَقُلْ قَالَ دَنَا","b":"كَمْ وَعَلِمْتُ مَا بِضَمِّ التَّا رَنَا"}]},{"title":"سُورَةُ الْكَهْفِ (١٩)","verses":[{"n":742,"a":"مِنْ لَدْنِهِ لِلضَّمِّ سَكِّنْ وَأَشِمّْ","b":"وَاكْسِرْ سُكُونَ النُّونِ وَالضَّمِ صُرِمْ"},{"n":743,"a":"مِرْفَقًا اَفْتَحِ اكْسِرَنْ عَمَّ وَخِفْ","b":"تَزَّاوَرُ الكُوفِي وَتَزْوَرُّ ظُرِفْ"},{"n":744,"a":"كَمْ وَمُلِئْتَ الثِّقْلُ حِرْمٌ وَرْقِكُمْ","b":"سَاكِنُ كَسْرٍ صِفْ فَتىً شَافٍ حَكُمْ"},{"n":745,"a":"وَلاَ تُنَوِّنْ مَِائَةٍ شَفَا وَلاَ","b":"يُشْرِكْ خِطَابٌ مَعَ جَزْمٍ كَمَّلاَ"},{"n":746,"a":"وَثَمَرٌ ضَمَّاهُ بِالْفَتْحِ ثَوَى","b":"نَصْرٍ بِثَمِْرِهِ ثَنَا شادٍ نَوَى"},{"n":747,"a":"سَكِّنْهُمَا حَلاَ وَمِنْهَا مِنْهُمَا","b":"دِنْ عَمَّ لَكِنَّا فَصِلْ ثُبْ غُصْ كَمَا"},{"n":748,"a":"يَكُنْ شَفَا وَرَفْعُ خَفْضِ الحَقِّ رُمْ","b":"حُطْ يا نُسَيِّرُ افْتحُوا حَبْرٌ كَرُمْ"},{"n":749,"a":"وَالنُّونَ أَنِّثْ والْجِبَالَ ارْفَعْ وَثَمْ","b":"أَشْهَدْتُ أَشْهَدْنَا وَكُنْتَ التَّاءَ ضَمْ"},{"n":750,"a":"سِوَاهُ والنُّونُ يَقُولُ فَرْدَا","b":"مُهْلَكَ مَعْ نَمْلِ افْتَحِ الضَّمَّ نَدَا"},{"n":751,"a":"واللاَّمَ فَاكْسِرْ عُدْ وَغَيْبَ يُغْرِقَا","b":"وَالضَّمَّ والكَسْرَ افْتَحًا فَتىً رَقَا"},{"n":752,"a":"وَعَنْهَمُ ارْفَعْ أَهْلَهَا وامْدُدْ وَخِفْ","b":"زَاكِيَةً حَبْرٌ مَدًا غِثْ وَصُرِفْ"},{"n":753,"a":"لَدْنِي أَشِمَّ أَوْ رُمِ الضَّمَّ وَخِفْ","b":"نُونٍ مَدًا صُنْ تَخِذَ الْخَا اكِْسِرْ وخِفْ"},{"n":754,"a":"حَقًّا وَمَعْ تَحْريمِ نُونٍ يُبْدِلاَ","b":"خَفِّفْ ظُبًا كَنْزٍ دَنَا النُّورَ دَلاَ"},{"n":755,"a":"صِفْ ظَنَّ أَتْبَعَ الثَّلاَثَ كَمْ كَفَى","b":"حَامِيَةٍ حَمِئَةٍ وَاهْمِزْ أَفَا"},{"n":756,"a":"عُدْ حَقُّ وَالرَّفْعَ انْصِبَنْ نَوِّنْ جَزَا","b":"صَحْبُ ظُبَى افْتَحْ ضَمَّ سَدَّيْنِ عَزَا"},{"n":757,"a":"حَبْرٌ وَسُدًّا حُكْمُ صَحْبٍ دَبَرَا","b":"يَاسِيَنَ صَحْبٌ يَفْقَهُوا ضُمَّ اكْسِرَا"},{"n":758,"a":"شَفَا وَخَرْجًا قُلْ خَرَاجًا فِيهِمِا","b":"لَهُمْ فَخَرْجُ كَمْ وَصُدْفَيْنَ اضْمُمَا"},{"n":759,"a":"وسَكِّنَنْ صِفْ وَبِضَمَّيْ كُلِّ حَقْ","b":"آتُونِ هَمْزُ الْوَصْلِ فِيهِمَا صَدَقْ"},{"n":760,"a":"خُلْفٌ وَثَانٍ فُزْ فَمَا اسْطَاعُوا اشْدُدَا","b":"طَاءً فَشَا وَرُدْ فَتىً أَنْ يَنْفَدَا"}]},{"title":"سُورَةُ مَرْيَمَ عليها السلام (٨)","verses":[{"n":761,"a":"وَاجْزِمْ يَرِثْ حُزْ رُدْ مَعًا بُكِيَّا","b":"بِكَسْرِ ضَمِّهِ رِضًى عُتِيَّا"},{"n":762,"a":"مَعْهُ صُلِيًّا وَجُثِيًّا عَنْ رِضَى","b":"وَقُلْ خَلَقْنَا فِى خَلَقْتُ رُحْ فَضَا"},{"n":763,"a":"هَمْزُ أَهَبْ بِالْيَا بِهِ خُلْفٌ جَلاَ","b":"حِمًا وَنِسْيًا فَافْتَحَنْ فَوْزٌ عَلاَ"},{"n":764,"a":"مِنْ تَحْتِهَا اكْسِرْ جُرَّ صَحْبٌ شُذْ مَدَا","b":"خِفُّ تُسَاقِطْ فِى عُلًا ذَكَرْ صَدَا"},{"n":765,"a":"خُلْفٌ ظُبىً وَضُمَّ واكْسِرْ عُدْ وَفِي","b":"قَوْلُ انْصِبِ الرَّفْعَ نُهَى ظِلٍّ كُفِي"},{"n":766,"a":"وَاكْسِرْ وَأَنَّ اللهَ شِمْ كَنْزًا وَشُدْ","b":"نُورِثُ غِثْ مُقَامًا اضْمُمْ هَامَ زِدْ"},{"n":767,"a":"وُلْدًا مَعَ الزُّخْرُفِ فَاضْمُمْ أَسْكِنَا","b":"رِضًا يَكَادُ فِيهِمَا أَبٌ رَنَا"},{"n":768,"a":"وَيَنْفَطِرْنَ يَتَفَطَّرْنَ عَلَمْ","b":"حِرْمٌ رَقَا الشُّورَى شَفَا عَنْ دُونِ عَمْ"}]},{"title":"سُورَةُ طَهَ (١٦)","verses":[{"n":769,"a":"أَنِّي أَنَا افْتَحْ حَبْرُ ثَبْتٍ وَأَنَا","b":"شَدِّدْ وَفِى اخْتَرْتُ قُلِ اخْتَرْنَا فَِنَا"},{"n":770,"a":"طُوًى مَعًا نَوِّنْهُ كَنْزًا فَتْحُ ضَمْ","b":"اشْدُدْ مَعَ القَطْعِ وَأَشْرِكْهُ يُضَمْ"},{"n":771,"a":"كَمْ خَافَ خُلْفًا وَلِتُصْنَعْ سَكِّنَا","b":"كَسْرًا وَنَصْبًا ثِقْ مِهَادًا كُوِّنَا"},{"n":772,"a":"سَمَا كَزُخْرُفٍ بِمَهْدًا وَاجْزِمِ","b":"تُخْلِفْهُ ثِبْ سِوًى بِكَسْرِهِ اضْمُمِ"},{"n":773,"a":"نَلْ كَمْ فَتىً ظَنَّ وَضُمَّ وَاكْسِرَا","b":"يُسْحِتَ صَحْبٌ غَابَ إِنْ خَفِّفْ دَرَا"},{"n":774,"a":"عِلْمًا وَهذَيْنِ بِهذَانِ حَلاَ","b":"فَأَجْمِعُوا صِلْ وَافْتَحِ الْمِيمَ حَلاَ"},{"n":775,"a":"يُخَيَّلُ التَّأْنِيثُ مِنْ شِمْ وَارْفَعِ","b":"جَزْمَ تَلَقَّفْ لابْنِ ذَكْوَانَ وُعِي"},{"n":776,"a":"وَسَاحِرٌ سِحْرٌ شَفَا أَنْجَيْتُكُمْ","b":"وَاعْدَتُكُمْ لَهُمْ كَذَا رَزَقْتُكُمْ"},{"n":777,"a":"وَلاَ تَخَفْ جَزْمًا فَشَا وَإِثْرِي","b":"فَاكْسِرْ وَسَكِّنْ غِثْ وَضَمُّ كَسْرِ"},{"n":778,"a":"يَحِلَّ مَعْ يَحْلُلْ رَنَا بِمُلْكِنَا","b":"ضَمٌّ شَفَا وَافْتَحْ إِلَى نَصِّ ثَنَا"},{"n":779,"a":"وَضُمَّ وَاكْسِرْ ثِقْلَ حُمِّلْنَا عَفَا","b":"كَمْ غَنَّ حِرْمٌ تَبْصُرُوا خَاطِبْ شَفَا"},{"n":780,"a":"تُخْلِفَهُ اكْسِرْ لاَمَ حَقٍّ نُحْرِقَنْ","b":"خَفِّفْ ثَنَا وَافْتَحْ لِضَمٍّ وَاضْمُمَنْ"},{"n":781,"a":"كَسْرًا خَلاَ نَنْفُخُ بِالْياَ وَاضْمُمِ","b":"وَفَتْحُ ضَمٍّ لاَ أَبُو عَمْرِهِمِ"},{"n":782,"a":"يَخَافُ فَاجْزِمْ دُمْ وَيُقْضَى يَقْضِيَا","b":"مَعْ نُونِهِ انْصِبْ رَفْعَ وَحْىٍ ظَمِيَا"},{"n":783,"a":"إِنَّكَ لاَ بِالْكَسْرِ آهِلٌ صَبَا","b":"تَرْضَى بِضَمِّ التَّاءِ صَدْرٌ رَحَبَا"},{"n":784,"a":"زَهْرَةَ حَرِّكْ ظَاهِرًا يَأْتِهِمُ","b":"صُحْبَةُ كَهْفٍ خَوْفَ خُلْفٍ دَهِمُوا"}]},{"title":"سُورَةُ الأَنْبِيَاءِ عليهم السلام (٧)","verses":[{"n":785,"a":"قُلْ قَالَ عَنْ شَفَا وَآخْرُهَا عَظُمْ","b":"وَأَوَلَمْ أَلَمْ دَنَا يَسْمَعُ ضُمْ"},{"n":786,"a":"خِطَابُهُ وَاكْسِرْ وَلِلضَّمِّ انْصِبَا","b":"رَفْعًا كَسَا وَالْعَكْسُ فِي النَّمْلِ دَبَا"},{"n":787,"a":"كَالرُّومِ مِثْقَالَ كَلُقْماَنَ ارْفَعِ","b":"مَدًا جُذَاذًا كَسْرُ ضَمِّهِ رُعِي"},{"n":788,"a":"يُحْصِنَ نُونٌ صِفْ غِنًا أَنِّثْ عَلَنْ","b":"كُفْؤَ ثَنَا نَقْدِرَ بِالْيَا وَاضْمُمَنْ"},{"n":789,"a":"وَافْتَحْ ظُبًى نُنْجِي احْذِفِ اشْدُدْ لِي مَضَى","b":"صُنْ حُرِّمَ اكْسِرْ سَكِّنِ اقْصُرْ صِف رِْضَى"},{"n":790,"a":"نَطْوِي فَجهِّلْ أَنِّثِ النُّونَ السَّمَا","b":"فَارْفَعْ ثَنَا وَرَبِّ لِلْكَسْرِ اضْمُمَا"},{"n":791,"a":"عَنْهُ (أبوجعفر) وَلِلْكِتَابِ صَحْبٌ جَمَعَا","b":"وَخُلْفُ غَيْبِ تَصِفُونَ مَنْ وَعَا"}]},{"title":"سُورَةُ الحَجِّ وَالمؤْمِنُونَ (١٧)","verses":[{"n":792,"a":"سَكْرَى مَعًا شَفَا رَبَتْ قُلْ رَبَأَتْ","b":"ثَرى مَعًا لاَمَ لِيَقْطَعْ حُرِّكَتْ"},{"n":793,"a":"بِالكَسْرِ جُدْ حُزْ كَمْ غِنًا لِيَقْضُوا","b":"لَهُمْ وَقُنْبُلٌ لِيُوفُوا مَحْضُ"},{"n":794,"a":"وَعَنْهُ (ابن ذكوان) وَلْيَطَّوَّفُوا انْصِبْ لُؤْلُؤَا","b":"نَلْ إِذَ ثَوىَ وَفَاطِرًا مَدًا نَأَى"},{"n":795,"a":"سَوَاءً انْصِبْ رَفْعَ عِلْمِ الجَاثِيَهْ","b":"صَحْبٌ لِيُوفُوا حَرِّكِ اشْدُدْ صَافِيَهْ"},{"n":796,"a":"كَتَخْطَفُ اتْلُ ثِقْ كِلاَ يَنَالُ ظَنْ","b":"أَنِّثْ وَسِيْنَيْ مَنْسَكًا شَفَا اكْسِرَنْ"},{"n":797,"a":"يَدْفَعُ فِي يُدَافِعُ الْبَصْرِي وَمَكْ","b":"وَأُذِنَ الضَّمُّ حِمًا مَدًا نَسَكْ"},{"n":798,"a":"مَعْ خُلْفِ إِدْرِيسَ يُقَاتِلُونَ عَفْ","b":"عَمَّ افْتَحِ التَّا هُدِّمَتْ لِلْحِرْمِ خَفْ"},{"n":799,"a":"أَهْلَكْتُهَا الْبَصْرِىُّ وَاقْصُرْ ثُمَّ شُدْ","b":"مُعَاجِزِينَ الْكُلَّ حَبْرٌ وَيَعُدْ"},{"n":800,"a":"دَانٍ شَفَا يَدْعُوا كَلُقْمَانَ حِمَا","b":"صَحْبٌ وَالاُخْرَى ظَنَّ عَنْكَبَا نَمَا"},{"n":801,"a":"حِمًا أَمَانَاتٍ مَعًا وَحِّدْ دَعَمْ","b":"صَلاَتِهِمْ شَفَا وَعَظْمُ العَظْمِ كَمْ"},{"n":802,"a":"صِفْ تَنْبُتُ اضْمُمْ وَاكْسِرِ الضَّمَّ غِنَا","b":"حَبْرٍ وَسِينَاءَ اكْسِرُوا حِرْمٌ حَنَا"},{"n":803,"a":"مُنْزَلًا افْتَحْ ضَمَّهُ واكْسِرْ صَبَنْ","b":"هَيْهَاتَ كَسْرُ التَّا مَعًا ثُبْ نَوِّنَنْ"},{"n":804,"a":"تَتْرَا ثَنَا حَبْرٍ وَأَنَّ اكْسِرْ كَفَى","b":"خَفِفَ كَرَا وَتَهْجُرُونَ اضْمُمْ أفَا"},{"n":805,"a":"مَعْ كَسْرِ ضَمٍّ وَاْلأَخِيَريْنِ مَعَا","b":"اللهُ فِي للهِ وَالْخَفْضَ ارفَعَا"},{"n":806,"a":"بَصْرٍ كَذَا عَالِمُ صُحْبَهٌ مَدَا","b":"وابْتَدِ غَوْثَ الخُلْفِ وَافْتَحْ وامْدُدَا"},{"n":807,"a":"مُحَرِّكًا شِقْوَتُنَا شَفَا وَضُمْ","b":"كَسْرَكَ سُخْرِيًّا كَصَادِ ثَابَ أُمْ"},{"n":808,"a":"شَفَا وَكَسْرَ أَنَّهُمْ وَقَالَ إِنْ","b":"قُلْ فِي رَقَا قُلْ كَمْ هُمَا وَالْمَكِّ دِنْ"}]},{"title":"سُورَةُ النُّورِ وَالفُرقَانِ (١٥)","verses":[{"n":809,"a":"ثَقِّلْ فَرَضْنَا حَبْرُ رَأْفَةٌ هُدَى","b":"خُلْفٌ زكَا حَرِّكْ وَحَرِّكْ وَامْدُدَا"},{"n":810,"a":"خُلْفُ الحَدِيدِ زِنْ وَأُوْلَى أَرْبَعُ","b":"صَحْبٌ وَخَامِسَةُ الاُخْرَى فَارْفَعُوا"},{"n":811,"a":"لاَ حَفْصُ أَنْ خَفِّفْ مَعًا لَعْنَةُ ظَنْ","b":"إِذْ غَضَبُ الحَضْرَمِ وَالضَّادَ اكْسِرَنْ"},{"n":812,"a":"وَاللهِ رَفْعُ الخَفْضِ أَصْلُ كِبْرُ ضَمْ","b":"كَسْرًا ظُبًا وَيَتَأَلَّ خَافَ ذُمْ"},{"n":813,"a":"يَشْهَدُ رُدْ فَتىً وَغَيْرِ انْصِبْ صَبَا","b":"كَمْ ثَابَ دُرِّيُّ اكْسِرِ الضَّمَّ رُبَا"},{"n":814,"a":"حُزْ وَامْدُدِ اهْمِزْ صِفْ رِضىً حُطْ وافْتَحُوا","b":"لِشُعْبَةٍ وَالشَّامِ بَا يُسَبِّحُ"},{"n":815,"a":"يُوقَدُ أَنِّثْ صُحْبَةً تفَعَّلاَ","b":"حَقٌّ ثَنَا سَحَابُ لاَ نُونٌ هَلاَ"},{"n":816,"a":"وَخَفْضُ رَفْعٍ بَعْدُ دُمْ يَذْهَبُ ضُمْ","b":"وَاكْسِرْ ثَنَا كَذَا كَماَ اسْتُخْلِفَ صُمْ"},{"n":817,"a":"ثَانِي ثَلاَثٍ كَمْ سَمَا عُدْ يَأْكُلُ","b":"نُونٌ شَفَا يَقُولُ كَمْ وَيَجْعَلُ"},{"n":818,"a":"فَاجْزِمْ حِمَا صَحْبٍ مَدا يَا نَحْشُرُ","b":"دِنْ عَنْ ثَوَى نَتَّخِذَ اضْمُمَنْ ثُرُوا"},{"n":819,"a":"وَافْتَحْ وَزِنْ خُلْفَ يَقُولُون وَعَفُوا","b":"مَا يَسْتَطِيعُوا خَاطِبَنْ وَخَفَّفُوا"},{"n":820,"a":"شِينَ تَشَقَّقُ كَقَافٍ حُزْ كَفَا","b":"نُزِّلَ زِدْهُ النُّونَ وَارْفَعْ خَفِّفَا"},{"n":821,"a":"وَبَعْدُ نَصْبُ الرَّفْعِ دِنْ وَسُرُجَا","b":"فَاجْمَعْ شَفَا يَأْمُرُنَا فَوْزًا رَجَا"},{"n":822,"a":"وَعَمَّ ضَمَّ يَقْتِرُوا وَالْكَسْرَ ضَمْ","b":"كُوفٍ وَيَخْلُدْ وَيُضَاعَفْ مَا جَزَمْ"},{"n":823,"a":"كَمْ صِفْ وَذُرِّيَّتِنَا حُطْ صُحْبَةَ","b":"يَلْقَواْ يُلَقَّوْا ضُمَّ كَمْ سَمَا عَتَا"}]},{"title":"سُورَةُ الشُّعَرَاءِ وَأُخْتَيْهَا (١٨)","verses":[{"n":824,"a":"يَضِيقُ يَنْطَلِقُ نَصْبُ الرَّفْعِ ظَن","b":"وَحذِرُونَ امْدُدْ كَفَى لِي الخُلْفُ مِنْ"},{"n":825,"a":"وَفَارِهِينَ كَنْزُ وَاتَّبَعَكَا","b":"أَتْبَاعُ ظَعْنُ خَلْقُ فَاضْمُمْ حَرِّكَا"},{"n":826,"a":"بِالضَّمِّ نَلْ إِذْ كَمْ فَتىً وَاْلأَيْكَةِ","b":"لَيْكَةَ كَمْ حِرْمٍ كَصَادٍ وَقِّتِ"},{"n":827,"a":"نَزَّلَ خَفِّفْ وَاْلأَمِينُ الرُّوحُ عَنْ","b":"حِرْمٍ حَلاَ أَنِّثْ يَكُنْ بَعْدُ ارْفَعَنْ"},{"n":828,"a":"كَمْ وَتَوَكَّلْ عَمَّ فَا نَوِّنْ كَفَا","b":"ظِلُّ شِهَابٍ يَأْتِيَنَّنِي دَفَا"},{"n":829,"a":"سَبَأَ مَعًا لاَ نُونَ وَافْتَحْ هَلْ حَكَمْ","b":"سَكِّنْ زَكَا مَكُثْ نُهىً شُدْ فَتْحُ ضَمْ"},{"n":830,"a":"أَلاَّ أَلاَ وَمُبْتَلًى قِفْ يَا أَلاَ","b":"وَابْدَأْ بِضَمٍّ اسْجُدُوا رُحْ ثُبْ غَلاَ"},{"n":831,"a":"يُخْفُونَ يُعْلِنُونَ خَاطِبْ عَنْ رَقَا","b":"وَالسُّوقِ سَاقَيْها وَسُوقِ اهْمِزْ زَقَا"},{"n":832,"a":"سُؤُقِ عَنْهُ ضُمَّ تَانُبَيِّتَنْ","b":"لاَمَ نَقُولَنَّ وَنُونَيْ خَاطِبَنْ"},{"n":833,"a":"شَفَا وَيُشْرِكُوا حِمًا نَلْ فَتْحُ أَنْ","b":"نَ النَّاسَ أَنَّا مَكْرِهِمْ كَفَى ظَعَنْ"},{"n":834,"a":"يَذَّكَّرُوا لَمْ حُزْ شَذَا ادَّارَكَ فِي","b":"أَدْرَكَ أَيْنَ كَنْزُ تَهْدِي الْعُمْيَ فِي"},{"n":835,"a":"مَعًا بِهَادِي العُمْيِ نَصْبٌ فَلَتَا","b":"آتُوهُ فَاقْصُرْ وَافْتَحِ الضَّمَّ فَتَا"},{"n":836,"a":"عُدْ يَفْعَلُوا حَقًّا وَخُلْفٌ صُرِفَا","b":"كَمْ نُرِيَ الْيَا مَعَ فَتْحَيْهِ شَفَا"},{"n":837,"a":"وَرَفْعُهُمُ بَعْدُ الثَّلاَثَ وَحَزَنْ","b":"ضُمَّ وَسَكِّنْ عَنْهُمُ يَصْدُرَ حَنْ"},{"n":838,"a":"ثِبْ كِدْ بِفَتْحِ الضَّمِّ وَالكَسْرُ يُضَمْ","b":"وَجَذْوَةٍ ضُمَّ فَتىً وَالفَتْحَ نَمْ"},{"n":839,"a":"وَالرَّهْبِ ضُمَّ صُحْبَةٌ كَمْ سَكَّنَا","b":"كَنْزٌ يُصَدِّقْ رَفْعُ جَزْمٍ نَلْ فَنَا"},{"n":840,"a":"وَقَالَ مُوسَى الوَاوَ دَعْ دُمْ سَاحِرًا","b":"سِحْرَانِ كُوفٍ يَعْقِلُوا طِبْ يَاسِرا"},{"n":841,"a":"خُلْفٌ وَيُجْبَى أَنَّثُوا مَدًا غَبَا","b":"وَخُسِفَ الْمَجْهُولُ سَمِّ عَنْ ظَبَا"}]},{"title":"سُورَةُ العَنْكَبُوتِ وَالرُّومِ","verses":[{"n":842,"a":"وَالنَّشْأَةَ امْدُدْ حَيْثُ جَا حِفْظٌ دَنَا","b":"مَوَدَّةً رَفْعٌ غِنًا حَبْرٌ رَنَا"},{"n":843,"a":"وَنَوِّنِ انْصِبْ بَيْنَكُمْ عَمَّ صَفَا","b":"آيَاتٌ التَّوْحِيدُ صُحْبَةٌ دَفَا"},{"n":844,"a":"نَقُولُ بَعْدُ الْيَا كَفَى اتْلُ يُرْجَعُوا","b":"صَدْرٌ وَتَحْتُ صَفْوُ حُلْوٍ شَرَعُوا"},{"n":845,"a":"لَنُثْوِيَنَّ الْبَاءَ ثَلِّثْ مُبْدِلاَ","b":"شَفَا وَسَكِّنْ كَسْرَ وَلْ شَفَا بَلاَ"},{"n":846,"a":"دُمْ ثَانِ عَاقِبَةُ رَفْعُهَا سَمَا","b":"لِلْعَالَمِينَ اكْسِرْ عِدًا تُرْبُوا ظَمَا"},{"n":847,"a":"مَدًا خِطَابٌ ضُمَّ أَسْكِنْ وَشَهُمْ","b":"زَيْنُ خِلاَفِ النُّونِ مِنْ نُذِيقَهُمْ"},{"n":848,"a":"آثَارِ فَاجْمَعْ كَهْفُ صَحْبٍ يَنْفَعُ","b":"كَفَى وَفِي الطَّوْلِ فَكُوفٍ نَافِعُ"}]},{"title":"وَمِنْ سُورَةِ لُقْمَانَ عليه السلام إِلَى سُورَةِ يَس","verses":[{"n":849,"a":"وَرَحْمَةٌ فَوْزٌ وَرَفْعُ يَتَّخِذْ","b":"فَانْصِبْ ظُبىً صَحْبٍ تُصَاعِرْ حَلَّ إِذْ"},{"n":850,"a":"شَفَا فَخَفِّفْ مُدَّ نِعْمَةً نِعَمْ","b":"عُدْ حُزْ مَدًا وَالبَحْرُ لاَ الْبَصْرِي وَسَمْ"},{"n":851,"a":"أُخْفِيَ سَكِّنْ فِي ظُبىً وَإِذْ كَفَى","b":"خَلَقَهُ حَرِّكْ لِمَا اكْسِرْ خَفِّفَا"},{"n":852,"a":"غَيْثُ رِضىً وَيَعْمَلُو مَعًا حَوَى","b":"تَظَّاهَروُنَ الضَّمَّ وَالكَسْرَ نَوَى"},{"n":853,"a":"وَخَفِّفِ الْهَا كَنْزُ وَالظَّاءَ كَفَى","b":"وَاقْصُرْ سَمَا وَفِي الظُّنُونَا وَقَفَا"},{"n":854,"a":"مَعَ الرَّسُولاَ وَالسَّبِيلاَ بِالأَلِفْ","b":"دِنْ عَنْ رَوى وَحَالَتَيْهِ عَمَّ صِفْ"},{"n":855,"a":"مَقَامَ ضُمَّ عُدْ دُخَانُ الثَّانِ عَمْ","b":"وَقَصْرُ آتَوْهَا مَدًا مِنْ خُلْفِ دُمْ"},{"n":856,"a":"وَيَسْأَلُونَ اشْدُدْ وَمُدَّ غِثْ وَضُمْ","b":"كَسْرًا لَدَى أُسْوَةُ فِي الْكُلِّ نَعَمْ"},{"n":857,"a":"ثَقِّلْ يُضَاعِفْ كَمْ ثَنَا حَقٌّ وَيَا","b":"وَالْعَيْنَ فَافْتَحْ بَعْدُ رَفْعُ احْفَظْ حَيَا"},{"n":858,"a":"ثَوَى كَفَى يَعْمَلْ وَيُؤْتِ الْياَ شَفَا","b":"وَفَتْحُ قَرْنَ نَلْ مَدًا وَلِيْ كَفَا"},{"n":859,"a":"يَكُونَ خَاتَمَ افْتَحُوُه نَصَّعَا","b":"يَحِلُّ لاَ بَصْرٍ وسَادَاتِ اجْمَعَا"},{"n":860,"a":"بِالكَسْرِ كَمْ ظَنَّ كَثِيرًا ثَاهُ بَا","b":"لِي الخُلْفُ نَلْ عَالِمِ عَلاَّمِ رُبَا"},{"n":861,"a":"فُزْ وَارْفَعِ الخَفْضَ غِنًا عَمَّ كَذَا","b":"أَلِيمٌ الْحَرفَانِ شِمْ دِنْ عَنْ غَذَا"},{"n":862,"a":"وَيَا نَشَأْ نَخْسِفْ بِهِمْ نُسْقِطْ شَفَا","b":"وَالرِّيحُ صِفْ مِنْسَأَتَهُ أَبْدِلْ حَفَا"},{"n":863,"a":"مَدًا سُكُونُ الْهَمْزِ لِي الخُلْفُ مُلاَ","b":"تُبُيِّنَتْ مَعْ إِنْ تُوُلِّيْتُمْ غَلاَ"},{"n":864,"a":"ضَمَّانِ مَعْ كَسْرٍ مَسَاكِنْ وَحِّدَا","b":"صَحْبٌ وَفَتْحُ الكَافِ عَالِمٌ فِدَا"},{"n":865,"a":"أُكْلِ أَضِفْ حِمًا نُجَازِيْ اليَا افْتَحَنْ","b":"زَايًا كَفُورَ رَفْعُ حَبْرٍ عَمَّ صُنْ"},{"n":866,"a":"وَرَبَّنَا ارْفَعْ ظُلْمَنَا وَبَاعَدَا","b":"فَافْتَحْ وَحَرِّكْ عَنْهُ وَاقْصُرْ شَدِّدَا"},{"n":867,"a":"حَبْرٌ لِوًى وَصَدَّقَ الثِقْلُ كَفَا","b":"وَسَمِّ فُزِّعَ كَمَالٌ ظَرُفَا"},{"n":868,"a":"وَأَذِنَ اضْمُمْ حُزْ شَفَا نَوِّنْ جَزَا","b":"لاَ تَرْفَعِ الضِّعْفِ ارْفَعِ الخَفْضَ غَزَا"},{"n":869,"a":"وَالغُرْفَةَ التَّوحِيدَ فِدْ وبَيَّنَتْ","b":"حَبْرٌ فَتىً عُدْ وَالتَّنَاوُشْ هُمِزَتْ"},{"n":870,"a":"حُزْ صُحْبَةٌ غَيْرَ اخْفِضِ الرَّفْعَ ثُبَا","b":"شَفَا وَتَذْهَبْ ضُمَّ وَاكْسِرْ ثَغَبَا"},{"n":871,"a":"نَفْسُكَ غَيْرُهُ وَيَنْقُصُ افْتَحَا","b":"ضَمًّا وَضُمَّ غَوْثُ خُلْفٍ شَرَحَا"},{"n":872,"a":"نَجْزِي بِيَا جَهِّلَ وَكُلَّ ارْفَعْ حَدَا","b":"وَالسَّيئَّ المَخْفُوضِ سَكِنْهُ فِدَا"}]},{"title":"سُورَةُ يَس (٩)","verses":[{"n":873,"a":"تَنْزِيلُ صُنْ سَمَا عَزَزْنَا الْخِفُّ صِفْ","b":"وَافْتَحْ أَئِنْ ثِقْ وَذُكِرْتُمْ عَنْهُ خِفْ"},{"n":874,"a":"أُولَى وأُخْرَى صَيْحَةٌ وَاحِدَةُ","b":"ثُبْ عَمِلَتْهُ يَحْذِفُ الْهَا صُحْبَةُ"},{"n":875,"a":"والقَمَرَ ارْفَعْ إِذْ شَذَا حَبْرٌ وَيَا","b":"يَخَصِّمُوا اكْسِرْ خُلْفَ صَافِي الْخَا لِيَا"},{"n":876,"a":"خُلْفٌ رَوَى نَلْ مِنْ ظُبىً وَاخْتَلَسَا","b":"بِالْخُلْفِ حُطْ بَدْرًا وَسَكِنْ بَخَسَا"},{"n":877,"a":"بِالْخُلْفِ فِى ثَبْتٍ وَخَفَّفُوا فِنَا","b":"وَفَاكِهُونَ فَاكِهِينُ اقْصُرْ ثَنَا"},{"n":878,"a":"تَطْفِيفُ كَوْنُ الْخُلْفِ عَنْ ثَرًا ظُلَلْ","b":"لِلْكَسْرِ ضُمَّ وَاقْصُرُوا شَفَا جُبُلْ"},{"n":879,"a":"فِى كَسْرِ ضَمَّيْهِ مَدًا نَلْ وَاشْدُدَا","b":"لَهُمْ وَرَوْحٍ ضَمُّهُ اسْكِنْ كَمْ حَدَا"},{"n":880,"a":"نَنْكُسْهُ ضُمَّ حَرِّكِ اشْدُدْ كَسْرَ ضَمْ","b":"نَلْ فُزْ لِيُنْذِرَ الخِطَابُ ظَلَّ عَمْ"},{"n":881,"a":"وَحَرْفَ الاَحْقَافِ لَهُمْ والْخُلْفُ هَلْ","b":"بِقَادِرٍ يَقْدِرُ غُصْ الاحْقَافِ ظَلْ"}]},{"title":"سُورَةُ الصَّافَاتِ (٥)","verses":[{"n":882,"a":"بِزيِنَةٍ نَوِّنْ فِدًا نَلْ بَعْدُ صِفْ","b":"فَانْصِبْ وَثِقْلَيْ يَسْمَعُوا شَفَا عُرِفْ"},{"n":883,"a":"عَجِبْتَ ضُمَّ التَّا شَفَا اسْكِنْ أَوَ عَمْ","b":"لاَ أَزْرَقٌ مَعًا يَرِفُّوا فُزْ بِضَمْ"},{"n":884,"a":"زَا يَنْزِفُونَ اكْسِرْ شَفَا الاُخْرَى كَفَا","b":"مَاذَا تَرَى بِالضَّمِّ والكَسْرِ شَفَا"},{"n":885,"a":"إلْيَاسَ وَصْلُ الهَمْزِ خُلْفُ لَفْظِ مَنْ","b":"أَللهُ رْبُّ رَبُّ غَيْرُ صَحْبِ ظَنْ"},{"n":886,"a":"وَآلِ يَاسِينَ بِإِلْيَاسِينَ كَمْ","b":"أَتَى ظُبىً وَصْلُ اصْطَفَى جُدْ خُلْفَ ثَمْ"}]},{"title":"وَمِنْ سُورَةِ (ص) إِلَى سُورَةِ الأَحْقَافِ (٣١)","verses":[{"n":887,"a":"فَوَاقٍ الضَّمُّ شَفَا خَاطِبْ وَخِفْ","b":"يَدَّبَّرُوا ثِقْ عَبْدَنَا وَحِّدْ دَنِفْ"},{"n":888,"a":"وَقَبْلُ ضَمَّا نَصْبُ ثُبْ ضُمَّ اسْكِنَا","b":"لاَ الْحَضْرَمِيْ خالِصَةٌ أَضِفْ لَنَا"},{"n":889,"a":"خُلْفٌ مَدَا وَيُوعَدُونَ حُزْ دَعَا","b":"وَقَافَ دِنْ غَسَّاقٌ الثِقْلُ مَعَا"},{"n":890,"a":"صَحْبٌ وَآخَرُ اضْمُمِ اقْصُرْهُ حِمَا","b":"قَطْعُ اتَّخَذْنَا عَمَّ نَلْ دُمْ أَنَّمَا"},{"n":891,"a":"فَاكْسِرْ ثَنَا فَالْحَقُّ نَلْ فَتىً أَمَنْ","b":"خَفَّ اتْلُ فُزْ دُمْ سَالِمًا مُدَّ اكْسِرَنْ"},{"n":892,"a":"حَقًّا وَعَبْدَهُ اجْمَعُوا شَفَا ثَنَا","b":"وَكَاشِفَاتٌ مُمْسِكَاتٌ نَوِّنَا"},{"n":893,"a":"وَبَعْدُ فِيْهِمَا انْصِبَنْ حِمًا قَضَى","b":"قُضِيَ وَالْمْوتُ ارْفَعُوا رَوَى فَضَا"},{"n":894,"a":"يا حَسْرَتَايَ زِدْ ثَنَا سَكِّنْ خَفَا","b":"خُلْفِ مَفَازَاتِ اجْمَعُوا صَبْرًا شَفَا"},{"n":895,"a":"زِدْ تَأْمُرُونِي النُّونَ مِنْ خُلْفٍ لِبَا","b":"وَعَمَّ خِفُّهُ وَفِيهَا والنَّبَا"},{"n":896,"a":"فُتِّحَتِ الْخِفُّ كَفَا وَخَاطِبِ","b":"يَدْعُونَ مِنْ خُلْفٍ إِلَيْهِ لَاَزِبِ"},{"n":897,"a":"وَمِنْهُمُ مِنْكُمْ كَمَا أَوْ أَنْ وَأَنْ","b":"كُنْ حَوْلَ حِرْمٍ يَظْهَرَ اضْمُمْ وَاكْسِرَنْ"},{"n":898,"a":"وَالرَّفْعَ فِي الْفَسَادَ فَانْصِبْ عَنْ مَدَا","b":"حمًِا وَنَوِّنْ قَلْبِ كَمْ خُلْفٍ حَدَا"},{"n":899,"a":"أَطَّلِعَ ارْفَعْ غَيْرَ حَفْصٍ أَدْخِلوُا","b":"صِلْ واضْمُمِ الكَسْرَ كَمَا حَبْرٍ صِلُوا"},{"n":900,"a":"مَا يَتَذَكَّرُونَ كَافِيْهِ سَمَا","b":"سَوَاءً ارْفَعْ ثِقْ وَخَفْضَهُ ظَمَا"},{"n":901,"a":"نَحْسَاتٍ اَسْكِنْ كَسْرَهُ حَقًّا أَبَا","b":"وَيُحْشَرُ النُّوْنُ وَسَمِّ اتْلُ ظُبَا"},{"n":902,"a":"أَعْدَاءُ عَنْ غَيْرِهِمَا اجْمَعْ ثَمَرَتْ","b":"عَمَّ عُلًا وَحَاءَ يُوحَى فُتِحَتْ"},{"n":903,"a":"دُمًا وخَاطِبْ يَفْعَلوُ صَحْبٌ غَمَا","b":"خُلْفٌ بِمَا فِي فَبِمَا مَعْ يَعْلَمَا"},{"n":904,"a":"بِالرَّفْعِ عَمَّ وَكَبَائِرَ مَعَا","b":"كَبِيرَ رُمْ فَتىً وَيُرْسِلَ ارْفَعَا"},{"n":905,"a":"يُوحِي فَسَكِّنْ مَازَ خُلْفًا أَنْصِفَا","b":"أَنْ كُنْتُمُ بِكَسْرَةٍ مَدًا شَفَا"},{"n":906,"a":"وَيَنْشَأُ الضَّمُّ وَثِقْلٌ عَنْ شَفَا","b":"عِبَادِ فىِ عِنْدَ بِرَفْعٍ حُزْ كَفَا"},{"n":907,"a":"أَشَهِدُوا اقْرَأْهُءَأُشْهِدُوا مَدَا","b":"قُلْ قَالَ كَمْ عِلْمٍ وَجِئْنَا ثَمَدًا"},{"n":908,"a":"بِجِئْتُكُمْ وَسُقُفًا وَحِّدْ ثَبَا","b":"حَبْرٍ وَلَمَّا اشْدُدْ لَدَا خُلْفٍ نَبَا"},{"n":909,"a":"فِى ذَا نُقَيِّضْ يَا صَدًا خُلْفٍ ظَهَرْ","b":"وَجَاءَنَا امْدُدْ هَمْزَهُ صِفْ عَمَّ دَرْ"},{"n":910,"a":"أَسْوِرَةٌ سَكِّنْهُ وَاقْصُرْ عَنْ ظُلَمْ","b":"وَسُلُفًا ضَمًّا رِضىً يَصُدُّ ضَمْ"},{"n":911,"a":"كَسْرًا رَوَى عَمَّ وَتَشْتَهِيْهِ هَا","b":"زِدْ عَمَّ عِلْمٍ وَيُلاَقُوا كُلُّهَا"},{"n":912,"a":"يَلْقَوْا ثَنَا وَقِيْلِهِ اخْفِضْ فِى نَمُوا","b":"وَيُرْجَعُوا دُمْ غِثْ شَفَا وَيَعْلَمُوا"},{"n":913,"a":"حَقٌّ كَفَا رَبُّ السَّمَوَاتِ خَفَضْ","b":"رَفْعًا كَفَى يَغْلِي دَنَا عِنْدَ غَرَضْ"},{"n":914,"a":"وَضُمَّ كَسْرَ فَاعْتِلُوا إِذْ كَمْ دَعَا","b":"ظَهْرًا وَإِنَّكَ افْتَحُوا رُمْ وَمَعَا"},{"n":915,"a":"آيَاتٌ اكْسِرْ ضَمَّ تَاءٍ فِى ظُبَا","b":"رُضْ يُؤْمِنُونَ عَنْ شَذَا حِرْمٍ حَبَا"},{"n":916,"a":"لِنَجْزِيَ الْيَا نَلْ سَمَا ضُمَّ افْتَحَا","b":"ثِقْ غَشْوَةَ افْتَحِ اقْصُرَنْ فَتىً رَحَا"},{"n":917,"a":"وَنَصْبُ رَفْعِ ثَانِ كُلَّ أُمَةٍ","b":"ظِلٌّ وَوَالسَّاعَةُ غَيْرُ حَمْزَةِ"}]},{"title":"سُورَةُ الأَحْقَافِ وَأُخْتَيْهَا (٩)","verses":[{"n":918,"a":"وَحُسْنًا احْسَانًا كَفَا وَفَصْلُ فِي","b":"فِصَالُ ظَبْىٌ نَتَقَبَّلُ يَا صَفِي"},{"n":919,"a":"كَهْفٌ سَمَا مَعْ نَتَجَاوَزْ وَاضْمُمَا","b":"أَحْسَنُ رَفْعُهُمْ وَنَلْ حَقٌّ لَمَا"},{"n":920,"a":"خُلْفٌ نُوَفِّيَهُمُ الْيَا وَتَرَى","b":"لِلْغَيْبِ ضُمَّ بَعْدَهُ ارْفَعْ ظَهَرَا"},{"n":921,"a":"نَصٌّ فَتىً وَقَاتَلُوا ضُمَّ اكْسِرِ","b":"وَاقْصُرْ عُلاَ حِمًا وَآسِنِ اقْصُرِ"},{"n":922,"a":"دُمْ آنِفًا خُلْفٌ هُدًا والْحَضْرَمِي","b":"تُقَطِّعُوا كَتَفْعَلُوا أَمْلَى اضْمُمِ"},{"n":923,"a":"وَاكْسِرْ حِمًا وَحَرِّكِ اليَاءَ حُلاَ","b":"أَسْرَارَ فَاكْسِرْ صَحْبُ يَعْلَمْ وَكِلاَ"},{"n":924,"a":"نَبْلُو بِيَا صِفْ سَكِّنِ الثَّانِي غَلاَ","b":"لِيُؤْمِنُوا مَعَ الثَّلاَثِ دُمْ حَلاَ"},{"n":925,"a":"نُؤْتِيْهِ يَا غِثْ حُزْ كَفَا ضَرًّا فَضُمْ","b":"شَفَا اقْصُرِ اكْسِرْ كَلِمَ اللهُ لَهُمْ"},{"n":926,"a":"مَا يَعْمَلوُا حُطْ شَطْأَهُ حَرِّكْ دَلا","b":"مِزْ آزَرَ اقْصُرِ مَاجِدًا وَالْخُلْفُ لَاَ"}]},{"title":"وَمِنْ سُورَةِ الحُجُرَاتِ إِلَى سُورَةِ الرَّحْمَنِ عز وجل (٩)","verses":[{"n":927,"a":"تَقَدَّمُوا ضُمُّوا اكْسِرُوا لاَ الحَضْرمِي","b":"إِخْوَتِكُمْ جَمْعُ مُثَنَّاهُ ظَمِي"},{"n":928,"a":"وَالحُجُرَاتِ فَتْحُ ضَمِّ الجِيمِ ثَرْ","b":"يَأْلِتْكُمُ البَصْرِي وَيَعْلَمُونَ دَرْ"},{"n":929,"a":"نَقُولُ يَا إِذْ صَحَّ أَدْبَارَ كَسَرْ","b":"حِرْمٌ فَتىً مِثْلُ ارْفَعُوا شَفَا صَدَرْ"},{"n":930,"a":"صَاعِقَةُ الصَّعْقَةُ رُمْ قَوْمُ اخْفِضَنْ","b":"حَسْبُ فَتىً رَاضٍ وَأَتْبَعْنَا حَسَنْ"},{"n":931,"a":"بِاْتَّبَعَتْ ذُرِّيَّةُ امْدُدْ كَمْ حِمَا","b":"وَكَسْرُ رَفْعِ التَّا حَلاَ وَاكْسِرْ دُمَا"},{"n":932,"a":"لاَمَ أَلِتْنَا حَذْفُ هَمْزٍ خُلْفُ زُمْ","b":"وَإِنَّهُ افْتَحْ رُمْ مَدًا يَصْعَقُ ضُمْ"},{"n":933,"a":"كَمْ نَالَ كَذَّبَ الثَّقِيلُ لِي ثَنَا","b":"تَمْرُوا تُمَارُوا حَبْرُ عَمَّ نَصُّنَا"},{"n":934,"a":"تَا اْللاَّتَ شَدِّدْ غَرْ مَنَاةَ الْهَمْزَ زِدْ","b":"دِلْ مُسْتَقِرٌّ خَفْضُ رَفْعِهِ ثَمِدْ"},{"n":935,"a":"وَخَاشِعًا فِى خُشَّعًا شَفَا حِمَا","b":"سَيَعْلَمُونَ خَاطَبُوا فَصْلًا كَمَا"}]},{"title":"سُورَةُ الرَّحْمَنِ عز وجل (٤)","verses":[{"n":936,"a":"وَالحَبُّ ذُو الرَّيْحَانِ نَصْبُ الرَّفْعِ كَمْ","b":"وَخَفْضُ نُونِهَا شَفَا يَخْرُجُ ضَمْ"},{"n":937,"a":"مَعْ فَتْحِ ضَمٍ إِذْ حِمًا ثِقْ وَكسَرْ","b":"فِي الْمُنْشَئَاتُ الشِّينَ صِفْ خُلْفًا فَخَرْ"},{"n":938,"a":"سَنَفْرُغُ الْيَاءُ شَفَا وَكَسْرُ ضَمْ","b":"شُوَاظُ دُمْ نُحَاسُ جَرُّ الرَّفْعِ شِمْ"},{"n":939,"a":"حَبْرٌ كِلاَ يَطْمِثْ بِضَمِّ الْكَسْرِ رُمْ","b":"خُلْفٌ وَيَا ذِي آخِرًا وَاوٌ كَرُمْ"}]},{"title":"وَمِنْ سُورَةِ الوَاقِعَةِ إلَى سُورَةِ التَّغَابُنِ (١٤)","verses":[{"n":940,"a":"حُورٌ وَعِينٌ خَفْضُ رَفْعٍ ثُبْ رِضَا","b":"وَشَرْبَ فَاضْمُمْهُ مَدًا نَصْرٍ فَضَا"},{"n":941,"a":"خِفُّ قَدَرْنَا دِنْ فَرَوحُ اضْمُمْ غِذَا","b":"بِمَوْقِعٍ شَفَا اضْمُمْ اكْسِرْ أَخَذَا"},{"n":942,"a":"مِيثَاقَ فَارْفَعْ حُزْ وَكُلُّ كَثُرَا","b":"قَطْعَ انْظُرُونَا وَاكْسِرِ الضَّمَّ فَرَا"},{"n":943,"a":"يُؤْخَذُ أَنِّثْ كَمْ ثَوى خِفُّ نَزَلْ","b":"إِذْ عَنْ غَلاَ الخُلْفُ وَخَفِّفْ صِفْ دَخَلْ"},{"n":944,"a":"صَادَيْ مُصَدِّقْ وَيَكُونُوا خَاطِبَنْ","b":"غَوْثًا أَتَاكُمُ اقْصُرَنْ حُزْ وَاحْذِفَنْ"},{"n":945,"a":"قَبْلَ الْغَنِىُّ هُوَ عَمَّ، وَامْدُدِ","b":"وَخِفُّ هَا يَظَّهَّرُوا كَنْزٌ ثُدِي"},{"n":946,"a":"وَضُمَّ وَاكْسِرْ خَفِّفِ الظَّا نَلْ مَعَا","b":"يَكُونُ أَنِّثْ ثِقْ وَأَكْثَرَ ارْفَعَا"},{"n":947,"a":"ظِلًاّ وَيَنْتَجُوا كَيَنْتَهُوا غَدَا","b":"فُزْ تَنتَجُوا غِثْ وَالمْجَالِسِ امْدُدَا"},{"n":948,"a":"نَلْ وَانْشِزُوا مَعًا فَضَمُّ الكَسْرِ عَمْ","b":"عَنْ صَفْوِ خُلْفٍ يُخْرِبُونَ الثِّقْلَ حُمْ"},{"n":949,"a":"يَكُونَ أَنِّثْ دُولَةٌ ثِقْ لِي اخْتُلِفْ","b":"وَامْنَعْ مَعَ التَّأْنِيثِ نَصْبًا لَوْ وُصِفْ"},{"n":950,"a":"وَجُدُرٍ جِدَارِ حَبْرٍ فَتْحُ ضَمْ","b":"يُفْصَلُ نَلْ ظُبىً وَثِقْلُ الصَّادِ لَمْ"},{"n":951,"a":"خُلْفٌ شَفَا مِنْهُ افْتَحَوا عَمَّ حُلاَ","b":"دُمْ تُمْسِكُوا الثِّقْلُ حِمًا مُتِمُّ لاَ"},{"n":952,"a":"تُنَوِّنِ اخْفِضْ نُورَهُ صَحْبٌ دَرَى","b":"أَنْصَارَ نَوِّنْ لاَمَ للهِ اكْسِرَا"},{"n":953,"a":"حِرْمٌ حَلاَ خَفِّفْ لَوَوْا إِذْ شِمْ أكُنْ","b":"لِلْجَزْمِ فَانْصِبْ حُزْ وَيَعْمَلُونَ صُنْ"}]},{"title":"وَمِنْ سُوَرةِ التَّغَابُنِ إِلَى سُورَةِ الإنْسَانِ (١٧)","verses":[{"n":954,"a":"يَجْمَعُكمْ نُونٌ ظُبًا بَالِغُ لاَ","b":"تُنَوِّنُوا وَأَمْرَهُ اخْفِضُوا عَلاَ"},{"n":955,"a":"وُجْدِ اكْسِرِ الضَّمَّ شَذَا خَفَّ عَرَفْ","b":"رُمْ وَكِتَابِهِ اجْمَعُوا حِمًا عَطَفْ"},{"n":956,"a":"ضَمَّ نَصُوحًا صِفْ تَفَاوُتٍ قَصَرْ","b":"ثَقِّلْ رِضًا وَتَدَّعُو تَدْعُوْ ظَهَرْ"},{"n":957,"a":"سَيَعْلَمُونَ مَنْ رَجَا يَزْلِقُ ضَمْ","b":"غَيْرُ مَدًا وَقَبْلَهُ حِمًا رَسَمْ"},{"n":958,"a":"كَسْرًا وَتَّحْرِيكًا وَلاَ يَخْفَى شفَا","b":"وَيُؤْمِنُوا يَذَّكَّرُوا دِنْ ظَرُفَا"},{"n":959,"a":"مِنْ خُلْفِ لَفْظٍ سَالَ أَبْدِلْ فِي سَأَلْ","b":"عَمَّ وَنَزَّاعَةُ نَصْبُ الرَّفْعِ عَلْ"},{"n":960,"a":"تَعْرُجُ ذَكِّرْ رُمْ وَيَسْأَلُ اضْمُمَا","b":"هُدْ خُلْفُ ثِقْ شَهَادَةِ الجَمْعُ ظَمَا"},{"n":961,"a":"عُدْ نَصْبٍ اضْمَمْ حرِّكَنْ بِهِ عَفَا","b":"كَمْ وُلْدُهُ اضْمُمْ مَسْكِنًا حَقٌّ شَفَا"},{"n":962,"a":"وُدًّا بِضَمِّهِ مَدًا وَفَتْحُ أَنْ","b":"ذِي الْوَاوِ كَمْ صحْبٌ تَعَالَى كَانَ ثَنْ"},{"n":963,"a":"صَحْبٌ كَسَا وَالْكُلُّ ذُو الْمَسَاجِدَا","b":"وَأَنَّهُ لَمَّا اكْسِرِ اتْلُ صَاعِدَا"},{"n":964,"a":"تَقُولَ فَتْحُ الضَّمِّ وَالثِّقْلُ ظَمِي","b":"نَسْلُكْهُ يَا ظَهْرٍ كَفَا الكَسْرَ اَضْمُمِ"},{"n":965,"a":"مِنْ لِبَدًا بالْخُلْفِ لُزْ قُلْ إِنَّمَا","b":"فِي قَالَ ثِقْ فُزْ نَلْ لِيَعْلَمَ اضْمُمَا"},{"n":966,"a":"غِنًا وَفِي وَطْأً وِطَاءً وَاكْسِرَا","b":"حُزْ كَمْ وَرَبُّ الرَّفْعَ فاخْفِضْ ظَهرًا"},{"n":967,"a":"كُنْ صُحْبَةً نِصْفِهِ ثُلْثِهِ انْصِبَا","b":"دَهْرًا كَفَا الرِّجْزَ اضْمُمِ الكَسْرَ عَبَا"},{"n":968,"a":"ثَوَى إِذَا دَبَرَ قُلْ إِذْ أَدْبَرَهْ","b":"إِذْ ظَنَّ عَنْ فَتىً وَفَا مُسْتَنْفِرَهْ"},{"n":969,"a":"باِلْفَتْحِ عَمَّ وَاتْلُ خَاطِبْ يَذْكُرُوا","b":"رَا بَرِقَ الْفَتْحُ مَدًا وَيَذَرُو"},{"n":970,"a":"مَعْهُ يُحِبُّونَ كَسَا حِمًا دَفَا","b":"يُمْنَى لَدَى الخُلْفِ ظَهيرًا عَرَفَا"}]},{"title":"سُورَةُ الإنْسَانِ وَالمُرْسَلاَتِ (٨)","verses":[{"n":971,"a":"سَلاَسِلًا نَوِّنْ مَدًا رُمْ لِي غَدَا","b":"خُلْفُهُمَا صِفْ مَعْهُمُ الْوَقْفَ امْدُدَا"},{"n":972,"a":"عَنْ مَنْ دَنَا شَهْمٌ بِخُلْفِهِمْ حَفَا","b":"نَوِّنْ قَوارِيرًا رَجَا حِرْمٍ صَفَا"},{"n":973,"a":"وَالْقَصْرُ وَقْفًا فِى غِنًا شَذَا اخْتُلِفْ","b":"وَالثَّانِ نَوِّنْ صِفْ مَدًا رُمْ وَوَقَفْ"},{"n":974,"a":"مَعْهُمْ هِشَامٌ بِاخْتِلاَفٍ بِاْلأَلِفْ","b":"عَالِيْهِمُ اسْكِنْ فِي مَدًا خُضْرٌ عُرِفْ"},{"n":975,"a":"عَمَّ حِمًا إِسْتَبْرَقٌ دُمْ إِذْ نَبَا","b":"وَاخْفِضْ لِبَاقٍ فِيهِمَا وَغَيِّبَا"},{"n":976,"a":"وَمَا تَشَاءُونَ كَمَا الْخُلْفُ دَنِفْ","b":"حُطْ هَمْزَ أُقِّتَتْ بِوَاوٍ ذَا اخْتُلِفْ"},{"n":977,"a":"حِصْنٌ خَفَا وَالخِفُّ ذُو خُلْفٍ خَلاَ","b":"وَانْطَلَقُوا الثَّانِ افْتَحِ اللاَّمَ غَلاَ"},{"n":978,"a":"ثَقِّلْ قَدَرْنَا رُمْ مَدًا وَوُحِّدَا","b":"جِمَالَةٌ صَحْبُ اضْمُمِ الْكَسْرَ غَدَا"}]},{"title":"وَمِنْ سُورَةِ النَّبَإِ إلَى سُورَةِ التَّطْفِيفِ (٧)","verses":[{"n":979,"a":"فِي لاَبِثِيْنَ الْقَصْرُ شِدْ فُزْ خِفَّ لاَ","b":"كِذَابَ رُمْ رَبُّ اخْفِضِ الرَّفْعَ كَلاَ"},{"n":980,"a":"ظُبًا كَفَا الرَّحْمنِ نَلْ ظِلٌّ كَرَا","b":"نَاخِرَةَ امْدُدْ صُحْبَةً غِثْ وَتَرَا"},{"n":981,"a":"خَيِّرْ تَزَكَّى ثَقِّلُوا حِرْمٌ ظُبَا","b":"لَهُ تَصَدَّى الْحِرْمُ مُنْذِرٌ ثُبَا"},{"n":982,"a":"نَوِّنْ فَتَنْفَعَ انْصِبِ الرَّفْعَ نَوَى","b":"إِنَّا صَبَبْنَا افْتَحْ كَفَا وَصْلًا غَوَى"},{"n":983,"a":"وَخِفُّ سُجِّرَتْ شَذَا حَبْرٍ غَفَا","b":"خُلْفًا وَثِقْلُ نُشِرَتْ حَبْرٌ شَفَا"},{"n":984,"a":"وَسُعِّرَتْ مِنْ عَنْ مَدًا صِفْ خُلْفُ غَدْ","b":"وَقُتِّلَتْ ثُبْ بِضَنِينِ الظَّا رَغَدْ"},{"n":985,"a":"حَبْرٌ غِنًا وَخِفُّ كُوفِ عَدَّلاَ","b":"يُكَذِّبُوا ثَبْتٌ وَحَقٌ يَوْمُ لاَ"}]},{"title":"وَمِنْ سُورَةِ التَّطْفِيفِ إِلَى سُورَةِ الشَّمْسِ (٩)","verses":[{"n":986,"a":"تَعْرِفُ جَهِّلْ نَضْرَةَ الرَّفْعُ ثَوَى","b":"خِتَامُهُ خَاتَمُهُ تَوْقٌ سَوَى"},{"n":987,"a":"يَصْلَى اضْمُمِ اشْدُدْ كَمْ رَنَا أَهْلٌ دُمَا","b":"بَاتَرْكَبَنَّ اضْمُمْ حِمًا عَمَّ نَمَا"},{"n":988,"a":"مَحْفُوظٌ ارْفَعْ خَفضَهُ اعْلَمْ وَشَفَا","b":"عَكْسُ المَجِيدُ قَدَّرَ الْخِفُّ رَفَا"},{"n":989,"a":"وَيُؤثِرُوَا حْزُ ضُمَّ تَصْلَى صِفْ حِمَا","b":"يَسْمَعُ غِثْ حَبْرًا وَضَمٌّ اعْلِمَا"},{"n":990,"a":"حَبْرٌ غَلاَ لاَغِيَةٌ لَهُمْ وَشُدْ","b":"إِيَابَهُمْ ثَبْتًا وَكَسْرَ الْوَتْرِ رُدْ"},{"n":991,"a":"فَتىً فَقَدَّرَ الثَّقِيلُ ثُبْ كَلاَ","b":"وَبَعْدَ بَلْ لاَ أَرْبَعٌ غَيْبٌ حَلاَ"},{"n":992,"a":"شِدْ خُلْفَ غَوْثٍ وَتَحُضُّوا ضَمَّ حَا","b":"فَافتَحْ وَمُدَّ نَلْ شَفَا ثِقْ وَافْتَحَا"},{"n":993,"a":"يُوثِقْ يُعَذِّبْ رُضْ ظُبىً وَلُبَّدَا","b":"ثَقِّلْ ثَرَا أَطْعَمَ فَاكْسِرْ وامْدُدَا"},{"n":994,"a":"وَارْفَعْ وَنَوِّنْ فَكَّ فَارْفَعْ رَقَبَهْ","b":"فَاخْفِضْ فَتىً عَمَّ ظَهِيرًا نَدَبَهْ"}]},{"title":"وَمِنْ سُورَةِ الشَّمْسِ إِلَى آخِرِ القُرْآنِ (٥)","verses":[{"n":995,"a":"وَلاَ يَخَافُ الْفَاءُ عَمَّ وَاقْصُرِ","b":"أَنْ رَأَهُ زَكَا بِخُلْفٍ وَاكْسِرِ"},{"n":996,"a":"مَطْلَعِ لاَمَهُ رَوَى اضْمُمْ أَوَّلاَ","b":"تَا تَرَوُنَّ كَمْ رَسَا وَثَقَّلاَ"},{"n":997,"a":"جَمَّعَ كَمْ ثَنَا شَفَا شِمْ وَعَمَدْ","b":"صُحْبَةُ ضَمَّيْهِ لِئِلاَفِ ثَمَدْ"},{"n":998,"a":"بِحَذْفِ هَمْزٍ وَاحْذِفِ الْيَاءَ كَمَنْ","b":"إِلاَفِ ثِقْ وَهَا أَبِي لَهْبٍ سَكَنْ"},{"n":999,"a":"دِينًا وَحَمَّالَةُ نَصْبُ الرَّفْعِ نَمْ","b":"وَالنَّافِثَاتِ عَنْ رُوَيْسِ الخُلْفُ تَمْ"}]},{"title":"بَابُ التَّكْبِيْرِ (١٦)","verses":[{"n":1000,"a":"وَسُنَّةُ التَّكْبِيرِ عِنْدَ الْخَتْمِ","b":"صَحَّتْ عَنِ اْلمَكِّيِنَ أَهْلِ العِلْم"},{"n":1001,"a":"فىِ كُلِّ حَالٍ وَلَدَى الصَّلاَةِ","b":"سُلْسِلَ عَنْ أَئِمَّةٍ ثِقَاتِ"},{"n":1002,"a":"مِنْ أَوَّلِ انْشِرَاحٍ اَوْ منَ الضُّحَى","b":"مِنْ آخِرٍ أَوْ أَوَّلٍ قَدْ صُحِّحَا"},{"n":1003,"a":"لِلنَّاسِ هكَذا وَقِيلَ إِنْ تُردْ","b":"هَلِّلْ وَبَعْضٌ بعْدَ للهِ حَمِدْ"},{"n":1004,"a":"وَالكُلُّ لِلْبَزِّيْ رَوَوْا وَقُنْبُلاَ","b":"مِنْ دُونِ حَمْدٍ وَلِسُوسٍ نُقِلاَ"},{"n":1005,"a":"تَكْبِيُرهُ مِنَ انْشِرَاحٍ وَرُوِيْ","b":"عَنْ كُلِّهِمْ أَوَّلُ كُلٍّ يَسْتَوِيْ"},{"n":1006,"a":"وَامْنَعْ عَلَى الرَّحِيمِ وقْقًا إِنْ تَصِلْ","b":"كُلاَّ وَغَيْرَ ذا أَجِزْ مَا يَحْتَمِلْ"},{"n":1007,"a":"ثُمَّ اقْرَإِ الْحَمْدَ وَخَمْسَ الْبَقَرَهْ","b":"إِنْ شِئْتَ حِلًاّ وَارْتِحَالًا ذَكَرَهْ"},{"n":1008,"a":"وَادْعُ وَأَنْتَ مُوقِنُ اْلإِجَابَهْ","b":"دَعْوَةُ مَنْ يَخْتِمُ مُسْتَجَابَهْ"},{"n":1009,"a":"وَلْيُعْتَنىَ بِأَدَبِ الدُّعَاءِ","b":"وَلْتُرْفَعِ اْلأَيْدِي إِلَى السَّمَاءِ"},{"n":1010,"a":"وَلْيُمْسَحِ الوَجْهُ بِهَا وَالْحَمْدُ","b":"مَعَ الصَّلاةِ قَبْلَهُ وَبَعْدُ"},{"n":1011,"a":"وَهَا هُنَا تَمَّ نِظَامُ الطَّيِّبَهْ","b":"أَلفِيَّةً سَعِيدَةً مُهَذَّبَهْ"},{"n":1012,"a":"بالرُّومِ مِنْ شَعْبَانَ وَسْطَ سَنَةِ","b":"تِسْعٍ وتِسْعِينَ وَسَبْعِمِائَهِ"},{"n":1013,"a":"وَقَدْ أَجَزْتُهَا لِكُلِّ مُقْرِي","b":"كَذَا أَجَزْتُ كُلَّ مَنْ فىِ عَصْرِي"},{"n":1014,"a":"رِوَايَةً بِشَرْطِهَا المُعْتَبَرِ","b":"وَقَالَهُ مُحَمَّدُ بْنُ الْجَزَرِي"},{"n":1015,"a":"يَرْحَمُهُ بِفَضْلِهِ الرَّحْمنُ","b":"فَظَنُّهُ مِنْ جُودِهِ الْغُفْرانُ"}]}],"closing":"تَمَّ بِحَمْدِ اللهِ تَعَالَى مَتْنُ الطَّيِّبَةِ"},
+  'tajweed-tuhfat-al-atfal': {"intro":["تُحْفَةُ الْأَطْفَالِ وَالْغِلْمَانِ فِي تَجْوِيْدِ الْقُرْآنِ","للشَّيخِ سُلَيمَانَ بنِ حُسَينِ بنِ مُحَمَّدِ بنِ شَلَبِيٍّ الْجَمْزُورِيِّ الشَّهِيرِ بِالأَفَنْدِيِّ"],"sections":[{"title":"المقدمة","verses":[{"n":1,"a":"يَقُولُ رَاجِي رَحمةِ الْغَفُورِ","b":"دَوْماً سُلَيْمَانُ هُوَ الْجَمْزُورِى"},{"n":2,"a":"الْحَمْدُ لِلَّهِ مُصَلِّياً عَلى","b":"مُحَمَدٍ وآلِهِ وَمَنْ تَلاَ"},{"n":3,"a":"وَبَعْدُ هذَا النَّظْمُ لِلْمُرِيدِ","b":"في النُونِ والتَّنْوِينِ وَالْمُدُودِ"},{"n":4,"a":"سَمَّيتُهُ بِتُحفَة الأَطْفَالِ","b":"عَنْ شَيْخِنَا الْمَيْهِىِّ ذِي الْكَمالِ"},{"n":5,"a":"أَرْجُو بِه أَنْ يَنْفَعَ الطُّلاَّبَا","b":"وَالأَجْرَ وَالْقَبُولَ وَالثَّوَابا"}]},{"title":"النون الساكنة والتنوين","verses":[{"n":6,"a":"لِلنُّونِ إِنْ تَسْكُنْ وَلِلتَّنْوِينِ","b":"أَرْبَعُ أَحْكَامٍ فَخُذْ تَبْيِينِي"},{"n":7,"a":"فَالأَوَّلُ الإظْهَارُ قَبْلَ أَحْرُفِ","b":"لِلْحَلْقِ سِتٌ رُتِّبَتْ فَلتَعْرِفِ"},{"n":8,"a":"هَمْزٌ فَهَاءٌ ثُمَّ عَيْنٌ حَاءُ","b":"مُهْمَلَتَانِ ثُمَّ غَيْنٌ خَاءُ"},{"n":9,"a":"والثَّانِ إِدْغَامٌ بِستَّةٍ أَتَتْ","b":"فِي يَرْمَلُونَ عِنْدَهُمْ قَدْ ثَبَتَتْ"},{"n":10,"a":"لَكِنَّهَا قِسْمَانِ قِسْمٌ يُدْغَمَا","b":"فِيهِ بِغُنَّةٍ بِيَنْمُو عُلِمَا"},{"n":11,"a":"إِلاَّ إِذَا كَانَا بِكِلْمَةٍ فَلاَ","b":"تُدْغِمْ كَدُنْيَا ثُمَّ صِنْوَانٌ تَلاَ"},{"n":12,"a":"وَالثَّانِ إِدْغَامٌ بِغَيْرِ غُنَّةْ","b":"في اللاَّمِ وَالرَّا ثُمَّ كَرّرَنَّهْ"},{"n":13,"a":"وَالثَّالِثُ الإِقْلاَبُ عِنْدَ الْبَاءِ","b":"مِيماً بِغُنَّةٍ مَعَ الإِخْفَاءِ"},{"n":14,"a":"وَالرَّابِعُ الإِخْفَاءُ عِنْدَ الْفاضِلِ","b":"مِنَ الحُرُوفِ وَاجِبٌ لِلْفَاضِلِ"},{"n":15,"a":"في خَمْسَةٍ مِنْ بَعْدِ عَشْرٍ رَمْزُهَا","b":"فِي كِلْمِ هذَا البَيْتِ قَدْ ضَمَّنْتُهَا"},{"n":16,"a":"صِفْ ذَا ثَنَا كَمْ جَادَ شَخْصٌ قَدْ سمَا","b":"دُمْ طَيَّباً زِدْ فِي تُقَىً ضَعْ ظَالِمَا"}]},{"title":"الميم والنون المشددتين","verses":[{"n":17,"a":"وَغُنَّ مِيماً ثُمَّ نُوناً شُدِّدَا","b":"وَسَمِّ كُلاً حَرْفَ غُنَّةٍ بَدَا"}]},{"title":"الميم الساكنة","verses":[{"n":18,"a":"وَالْمِيمُ إِنْ تَسْكُنْ تَجِى قَبْلَ الْهِجَا","b":"لاَ أَلِفٍ لَيِّنَةٍ لِذِى الْحِجَا"},{"n":19,"a":"أَحْكَامُهَا ثَلاَثَةٌ لِمَنْ ضَبَطْ","b":"إِخْفَاءٌ ادْغَامٌ وَإِظْهَارٌ فَقَطْ"},{"n":20,"a":"فَالأَوَّلُ الإِخْفَاءُ عِنْدَ الْبَاءِ","b":"وَسَمِّهِ الشَّفْوِىَّ لِلْقُرَّاءِ"},{"n":21,"a":"وَالثَّانِ إِدْغَامٌ بِمِثْلِهَا أَتَى","b":"وَسَمِّ إدغاماً صَغِيراً يَا فَتَى"},{"n":22,"a":"وَالثَّالِثُ الإِظْهَارُ فِى الْبَقِيَّةْ","b":"مِنْ أَحْرُفٍ وَسَمِّهَا شَفْوِيَّهْ"},{"n":23,"a":"وَاحْذَرْ لَدَى وَاوٍ وَفَا أَنْ تَخْتَفىِ","b":"لِقُرْبِهَا وَلِاتحادِ فَاعْرِفِ"}]},{"title":"لام آل ولام الفعل","verses":[{"n":24,"a":"لِلاَمِ أَلْ حَالاَنِ قَبْلَ الْأَحْرُفِ","b":"أُولاَهُمَا إِظْهَارُهَا فَلْتَعْرِفِ"},{"n":25,"a":"قَبْلَ أَرْبَعٍ مَعْ عَشْرَةٍ خُذْ عِلْمَهُ","b":"مِنْ إِبْغِ حَجَّكَ وَخَفْ عَقِيمَهُ"},{"n":26,"a":"ثَانِيهِمَا إِدْغَامُهَا فى أَرْبَعِ","b":"وَعَشْرَةٍ أَيْضاً وَرَمْزَهَا فَعِ"},{"n":27,"a":"طِبْ ثُمَّ صِلْ رَحِماً تَفُزْ ضِفْ ذَا نِعَمْ","b":"دَعْ سُوءَ ظَنٍ زُرْ شَرِيفَاً لِلْكَرَم"},{"n":28,"a":"وَاللاَّمَ الاُولَى سَمِّهَا قَمْرِيَّهْ","b":"وَاللاَّمَ الاُخْرىَ سَمِّهَا شَمْسِيَّهْ"},{"n":29,"a":"وأظْهِرَنَّ لاَمَ فِعْلٍ مُطْلَقاً","b":"فى نَحْوِ قُلْ نَعَمْ وَقُلْنَا وَالْتَقَى"}]},{"title":"المثلين والمتقاربين والمتجانسين","verses":[{"n":30,"a":"إِنْ فِي الصِّفَاتِ وَالمَخَارِجِ اتَّفَقْ","b":"حَرْفَانِ فَالْمِثْلاَنِ فِيهِمَا أَحَقْ"},{"n":31,"a":"وَإِنْ يَكُونَا مَخْرَجاً تَقَارَبَا","b":"وَفي الصِّفَاتِ اخْتَلَفَا يُلَقَّبَا"},{"n":32,"a":"مُتْقَارِبَيْنِ أَوْ يَكُونَا اتَّفَقَا","b":"فِي مَخْرَجٍ دُونَ الصِّفَاتِ حُقِّقَا"},{"n":33,"a":"بِالْمُتَجَانِسَيْنِ ثُمَّ إِنْ سَكَنْ","b":"أَوَّلُ كُلٍّ فَالصَّغِيرَ سَمِّيَنْ"},{"n":34,"a":"أَوْ حُرِّكَ الْحَرْفَانِ فى كُلٍّ فَقُلْ","b":"كُلٌّ كَبِيرٌ وافْهَمَنْهُ بِالْمُثُلْ"}]},{"title":"أقسام المد","verses":[{"n":35,"a":"وَالمَدُّ أَصْلِىُّ وَفَرْعِىٌّ لَهُ","b":"وَسَمِّ أَوَّلاً طَبِيعِيّاً وَهُو"},{"n":36,"a":"مَالاَ تَوَقُّفٌ لَهُ عَلى سَبَبْ","b":"وَلاَ بِدُونِهِ الْحُروفُ تُجْتَلَبْ"},{"n":37,"a":"بلْ أَىُّ حَرْفٍ غَيْرِ هَمْزٍ أَوْ سُكُونْ","b":"جَا بَعْدَ مَدٍّ فَالطَّبِيِعىَّ يَكُونْ"},{"n":38,"a":"وَالآخَرُ الْفَرْعِىُّ مَوْقُوفٌ عَلى","b":"سَبَبْ كَهَمْزٍ أَوْ سُكُونٍ مُسْجَلاً"},{"n":39,"a":"حُرُوفُهُ ثَلاَثَةٌ فَعِيهَا","b":"في لَفْظِ وَاىٍ وَهْىَ فى نُوحِيهَا"},{"n":40,"a":"وَالكَسْرُ قَبْلَ الْيَا وَقَبْلَ الْواوِ ضَمْ","b":"شَرْطٌ وَفَتْحٌ قَبْلَ أَلْفٍ يُلْتَزَمْ"},{"n":41,"a":"وَاللِّينُ مِنْهَا الْيَا وَوَاوٌ سُكِنَا","b":"إِنِ انْفِتَاحٌ قَبْلَ كُلٍّ أُعْلِنَا"}]},{"title":"أحكام المد","verses":[{"n":42,"a":"لِلْمَدِّ أَحْكَامٌ ثَلاَثَةٌ تَدُومْ","b":"وَهْيَ الْوُجُوبُ وَالْجَوَازُ وَاللُّزُومْ"},{"n":43,"a":"فَوَاجِبٌ إِنْ جَاءَ هَمْزٌ بَعْدَ مَدْ","b":"فِي كِلْمَةٍ وَذَا بِمُتَّصْلْ يُعَدْ"},{"n":44,"a":"وَجَائزٌ مَدٌ وَقَصْرٌ إِنْ فُصِل","b":"كُلٌّ بِكِلْمَةٍ وَهَذَا المُنْفَصِلْ"},{"n":45,"a":"وَمِثْلُ ذَا إِنْ عَرَضَ السُّكُونُ","b":"وَقْفَاً كَتَعْلَمُونَ نَسْتَعِينُ"},{"n":46,"a":"أَوْ قُدِّمَ الْهَمْزُ عَلَى المَدِّ وَذَا","b":"بَدَلْ كَآمَنُوا وَإِيَماناً خُذَا"},{"n":47,"a":"وَلاَزِمٌ إِنِ السُّكُونُ أُصِّلاَ","b":"وَصْلاَ وَوَقْفاً بَعْدَ مَدٍّ طُوّلاَ"}]},{"title":"أقسام المد اللازم","verses":[{"n":48,"a":"أَقْسَامُ لاَزِمٍ لَدَيْهِمْ أَرْبَعَةْ","b":"وَتِلْكَ كِلْمِيٌّ وَحَرْفِيٌّ مَعَهْ"},{"n":49,"a":"كِلاَهُمَا مُخَفَّفٌ مُثَقَّلُ","b":"فَهَذِهِ أَرْبَعَةٌ تُفَصَّلُ"},{"n":50,"a":"فَإِنْ بِكِلْمَةٍ سُكُونٌ اجْتَمَعْ","b":"مَعْ حَرْفِ مَدٍّ فَهْوَ كِلْمِيٌّ وَقَعْ"},{"n":51,"a":"أَوْ في ثُلاَثِيِّ الْحُروفِ وُجِدَا","b":"وَالْمَدُّ وَسْطُهُ فَحَرْفِيٌّ بَدَا"},{"n":52,"a":"كِلاَهُمَا مُثَقَّلٌ إِنْ أُدْغِمَا","b":"مُخَفَّفٌ كُلُّ إِذَا لَمْ يُدْغَمَا"},{"n":53,"a":"وَاللاَّزِمُ الْحَرْفِيُّ أَوَّلَ السُّوَرْ","b":"وُجُودُهُ وَفِي ثَمَانٍ انحَصَرْ"},{"n":54,"a":"يَجْمَعُهَا حُرُوفُ كَمْ عَسَلْ نَقَصْ","b":"وَعَيْنُ ذُو وَجْهَيْنِ والطُّولُ أَخَصْ"},{"n":55,"a":"وَمَا سِوَى الْحَرْفِ الثُّلاَثِي لاَ أَلِفْ","b":"فَمَدُّهُ مَدٌّ طَبِيعِيٌّ أُلِفْ"},{"n":56,"a":"وَذَاكَ أَيْضاً فِي فَوَاتِحِ السُّوَرْ","b":"فِي لَفْظِ حَيٌّ طَاهِرٌ قَدِ انْحَصَرْ"},{"n":57,"a":"وَيَجْمَعُ الْفَوَاتِحَ الأَرْبَعْ عَشَرْ","b":"صِلْهُ سُحَيْراً مَنْ قَطَعْكَ ذَا اشْتَهَرْ"}]},{"title":"الخاتمة","verses":[{"n":58,"a":"وَتَمَّ ذَا النَّظْمُ بِحَمْدِ اللَّهِ","b":"عَلَى تَمَامِهِ بِلاَ تَنَاهِى"},{"n":59,"a":"أَبْيَاتُهُ نَدٌّ بَداَ لِذِى النُّهَى","b":"تَارِيخُها بُشْرَى لِمَنْ يُتْقِنُهَا"},{"n":60,"a":"ثُمَّ الصَّلاَةُ وَالسَّلاَمُ أَبَداَ","b":"عَلَى خِتَامِ الأَنْبِيَاءِ أَحْمَدَا"},{"n":61,"a":"وَالآلِ وَالصَّحْبِ وَكُلِّ تَابِعِ","b":"وَكُلِّ قَارِئٍ وكُلِّ سَامِعِ"}]}]}
+};
+function kutubAllBooks() {
+  return Object.keys(KUTUB_BOOKS).reduce((acc, k) => acc.concat(KUTUB_BOOKS[k]), []);
+}
+function kutubFindBook(id) {
+  return kutubAllBooks().find(b => b.bookId === id) || null;
+}
 function renderBooksHub() {
   const el = document.getElementById('kutubMainList');
   el.innerHTML = KUTUB_STRUCTURE.map(cat => `
@@ -3607,29 +3904,39 @@ function backFromBooksTopic() {
 }
 function openBooksTopic(name) {
   document.getElementById('kutubTopicTitle').textContent = name;
-  const books = KUTUB_BOOKS[name];
+  const books = (KUTUB_BOOKS[name] || []).filter(b => b.isAvailable !== false);
   const placeholderEl = document.getElementById('kutubTopicPlaceholder');
   const listEl = document.getElementById('kutubBookList');
-  if (books && books.length) {
+  if (books.length) {
     placeholderEl.classList.add('hidden');
     listEl.classList.remove('hidden');
     const sorted = [...books].sort((a,b) => a.order - b.order);
     listEl.innerHTML =
       `<div class="kutub-path-intro">مسار تعليمي متسلسل من الأسهل إلى الأصعب — ابدأ بالكتاب الأول ثم انتقل تباعًا.</div>` +
-      sorted.map(b => `
+      sorted.map(b => {
+        const statusHtml = b.manhaj
+          ? `<span class="kbc-status ${b.manhaj === 'تقني' ? '' : 'review'}">${b.manhaj === 'تقني' ? 'علم آلي تقني' : 'يحتاج مراجعة منهجية'}</span>`
+          : '';
+        const idArg = JSON.stringify(b.bookId);
+        const downloadBtn = b.downloadUrl
+          ? `<button class="kbc-btn download" onclick='playClickSound();openBookDownload(${idArg})'>⬇️ تنزيل</button>`
+          : '';
+        return `
         <div class="kutub-book-card">
           <div class="kbc-order">${b.order}</div>
           <div class="kbc-body">
-            <div class="kbc-title">${b.title}</div>
-            <div class="kbc-author">✍️ ${b.author}</div>
-            <div class="kbc-topic">${name}</div>
-            <span class="kbc-status ${b.manhaj === 'تقني' ? '' : 'review'}">${b.manhaj === 'تقني' ? 'علم آلي تقني' : 'يحتاج مراجعة منهجية'}</span>
+            <div class="kbc-title">${escapeHtml(b.title)}</div>
+            <div class="kbc-author">✍️ ${escapeHtml(b.author)}</div>
+            <div class="kbc-topic">${escapeHtml(name)}</div>
+            <div class="kbc-src">المصدر: ${escapeHtml(b.source)}</div>
+            ${statusHtml}
             <div class="kbc-actions">
-              <button class="kbc-btn" onclick='playClickSound();openBookReader(${b.book_id}, ${JSON.stringify(b.title)})'>📖 قراءة</button>
+              <button class="kbc-btn" onclick='playClickSound();openBookById(${idArg})'>📖 قراءة</button>
+              ${downloadBtn}
             </div>
           </div>
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
   } else {
     listEl.classList.add('hidden');
     placeholderEl.classList.remove('hidden');
@@ -3644,14 +3951,14 @@ async function openBookReader(bookId, title) {
   const bodyEl = document.getElementById('bookReaderBody');
   bodyEl.innerHTML = `<div class="loading"><div class="spinner"></div>جارٍ تحميل الكتاب من Quranpedia...</div>`;
   showPage('page-book-reader');
-  const sourceUrl = `https://quranpedia.net/book/${bookId}`;
   const renderFallback = (msg, techDetail) => {
     bodyEl.innerHTML = `
       <div class="book-reader-fallback">
         <div class="kp-icon">📖</div>
         <div class="kp-title">${title}</div>
         <div class="kp-desc">${msg}</div>
-        <a class="book-reader-source-link" href="${sourceUrl}" target="_blank" rel="noopener">📖 فتح الكتاب على Quranpedia</a>
+        <button class="book-reader-source-link" style="border:none;cursor:pointer" onclick='playClickSound();openBookReader(${bookId}, ${JSON.stringify(title)})'>🔄 إعادة المحاولة</button>
+        ${_qpFallbackUrl ? `<div style="margin-top:12px"><button class="book-reader-source-link" style="border:none;cursor:pointer" onclick='playClickSound();window.open(${JSON.stringify(_qpFallbackUrl)}, "_blank", "noopener")'>🌐 فتح الصفحة الرسمية</button></div>` : ''}
         ${techDetail ? `<div class="book-reader-tech">تفاصيل تقنية: ${escapeHtml(techDetail)}</div>` : ''}
       </div>`;
   };
@@ -3685,7 +3992,7 @@ async function openBookReader(bookId, title) {
   let downloadHtml = '';
   if (Array.isArray(meta.book_attachments) && meta.book_attachments.length) {
     const att = meta.book_attachments.find(a => a && typeof a.url === 'string' && /^https?:\/\//.test(a.url));
-    if (att) downloadHtml = `<div class="book-reader-download-bar"><a href="${att.url}" target="_blank" rel="noopener">⬇️ تحميل (${att.name || 'ملف مرفق'})</a></div>`;
+    if (att) downloadHtml = `<div class="book-reader-download-bar"><button onclick='playClickSound();downloadBookFile(${bookId}, ${JSON.stringify(title)}, this)' style="border:none;cursor:pointer;font-family:inherit">⬇️ تحميل (${escapeHtml(att.name || 'ملف مرفق')})</button></div>`;
   }
   bodyEl.innerHTML = downloadHtml + pages.map(p => `
     <div class="book-reader-page">
@@ -3710,7 +4017,420 @@ function extractBookTexts(node, acc) {
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 }
+// يحمّل الملف داخل المنصة نفسها (بدون فتح تبويب أو موقع خارجي) عبر تحويله إلى Blob وتنزيله مباشرة
+async function downloadBookFile(bookId, title, btnEl) {
+  const originalLabel = btnEl ? btnEl.innerHTML : null;
+  if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = '⏳ جارٍ التحميل...'; }
+  try {
+    const res = await fetch(`${QP_API}/book/${bookId}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const meta = await res.json();
+    const att = Array.isArray(meta && meta.book_attachments)
+      ? meta.book_attachments.find(a => a && typeof a.url === 'string' && /^https?:\/\//.test(a.url))
+      : null;
+    if (!att) throw new Error('لا يوجد ملف مرفق متاح لهذا الكتاب');
+    const fileRes = await fetch(att.url);
+    if (!fileRes.ok) throw new Error(`HTTP ${fileRes.status}`);
+    const blob = await fileRes.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    let filename = att.name || title || 'كتاب';
+    if (!/\.[a-zA-Z0-9]{2,5}$/.test(filename)) {
+      const extMatch = att.url.match(/\.([a-zA-Z0-9]{2,5})(?:\?|$)/);
+      filename += extMatch ? `.${extMatch[1]}` : '.pdf';
+    }
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
+    if (btnEl) { btnEl.innerHTML = '✅ تم التحميل'; }
+  } catch (e) {
+    if (btnEl) { btnEl.innerHTML = '⚠️ تعذّر التحميل'; }
+    console.error('downloadBookFile error:', e);
+  } finally {
+    if (btnEl) {
+      setTimeout(() => { btnEl.disabled = false; btnEl.innerHTML = originalLabel; }, 2500);
+    }
+  }
+}
+/* ===== قارئ المكتبة: جلب عند الطلب فقط (آيات الصفحة الحالية)، بدون تخزين نصوص كتب ===== */
+let _kr = null;
+let _qpFallbackUrl = null;
+const _krCache = new Map();
+const KR_CACHE_MAX = 60;
+function krCleanText(s) {
+  let t = String(s == null ? '' : s)
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|h[1-6]|li)>/gi, '\n');
+  try { t = new DOMParser().parseFromString(t, 'text/html').body.textContent || ''; } catch (e) { t = t.replace(/<[^>]+>/g, ''); }
+  return t.replace(/\n{3,}/g, '\n\n').trim();
+}
+async function krFetchJson(url, tries, timeoutMs) {
+  tries = tries || 2;
+  let lastErr;
+  for (let i = 0; i < tries; i++) {
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), timeoutMs || 12000);
+    try {
+      const res = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(to);
+      if (!res.ok) { const e = new Error('HTTP ' + res.status); e.status = res.status; throw e; }
+      return await res.json();
+    } catch (e) {
+      clearTimeout(to);
+      lastErr = e;
+      if (e && e.status === 404) break;
+      if (i < tries - 1) await new Promise(r => setTimeout(r, 500 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+const KR_ADAPTERS = {
+  tafsirapi: {
+    async fetch(src, s, a) {
+      const j = await krFetchJson(`${TAFSIR_CDN}/${src.slug}/${s}/${a}.json`);
+      if (!j || typeof j.text !== 'string') throw new Error('استجابة غير متوقعة من المصدر');
+      const t = krCleanText(j.text);
+      return { parts: t ? [{ text: t }] : [] };
+    }
+  },
+  quranpedia: {
+    async fetch(src, s, a) {
+      const j = await krFetchJson(`${QP_API}/ayah/${s}/${a}/book/${src.id}`);
+      if (!j || !Array.isArray(j.content)) throw new Error('استجابة غير متوقعة من المصدر');
+      const parts = j.content
+        .filter(c => c && typeof c.text === 'string' && c.text.trim())
+        .map(c => ({ text: krCleanText(c.text), page: c.page, part: c.part }))
+        .filter(p => p.text);
+      return { parts, book: j.book || null };
+    }
+  }
+};
+async function krFetchAyah(book, s, a) {
+  const key = book.bookId + ':' + s + ':' + a;
+  if (_krCache.has(key)) return _krCache.get(key);
+  let res;
+  try {
+    res = await KR_ADAPTERS[book.src.type].fetch(book.src, s, a);
+    res.via = 'primary';
+  } catch (e1) {
+    if (!book.fallback) throw e1;
+    try {
+      res = await KR_ADAPTERS[book.fallback.type].fetch(book.fallback, s, a);
+      res.via = 'fallback';
+    } catch (e2) {
+      throw new Error((e1 && e1.message ? e1.message : 'فشل الطلب') + ' / ' + (e2 && e2.message ? e2.message : 'فشل الطلب'));
+    }
+  }
+  if (_krCache.size >= KR_CACHE_MAX) _krCache.delete(_krCache.keys().next().value);
+  _krCache.set(key, res);
+  return res;
+}
+function krErrMsg(e) {
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return 'لا يوجد اتصال بالإنترنت. تأكد من الاتصال ثم أعد المحاولة.';
+  if (e && e.name === 'AbortError') return 'انتهت مهلة الاتصال بالمصدر. أعد المحاولة.';
+  if (e && e.status === 404) return 'لا يوجد محتوى لهذه الآية في هذا المصدر (أو الكتاب غير متاح حاليًا).';
+  return 'تعذّر جلب المحتوى من المصدر (قد يكون المصدر غير متاح مؤقتًا).';
+}
+function krNoteHtml(book) {
+  let txt = 'المصدر: ' + book.source + ' • يُجلب المحتوى عند الطلب ولا يُحفظ داخل المنصة';
+  if (_kr && _kr.apiBook) {
+    const b = _kr.apiBook;
+    const au = b.author && (b.author.ar_name || b.author.full_name);
+    if (b.name) txt += ' • الكتاب في المصدر: ' + b.name + (au ? ' — ' + au : '');
+  }
+  if (_kr && _kr.usedFallback) txt += ' • (جُلب بعض المحتوى من مصدر احتياطي: Quranpedia)';
+  return txt;
+}
+function krSetNote() {
+  if (_kr) document.getElementById('bookReaderNote').textContent = krNoteHtml(_kr.book);
+}
+function openBookById(id) {
+  const book = kutubFindBook(id);
+  if (!book || book.isAvailable === false) return;
+  if (book.readType === 'external') { openBookExternal(id); return; }
+  if (book.readType === 'local') { openLocalBook(book); return; }
+  if (book.readType === 'qpbook') { openQpBook(book); return; }
+  if (_qb) _qb.token++;
+  _kr = { book, surah: null, start: 1, token: 0, apiBook: null, usedFallback: false };
+  document.getElementById('bookReaderTitle').textContent = book.title;
+  krSetNote();
+  krShowSurahPicker();
+  showPage('page-book-reader');
+}
+function openBookExternal(id) {
+  const book = kutubFindBook(id);
+  if (!book || !book.readUrl) return;
+  window.open(book.readUrl, '_blank', 'noopener');
+}
+function openBookDownload(id) {
+  const book = kutubFindBook(id);
+  if (!book || !book.downloadUrl) return;
+  window.open(book.downloadUrl, '_blank', 'noopener');
+}
+function krShowSurahPicker() {
+  if (!_kr) return;
+  _kr.token++;
+  const bodyEl = document.getElementById('bookReaderBody');
+  bodyEl.innerHTML =
+    `<div class="kutub-path-intro">اختر السورة، ثم تُعرض الآيات ${KUTUB_PAGE_SIZE} بـ ${KUTUB_PAGE_SIZE} ويُجلب نص الكتاب لها فقط.</div>` +
+    `<div class="kutub-sub-grid" id="krSurahGrid">` +
+    SURAH_NAMES_AR.map((n, i) => `<div class="kutub-sub-tile" onclick="playOpenSound();krOpenSurah(${i + 1})">${i + 1}. ${escapeHtml(n)}</div>`).join('') +
+    `</div>`;
+}
+function krOpenSurah(n) {
+  if (!_kr) return;
+  _kr.surah = n;
+  krLoadPage(1);
+}
+function krPage(dir) {
+  if (!_kr || !_kr.surah) return;
+  const total = KUTUB_AYAH_COUNTS[_kr.surah - 1];
+  let next = _kr.start + dir * KUTUB_PAGE_SIZE;
+  if (next < 1 || next > total) return;
+  krLoadPage(next);
+}
+function krBarHtml(total, start, end) {
+  const prevDis = start <= 1 ? 'disabled style="opacity:.45"' : '';
+  const nextDis = end >= total ? 'disabled style="opacity:.45"' : '';
+  return `<div class="kr-bar">
+      <button class="kbc-btn" onclick="playClickSound();krShowSurahPicker()">📖 تغيير السورة</button>
+      <button class="kbc-btn" ${prevDis} onclick="playClickSound();krPage(-1)">→ السابق</button>
+      <button class="kbc-btn" ${nextDis} onclick="playClickSound();krPage(1)">التالي ←</button>
+    </div>`;
+}
+function krAyahCardHtml(n, inner) {
+  return `<div class="book-reader-page" id="krA${n}"><div class="book-reader-page-num">آية ${n}</div>${inner}</div>`;
+}
+const KR_LOADING = '<div class="loading"><div class="spinner"></div>جارٍ التحميل...</div>';
+function krRenderAyahResult(n, res) {
+  const el = document.getElementById('krA' + n);
+  if (!el) return;
+  const numHtml = `<div class="book-reader-page-num">آية ${n}</div>`;
+  if (!res.parts.length) {
+    el.innerHTML = numHtml + `<div class="kr-empty">لا يوجد نص مستقل لهذه الآية في هذا الكتاب.</div>`;
+    return;
+  }
+  el.innerHTML = numHtml + res.parts.map(p => {
+    const loc = (p.part || p.page) ? `<div class="book-reader-page-num">${p.part ? 'الجزء ' + escapeHtml(p.part) + ' — ' : ''}${p.page ? 'صفحة ' + escapeHtml(p.page) : ''}</div>` : '';
+    return loc + `<div class="book-reader-text">${escapeHtml(p.text)}</div>`;
+  }).join('');
+}
+function krRenderAyahError(n, e) {
+  const el = document.getElementById('krA' + n);
+  if (!el) return;
+  el.innerHTML = `<div class="book-reader-page-num">آية ${n}</div>
+    <div class="kr-msg">⚠️ ${escapeHtml(krErrMsg(e))}</div>
+    <button class="kbc-btn kr-retry" onclick="playClickSound();krRetryAyah(${n})">🔄 إعادة المحاولة</button>`;
+}
+async function krFetchInto(n, token) {
+  const book = _kr.book, s = _kr.surah;
+  try {
+    const res = await krFetchAyah(book, s, n);
+    if (!_kr || _kr.token !== token) return;
+    if (res.via === 'fallback') _kr.usedFallback = true;
+    if (res.book && !_kr.apiBook) _kr.apiBook = res.book;
+    krSetNote();
+    krRenderAyahResult(n, res);
+  } catch (e) {
+    if (!_kr || _kr.token !== token) return;
+    krRenderAyahError(n, e);
+  }
+}
+function krRetryAyah(n) {
+  if (!_kr) return;
+  const el = document.getElementById('krA' + n);
+  if (el) el.innerHTML = `<div class="book-reader-page-num">آية ${n}</div>` + KR_LOADING;
+  krFetchInto(n, _kr.token);
+}
+async function krLoadPage(start) {
+  if (!_kr || !_kr.surah) return;
+  const s = _kr.surah;
+  const total = KUTUB_AYAH_COUNTS[s - 1];
+  const end = Math.min(total, start + KUTUB_PAGE_SIZE - 1);
+  _kr.start = start;
+  const token = ++_kr.token;
+  const bodyEl = document.getElementById('bookReaderBody');
+  let cards = '';
+  for (let n = start; n <= end; n++) cards += krAyahCardHtml(n, KR_LOADING);
+  const bar = krBarHtml(total, start, end);
+  bodyEl.innerHTML =
+    `<div class="book-reader-page">` +
+      `<div class="kr-intro" style="margin-bottom:4px"><b>سورة ${escapeHtml(SURAH_NAMES_AR[s - 1])}</b></div>` +
+      `<div class="kr-range">الآيات ${start}–${end} من ${total}</div>` + bar +
+    `</div>` + cards + `<div class="book-reader-page">` + bar + `</div>`;
+  window.scrollTo && window.scrollTo(0, 0);
+  const queue = [];
+  for (let n = start; n <= end; n++) queue.push(n);
+  const worker = async () => {
+    while (queue.length) {
+      if (!_kr || _kr.token !== token) return;
+      const n = queue.shift();
+      await krFetchInto(n, token);
+    }
+  };
+  await Promise.all([worker(), worker(), worker(), worker()]);
+}
+/* ===== قارئ الكتب النصية الكاملة (Quranpedia): يُجلب ملف الكتاب عند الطلب فقط ويُعرض 8 صفحات في المرة، بدون حفظ ===== */
+let _qb = null;
+let _qbMemo = null;
+const QB_PAGE_SIZE = 8;
+function qbFailHtml(book, msg, tech) {
+  const idArg = JSON.stringify(book.bookId);
+  return `<div class="book-reader-fallback">
+      <div class="kp-icon">📖</div>
+      <div class="kp-title">${escapeHtml(book.title)}</div>
+      <div class="kp-desc">${escapeHtml(msg)}</div>
+      <button class="book-reader-source-link" style="border:none;cursor:pointer" onclick='playClickSound();openBookById(${idArg})'>🔄 إعادة المحاولة</button>
+      ${book.readUrl ? `<div style="margin-top:12px"><button class="book-reader-source-link" style="border:none;cursor:pointer" onclick='playClickSound();openBookExternal(${idArg})'>🌐 فتح الصفحة الرسمية</button></div>` : ''}
+      ${tech ? `<div class="book-reader-tech">تفاصيل تقنية: ${escapeHtml(tech)}</div>` : ''}
+    </div>`;
+}
+async function openQpBook(book) {
+  const token = (_qb ? _qb.token : 0) + 1;
+  _qb = { book, pages: null, start: 0, token };
+  _kr = null;
+  document.getElementById('bookReaderTitle').textContent = book.title;
+  document.getElementById('bookReaderNote').textContent = 'المصدر: ' + book.source + ' • يُجلب عند الطلب ولا يُحفظ داخل المنصة';
+  const bodyEl = document.getElementById('bookReaderBody');
+  bodyEl.innerHTML = `<div class="loading"><div class="spinner"></div>جارٍ تحميل الكتاب...</div>`;
+  showPage('page-book-reader');
+  const alive = () => _qb && _qb.token === token;
+  if (_qbMemo && _qbMemo.id === book.qpId) {
+    _qb.pages = _qbMemo.pages;
+    qbRender(0);
+    return;
+  }
+  let meta;
+  try {
+    meta = await krFetchJson(`${QP_API}/book/${book.qpId}`);
+  } catch (e) {
+    if (alive()) bodyEl.innerHTML = qbFailHtml(book, krErrMsg(e), e && e.message);
+    return;
+  }
+  if (!alive()) return;
+  if (!meta || typeof meta.contents_url !== 'string' || !/^https:\/\//.test(meta.contents_url)) {
+    bodyEl.innerHTML = qbFailHtml(book, 'لا يوفّر المصدر نصًا رقميًا لهذا الكتاب عبر الـAPI، ويمكنك فتح صفحته الرسمية.', null);
+    return;
+  }
+  let raw;
+  try {
+    raw = await krFetchJson(meta.contents_url, 2, 45000);
+  } catch (e) {
+    if (alive()) bodyEl.innerHTML = qbFailHtml(book, krErrMsg(e), e && e.message);
+    return;
+  }
+  if (!alive()) return;
+  const pages = extractBookTexts(raw);
+  raw = null;
+  if (!pages.length) {
+    bodyEl.innerHTML = qbFailHtml(book, 'تم الاتصال بالمصدر لكن تعذّر التعرّف على تنسيق نص هذا الكتاب.', null);
+    return;
+  }
+  _qb.pages = pages;
+  _qbMemo = { id: book.qpId, pages };
+  if (meta.name) {
+    const au = meta.author && (meta.author.ar_name || meta.author.full_name);
+    document.getElementById('bookReaderNote').textContent =
+      'المصدر: ' + book.source + ' • الكتاب في المصدر: ' + meta.name + (au ? ' — ' + au : '') + ' • يُجلب عند الطلب ولا يُحفظ داخل المنصة';
+  }
+  qbRender(0);
+}
+function qbBarHtml(total, start, end) {
+  const prevDis = start <= 0 ? 'disabled style="opacity:.45"' : '';
+  const nextDis = end >= total ? 'disabled style="opacity:.45"' : '';
+  return `<div class="kr-bar">
+      <button class="kbc-btn" ${prevDis} onclick="playClickSound();qbPage(-1)">→ السابق</button>
+      <button class="kbc-btn" ${nextDis} onclick="playClickSound();qbPage(1)">التالي ←</button>
+    </div>`;
+}
+function qbPage(dir) {
+  if (!_qb || !_qb.pages) return;
+  const next = _qb.start + dir * QB_PAGE_SIZE;
+  if (next < 0 || next >= _qb.pages.length) return;
+  qbRender(next);
+}
+function qbRender(start) {
+  if (!_qb || !_qb.pages) return;
+  const pages = _qb.pages;
+  const end = Math.min(pages.length, start + QB_PAGE_SIZE);
+  _qb.start = start;
+  const bar = qbBarHtml(pages.length, start, end);
+  const cards = pages.slice(start, end).map(p => `
+    <div class="book-reader-page">
+      ${(p.part || p.page) ? `<div class="book-reader-page-num">${p.part ? 'الجزء ' + escapeHtml(p.part) + ' — ' : ''}${p.page ? 'صفحة ' + escapeHtml(p.page) : ''}</div>` : ''}
+      <div class="book-reader-text">${escapeHtml(krCleanText(p.text))}</div>
+    </div>`).join('');
+  document.getElementById('bookReaderBody').innerHTML =
+    `<div class="book-reader-page"><div class="kr-range" style="margin-bottom:10px">المقاطع ${start + 1}–${end} من ${pages.length}</div>${bar}</div>` +
+    cards + `<div class="book-reader-page">${bar}</div>`;
+  window.scrollTo && window.scrollTo(0, 0);
+}
+let _lb = null;
+function lbHeadHtml(d) {
+  return `<div class="book-reader-page">${d.intro.map(t => `<div class="jz-intro">${escapeHtml(t)}</div>`).join('')}${d.note ? `<div class="jz-note">${escapeHtml(d.note)}</div>` : ''}</div>`;
+}
+function lbShowToc() {
+  if (!_lb) return;
+  const d = _lb.d;
+  const tiles = d.sections.map((sec, i) => {
+    const a = sec.verses[0].n, b = sec.verses[sec.verses.length - 1].n;
+    return `<div class="kutub-sub-tile" onclick="playOpenSound();lbOpenSection(${i})"><div style="width:100%;text-align:center">${escapeHtml(sec.title)}<div class="jz-sub">الأبيات ${a}–${b}</div></div></div>`;
+  }).join('');
+  document.getElementById('bookReaderBody').innerHTML = lbHeadHtml(d) + `<div class="kutub-sub-grid">${tiles}</div>`;
+  window.scrollTo && window.scrollTo(0, 0);
+}
+function lbBarHtml(i, total) {
+  const prevDis = i <= 0 ? 'disabled style="opacity:.45"' : '';
+  const nextDis = i >= total - 1 ? 'disabled style="opacity:.45"' : '';
+  return `<div class="kr-bar">
+      <button class="kbc-btn" onclick="playClickSound();lbShowToc()">📖 الفهرس</button>
+      <button class="kbc-btn" ${prevDis} onclick="playClickSound();lbOpenSection(${i - 1})">→ السابق</button>
+      <button class="kbc-btn" ${nextDis} onclick="playClickSound();lbOpenSection(${i + 1})">التالي ←</button>
+    </div>`;
+}
+function lbOpenSection(i) {
+  if (!_lb) return;
+  const d = _lb.d;
+  if (i < 0 || i >= d.sections.length) return;
+  const sec = d.sections[i];
+  const bar = lbBarHtml(i, d.sections.length);
+  const verses = sec.verses.map(v =>
+    `<div class="jz-verse"><div class="book-reader-page-num">${v.n}</div>` +
+    `<div class="book-reader-text jz-l">${escapeHtml(v.a)}</div><div class="book-reader-text jz-l">${escapeHtml(v.b)}</div></div>`
+  ).join('');
+  const closing = (i === d.sections.length - 1 && d.closing) ? `<div class="jz-intro" style="margin-top:12px">${escapeHtml(d.closing)}</div>` : '';
+  document.getElementById('bookReaderBody').innerHTML =
+    `<div class="book-reader-page"><div class="jz-sec">${escapeHtml(sec.title)}</div>${bar}</div>` +
+    `<div class="book-reader-page">${verses}${closing}</div>` +
+    `<div class="book-reader-page">${bar}</div>`;
+  window.scrollTo && window.scrollTo(0, 0);
+}
+function openLocalBook(book) {
+  const d = KUTUB_LOCAL_TEXTS[book.bookId];
+  if (!d) return;
+  if (_qb) _qb.token++;
+  _kr = null;
+  document.getElementById('bookReaderTitle').textContent = book.title;
+  document.getElementById('bookReaderNote').textContent = 'نص مضاف داخل المنصة • يعمل بدون إنترنت';
+  if (d.paged) { _lb = { book, d }; lbShowToc(); showPage('page-book-reader'); return; }
+  const head = `<div class="book-reader-page">${d.intro.map(t => `<div class="jz-intro">${escapeHtml(t)}</div>`).join('')}</div>`;
+  const secs = d.sections.map(sec =>
+    `<div class="book-reader-page"><div class="jz-sec">${escapeHtml(sec.title)}</div>` +
+    sec.verses.map(v =>
+      `<div class="jz-verse"><div class="book-reader-page-num">${v.n}</div>` +
+      `<div class="book-reader-text jz-l">${escapeHtml(v.a)}</div><div class="book-reader-text jz-l">${escapeHtml(v.b)}</div></div>`
+    ).join('') + `</div>`
+  ).join('');
+  document.getElementById('bookReaderBody').innerHTML = head + secs;
+  showPage('page-book-reader');
+  window.scrollTo && window.scrollTo(0, 0);
+}
 function closeBookReader() {
+  if (_kr) _kr.token++;
+  if (_qb) _qb.token++;
   document.getElementById('bookReaderBody').innerHTML = '';
   showPage('page-books-topic');
 }
@@ -5546,7 +6266,7 @@ function arenaLoadStats() {
   try { return Object.assign(arenaDefaultStats(), JSON.parse(localStorage.getItem('imania_arena_stats')) || {}); }
   catch(e) { return arenaDefaultStats(); }
 }
-function arenaSaveStats(s) { try { localStorage.setItem('imania_arena_stats', JSON.stringify(s)); } catch(e) {} }
+function arenaSaveStats(s) { try { localStorage.setItem('imania_arena_stats', JSON.stringify(s)); } catch(e) {} if (typeof acctOnStatsSaved === 'function' && !(window._acct && _acct.applying)) acctOnStatsSaved(); }
 function arenaLoadHistory() {
   try { return JSON.parse(localStorage.getItem('imania_arena_history')) || []; } catch(e) { return []; }
 }
@@ -7339,6 +8059,274 @@ document.addEventListener('contextmenu', function (e) {
 document.addEventListener('selectstart', function (e) {
   if (!e.target.closest || !e.target.closest('input, textarea, [contenteditable="true"]')) e.preventDefault();
 });
+</script>
+<script id="acct-module">
+/* ============================================================================
+   حساب المستخدم (Google) + متجر المميزات بعملة همة
+   - الدخول: Firebase Auth (Google) — يحتاج تفعيل المزوّد وإضافة نطاق الموقع في لوحة Firebase.
+   - البيانات: users/{uid} في Realtime Database: name, photo, hemma, owned{}, equipped{}
+   - الرصيد: نفس عملة همة الموجودة في ساحة المنافسة (تُزامَن بالفرق delta عبر transaction).
+   ============================================================================ */
+const ACCT_LS = 'imania_account';
+const ACCT_LINK = 'imania_acct_link';
+const ACCT_PERKS = [
+  { slot:'frame', label:'إطارات الصورة', items:[
+    { id:'fr-gold', name:'إطار ذهبي', price:30 },
+    { id:'fr-emerald', name:'إطار زمردي', price:30 },
+    { id:'fr-crescent', name:'إطار الهلال', price:60 },
+    { id:'fr-royal', name:'إطار ملكي', price:120 } ] },
+  { slot:'color', label:'ألوان الاسم', items:[
+    { id:'nc-gold', name:'اسم ذهبي', price:20 },
+    { id:'nc-emerald', name:'اسم أخضر', price:20 },
+    { id:'nc-sky', name:'اسم سماوي', price:20 },
+    { id:'nc-rose', name:'اسم وردي', price:20 },
+    { id:'nc-violet', name:'اسم بنفسجي', price:40 } ] },
+  { slot:'title', label:'الألقاب', items:[
+    { id:'t-himma', name:'صاحب همة', price:25 },
+    { id:'t-mutha', name:'مثابر', price:25 },
+    { id:'t-quran', name:'محب القرآن', price:40 },
+    { id:'t-star', name:'نجم الساحة', price:50 },
+    { id:'t-khayr', name:'سفير الخير', price:60 } ] }
+];
+const _acct = { user:null, rec:null, ready:false, busy:false, applying:false, lastHemma:0, chain:Promise.resolve(), msg:'' };
+function acctFbOk() {
+  return typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && typeof firebase.auth === 'function' && typeof firebase.database === 'function';
+}
+function acctPerk(id) {
+  for (const g of ACCT_PERKS) { const p = g.items.find(x => x.id === id); if (p) return Object.assign({ slot:g.slot }, p); }
+  return null;
+}
+function acctSafeUrl(u) { return (typeof u === 'string' && /^(https:\/\/|data:image\/)/.test(u)) ? u : ''; }
+function acctCache() { try { return JSON.parse(localStorage.getItem(ACCT_LS)) || null; } catch (e) { return null; } }
+function acctSetCache(o) { try { if (o) localStorage.setItem(ACCT_LS, JSON.stringify(o)); else localStorage.removeItem(ACCT_LS); } catch (e) {} }
+function acctLink() { try { return JSON.parse(localStorage.getItem(ACCT_LINK)) || null; } catch (e) { return null; } }
+function acctSetLink(uid, last) { try { localStorage.setItem(ACCT_LINK, JSON.stringify({ uid, last })); } catch (e) {} }
+function acctProfile() {   // ما يُعرض: من السحابة إن وُجدت وإلا من الكاش
+  if (_acct.user && _acct.rec) return Object.assign({ uid:_acct.user.uid }, _acct.rec);
+  const c = acctCache(); return c || null;
+}
+function acctAvatarHtml(p, size) {
+  const eq = (p && p.equipped) || {};
+  const fr = (p && eq.frame && acctPerk(eq.frame)) ? ' ' + eq.frame : '';
+  const url = acctSafeUrl(p && p.photo);
+  const inner = url ? `<img src="${escapeHtml(url)}" alt="" referrerpolicy="no-referrer">` : escapeHtml(((p && p.name) || '؟').trim().charAt(0) || '؟');
+  return `<div class="acct-av${fr}" style="width:${size}px;height:${size}px;font-size:${Math.round(size / 2.4)}px">${inner}</div>`;
+}
+function acctNameHtml(p) {
+  const eq = (p && p.equipped) || {};
+  const cc = (eq.color && acctPerk(eq.color)) ? ' ' + eq.color : '';
+  const title = (eq.title && acctPerk(eq.title)) ? `<div class="acct-title">${escapeHtml(acctPerk(eq.title).name)}</div>` : '';
+  return `<div class="acct-name${cc}">${escapeHtml((p && p.name) || '')}</div>${title}`;
+}
+function acctRenderTop() {
+  const b = document.getElementById('acctTopBtn'); if (!b) return;
+  const p = acctProfile();
+  const url = p && acctSafeUrl(p.photo);
+  const eq = (p && p.equipped) || {};
+  b.className = 'notif-btn acct-top' + ((eq.frame && acctPerk(eq.frame)) ? ' ' + eq.frame : '');
+  b.innerHTML = url ? `<img src="${escapeHtml(url)}" alt="" referrerpolicy="no-referrer">` : (p ? escapeHtml((p.name || '؟').charAt(0)) : '👤');
+}
+function acctGoogleSvg() {
+  return '<svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+}
+function acctPerkPreview(slot, p) {
+  if (slot === 'frame') return `<div class="acct-av ${p.id}" style="width:46px;height:46px;font-size:18px">👤</div>`;
+  if (slot === 'color') return `<div class="acct-name ${p.id}" style="font-size:1rem">اسمك</div>`;
+  return `<div class="acct-title">${escapeHtml(p.name)}</div>`;
+}
+function acctShopHtml(rec) {
+  const owned = rec.owned || {}, eq = rec.equipped || {};
+  return ACCT_PERKS.map(g => `
+    <div class="acct-sec-title">${g.label}</div>
+    <div class="acct-grid">${g.items.map(p => {
+      const has = !!owned[p.id], on = eq[g.slot] === p.id;
+      const btn = on ? `<button class="kbc-btn" onclick="playClickSound();acctEquip('${g.slot}',null)">✔ مُفعّل — إلغاء</button>`
+        : has ? `<button class="kbc-btn" onclick="playClickSound();acctEquip('${g.slot}','${p.id}')">تفعيل</button>`
+        : `<button class="kbc-btn download" onclick="playClickSound();acctBuy('${p.id}')">شراء • 🌙 ${p.price}</button>`;
+      return `<div class="acct-perk">${acctPerkPreview(g.slot, p)}<div class="acct-perk-name">${escapeHtml(p.name)}</div>${btn}</div>`;
+    }).join('')}</div>`).join('');
+}
+function acctRenderPage() {
+  const body = document.getElementById('acctBody'); if (!body) return;
+  const msg = _acct.msg ? `<div class="acct-msg" id="acctMsg">${escapeHtml(_acct.msg)}</div>` : '<div class="acct-msg" id="acctMsg" style="display:none"></div>';
+  if (!_acct.user || !_acct.rec) {
+    const cached = acctCache();
+    const waiting = _acct.user && !_acct.rec;
+    body.innerHTML = `
+      <div class="acct-card">
+        <div style="font-size:2.4rem;margin-bottom:6px">👤</div>
+        <div class="acct-h">${waiting ? 'جارٍ تحميل حسابك...' : 'سجّل الدخول بحساب Google'}</div>
+        <div class="acct-p">اربط المنصة بحسابك ليكون لك اسم وصورة، وتُحفظ عملات همة ومشترياتك على كل أجهزتك، وتشتري بها إطارات وألوانًا وألقابًا لملفك.</div>
+        ${waiting ? '' : `<button class="acct-google" id="acctGoogleBtn" onclick="playClickSound();acctSignIn()">${acctGoogleSvg()}<span>الدخول بحساب Google</span></button>`}
+        ${msg}
+        ${cached && !_acct.user ? `<div class="acct-p" style="margin-top:10px;font-size:.72rem">آخر حساب على هذا الجهاز: ${escapeHtml(cached.name || '')}</div>` : ''}
+      </div>`;
+    return;
+  }
+  const p = acctProfile();
+  const bal = (arenaLoadStats().hemma || 0);
+  body.innerHTML = `
+    <div class="acct-card">
+      ${acctAvatarHtml(p, 92)}
+      ${acctNameHtml(p)}
+      <div class="acct-email">${escapeHtml(_acct.user.email || '')}</div>
+      <div class="acct-balance">🌙 <b id="acctBalance">${bal}</b> عملة همة</div>
+      <div class="acct-namebox">
+        <input id="acctNameInput" maxlength="24" value="${escapeHtml(p.name || '')}" placeholder="اسمك">
+        <button class="kbc-btn" onclick="playClickSound();acctSaveName()">حفظ الاسم</button>
+      </div>
+      ${msg}
+      <button class="kbc-btn" style="margin-top:12px" onclick="playClickSound();acctSignOut()">تسجيل الخروج</button>
+    </div>
+    <div class="acct-card" style="text-align:right">
+      <div class="acct-h" style="text-align:center">🛍️ متجر المميزات</div>
+      <div class="acct-p" style="text-align:center">تشتري بعملات همة التي تكسبها من ساحة المنافسة.</div>
+      ${acctShopHtml(_acct.rec)}
+    </div>`;
+}
+function acctRenderAll() { acctRenderTop(); if (document.getElementById('page-account') && document.getElementById('page-account').classList.contains('active')) acctRenderPage(); }
+function acctSay(m) { _acct.msg = m || ''; const el = document.getElementById('acctMsg'); if (el) { el.textContent = _acct.msg; el.style.display = _acct.msg ? '' : 'none'; } if (m && typeof showImaniaToast === 'function') showImaniaToast(m, 3200); }
+function acctErr(e) {
+  const c = e && e.code;
+  if (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') return '';
+  if (c === 'auth/unauthorized-domain') return 'نطاق هذا الموقع غير مضاف في Firebase (Authentication ← Settings ← Authorized domains).';
+  if (c === 'auth/operation-not-allowed') return 'تسجيل الدخول بجوجل غير مفعّل في Firebase (Authentication ← Sign-in method ← Google).';
+  if (c === 'auth/network-request-failed') return 'لا يوجد اتصال بالإنترنت. حاول مرة أخرى.';
+  if (c === 'auth/operation-not-supported-in-this-environment') return 'تسجيل الدخول لا يعمل من هذا المتصفح أو من ملف محلي. افتح المنصة من رابط https.';
+  return 'تعذّر تسجيل الدخول' + (c ? ' (' + c + ')' : '') + '.';
+}
+async function acctSignIn() {
+  if (!acctFbOk()) { acctSay('خدمة الحساب غير متاحة الآن (تحقق من الاتصال ثم أعد فتح المنصة).'); return; }
+  acctSay('');
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try { await firebase.auth().signInWithPopup(provider); }
+  catch (e) {
+    if (e && (e.code === 'auth/popup-blocked')) {
+      try { await firebase.auth().signInWithRedirect(provider); return; } catch (e2) { e = e2; }
+    }
+    acctSay(acctErr(e));
+  }
+}
+async function acctSignOut() {
+  try { if (acctFbOk()) await firebase.auth().signOut(); } catch (e) {}
+  _acct.user = null; _acct.rec = null; _acct.ready = false; acctSetCache(null);
+  acctRenderTop(); acctRenderPage();
+}
+function acctWithTimeout(p, ms) { return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms || 15000))]); }
+async function acctLoadRecord(user) {
+  try {
+    const ref = firebase.database().ref('users/' + user.uid);
+    const snap = await acctWithTimeout(ref.once('value'));
+    let rec = snap.val();
+    const s = arenaLoadStats(), localH = s.hemma || 0, link = acctLink();
+    let delta = 0;
+    if (!link) delta = localH;                                   // أول ربط على هذا الجهاز: تُنقل العملات المحلية مرة واحدة
+    else if (link.uid === user.uid) delta = localH - (link.last || 0);   // نفس الحساب: نضيف ما كُسب منذ آخر مزامنة
+    const base = { photo: acctSafeUrl(user.photoURL) || '', updatedAt: Date.now() };
+    if (!rec || !rec.name) base.name = (rec && rec.name) || (user.displayName || 'لاعب').slice(0, 24);
+    if (!rec) base.createdAt = Date.now();
+    await acctWithTimeout(ref.update(base));
+    const res = await acctWithTimeout(ref.child('hemma').transaction(v => Math.max(0, (v || 0) + delta)));
+    const total = res.snapshot.val() || 0;
+    rec = (await acctWithTimeout(ref.once('value'))).val() || {};
+    _acct.rec = { name: rec.name, photo: rec.photo, hemma: total, owned: rec.owned || {}, equipped: rec.equipped || {} };
+    _acct.lastHemma = total; acctSetLink(user.uid, total);
+    if (total !== localH) { s.hemma = total; _acct.applying = true; arenaSaveStats(s); _acct.applying = false; }
+    try { localStorage.setItem('imania_arena_myname', _acct.rec.name); } catch (e) {}
+    acctSetCache({ uid: user.uid, name: _acct.rec.name, photo: _acct.rec.photo, equipped: _acct.rec.equipped });
+    _acct.ready = true; acctSay('');
+    if (typeof arenaRenderCoinBalance === 'function') { try { arenaRenderCoinBalance(); } catch (e) {} }
+    const el = document.getElementById('arenaHemmaBalance'); if (el) el.textContent = total;
+  } catch (e) {
+    console.warn('acctLoadRecord failed', e);
+    _acct.ready = false;
+    acctSay('تعذّر تحميل بيانات حسابك (تحقق من الاتصال وقواعد قاعدة البيانات).');
+  }
+  acctRenderAll();
+}
+function acctSyncHemma() {
+  if (!_acct.user || !_acct.ready || _acct.applying || !acctFbOk()) return Promise.resolve();
+  const uid = _acct.user.uid;
+  _acct.chain = _acct.chain.then(async () => {
+    const s = arenaLoadStats(), cur = s.hemma || 0, delta = cur - _acct.lastHemma;
+    if (!delta) return;
+    const res = await acctWithTimeout(firebase.database().ref('users/' + uid + '/hemma').transaction(v => Math.max(0, (v || 0) + delta)));
+    const r = res.snapshot.val() || 0;
+    _acct.lastHemma = r; if (_acct.rec) _acct.rec.hemma = r; acctSetLink(uid, r);
+    if (r !== cur) { s.hemma = r; _acct.applying = true; arenaSaveStats(s); _acct.applying = false; }
+    const el = document.getElementById('arenaHemmaBalance'); if (el) el.textContent = r;
+    const b = document.getElementById('acctBalance'); if (b) b.textContent = r;
+  }).catch(e => { console.warn('hemma sync failed', e); });
+  return _acct.chain;
+}
+function acctOnStatsSaved() { acctSyncHemma(); }
+async function acctBuy(id) {
+  const perk = acctPerk(id);
+  if (!perk) return;
+  if (!_acct.user || !_acct.ready) { acctSay('سجّل الدخول أولًا.'); return; }
+  if (_acct.busy) return;
+  _acct.busy = true;
+  try {
+    await acctSyncHemma();
+    const ref = firebase.database().ref('users/' + _acct.user.uid);
+    let reason = '';
+    const res = await acctWithTimeout(ref.transaction(rec => {
+      if (rec === null) return rec;
+      rec.owned = rec.owned || {};
+      if (rec.owned[id]) { reason = 'owned'; return; }
+      if ((rec.hemma || 0) < perk.price) { reason = 'poor'; return; }
+      rec.hemma = (rec.hemma || 0) - perk.price;
+      rec.owned[id] = true;
+      return rec;
+    }));
+    if (res.committed) {
+      const rec = res.snapshot.val();
+      _acct.rec.owned = rec.owned || {}; _acct.rec.hemma = rec.hemma || 0; _acct.lastHemma = _acct.rec.hemma;
+      acctSetLink(_acct.user.uid, _acct.lastHemma);
+      const s = arenaLoadStats(); s.hemma = _acct.lastHemma; _acct.applying = true; arenaSaveStats(s); _acct.applying = false;
+      const el = document.getElementById('arenaHemmaBalance'); if (el) el.textContent = _acct.lastHemma;
+      acctSay('تم الشراء ✅ — ' + perk.name);
+    } else acctSay(reason === 'poor' ? 'رصيدك من عملات همة غير كافٍ.' : 'أنت تملك هذه الميزة بالفعل.');
+  } catch (e) { acctSay('تعذّر إتمام الشراء، تحقق من الاتصال ثم أعد المحاولة.'); }
+  _acct.busy = false; acctRenderAll();
+}
+async function acctEquip(slot, id) {
+  if (!_acct.user || !_acct.ready) return;
+  if (id && !(_acct.rec.owned || {})[id]) return;
+  try {
+    await acctWithTimeout(firebase.database().ref('users/' + _acct.user.uid + '/equipped/' + slot).set(id || null));
+    _acct.rec.equipped = _acct.rec.equipped || {};
+    if (id) _acct.rec.equipped[slot] = id; else delete _acct.rec.equipped[slot];
+    acctSetCache({ uid: _acct.user.uid, name: _acct.rec.name, photo: _acct.rec.photo, equipped: _acct.rec.equipped });
+  } catch (e) { acctSay('تعذّر حفظ الاختيار، تحقق من الاتصال.'); }
+  acctRenderAll();
+}
+async function acctSaveName() {
+  if (!_acct.user || !_acct.ready) return;
+  const inp = document.getElementById('acctNameInput');
+  const name = ((inp && inp.value) || '').replace(/\s+/g, ' ').trim();
+  if (name.length < 2 || name.length > 24) { acctSay('الاسم يجب أن يكون من 2 إلى 24 حرفًا.'); return; }
+  try {
+    await acctWithTimeout(firebase.database().ref('users/' + _acct.user.uid + '/name').set(name));
+    _acct.rec.name = name;
+    try { localStorage.setItem('imania_arena_myname', name); } catch (e) {}
+    acctSetCache({ uid: _acct.user.uid, name, photo: _acct.rec.photo, equipped: _acct.rec.equipped });
+    acctSay('تم حفظ الاسم ✅');
+  } catch (e) { acctSay('تعذّر حفظ الاسم، تحقق من الاتصال.'); }
+  acctRenderAll();
+}
+function acctInit() {
+  acctRenderTop();
+  if (!acctFbOk()) return;
+  try { firebase.auth().getRedirectResult().catch(e => { const m = acctErr(e); if (m) acctSay(m); }); } catch (e) {}
+  firebase.auth().onAuthStateChanged(user => {
+    _acct.user = user || null; _acct.rec = null; _acct.ready = false;
+    if (user) { acctRenderAll(); acctLoadRecord(user); }
+    else { acctSetCache(null); acctRenderAll(); }
+  });
+}
+acctInit();
+
 </script>
 </body>
 </html>
