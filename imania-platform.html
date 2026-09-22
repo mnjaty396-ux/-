@@ -2488,7 +2488,7 @@ try {
 } catch (e) { console.warn('Firebase init failed:', e); }
 </script>
 <script>
-const PROXY_URL = '';
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbzF8m7B0hNB1pPSU1bJI1CFCnjfXGLHvMXoccUFiwpQmo-Z6tyO836xqjpM8ratZJep/exec';
 let sheetData = {};
 let sabhaCount = 0, sabhaTarget = 33, sabhaTextVal = 'سُبْحَانَ اللَّهِ';
 let isDark = false;
@@ -3766,22 +3766,13 @@ async function showIlmLevel(level) {
   renderCards(filtered, el, {title:'العنوان', text:'الوصف', meta:'المصدر', video:'رابط الفيديو'});
 }
 const KUTUB_STRUCTURE = [
-  { key:'quran', icon:'📖', title:'القرآن الكريم وعلومه',
-    subs:['التفسير','علوم القرآن','أصول التفسير','القراءات','التجويد','غريب القرآن','إعراب القرآن'] },
-  { key:'sunnah', icon:'📗', title:'السنة والحديث',
-    subs:['الحديث','شروح الحديث','مصطلح الحديث','غريب الحديث','تخريج الحديث','الجرح والتعديل'] },
-  { key:'fiqh', icon:'⚖️', title:'الفقه وأصوله',
-    subs:['الفقه','أصول الفقه','القواعد الفقهية','مقاصد الشريعة'] },
-  { key:'seerah', icon:'🕌', title:'السيرة والتاريخ',
-    subs:['السيرة النبوية','الشمائل','قصص الأنبياء','التاريخ الإسلامي','تراجم العلماء'] },
-  { key:'tazkiyah', icon:'🌿', title:'تزكية النفس والآداب',
-    subs:['تزكية النفس','الأخلاق والآداب','الرقائق والمواعظ','آداب طالب العلم','فضائل الأعمال'] },
-  { key:'dawah', icon:'📢', title:'الدعوة والفكر',
-    subs:['الدعوة وأصولها','الرد على الشبهات','الحوار والمناظرة','الفكر الإسلامي','الفرق والمذاهب'] },
-  { key:'lugha', icon:'🖋️', title:'اللغة العربية',
-    subs:['النحو','الصرف','المعاجم','البلاغة','الأدب العربي'] },
-  { key:'aqeedah', icon:'🕋', title:'العقيدة',
-    subs:[] },
+  { key:'tafsir', icon:'📖', title:'التفسير', subs:[] },
+  { key:'tajweed', icon:'🎙️', title:'التجويد', subs:[] },
+  { key:'aqeedah', icon:'🕋', title:'العقيدة', subs:[] },
+  { key:'hadith', icon:'📗', title:'الحديث', subs:[] },
+  { key:'fiqh', icon:'⚖️', title:'الفقه', subs:[] },
+  { key:'seerah', icon:'🕌', title:'السيرة', subs:[] },
+  { key:'tarikh', icon:'🏛️', title:'التاريخ', subs:[] },
 ];
 let _kutubCurrentCategoryKey = null;
 /* ============================================================================
@@ -3803,6 +3794,12 @@ const SRC_TAFSIRAPI_URL = 'https://github.com/spa5k/tafsir_api';
 const SRC_QP_NAME = 'Quranpedia API';
 const SRC_QP_URL = 'https://api.quranpedia.net/';
 const SRC_IH_NAME = 'IslamHouse';
+/* مصدر ثانٍ للكتب النثرية الكاملة (غير القرآنية): islamic.app Library API — مجاني، بلا مفتاح، CORS مفتوح.
+   يعمل بالبحث عن عنوان الكتاب أولًا (search) ثم جلب نصه صفحة/فصلًا فصلًا (text) عند الطلب فقط — لا حفظ داخل المنصة.
+   إن لم يُعثر على الكتاب في هذا المصدر، تُعرض للمستخدم إمكانية البحث عنه يدويًا على الموقع نفسه. */
+const SRC_ISLAMICAPP_NAME = 'islamic.app (Turath/OpenITI/Shamela)';
+const SRC_ISLAMICAPP_URL = 'https://docs.islamic.app/api-reference/library-overview';
+const LIBAPI_BASE = 'https://api.islamic.app/v1/library';
 const KUTUB_BOOKS = {
   'التفسير': [
     { bookId:'tafsir-muyassar', title:'التفسير الميسر', author:'نخبة من العلماء — مجمع الملك فهد لطباعة المصحف الشريف',
@@ -3846,29 +3843,6 @@ const KUTUB_BOOKS = {
       source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'ar-tafsir-al-tabari',
       src:{ type:'tafsirapi', slug:'ar-tafsir-al-tabari' }, fallback:{ type:'quranpedia', id:4 } }
   ],
-  'علوم القرآن': [
-    { bookId:'ulum-asbab-wahidi', title:'أسباب نزول القرآن', author:'أبو الحسن الواحدي',
-      category:'quran', subcategory:'علوم القرآن', order:1, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:2919',
-      src:{ type:'quranpedia', id:2919 } },
-    { bookId:'ulum-nasikh-makki', title:'الإيضاح لناسخ القرآن ومنسوخه', author:'مكي بن أبي طالب القيسي',
-      category:'quran', subcategory:'علوم القرآن', order:2, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:2391',
-      src:{ type:'quranpedia', id:2391 } }
-  ],
-  'القراءات': [
-    { bookId:'qiraat-mawsuah-quraniyyah', title:'القراءات — الموسوعة القرآنية', author:'الموسوعة القرآنية',
-      category:'quran', subcategory:'القراءات', order:1, isAvailable:true, readType:'ayah',
-      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'al-qira-at-al-mawsoo-ah-al-qur-aniyyah',
-      src:{ type:'tafsirapi', slug:'al-qira-at-al-mawsoo-ah-al-qur-aniyyah' } },
-    { bookId:'qiraat-nashr-ibn-jazari', title:'النشر (لابن الجزري)', author:'ابن الجزري',
-      category:'quran', subcategory:'القراءات', order:2, isAvailable:true, readType:'ayah',
-      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'al-nashr-li-ibn-al-jazari',
-      src:{ type:'tafsirapi', slug:'al-nashr-li-ibn-al-jazari' } },
-    { bookId:'qiraat-tayyibat-al-nashr', title:'طيبة النشر في القراءات العشر', author:'ابن الجزري (ت 833 هـ)',
-      category:'quran', subcategory:'القراءات', order:3, isAvailable:true, readType:'local',
-      source:'نص مضاف من صاحب المنصة — يعمل بدون إنترنت', apiId:'local:tayyibat-al-nashr' }
-  ],
   'التجويد': [
     { bookId:'tajweed-tuhfat-al-atfal', title:'تحفة الأطفال والغلمان في تجويد القرآن', author:'سليمان الجمزوري',
       category:'quran', subcategory:'التجويد', order:1, isAvailable:true, readType:'local',
@@ -3877,49 +3851,287 @@ const KUTUB_BOOKS = {
       category:'quran', subcategory:'التجويد', order:2, isAvailable:true, readType:'local',
       source:'نص مضاف من صاحب المنصة (نسخة مشكولة) — يعمل بدون إنترنت', apiId:'local:jazariyyah' }
   ],
-  'غريب القرآن': [
-    { bookId:'gharib-al-siraj', title:'السراج في بيان غريب القرآن', author:'محمد بن عبد العزيز الخضيري',
-      category:'quran', subcategory:'غريب القرآن', order:1, isAvailable:true, readType:'ayah',
-      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'asseraj-fi-bayan-gharib-alquran',
-      src:{ type:'tafsirapi', slug:'asseraj-fi-bayan-gharib-alquran' } },
-    { bookId:'gharib-nuzhat-al-qulub', title:'نزهة القلوب في تفسير غريب القرآن', author:'أبو بكر محمد بن عزيز السجستاني',
-      category:'quran', subcategory:'غريب القرآن', order:2, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:27760',
-      src:{ type:'quranpedia', id:27760 } },
-    { bookId:'gharib-tadhkirat-al-arib', title:'تذكرة الأريب في تفسير الغريب', author:'ابن الجوزي',
-      category:'quran', subcategory:'غريب القرآن', order:3, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:27761',
-      src:{ type:'quranpedia', id:27761 } },
-    { bookId:'gharib-tibyan-ibn-al-haim', title:'التبيان في تفسير غريب القرآن', author:'ابن الهائم',
-      category:'quran', subcategory:'غريب القرآن', order:4, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:27784',
-      src:{ type:'quranpedia', id:27784 } }
-  ],
-  'إعراب القرآن': [
-    { bookId:'irab-mujtaba', title:'المجتبى من مشكل إعراب القرآن الكريم', author:'أحمد بن محمد الخراط',
-      category:'quran', subcategory:'إعراب القرآن', order:1, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:180',
-      src:{ type:'quranpedia', id:180 } },
-    { bookId:'irab-tibyan', title:'التبيان في إعراب القرآن', author:'أبو البقاء العكبري',
-      category:'quran', subcategory:'إعراب القرآن', order:5, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:309',
-      src:{ type:'quranpedia', id:309 } },
-    { bookId:'irab-maani-zajjaj', title:'معاني القرآن وإعرابه', author:'أبو إسحاق الزجاج',
-      category:'quran', subcategory:'إعراب القرآن', order:6, isAvailable:true, readType:'ayah',
-      source:SRC_QP_NAME, sourceUrl:SRC_QP_URL, apiId:'quranpedia:546',
-      src:{ type:'quranpedia', id:546 } },
-    { bookId:'irab-darwish', title:'إعراب القرآن وبيانه', author:'محيي الدين الدرويش',
-      category:'quran', subcategory:'إعراب القرآن', order:2, isAvailable:true, readType:'ayah',
-      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'i-rab-al-quran-li-al-darwish',
-      src:{ type:'tafsirapi', slug:'i-rab-al-quran-li-al-darwish' }, fallback:{ type:'quranpedia', id:64 } },
-    { bookId:'irab-daas', title:'إعراب القرآن الكريم', author:'أحمد عبيد الدعاس وآخرون',
-      category:'quran', subcategory:'إعراب القرآن', order:3, isAvailable:true, readType:'ayah',
-      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'alrab-al-quran-li-da-as',
-      src:{ type:'tafsirapi', slug:'alrab-al-quran-li-da-as' } },
-    { bookId:'irab-jadwal', title:'الجدول في إعراب القرآن', author:'محمود صافي',
-      category:'quran', subcategory:'إعراب القرآن', order:4, isAvailable:true, readType:'ayah',
-      source:SRC_TAFSIRAPI_NAME, sourceUrl:SRC_TAFSIRAPI_URL, apiId:'al-jadwal-fi-i-rab-al-quran',
-      src:{ type:'tafsirapi', slug:'al-jadwal-fi-i-rab-al-quran' } }
+  /* ============================================================================
+     كتب السنة والحديث — تُقرأ داخل المنصة عبر islamic.app Library API (readType:'libtext').
+     كل كتاب يُبحث عنه بعنوانه في هذا المصدر عند أول فتح، ويُحفظ معرّف الكتاب (slug) الناتج
+     محليًا على الجهاز لتسريع الفتحات التالية؛ فإن لم يوجد الكتاب في هذا المصدر يظهر زر
+     للبحث عنه يدويًا على موقع المصدر نفسه. لا يُخزَّن أي نص كتاب داخل المنصة. */
+  'الحديث': [
+    { bookId:'must-bayquniyyah', title:'المنظومة البيقونية', author:'طه بن محمد البيقوني',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'المنظومة البيقونية البيقوني مصطلح الحديث' } },
+    { bookId:'must-nukhbat-fikr', title:'نخبة الفكر في مصطلح أهل الأثر', author:'ابن حجر العسقلاني',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'نخبة الفكر في مصطلح أهل الأثر ابن حجر' } },
+    { bookId:'must-nuzhat-nazar', title:'نزهة النظر شرح نخبة الفكر', author:'ابن حجر العسقلاني',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'نزهة النظر شرح نخبة الفكر ابن حجر' } },
+    { bookId:'must-ikhtisar-ulum-hadith', title:'اختصار علوم الحديث', author:'ابن كثير',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'اختصار علوم الحديث ابن كثير' } },
+    { bookId:'must-muqaddimah-ibn-salah', title:'مقدمة ابن الصلاح (معرفة أنواع علم الحديث)', author:'ابن الصلاح الشهرزوري',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:5, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'مقدمة ابن الصلاح معرفة أنواع علم الحديث' } },
+    { bookId:'must-muwaqizah', title:'الموقظة في علم مصطلح الحديث', author:'شمس الدين الذهبي',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:6, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الموقظة في علم مصطلح الحديث الذهبي' } },
+    { bookId:'must-taqrib-taysir', title:'التقريب والتيسير لمعرفة سنن البشير النذير', author:'يحيى بن شرف النووي',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:7, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'التقريب والتيسير لمعرفة سنن البشير النذير النووي' } },
+    { bookId:'must-alfiyat-iraqi', title:'ألفية العراقي في علم الحديث (التبصرة والتذكرة)', author:'زين الدين العراقي',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:8, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'ألفية العراقي في علم الحديث التبصرة والتذكرة' } },
+    { bookId:'must-fath-mughith', title:'فتح المغيث بشرح ألفية الحديث', author:'شمس الدين السخاوي',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:9, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'فتح المغيث بشرح ألفية الحديث السخاوي' } },
+    { bookId:'must-tadrib-rawi', title:'تدريب الراوي في شرح تقريب النواوي', author:'جلال الدين السيوطي',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:10, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تدريب الراوي في شرح تقريب النواوي السيوطي' } },
+    { bookId:'must-baith-hathith', title:'الباعث الحثيث شرح اختصار علوم الحديث', author:'أحمد محمد شاكر',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:11, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الباعث الحثيث شرح اختصار علوم الحديث أحمد شاكر' } },
+    { bookId:'must-taysir-mustalah', title:'تيسير مصطلح الحديث', author:'محمود الطحان',
+      category:'sunnah', subcategory:'مصطلح الحديث', order:12, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تيسير مصطلح الحديث محمود الطحان' } }
+,
+    { bookId:'sharh-fath-bari', title:'فتح الباري بشرح صحيح البخاري', author:'ابن حجر العسقلاني',
+      category:'sunnah', subcategory:'شروح الحديث', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'فتح الباري بشرح صحيح البخاري ابن حجر' } },
+    { bookId:'sharh-sahih-muslim-nawawi', title:'شرح صحيح مسلم (المنهاج)', author:'يحيى بن شرف النووي',
+      category:'sunnah', subcategory:'شروح الحديث', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'المنهاج شرح صحيح مسلم بن الحجاج النووي' } },
+    { bookId:'sharh-maalim-sunan', title:'معالم السنن (شرح سنن أبي داود)', author:'أبو سليمان الخطابي',
+      category:'sunnah', subcategory:'شروح الحديث', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'معالم السنن شرح سنن أبي داود الخطابي' } },
+    { bookId:'sharh-awn-mabud', title:'عون المعبود شرح سنن أبي داود', author:'شمس الحق العظيم آبادي',
+      category:'sunnah', subcategory:'شروح الحديث', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'عون المعبود شرح سنن أبي داود العظيم آبادي' } },
+    { bookId:'sharh-tuhfat-ahwadhi', title:'تحفة الأحوذي بشرح جامع الترمذي', author:'محمد عبد الرحمن المباركفوري',
+      category:'sunnah', subcategory:'شروح الحديث', order:5, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تحفة الأحوذي بشرح جامع الترمذي المباركفوري' } },
+    { bookId:'sharh-mirat-mafatih', title:'مرعاة المفاتيح شرح مشكاة المصابيح', author:'عبيد الله المباركفوري',
+      category:'sunnah', subcategory:'شروح الحديث', order:6, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'مرعاة المفاتيح شرح مشكاة المصابيح المباركفوري' } },
+    { bookId:'sharh-sunan-nasai-suyuti', title:'شرح سنن النسائي', author:'جلال الدين السيوطي',
+      category:'sunnah', subcategory:'شروح الحديث', order:7, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'شرح سنن النسائي السيوطي' } },
+    { bookId:'sharh-sunan-ibn-majah-sindi', title:'شرح سنن ابن ماجه', author:'محمد بن عبد الهادي السندي',
+      category:'sunnah', subcategory:'شروح الحديث', order:8, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'شرح سنن ابن ماجه السندي' } },
+    { bookId:'sharh-taysir-allam', title:'تيسير العلاّم شرح عمدة الأحكام', author:'عبد الله البسام',
+      category:'sunnah', subcategory:'شروح الحديث', order:9, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تيسير العلام شرح عمدة الأحكام البسام' } },
+    { bookId:'sharh-riyad-salihin-uthaymin', title:'شرح رياض الصالحين', author:'محمد بن صالح العثيمين',
+      category:'sunnah', subcategory:'شروح الحديث', order:10, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'شرح رياض الصالحين ابن عثيمين' } },
+    { bookId:'sharh-bahjat-qulub-abrar', title:'بهجة قلوب الأبرار وقرة عيون الأخيار', author:'عبد الرحمن بن ناصر السعدي',
+      category:'sunnah', subcategory:'شروح الحديث', order:11, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'بهجة قلوب الأبرار السعدي' } }
+,
+    { bookId:'gharibh-abu-ubayd', title:'غريب الحديث', author:'أبو عبيد القاسم بن سلام',
+      category:'sunnah', subcategory:'غريب الحديث', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'غريب الحديث أبو عبيد القاسم بن سلام' } },
+    { bookId:'gharibh-ibn-qutaybah', title:'غريب الحديث', author:'ابن قتيبة الدينوري',
+      category:'sunnah', subcategory:'غريب الحديث', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'غريب الحديث ابن قتيبة الدينوري' } },
+    { bookId:'gharibh-khattabi', title:'غريب الحديث', author:'أبو سليمان الخطابي',
+      category:'sunnah', subcategory:'غريب الحديث', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'غريب الحديث الخطابي' } },
+    { bookId:'gharibh-harbi', title:'غريب الحديث', author:'إبراهيم الحربي',
+      category:'sunnah', subcategory:'غريب الحديث', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'غريب الحديث إبراهيم الحربي' } },
+    { bookId:'gharibh-nihayah-ibn-athir', title:'النهاية في غريب الحديث والأثر', author:'مجد الدين ابن الأثير',
+      category:'sunnah', subcategory:'غريب الحديث', order:5, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'النهاية في غريب الحديث والأثر ابن الأثير' } },
+    { bookId:'gharibh-faiq-zamakhshari', title:'الفائق في غريب الحديث', author:'جار الله الزمخشري',
+      category:'sunnah', subcategory:'غريب الحديث', order:6, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الفائق في غريب الحديث الزمخشري' } }
+,
+    { bookId:'takhrij-nasb-rayah', title:'نصب الراية لأحاديث الهداية', author:'جمال الدين الزيلعي',
+      category:'sunnah', subcategory:'تخريج الحديث', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'نصب الراية لأحاديث الهداية الزيلعي' } },
+    { bookId:'takhrij-talkhis-habir', title:'التلخيص الحبير في تخريج أحاديث الرافعي الكبير', author:'ابن حجر العسقلاني',
+      category:'sunnah', subcategory:'تخريج الحديث', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'التلخيص الحبير في تخريج أحاديث الرافعي الكبير ابن حجر' } },
+    { bookId:'takhrij-badr-munir', title:'البدر المنير في تخريج الأحاديث والآثار', author:'ابن الملقن',
+      category:'sunnah', subcategory:'تخريج الحديث', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'البدر المنير في تخريج الأحاديث والآثار ابن الملقن' } },
+    { bookId:'takhrij-ihya-iraqi', title:'تخريج أحاديث الإحياء (المغني عن حمل الأسفار)', author:'زين الدين العراقي',
+      category:'sunnah', subcategory:'تخريج الحديث', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تخريج أحاديث الإحياء المغني عن حمل الأسفار العراقي' } },
+    { bookId:'takhrij-mughni-hamal-asfar', title:'المغني عن حمل الأسفار في تخريج ما في الإحياء من الأخبار', author:'زين الدين العراقي',
+      category:'sunnah', subcategory:'تخريج الحديث', order:5, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'المغني عن حمل الأسفار العراقي' } },
+    { bookId:'takhrij-usul-tahan', title:'أصول التخريج ودراسة الأسانيد', author:'محمود الطحان',
+      category:'sunnah', subcategory:'تخريج الحديث', order:6, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'أصول التخريج ودراسة الأسانيد محمود الطحان' } },
+    { bookId:'takhrij-tasil-bakr-abu-zayd', title:'التأصيل لأصول التخريج وقواعد الجرح والتعديل', author:'بكر بن عبد الله أبو زيد',
+      category:'sunnah', subcategory:'تخريج الحديث', order:7, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'التأصيل لأصول التخريج بكر أبو زيد' } },
+    { bookId:'takhrij-turuq-abd-mahdi', title:'طرق تخريج حديث رسول الله ﷺ', author:'عبد المهدي عبد القادر عبد الهادي',
+      category:'sunnah', subcategory:'تخريج الحديث', order:8, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'طرق تخريج حديث رسول الله عبد المهدي' } }
+,
+    { bookId:'jarh-jarh-tadil-razi', title:'الجرح والتعديل', author:'ابن أبي حاتم الرازي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الجرح والتعديل ابن أبي حاتم الرازي' } },
+    { bookId:'jarh-tarikh-kabir-bukhari', title:'التاريخ الكبير', author:'محمد بن إسماعيل البخاري',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'التاريخ الكبير الإمام البخاري' } },
+    { bookId:'jarh-ilal-marifat-rijal-ahmad', title:'العلل ومعرفة الرجال', author:'الإمام أحمد بن حنبل',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'العلل ومعرفة الرجال الإمام أحمد بن حنبل' } },
+    { bookId:'jarh-kamil-duafa-ibn-adi', title:'الكامل في ضعفاء الرجال', author:'ابن عدي الجرجاني',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الكامل في ضعفاء الرجال ابن عدي' } },
+    { bookId:'jarh-duafa-kabir-uqayli', title:'الضعفاء الكبير', author:'أبو جعفر العقيلي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:5, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الضعفاء الكبير العقيلي' } },
+    { bookId:'jarh-majruhin-ibn-hibban', title:'المجروحين من المحدثين والضعفاء والمتروكين', author:'ابن حبان البستي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:6, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'المجروحين ابن حبان البستي' } },
+    { bookId:'jarh-thiqat-ibn-hibban', title:'الثقات', author:'ابن حبان البستي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:7, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'كتاب الثقات ابن حبان البستي' } },
+    { bookId:'jarh-duafa-matrukin-nasai', title:'الضعفاء والمتروكون', author:'أحمد بن شعيب النسائي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:8, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الضعفاء والمتروكون النسائي' } },
+    { bookId:'jarh-tahdhib-kamal-mizzi', title:'تهذيب الكمال في أسماء الرجال', author:'جمال الدين المزي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:9, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تهذيب الكمال في أسماء الرجال المزي' } },
+    { bookId:'jarh-tahdhib-tahdhib-ibn-hajar', title:'تهذيب التهذيب', author:'ابن حجر العسقلاني',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:10, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تهذيب التهذيب ابن حجر' } },
+    { bookId:'jarh-taqrib-tahdhib-ibn-hajar', title:'تقريب التهذيب', author:'ابن حجر العسقلاني',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:11, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تقريب التهذيب ابن حجر' } },
+    { bookId:'jarh-kashif-dhahabi', title:'الكاشف في معرفة من له رواية في الكتب الستة', author:'شمس الدين الذهبي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:12, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الكاشف في معرفة من له رواية في الكتب الستة الذهبي' } },
+    { bookId:'jarh-mizan-itidal-dhahabi', title:'ميزان الاعتدال في نقد الرجال', author:'شمس الدين الذهبي',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:13, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'ميزان الاعتدال في نقد الرجال الذهبي' } },
+    { bookId:'jarh-lisan-mizan-ibn-hajar', title:'لسان الميزان', author:'ابن حجر العسقلاني',
+      category:'sunnah', subcategory:'الجرح والتعديل', order:14, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'لسان الميزان ابن حجر' } }
+,
+    { bookId:'ilal-ilal-hadith-ibn-abi-hatim', title:'علل الحديث', author:'ابن أبي حاتم الرازي',
+      category:'sunnah', subcategory:'علل الحديث', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'علل الحديث ابن أبي حاتم' } },
+    { bookId:'ilal-kabir-tirmidhi', title:'العلل الكبير', author:'محمد بن عيسى الترمذي',
+      category:'sunnah', subcategory:'علل الحديث', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'العلل الكبير الترمذي' } },
+    { bookId:'ilal-saghir-tirmidhi', title:'العلل الصغير (آخر جامع الترمذي)', author:'محمد بن عيسى الترمذي',
+      category:'sunnah', subcategory:'علل الحديث', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'العلل الصغير الترمذي' } },
+    { bookId:'ilal-daraqutni', title:'العلل الواردة في الأحاديث النبوية', author:'أبو الحسن الدارقطني',
+      category:'sunnah', subcategory:'علل الحديث', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'العلل الواردة في الأحاديث النبوية الدارقطني' } },
+    { bookId:'ilal-marifat-rijal-ahmad-2', title:'العلل ومعرفة الرجال (رواية عبد الله)', author:'الإمام أحمد بن حنبل',
+      category:'sunnah', subcategory:'علل الحديث', order:5, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'العلل ومعرفة الرجال رواية عبد الله بن أحمد' } },
+    { bookId:'ilal-ali-ibn-madini', title:'العلل', author:'علي بن المديني',
+      category:'sunnah', subcategory:'علل الحديث', order:6, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'كتاب العلل علي بن المديني' } },
+    { bookId:'ilal-sharh-ilal-tirmidhi-ibn-rajab', title:'شرح علل الترمذي', author:'ابن رجب الحنبلي',
+      category:'sunnah', subcategory:'علل الحديث', order:7, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'شرح علل الترمذي ابن رجب الحنبلي' } },
+    { bookId:'ilal-mutanahiyah-ibn-jawzi', title:'العلل المتناهية في الأحاديث الواهية', author:'ابن الجوزي',
+      category:'sunnah', subcategory:'علل الحديث', order:8, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'العلل المتناهية في الأحاديث الواهية ابن الجوزي' } }
+,
+    { bookId:'mukhtalif-tawil-mukhtalif-hadith', title:'تأويل مختلف الحديث', author:'ابن قتيبة الدينوري',
+      category:'sunnah', subcategory:'مختلف الحديث ومشكله', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'تأويل مختلف الحديث ابن قتيبة' } },
+    { bookId:'mukhtalif-ikhtilaf-hadith-shafii', title:'اختلاف الحديث', author:'محمد بن إدريس الشافعي',
+      category:'sunnah', subcategory:'مختلف الحديث ومشكله', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'اختلاف الحديث الإمام الشافعي' } },
+    { bookId:'mukhtalif-mushkil-athar-tahawi', title:'مشكل الآثار (شرح مشكل الآثار)', author:'أبو جعفر الطحاوي',
+      category:'sunnah', subcategory:'مختلف الحديث ومشكله', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'مشكل الآثار الطحاوي' } },
+    { bookId:'mukhtalif-sharh-mushkil-athar-tahawi', title:'شرح مشكل الآثار', author:'أبو جعفر الطحاوي',
+      category:'sunnah', subcategory:'مختلف الحديث ومشكله', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'شرح مشكل الآثار الطحاوي' } }
+,
+    { bookId:'nasikh-nasikh-mansukh-ibn-shahin', title:'الناسخ والمنسوخ', author:'ابن شاهين البغدادي',
+      category:'sunnah', subcategory:'ناسخ الحديث ومنسوخه', order:1, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الناسخ والمنسوخ ابن شاهين' } },
+    { bookId:'nasikh-itibar-hazimi', title:'الاعتبار في الناسخ والمنسوخ من الآثار', author:'أبو بكر الحازمي',
+      category:'sunnah', subcategory:'ناسخ الحديث ومنسوخه', order:2, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الاعتبار في الناسخ والمنسوخ من الآثار الحازمي' } },
+    { bookId:'nasikh-nasikh-mansukh-ibn-jawzi', title:'الناسخ والمنسوخ', author:'ابن الجوزي',
+      category:'sunnah', subcategory:'ناسخ الحديث ومنسوخه', order:3, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الناسخ والمنسوخ ابن الجوزي' } },
+    { bookId:'nasikh-idah-nasikh-quran-makki', title:'الإيضاح لناسخ القرآن ومنسوخه', author:'مكي بن أبي طالب القيسي',
+      category:'sunnah', subcategory:'ناسخ الحديث ومنسوخه', order:4, isAvailable:true, readType:'libtext',
+      source:SRC_ISLAMICAPP_NAME, sourceUrl:SRC_ISLAMICAPP_URL, apiId:'libapi:search',
+      src:{ type:'islamicapp', query:'الإيضاح لناسخ القرآن ومنسوخه مكي بن أبي طالب' } }
   ]
 };
 /* متون قصيرة مضافة داخل المنصة (تعمل بدون إنترنت). النص كما وصل من صاحب المنصة. */
@@ -3966,9 +4178,37 @@ function backFromBooksTopic() {
     showPage('page-books-category');
   }
 }
-function openBooksTopic(name) {
-  document.getElementById('kutubTopicTitle').textContent = name;
-  const books = (KUTUB_BOOKS[name] || []).filter(b => b.isAvailable !== false);
+/* كتب مُضافة عبر جدول جوجل شيت (تبويب "الكتب") — يُجلَب عند فتح كل علم ويُدمج مع الكتب الثابتة.
+   أعمدة الشيت المتوقعة: العلم | اسم الكتاب | المؤلف | ترتيب العرض | مصدر | ملاحظات */
+async function kutubFetchSheetBooksForTopic(name) {
+  try {
+    const rows = await fetchSheet('الكتب');
+    if (!Array.isArray(rows) || !rows.length) return [];
+    return rows
+      .filter(r => String(r['العلم'] || '').trim() === name)
+      .filter(r => String(r['اسم الكتاب'] || '').trim())
+      .map((r, i) => {
+        const orderRaw = Number(r['ترتيب العرض']);
+        const order = 1000 + (Number.isFinite(orderRaw) && orderRaw > 0 ? orderRaw : (i + 1));
+        const link = String(r['مصدر'] || '').trim();
+        return {
+          bookId: 'sheet-' + name + '-' + i,
+          title: String(r['اسم الكتاب'] || '').trim(),
+          author: String(r['المؤلف'] || '').trim() || 'غير محدد',
+          order,
+          isAvailable: true,
+          readType: 'external',
+          readUrl: link,
+          source: link ? 'أُضيف عبر جدول الكتب' : 'أُضيف عبر جدول الكتب — لم يُحدَّد مصدر بعد',
+          notes: String(r['ملاحظات'] || '').trim(),
+          fromSheet: true
+        };
+      });
+  } catch (e) {
+    return [];
+  }
+}
+function kutubRenderBookList(name, books) {
   const placeholderEl = document.getElementById('kutubTopicPlaceholder');
   const listEl = document.getElementById('kutubBookList');
   if (books.length) {
@@ -3980,22 +4220,28 @@ function openBooksTopic(name) {
       sorted.map(b => {
         const statusHtml = b.manhaj
           ? `<span class="kbc-status ${b.manhaj === 'تقني' ? '' : 'review'}">${b.manhaj === 'تقني' ? 'علم آلي تقني' : 'يحتاج مراجعة منهجية'}</span>`
-          : '';
+          : (b.fromSheet ? `<span class="kbc-status">أُضيف عبر الجدول</span>` : '');
         const idArg = JSON.stringify(b.bookId);
         const downloadBtn = b.downloadUrl
           ? `<button class="kbc-btn download" onclick='playClickSound();openBookDownload(${idArg})'>⬇️ تنزيل</button>`
           : '';
+        const noLink = b.readType === 'external' && !b.readUrl;
+        const readBtn = noLink
+          ? `<span class="kbc-btn" style="opacity:.5;cursor:not-allowed">📖 لا يوجد رابط قراءة بعد</span>`
+          : `<button class="kbc-btn" onclick='playClickSound();openBookById(${idArg})'>📖 قراءة</button>`;
+        const notesHtml = b.notes ? `<div class="kbc-src">ملاحظة: ${escapeHtml(b.notes)}</div>` : '';
         return `
         <div class="kutub-book-card">
-          <div class="kbc-order">${b.order}</div>
+          <div class="kbc-order">${b.order >= 1000 ? '＋' : b.order}</div>
           <div class="kbc-body">
             <div class="kbc-title">${escapeHtml(b.title)}</div>
             <div class="kbc-author">✍️ ${escapeHtml(b.author)}</div>
             <div class="kbc-topic">${escapeHtml(name)}</div>
             <div class="kbc-src">المصدر: ${escapeHtml(b.source)}</div>
+            ${notesHtml}
             ${statusHtml}
             <div class="kbc-actions">
-              <button class="kbc-btn" onclick='playClickSound();openBookById(${idArg})'>📖 قراءة</button>
+              ${readBtn}
               ${downloadBtn}
             </div>
           </div>
@@ -4006,7 +4252,16 @@ function openBooksTopic(name) {
     placeholderEl.classList.remove('hidden');
     document.getElementById('kutubTopicPlaceholderTitle').textContent = name;
   }
+}
+function openBooksTopic(name) {
+  document.getElementById('kutubTopicTitle').textContent = name;
+  const staticBooks = (KUTUB_BOOKS[name] || []).filter(b => b.isAvailable !== false);
+  kutubRenderBookList(name, staticBooks);
   showPage('page-books-topic');
+  kutubFetchSheetBooksForTopic(name).then(sheetBooks => {
+    if (!sheetBooks.length) return;
+    kutubRenderBookList(name, staticBooks.concat(sheetBooks));
+  });
 }
 const QP_API = 'https://api.quranpedia.net/v1';
 async function openBookReader(bookId, title) {
@@ -4217,6 +4472,7 @@ function openBookById(id) {
   if (book.readType === 'external') { openBookExternal(id); return; }
   if (book.readType === 'local') { openLocalBook(book); return; }
   if (book.readType === 'qpbook') { openQpBook(book); return; }
+  if (book.readType === 'libtext') { openLibBook(book); return; }
   if (_qb) _qb.token++;
   _kr = { book, surah: null, start: 1, token: 0, apiBook: null, usedFallback: false };
   document.getElementById('bookReaderTitle').textContent = book.title;
@@ -4432,6 +4688,110 @@ function qbRender(start) {
     cards + `<div class="book-reader-page">${bar}</div>`;
   window.scrollTo && window.scrollTo(0, 0);
 }
+/* ===== قارئ المكتبة الثاني: islamic.app Library API — يبحث عن الكتاب بعنوانه أولاً (مرة واحدة لكل
+   جهاز، ثم يُحفظ معرّف الكتاب محليًا)، ثم يجلب نصّه فصلاً فصلاً عند الطلب فقط. لا حفظ لأي نص كتاب. ===== */
+let _libr = null;
+const _libbCache = new Map();
+const LIBB_CACHE_MAX = 20;
+const LIBB_PAGE_SIZE = 4;
+function libSlugKey(bookId) { return 'imania_libslug_' + bookId; }
+function libEnvelope(json) { return (json && typeof json === 'object' && json.data !== undefined && json.code !== undefined) ? json.data : json; }
+async function libResolveSlug(book) {
+  let saved = null;
+  try { saved = localStorage.getItem(libSlugKey(book.bookId)); } catch (e) {}
+  if (saved) return saved;
+  const q = encodeURIComponent(book.src.query);
+  const j = await krFetchJson(`${LIBAPI_BASE}/search?q=${q}&limit=5`, 2, 15000);
+  const data = libEnvelope(j);
+  const results = (data && Array.isArray(data.results)) ? data.results : [];
+  const hit = results.find(r => r && r.book_slug) || null;
+  if (!hit) { const e = new Error('لم يُعثر على هذا الكتاب في هذا المصدر بعد.'); e.notFound = true; throw e; }
+  try { localStorage.setItem(libSlugKey(book.bookId), hit.book_slug); } catch (e) {}
+  return hit.book_slug;
+}
+async function libFetchText(slug) {
+  const key = 'lib:' + slug;
+  if (_libbCache.has(key)) return _libbCache.get(key);
+  const j = await krFetchJson(`${LIBAPI_BASE}/books/${encodeURIComponent(slug)}/text`, 2, 30000);
+  const data = libEnvelope(j);
+  if (!data || !Array.isArray(data.chapters) || !data.chapters.length) { const e = new Error('لا يتوفّر نص إلكتروني لهذا الكتاب في هذا المصدر حاليًا.'); e.notFound = true; throw e; }
+  if (_libbCache.size >= LIBB_CACHE_MAX) _libbCache.delete(_libbCache.keys().next().value);
+  _libbCache.set(key, data);
+  return data;
+}
+function libFailHtml(book, msg, tech) {
+  const idArg = JSON.stringify(book.bookId);
+  const searchUrl = 'https://islamic.app/library?q=' + encodeURIComponent(book.title);
+  return `<div class="book-reader-fallback">
+      <div class="kp-icon">📖</div>
+      <div class="kp-title">${escapeHtml(book.title)}</div>
+      <div class="kp-desc">${escapeHtml(msg)}</div>
+      <button class="book-reader-source-link" style="border:none;cursor:pointer" onclick='playClickSound();openBookById(${idArg})'>🔄 إعادة المحاولة</button>
+      <div style="margin-top:12px"><button class="book-reader-source-link" style="border:none;cursor:pointer" onclick="playClickSound();window.open(${JSON.stringify(searchUrl)}, '_blank', 'noopener')">🌐 البحث عن الكتاب يدويًا في المصدر</button></div>
+      ${tech ? `<div class="book-reader-tech">تفاصيل تقنية: ${escapeHtml(tech)}</div>` : ''}
+    </div>`;
+}
+async function openLibBook(book) {
+  const token = (_libr ? _libr.token : 0) + 1;
+  _libr = { book, chapters: null, start: 0, token, slug: null };
+  _kr = null; if (_qb) _qb.token++;
+  document.getElementById('bookReaderTitle').textContent = book.title;
+  document.getElementById('bookReaderNote').textContent = 'المصدر: ' + book.source + ' • يُجلب عند الطلب ولا يُحفظ داخل المنصة';
+  const bodyEl = document.getElementById('bookReaderBody');
+  bodyEl.innerHTML = `<div class="loading"><div class="spinner"></div>جارٍ البحث عن الكتاب في المصدر...</div>`;
+  showPage('page-book-reader');
+  const alive = () => _libr && _libr.token === token;
+  let slug, data;
+  try {
+    slug = await libResolveSlug(book);
+    if (!alive()) return;
+    bodyEl.innerHTML = `<div class="loading"><div class="spinner"></div>جارٍ تحميل نص الكتاب...</div>`;
+    data = await libFetchText(slug);
+  } catch (e) {
+    if (alive()) bodyEl.innerHTML = libFailHtml(book, e && e.notFound ? e.message : krErrMsg(e), e && e.message);
+    return;
+  }
+  if (!alive()) return;
+  _libr.slug = slug;
+  _libr.chapters = data.chapters;
+  let noteText = 'المصدر: ' + book.source + ' • يُجلب عند الطلب ولا يُحفظ داخل المنصة';
+  const bib = data.bibliography;
+  if (bib && (bib.publisher || bib.investigator)) {
+    noteText += ' • ' + [bib.investigator ? 'تحقيق: ' + bib.investigator : '', bib.publisher ? 'الناشر: ' + bib.publisher : ''].filter(Boolean).join(' — ');
+  }
+  document.getElementById('bookReaderNote').textContent = noteText;
+  libRender(0);
+}
+function libBarHtml(total, start, end) {
+  const prevDis = start <= 0 ? 'disabled style="opacity:.45"' : '';
+  const nextDis = end >= total ? 'disabled style="opacity:.45"' : '';
+  return `<div class="kr-bar">
+      <button class="kbc-btn" ${prevDis} onclick="playClickSound();libPage(-1)">→ السابق</button>
+      <button class="kbc-btn" ${nextDis} onclick="playClickSound();libPage(1)">التالي ←</button>
+    </div>`;
+}
+function libPage(dir) {
+  if (!_libr || !_libr.chapters) return;
+  const next = _libr.start + dir * LIBB_PAGE_SIZE;
+  if (next < 0 || next >= _libr.chapters.length) return;
+  libRender(next);
+}
+function libRender(start) {
+  if (!_libr || !_libr.chapters) return;
+  const chapters = _libr.chapters;
+  const end = Math.min(chapters.length, start + LIBB_PAGE_SIZE);
+  _libr.start = start;
+  const bar = libBarHtml(chapters.length, start, end);
+  const cards = chapters.slice(start, end).map(ch => {
+    const loc = (ch.vol || ch.page) ? `<div class="book-reader-page-num">${ch.vol ? 'الجزء ' + escapeHtml(String(ch.vol)) + ' — ' : ''}${ch.page ? 'صفحة ' + escapeHtml(String(ch.page)) : ''}</div>` : '';
+    const title = ch.title ? `<div class="kr-range" style="margin-bottom:4px"><b>${escapeHtml(ch.title)}</b></div>` : '';
+    return `<div class="book-reader-page">${title}${loc}<div class="book-reader-text">${escapeHtml(ch.text || '')}</div></div>`;
+  }).join('');
+  document.getElementById('bookReaderBody').innerHTML =
+    `<div class="book-reader-page"><div class="kr-range" style="margin-bottom:10px">الفصول ${start + 1}–${end} من ${chapters.length}</div>${bar}</div>` +
+    cards + `<div class="book-reader-page">${bar}</div>`;
+  window.scrollTo && window.scrollTo(0, 0);
+}
 let _lb = null;
 function lbHeadHtml(d) {
   return `<div class="book-reader-page">${d.intro.map(t => `<div class="jz-intro">${escapeHtml(t)}</div>`).join('')}${d.note ? `<div class="jz-note">${escapeHtml(d.note)}</div>` : ''}</div>`;
@@ -4495,6 +4855,7 @@ function openLocalBook(book) {
 function closeBookReader() {
   if (_kr) _kr.token++;
   if (_qb) _qb.token++;
+  if (_libr) _libr.token++;
   document.getElementById('bookReaderBody').innerHTML = '';
   showPage('page-books-topic');
 }
