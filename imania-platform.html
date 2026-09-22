@@ -737,6 +737,16 @@
     font-family:'Tajawal',sans-serif; font-size:0.8rem; font-weight:700; text-decoration:none;
     padding:8px 18px; border-radius:50px;
   }
+  .pdf-embed-wrap {
+    background:var(--bg2); border:1.5px solid var(--bg3); border-radius:var(--radius-sm);
+    overflow:hidden; box-shadow:var(--card-shadow); margin-bottom:12px;
+  }
+  .pdf-embed-frame { width:100%; height:calc(100vh - 200px); min-height:420px; border:none; display:block; background:#525659; }
+  .pdf-embed-toolbar { display:flex; justify-content:center; gap:10px; padding:10px 12px; border-top:1px solid var(--bg3); }
+  .pdf-embed-toolbar a {
+    display:inline-flex; align-items:center; gap:6px; font-family:'Tajawal',sans-serif; font-size:0.78rem; font-weight:700;
+    text-decoration:none; color:var(--text); background:var(--bg3); padding:8px 16px; border-radius:50px;
+  }
   .levels-wrap { position:relative; padding:16px 0; }
   .level-card {
     background:var(--bg2); border-radius:var(--radius); padding:20px; margin-bottom:16px; cursor:pointer;
@@ -4179,7 +4189,13 @@ function backFromBooksTopic() {
   }
 }
 /* كتب مُضافة عبر جدول جوجل شيت (تبويب "الكتب") — يُجلَب عند فتح كل علم ويُدمج مع الكتب الثابتة.
-   أعمدة الشيت المتوقعة: العلم | اسم الكتاب | المؤلف | ترتيب العرض | مصدر | ملاحظات */
+   أعمدة الشيت المتوقعة: العلم | اسم الكتاب | المؤلف | ترتيب العرض | مصدر | ملاحظات
+   عمود "مصدر" يقبل: رابط PDF مباشر (ينتهي بـ .pdf)، أو رابط ملف Google Drive (drive.google.com/file/d/...)،
+   وفي الحالتين يُعرض الكتاب داخل عارض مدمج في المنصة بدل فتح تبويب خارجي. */
+function kutubDriveFileId(url) {
+  const m = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  return m ? m[1] : null;
+}
 async function kutubFetchSheetBooksForTopic(name) {
   try {
     const rows = await fetchSheet('الكتب');
@@ -4191,14 +4207,20 @@ async function kutubFetchSheetBooksForTopic(name) {
         const orderRaw = Number(r['ترتيب العرض']);
         const order = 1000 + (Number.isFinite(orderRaw) && orderRaw > 0 ? orderRaw : (i + 1));
         const link = String(r['مصدر'] || '').trim();
+        const driveId = link ? kutubDriveFileId(link) : null;
+        const isDirectPdf = /\.pdf(\?|#|$)/i.test(link);
+        const isPdf = isDirectPdf || !!driveId;
+        const embedUrl = driveId ? ('https://drive.google.com/file/d/' + driveId + '/preview') : link;
+        const dlUrl = driveId ? ('https://drive.google.com/uc?export=download&id=' + driveId) : link;
         return {
           bookId: 'sheet-' + name + '-' + i,
           title: String(r['اسم الكتاب'] || '').trim(),
           author: String(r['المؤلف'] || '').trim() || 'غير محدد',
           order,
           isAvailable: true,
-          readType: 'external',
-          readUrl: link,
+          readType: isPdf ? 'pdf' : 'external',
+          readUrl: isPdf ? embedUrl : link,
+          downloadUrl: isPdf ? dlUrl : '',
           source: link ? 'أُضيف عبر جدول الكتب' : 'أُضيف عبر جدول الكتب — لم يُحدَّد مصدر بعد',
           notes: String(r['ملاحظات'] || '').trim(),
           fromSheet: true
@@ -4225,7 +4247,7 @@ function kutubRenderBookList(name, books) {
         const downloadBtn = b.downloadUrl
           ? `<button class="kbc-btn download" onclick='playClickSound();openBookDownload(${idArg})'>⬇️ تنزيل</button>`
           : '';
-        const noLink = b.readType === 'external' && !b.readUrl;
+        const noLink = (b.readType === 'external' || b.readType === 'pdf') && !b.readUrl;
         const readBtn = noLink
           ? `<span class="kbc-btn" style="opacity:.5;cursor:not-allowed">📖 لا يوجد رابط قراءة بعد</span>`
           : `<button class="kbc-btn" onclick='playClickSound();openBookById(${idArg})'>📖 قراءة</button>`;
@@ -4470,6 +4492,7 @@ function openBookById(id) {
   const book = kutubFindBook(id);
   if (!book || book.isAvailable === false) return;
   if (book.readType === 'external') { openBookExternal(id); return; }
+  if (book.readType === 'pdf') { openPdfBook(book); return; }
   if (book.readType === 'local') { openLocalBook(book); return; }
   if (book.readType === 'qpbook') { openQpBook(book); return; }
   if (book.readType === 'libtext') { openLibBook(book); return; }
@@ -4484,6 +4507,33 @@ function openBookExternal(id) {
   const book = kutubFindBook(id);
   if (!book || !book.readUrl) return;
   window.open(book.readUrl, '_blank', 'noopener');
+}
+function openPdfBook(book) {
+  if (!book || !book.readUrl) return;
+  document.getElementById('bookReaderTitle').textContent = book.title;
+  document.getElementById('bookReaderNote').textContent = 'المصدر: ' + (book.source || 'جدول الكتب') + ' • يُعرض الملف مباشرة من رابطه ولا يُحفظ داخل المنصة';
+  const url = book.readUrl;
+  const bodyEl = document.getElementById('bookReaderBody');
+  bodyEl.innerHTML =
+    `<div class="pdf-embed-wrap">
+      <iframe class="pdf-embed-frame" id="pdfEmbedFrame" src="${escapeHtml(url)}" title="${escapeHtml(book.title)}"></iframe>
+      <div class="pdf-embed-toolbar">
+        <a href="${escapeHtml(url)}" target="_blank" rel="noopener">⬇️ تنزيل / فتح في نافذة جديدة</a>
+      </div>
+    </div>
+    <div class="book-reader-fallback" id="pdfEmbedFallback" style="display:none">
+      <div class="kp-icon">📄</div>
+      <div class="kp-title">تعذّر عرض الملف داخل المنصة</div>
+      <div class="kp-desc">قد يمنع مصدر الملف عرضه داخل صفحات أخرى. افتحه مباشرة من الزر بالأسفل.</div>
+      <a class="book-reader-source-link" href="${escapeHtml(url)}" target="_blank" rel="noopener">فتح الملف</a>
+    </div>`;
+  const frame = document.getElementById('pdfEmbedFrame');
+  const fallback = document.getElementById('pdfEmbedFallback');
+  frame.addEventListener('error', () => {
+    frame.style.display = 'none';
+    fallback.style.display = 'block';
+  });
+  showPage('page-book-reader');
 }
 function openBookDownload(id) {
   const book = kutubFindBook(id);
