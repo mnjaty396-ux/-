@@ -4490,7 +4490,86 @@ const KUTUB_LOCAL_TEXTS = {
 function kutubAllBooks() {
   return Object.keys(KUTUB_BOOKS).reduce((acc, k) => acc.concat(KUTUB_BOOKS[k]), []);
 }
+/* ============================================================================
+   مصدر بيانات إضافي: كتب من Google Sheet (ورقة "الكتب")
+   لا يُغيَّر أي شيء في KUTUB_STRUCTURE / KUTUB_SUBGROUPS / KUTUB_BOOKS أعلاه؛
+   هذا فقط طبقة إضافية تُدمج مع نفس شاشات وتنقل المكتبة الحالية.
+   ========================================================================== */
+let _kutubSheetTree = null;
+let _kutubSheetBooksById = {};
+async function ensureKutubSheetLoaded() {
+  if (_kutubSheetTree) return _kutubSheetTree;
+  const data = await fetchSheet('الكتب');
+  _kutubSheetTree = (data && typeof data === 'object' && !Array.isArray(data) && !data.error) ? data : {};
+  _kutubSheetBooksById = {};
+  Object.keys(_kutubSheetTree).forEach(main => {
+    const l2s = _kutubSheetTree[main] || {};
+    Object.keys(l2s).forEach(l2 => {
+      const l3s = l2s[l2] || {};
+      Object.keys(l3s).forEach(l3 => {
+        const l4s = l3s[l3] || {};
+        Object.keys(l4s).forEach(l4 => {
+          (l4s[l4] || []).forEach(row => {
+            const bookId = 'sheet-' + row.id;
+            _kutubSheetBooksById[bookId] = {
+              bookId,
+              title: row.title || 'بدون عنوان',
+              author: row.author || 'غير معروف',
+              order: (typeof row.order === 'number' && !isNaN(row.order)) ? row.order : 0,
+              isAvailable: true,
+              readType: 'external',
+              readUrl: row.bookUrl || null,
+              source: 'مكتبة Google Sheet'
+            };
+          });
+        });
+      });
+    });
+  });
+  return _kutubSheetTree;
+}
+// يجمع كتب الشيت التي يطابق فيها المستوى الثاني/الثالث/الرابع اسم الموضوع الحالي (name) تحت قسم رئيسي معيّن
+function getSheetBooksForTopic(mainTitle, topicName) {
+  const result = [];
+  const l2s = _kutubSheetTree && _kutubSheetTree[mainTitle];
+  if (!l2s) return result;
+  Object.keys(l2s).forEach(l2 => {
+    const l3s = l2s[l2] || {};
+    Object.keys(l3s).forEach(l3 => {
+      const l4s = l3s[l3] || {};
+      Object.keys(l4s).forEach(l4 => {
+        if (l2 === topicName || l3 === topicName || l4 === topicName) {
+          (l4s[l4] || []).forEach(row => {
+            const b = _kutubSheetBooksById['sheet-' + row.id];
+            if (b) result.push(b);
+          });
+        }
+      });
+    });
+  });
+  return result;
+}
+// لأقسام بلا تفريعات (subs فارغة) مثل العقيدة: يجمع كل كتب الشيت تحت القسم الرئيسي أياً كانت مستوياتها الفرعية
+function getAllSheetBooksForMain(mainTitle) {
+  const result = [];
+  const l2s = _kutubSheetTree && _kutubSheetTree[mainTitle];
+  if (!l2s) return result;
+  Object.keys(l2s).forEach(l2 => {
+    const l3s = l2s[l2] || {};
+    Object.keys(l3s).forEach(l3 => {
+      const l4s = l3s[l3] || {};
+      Object.keys(l4s).forEach(l4 => {
+        (l4s[l4] || []).forEach(row => {
+          const b = _kutubSheetBooksById['sheet-' + row.id];
+          if (b) result.push(b);
+        });
+      });
+    });
+  });
+  return result;
+}
 function kutubFindBook(id) {
+  if (_kutubSheetBooksById[id]) return _kutubSheetBooksById[id];
   return kutubAllBooks().find(b => b.bookId === id) || null;
 }
 function renderBooksHub() {
@@ -4553,9 +4632,17 @@ function backFromBooksTopic() {
     showPage('page-books-category');
   }
 }
-function openBooksTopic(name) {
+async function openBooksTopic(name) {
   document.getElementById('kutubTopicTitle').textContent = name;
-  const books = (KUTUB_BOOKS[name] || []).filter(b => b.isAvailable !== false);
+  await ensureKutubSheetLoaded();
+  const _cat = KUTUB_STRUCTURE.find(c => c.key === _kutubCurrentCategoryKey);
+  let _sheetBooks = [];
+  if (_cat) {
+    _sheetBooks = (!_cat.subs || _cat.subs.length === 0)
+      ? getAllSheetBooksForMain(_cat.title)
+      : getSheetBooksForTopic(_cat.title, name);
+  }
+  const books = (KUTUB_BOOKS[name] || []).concat(_sheetBooks).filter(b => b.isAvailable !== false);
   const placeholderEl = document.getElementById('kutubTopicPlaceholder');
   const listEl = document.getElementById('kutubBookList');
   if (books.length) {
