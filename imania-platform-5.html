@@ -9231,16 +9231,46 @@ function acctPickPhoto() {
 }
 async function acctSetPhotoFromFile(file) {
   if (!_acct.user || !_acct.ready || _acct.busy) return;
+  if (!file || !/^image\//i.test(file.type || '')) {
+    acctSay('هذا الملف ليس صورة مدعومة. جرّب صورة JPG أو PNG.');
+    return;
+  }
+  if (/heic|heif/i.test(file.type || '') || /\.hei[cf]$/i.test(file.name || '')) {
+    acctSay('صيغة HEIC غير مدعومة على هذا المتصفح، حوّل الصورة إلى JPG أو PNG وجرّب مرة أخرى.');
+    return;
+  }
+  if (file.size > 20 * 1024 * 1024) {
+    acctSay('حجم الصورة كبير جدًا (أكبر من 20 ميجا)، اختر صورة أصغر.');
+    return;
+  }
   _acct.busy = true;
+  acctSay('جارٍ حفظ الصورة...');
   try {
-    let data = await acctResizeImage(file, 320, 0.85);
-    if (data.length > 150000) data = await acctResizeImage(file, 256, 0.7);
-    await acctWithTimeout(firebase.database().ref('users/' + _acct.user.uid).update({ photo: data, photoCustom: true }));
+    let data;
+    try {
+      data = await acctResizeImage(file, 320, 0.85);
+      if (data.length > 150000) data = await acctResizeImage(file, 256, 0.7);
+      if (data.length > 150000) data = await acctResizeImage(file, 192, 0.6);
+    } catch (e) {
+      throw new Error('bad-image');
+    }
+    await acctWithTimeout(firebase.database().ref('users/' + _acct.user.uid).update({ photo: data, photoCustom: true }), 30000);
     _acct.rec.photo = data; _acct.rec.photoCustom = true;
     acctSetCache({ uid: _acct.user.uid, name: _acct.rec.name, photo: data, equipped: _acct.rec.equipped });
     acctSay('تم تغيير الصورة ✅');
   } catch (e) {
-    acctSay(e && e.message === 'bad-image' ? 'تعذّر قراءة هذه الصورة، جرّب صورة بصيغة JPG أو PNG.' : 'تعذّر حفظ الصورة، تحقق من الاتصال ثم أعد المحاولة.');
+    console.warn('acctSetPhotoFromFile error:', e);
+    let msg;
+    if (e && e.message === 'bad-image') {
+      msg = 'تعذّر قراءة هذه الصورة، جرّب صورة بصيغة JPG أو PNG.';
+    } else if (e && e.message === 'timeout') {
+      msg = 'استغرق الحفظ وقتًا طويلاً، تحقق من سرعة الاتصال وأعد المحاولة.';
+    } else if (e && (e.code === 'PERMISSION_DENIED' || /permission/i.test(e.message || ''))) {
+      msg = 'تعذّر حفظ الصورة: لا توجد صلاحية للكتابة (تحقق من قواعد قاعدة البيانات).';
+    } else {
+      msg = 'تعذّر حفظ الصورة، تحقق من الاتصال ثم أعد المحاولة' + (e && e.message ? (' [' + e.message + ']') : '') + '.';
+    }
+    acctSay(msg);
   }
   _acct.busy = false; acctRenderAll();
 }
