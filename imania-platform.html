@@ -1897,6 +1897,43 @@
 
   .shop-fx-label { background:linear-gradient(135deg,rgba(10,36,19,0.92),rgba(20,83,45,0.92)); border:1px solid #f0c060; color:#fff3c4; box-shadow:0 0 18px rgba(240,192,96,0.55), inset 0 0 10px rgba(240,192,96,0.2); letter-spacing:.3px; animation:fxLab .55s cubic-bezier(.2,.9,.3,1.25) both; }
   @keyframes fxLab { from { opacity:0; transform:translateX(-50%) translateY(14px) scale(.7); } to { opacity:1; transform:translateX(-50%) translateY(0) scale(1); } }
+
+/* ===== النظام الاجتماعي: أصدقاء + شات + العب مجددًا ===== */
+#page-user-search,#page-user-profile,#page-friends,#page-chat { --bg2:#14532d; --bg3:rgba(244,239,220,0.18); --text:#f4efdc; --text2:#b9d4c1; --gold-light:rgba(212,168,67,0.3); --green-light:rgba(255,255,255,0.1); --card-shadow:0 8px 26px rgba(0,0,0,0.38); }
+#page-user-search .inner-content,#page-user-profile .inner-content,#page-friends .inner-content { min-height:calc(100vh - 64px); background:linear-gradient(180deg,#0d2415 0%,#0f3a20 100%); padding-bottom:40px; }
+#page-user-search .acct-card,#page-user-profile .acct-card,#page-friends .acct-card { background:linear-gradient(165deg,#1b6d3c 0%,#14532d 55%,#0f4024 100%); border-color:rgba(212,168,67,0.38); }
+#page-user-search .acct-namebox input { background:rgba(0,0,0,0.2); max-width:none; }
+.soc-btnrow { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.soc-rel { font-size:0.85rem; font-weight:800; color:#f4efdc; margin-bottom:8px; }
+.soc-row { display:flex; align-items:center; gap:10px; padding:9px 10px; margin:6px 0; background:rgba(244,239,220,0.12); border:1px solid rgba(212,168,67,0.25); border-radius:14px; cursor:pointer; color:#f4efdc; }
+.soc-av { width:38px; height:38px; flex:0 0 38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; background:linear-gradient(135deg,#d4a843,#a67c1f); color:#2b1d02; }
+.soc-nm { flex:1; min-width:0; font-size:0.9rem; font-weight:700; text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.soc-chip { font-size:0.72rem; color:#b9d4c1; padding:4px 10px; }
+.soc-bd { display:inline-block; min-width:18px; padding:0 5px; border-radius:50px; background:#ef4444; color:#fff; font-size:0.7rem; line-height:18px; text-align:center; }
+.soc-dot { position:relative; }
+.soc-dot::after { content:''; position:absolute; top:1px; right:1px; width:10px; height:10px; border-radius:50%; background:#ef4444; border:2px solid #14532d; }
+.soc-tabs { display:flex; gap:8px; margin-bottom:12px; }
+.soc-tab { flex:1; padding:9px 8px; border-radius:50px; border:1.5px solid rgba(212,168,67,0.3); background:rgba(255,255,255,0.08); color:#f4efdc; font-family:'Tajawal',sans-serif; font-weight:800; font-size:0.82rem; cursor:pointer; }
+.soc-tab.on { background:linear-gradient(135deg,#d4a843,#a67c1f); color:#2b1d02; border-color:transparent; }
+.soc-sec { font-size:0.8rem; font-weight:800; color:#b9d4c1; margin:14px 4px 6px; text-align:right; }
+.soc-empty { text-align:center; color:#b9d4c1; font-size:0.85rem; line-height:2; padding:26px 8px; }
+#page-chat.active { display:flex; flex-direction:column; height:100vh; height:100dvh; background:linear-gradient(180deg,#0d2415 0%,#0f3a20 100%); }
+#socChatMsgs { flex:1; overflow-y:auto; padding:14px 12px; display:flex; flex-direction:column; gap:8px; }
+.soc-note { align-self:center; text-align:center; font-size:0.74rem; color:#b9d4c1; background:rgba(0,0,0,0.2); border-radius:12px; padding:6px 12px; line-height:1.8; }
+.soc-msg { max-width:78%; padding:8px 12px 6px; border-radius:16px; font-size:0.9rem; line-height:1.7; word-break:break-word; white-space:pre-wrap; color:#f4efdc; }
+.soc-msg.me { align-self:flex-start; background:linear-gradient(135deg,#1b7a43,#15663a); border-bottom-right-radius:4px; }
+.soc-msg.them { align-self:flex-end; background:rgba(244,239,220,0.16); border-bottom-left-radius:4px; }
+.soc-t { display:block; font-size:0.62rem; color:#b9d4c1; margin-top:2px; text-align:left; }
+.soc-chat-in { display:flex; gap:8px; padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px)); background:rgba(0,0,0,0.3); }
+.soc-chat-in input { flex:1; min-width:0; padding:10px 14px; border-radius:50px; border:1.5px solid rgba(212,168,67,0.3); background:rgba(0,0,0,0.25); color:#f4efdc; font-family:'Tajawal',sans-serif; font-size:0.9rem; }
+.soc-modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.62); z-index:10000; display:flex; align-items:flex-end; justify-content:center; }
+.soc-modal { width:100%; max-width:480px; background:linear-gradient(165deg,#1b6d3c 0%,#14532d 60%,#0f4024 100%); border:1.5px solid rgba(212,168,67,0.4); border-radius:22px 22px 0 0; padding:20px 16px calc(22px + env(safe-area-inset-bottom,0px)); color:#f4efdc; text-align:center; }
+.soc-modal .acct-av { margin:0 auto 6px; }
+.soc-modal .acct-p { color:#d6e6da; }
+.soc-rm { margin-bottom:10px; text-align:center; }
+.soc-rm-wait { font-size:0.88rem; font-weight:800; margin:6px 0 10px; line-height:1.8; }
+.soc-tap-hint { font-size:0.68rem; opacity:0.75; margin-top:4px; }
+.soc-opp-tap { margin:10px auto; width:fit-content; padding:8px 16px; border-radius:50px; border:1.5px solid rgba(212,168,67,0.4); background:rgba(255,255,255,0.1); font-weight:800; font-size:0.85rem; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -2505,7 +2542,7 @@
         <div class="arena-player-score" id="battleMeScore">0</div>
       </div>
       <div class="arena-vs-mid" id="battleVsMid">VS</div>
-      <div class="arena-player-box" id="battleOppBox">
+      <div class="arena-player-box" id="battleOppBox" onclick="playClickSound();upOpenOpp('battle')" style="cursor:pointer">
         <div class="arena-player-name" id="battleOppName">المنافس</div>
         <div class="arena-player-score" id="battleOppScore">0</div>
       </div>
@@ -2544,15 +2581,17 @@
       <div class="arena-result-side-score" id="battleResultMeScore">0</div>
       <div class="arena-result-side-detail" id="battleResultMeDetail">0 إجابة صحيحة</div>
     </div>
-    <div class="arena-result-side" id="battleResultOppSide">
+    <div class="arena-result-side" id="battleResultOppSide" onclick="socOppSheet('battle')" style="cursor:pointer">
       <div class="arena-result-side-name" id="battleResultOppName">المنافس</div>
       <div class="arena-result-side-score" id="battleResultOppScore">0</div>
       <div class="arena-result-side-detail" id="battleResultOppDetail">0 إجابة صحيحة</div>
+      <div class="soc-tap-hint">👆 اضغط لإضافته صديق</div>
     </div>
   </div>
   <div class="arena-perf-note" id="battleResultPerfNote"></div>
   <div class="arena-hemma-earned" id="battleResultHemma"></div>
   <div class="arena-result-actions">
+    <div id="socRmBattle" class="soc-rm"></div>
     <button class="arena-result-btn primary" onclick="playClickSound();openBattleReview()">شوف الأسئلة 📖</button>
     <button class="arena-result-btn secondary" onclick="playClickSound();showPage('page-battle-lobby')">تحدي تاني! 🔁</button>
     <button class="arena-result-btn secondary" onclick="playClickSound();showPage('page-arena-home')">العودة لساحة المنافسة</button>
@@ -2672,7 +2711,7 @@
   <div class="arena-vs-row">
     <div class="arena-player-box"><div class="arena-player-name" id="guessCharMeName">أنت</div></div>
     <div class="arena-vs-mid">VS</div>
-    <div class="arena-player-box"><div class="arena-player-name" id="guessCharOppName">المنافس</div></div>
+    <div class="arena-player-box" onclick="playClickSound();upOpenOpp('gc')" style="cursor:pointer"><div class="arena-player-name" id="guessCharOppName">المنافس</div></div>
   </div>
   <div id="guessCharConnBanner" class="arena-perf-note" style="display:none;color:#c0392b;">⚠️ الخصم غير متصل حاليًا...</div>
   <div class="gc-secret-card">
@@ -2703,9 +2742,11 @@
     <div class="arena-result-title" id="guessCharResultTitle">نتيجة المباراة</div>
     <div class="arena-result-sub" id="guessCharResultSub"></div>
   </div>
+  <div id="socGcOpp"></div>
   <div class="arena-perf-note" id="guessCharResultDetail"></div>
   <div class="arena-hemma-earned" id="guessCharResultHemma"></div>
   <div class="arena-result-actions">
+    <div id="socRmGc" class="soc-rm"></div>
     <button class="arena-result-btn secondary" onclick="playClickSound();openGuessCharLobby()">مباراة تانية! 🔁</button>
     <button class="arena-result-btn secondary" onclick="playClickSound();showPage('page-arena-home')">العودة لساحة المنافسة</button>
   </div>
@@ -2759,6 +2800,44 @@
     <span class="inner-title">👤 حسابي</span>
   </div>
   <div class="inner-content" id="acctBody"></div>
+</div>
+<div class="page" id="page-user-search">
+  <div class="inner-topbar">
+    <button class="back-btn" onclick="playClickSound();showPage(_upSearchPrev || 'page-home')">←</button>
+    <span class="inner-title">🔍 دوّر على لاعب</span>
+  </div>
+  <div class="inner-content">
+    <div class="acct-card">
+      <div class="acct-namebox"><input id="upSearchInput" maxlength="24" placeholder="اكتب اسم اللاعب" oninput="upSearchFilter()"></div>
+      <div id="upSearchList" style="margin-top:10px;text-align:right"></div>
+    </div>
+  </div>
+</div>
+<div class="page" id="page-user-profile">
+  <div class="inner-topbar">
+    <button class="back-btn" onclick="playClickSound();upBack()">←</button>
+    <span class="inner-title">👤 بروفايل لاعب</span>
+  </div>
+  <div class="inner-content" id="upBody"></div>
+</div>
+<div class="page" id="page-friends">
+  <div class="inner-topbar">
+    <button class="back-btn" onclick="playClickSound();showPage('page-account')">←</button>
+    <span class="inner-title">👥 الأصدقاء</span>
+  </div>
+  <div class="inner-content" id="socFriendsBody"></div>
+</div>
+<div class="page" id="page-chat">
+  <div class="inner-topbar">
+    <button class="back-btn" onclick="playClickSound();socChatBack()">←</button>
+    <span class="inner-title" id="socChatTitle">💬 محادثة</span>
+    <button class="kbc-btn" style="margin-inline-start:auto" title="إبلاغ" onclick="playClickSound();socChatReport()">🚩</button>
+  </div>
+  <div id="socChatMsgs"></div>
+  <div class="soc-chat-in">
+    <input id="socChatInput" maxlength="300" autocomplete="off" placeholder="اكتب رسالة محترمة..." onkeydown="if(event.key==='Enter'){event.preventDefault();socChatSend()}">
+    <button class="kbc-btn download" onclick="socChatSend()">إرسال</button>
+  </div>
 </div>
 <div class="page" id="page-store">
   <div class="inner-topbar">
@@ -8002,6 +8081,7 @@ function arenaBeginOnlineMatch(roomRef, myKey, room) {
     online: true, roomRef, myKey, oppKey, finished: false, resultShown: false
   };
   try { roomRef.child('players/' + myKey + '/fx').set(shopMyWinFx()); } catch (e) {}   // تأثير الفوز المفعّل (يراه الخصم أيضًا إن فزت)
+  try { roomRef.child('players/' + myKey + '/fuid').set((_acct.user && _acct.ready) ? _acct.user.uid : null); } catch (e) {}
   showPage('page-battle-match');
   document.getElementById('battleVsRow').classList.remove('solo-row');
   document.getElementById('battleOppBox').classList.remove('hidden-op');
@@ -9545,6 +9625,13 @@ function acctRenderPage() {
       <div class="acct-sync" id="acctSyncNote">${acctSyncText()}</div>
       <button class="kbc-btn" style="margin-top:12px" onclick="playClickSound();acctSignOut()">تسجيل الخروج</button>
     </div>
+    <div class="acct-card"><div class="acct-h">👥 الأصدقاء</div>
+      <div class="acct-p" style="margin-bottom:10px">دوّر على أي لاعب بالاسم، ابعتله طلب صداقة، وكلّمه بعد ما يقبل.</div>
+      <button class="kbc-btn download" onclick="playClickSound();upOpenSearch()">🔍 دوّر على لاعب</button>
+      <div class="soc-btnrow" style="margin-top:8px">
+        <button class="kbc-btn" onclick="playClickSound();socOpenFriends('friends')">👥 أصدقائي <span class="soc-bd soc-bd-msg" style="display:none"></span></button>
+        <button class="kbc-btn" onclick="playClickSound();socOpenFriends('requests')">📩 الطلبات <span class="soc-bd soc-bd-req" style="display:none"></span></button>
+      </div></div>
     ${shop}
     ${champBadgesHtml()}`;
 }
@@ -9621,6 +9708,7 @@ async function acctLoadRecord(user) {
     acctSetCache({ uid: user.uid, name: _acct.rec.name, photo: _acct.rec.photo, equipped: _acct.rec.equipped });
     _acct.ready = true; acctSay('');
     syncPull(user, prevUid);
+    try { upPushBadges(); } catch (e) {}
     if (_acct.justSignedIn) { _acct.justSignedIn = false; if (typeof showImaniaToast === 'function') showImaniaToast('تم تسجيل الدخول بنجاح ✅', 3200); }
     if (typeof arenaRenderCoinBalance === 'function') { try { arenaRenderCoinBalance(); } catch (e) {} }
     const el = document.getElementById('arenaHemmaBalance'); if (el) el.textContent = total;
@@ -9698,6 +9786,7 @@ async function acctSaveName() {
     _acct.rec.name = name;
     try { localStorage.setItem('imania_arena_myname', name); } catch (e) {}
     acctSetCache({ uid: _acct.user.uid, name, photo: _acct.rec.photo, equipped: _acct.rec.equipped });
+    try { upPushBadges(); } catch (e) {}
     acctSay('تم حفظ الاسم ✅');
   } catch (e) { acctSay('تعذّر حفظ الاسم، تحقق من الاتصال.'); }
   acctRenderAll();
@@ -10325,6 +10414,7 @@ async function champFinishQuiz(type, correctCount, totalCount) {
   if (won && !cs.badges.includes(cfg.badgeId)) cs.badges.push(cfg.badgeId);
   champSaveState(cs);
   if (won) await champAwardPrize(cfg);
+  try { upPushBadges(); } catch (e) {}
   champRenderAll(); acctRenderAll();
 }
 
@@ -10533,7 +10623,7 @@ function openGuessCharLobby() {
   _gcMyChar = null;
   gcPickMyChar().then(c => {
     if (!notice) return;
-    notice.innerHTML = c ? gcCharAnnounceHtml(c) : `<div class="arena-perf-note">⚠️ بنك الشخصيات فارغ حاليًا، فلن تبدأ مباراة حقيقية حتى تُضاف شخصيات لبنك اللعبة.</div>`;
+    notice.innerHTML = c ? '' : `<div class="arena-perf-note">⚠️ بنك الشخصيات فارغ حاليًا، فلن تبدأ مباراة حقيقية حتى تُضاف شخصيات لبنك اللعبة.</div>`;
   });
 }
 function cancelGuessCharState() {
@@ -10720,6 +10810,7 @@ function gcBeginMatch(roomRef, myKey, room) {
   const _gcSecEl = document.getElementById('guessCharSecretText');
   if (_gcSecEl) _gcSecEl.textContent = _gcMyChar ? 'شخصيتك هي: ' + _gcMyChar.name : 'شخصيتك مخفية';
   try { roomRef.child('players/' + myKey + '/fx').set(shopMyWinFx()); } catch (e) {}   // تأثير الفوز المفعّل
+  try { roomRef.child('players/' + myKey + '/fuid').set((_acct.user && _acct.ready) ? _acct.user.uid : null); } catch (e) {}
   showPage('page-guesschar-match');
   document.getElementById('guessCharMeName').textContent = GuessCharMatch.myName;
   document.getElementById('guessCharOppName').textContent = GuessCharMatch.oppName;
@@ -11386,6 +11477,87 @@ function shopRender() {
   shopPaintThumbs(body);
 }
 function shopTab(slot) { _shop.tab = slot; shopRender(); }
+
+/* ---------- بروفايل لاعب آخر (عرض فقط: الصورة/الإطار/الدروع/المشتريات) ---------- */
+function upPushBadges() {
+  if (!(_acct.user && _acct.ready) || typeof firebase === 'undefined') return;
+  try { const nm = ((_acct.rec && _acct.rec.name) || '').slice(0, 24); if (nm) firebase.database().ref('profilesIndex/' + _acct.user.uid).set({ name: nm }).catch(() => {}); } catch (e) {}
+  const b = (champLoadState().badges || []).filter(x => typeof x === 'string').slice(0, 40);
+  firebase.database().ref('users/' + _acct.user.uid + '/badges').set(b.length ? b : null).catch(() => {});
+}
+
+let _upSearchPrev = 'page-home', _upIndex = null;
+async function upOpenSearch() {
+  const cur = upCurPage(); if (cur !== 'page-user-search' && cur !== 'page-user-profile') _upSearchPrev = cur;
+  showPage('page-user-search');
+  const inp = document.getElementById('upSearchInput'); if (inp) inp.value = '';
+  const list = document.getElementById('upSearchList');
+  if (typeof firebase === 'undefined' || !firebase.apps || !firebase.apps.length) { list.innerHTML = '<div class="acct-p">الخدمة أونلاين مش متاحة دلوقتي.</div>'; return; }
+  list.innerHTML = '<div class="acct-p">جاري التحميل...</div>';
+  try {
+    const sn = await acctWithTimeout(firebase.database().ref('profilesIndex').limitToLast(1000).once('value'));
+    const o = sn.val() || {};
+    _upIndex = Object.keys(o).map(k => ({ uid: k, name: (o[k] && o[k].name) || '' })).filter(x => x.name);
+    upSearchFilter();
+  } catch (e) { list.innerHTML = '<div class="acct-p">مقدرتش أحمّل اللاعبين دلوقتي.</div>'; }
+}
+function upSearchFilter() {
+  const list = document.getElementById('upSearchList'); if (!list || !_upIndex) return;
+  const q = ((document.getElementById('upSearchInput') || {}).value || '').trim().toLowerCase();
+  const me = _acct.user ? _acct.user.uid : null;
+  const rows = _upIndex.filter(x => !q || x.name.toLowerCase().includes(q)).slice(0, 40);
+  list.innerHTML = rows.length ? rows.map(x => `<div class="champ-badge-item" style="cursor:pointer;margin:6px 0" onclick="playClickSound();upOpen('${escapeHtml(x.uid)}','${escapeHtml(x.name).replace(/'/g, '')}')">👤 ${escapeHtml(x.name)}${x.uid === me ? ' (أنت)' : ''}</div>`).join('')
+    : '<div class="acct-p" style="text-align:center">مفيش لاعب بالاسم ده</div>';
+}
+let _upPrev = 'page-home';
+function upBack() { showPage(_upPrev || 'page-home'); }
+function upCurPage() { const a = document.querySelector('.page.active'); return a ? a.id : 'page-home'; }
+async function upOpenOpp(kind) {
+  try {
+    const m = kind === 'gc' ? GuessCharMatch : ArenaBattle;
+    if (!m || !m.roomRef || !m.oppKey) return;
+    const sn = await m.roomRef.child('players/' + m.oppKey).once('value');
+    const pl = sn.val() || {};
+    if (!pl.fuid) { if (typeof showImaniaToast === 'function') showImaniaToast('اللاعب ده مش مسجّل دخول بحساب Google فمفيش له بروفايل', 3200); return; }
+    upOpen(pl.fuid, pl.name);
+  } catch (e) { if (typeof showImaniaToast === 'function') showImaniaToast('مقدرتش أفتح البروفايل دلوقتي', 2800); }
+}
+async function upOpen(uid, fallbackName) {
+  if (!uid || typeof firebase === 'undefined') return;
+  const cur = upCurPage(); if (cur !== 'page-user-profile') _upPrev = cur;
+  showPage('page-user-profile');
+  const body = document.getElementById('upBody');
+  body.innerHTML = '<div class="acct-card"><div class="acct-p">جاري التحميل...</div></div>';
+  try {
+    const ref = firebase.database().ref('users/' + uid);
+    const get = k => acctWithTimeout(ref.child(k).once('value')).then(x => x.val()).catch(() => null);
+    let [name, photo, equipped, owned, badges] = await Promise.all([get('name'), get('photo'), get('equipped'), get('owned'), get('badges')]);
+    if (!name && !photo) { body.innerHTML = '<div class="acct-card"><div class="acct-p">البروفايل ده مش متاح.</div></div>'; return; }
+    const p = { name: name || fallbackName || '', photo: photo || '', equipped: equipped || {} };
+    owned = owned || {};
+    const secs = SHOP_CATALOG.map(g => {
+      const mine = g.items.filter(it => owned[it.id]); if (!mine.length) return '';
+      const cells = mine.map(it => {
+        const prev = g.slot === 'wfx' ? `<canvas class="shop-thumb" data-fx="${it.id}" width="200" height="140"></canvas>`
+          : acctAvatarHtml({ name: p.name, photo: p.photo, equipped: { frame: it.id } }, 64);
+        const on = p.equipped[g.slot] === it.id ? '<div class="acct-perk-name" style="color:var(--gold3)">✔ مُفعّل</div>' : '';
+        return `<div class="acct-perk">${prev}<div class="acct-perk-name">${escapeHtml(it.name)}</div>${on}</div>`;
+      }).join('');
+      return `<div class="acct-sec-title">${g.icon} ${g.label}</div><div class="acct-grid">${cells}</div>`;
+    }).join('');
+    const bl = Array.isArray(badges) ? badges : (badges ? Object.values(badges) : []);
+    const bItems = bl.length ? bl.map(id => {
+      const cfg = Object.values(CHAMPIONSHIP_TYPES).find(c => c.badgeId === id);
+      return `<div class="champ-badge-item">${cfg ? cfg.icon : '🏅'} ${cfg ? cfg.name : escapeHtml(String(id))}</div>`;
+    }).join('') : '<div class="acct-p" style="text-align:center">لسه ما كسبش دروع</div>';
+    body.innerHTML = `
+      <div class="acct-card">${acctAvatarHtml(p, 96)}${acctNameHtml(p)}</div>
+      <div class="acct-card" style="text-align:right"><div class="acct-h" style="text-align:center">🏆 الدروع</div>${bItems}</div>
+      <div class="acct-card" style="text-align:right"><div class="acct-h" style="text-align:center">🛍️ مقتنياته</div>${secs || '<div class="acct-p" style="text-align:center">مفيش مقتنيات لسه</div>'}</div>`;
+    shopPaintThumbs(body);
+  } catch (e) { body.innerHTML = '<div class="acct-card"><div class="acct-p">حصلت مشكلة في تحميل البروفايل.</div></div>'; }
+}
+
 function shopOwnedHtml() {
   const secs = SHOP_CATALOG.map(g => {
     const mine = g.items.filter(p => shopOwned(p.id)); if (!mine.length) return '';
@@ -11483,5 +11655,454 @@ function ownerDecorate() {
   setInterval(ownerDecorate, 1500);
 })();
 </script>
+<script id="social-module">
+/* ============================================================================
+   النظام الاجتماعي: بحث بالاسم + طلبات صداقة + بروفايل + شات محترم + «العب مجددًا»
+   Firebase paths: friends/ friendRequests/ sentRequests/ unread/ chats/ reports/
+                   + battleRooms/<code>/rematch  و guessCharRooms/<code>/rematch
+   ============================================================================ */
+const SOC = { me:null, friends:{}, reqIn:{}, sent:{}, unread:{}, offs:[], first:{}, chat:null, viewUid:null, viewName:'', sheet:null, gcLast:null, lastSend:0 };
+function socOk() { return typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0 && typeof firebase.database === 'function'; }
+function socUid() { return (typeof _acct !== 'undefined' && _acct.user && _acct.ready) ? _acct.user.uid : null; }
+function socMyName() { const p = acctProfile(); return (((p && p.name) || '') + '').trim().slice(0, 24) || 'لاعب'; }
+function socDb() { return firebase.database(); }
+function socTs() { return firebase.database.ServerValue.TIMESTAMP; }
+function socToast(m, ms) { try { showImaniaToast(m, ms || 2800); } catch (e) {} }
+function socClick() { try { playClickSound(); } catch (e) {} }
+function socEsc(s) { return escapeHtml(String(s == null ? '' : s)); }
+function socPair(a, b) { return a < b ? a + '_' + b : b + '_' + a; }
+function socCnt(o) { return o ? Object.keys(o).length : 0; }
+function socPageId() { const a = document.querySelector('.page.active'); return a ? a.id : ''; }
+function socUnreadTotal() { let n = 0; Object.keys(SOC.unread).forEach(k => { if (SOC.friends[k]) n += Number(SOC.unread[k]) || 0; }); return n; }
+function socErr(e) {
+  const m = ((e && e.code) || '') + ' ' + ((e && e.message) || '');
+  socToast(/permission/i.test(m) ? 'مفيش صلاحية — لازم تضيف قواعد Firebase الخاصة بالأصدقاء' : 'حصلت مشكلة، جرّب تاني', 4200);
+}
+
+/* ---------- مراقبة الحالة (أصدقاء / طلبات / رسائل غير مقروءة) ---------- */
+function socStart(uid) {
+  const db = socDb(); SOC.first = {};
+  const on = (path, key, fn) => {
+    const ref = db.ref(path);
+    const cb = ref.on('value', sn => { fn(sn.val() || {}, !SOC.first[key]); SOC.first[key] = true; socUiRefresh(); }, () => {});
+    SOC.offs.push(() => ref.off('value', cb));
+  };
+  on('friends/' + uid, 'f', v => { SOC.friends = v; });
+  on('sentRequests/' + uid, 's', v => { SOC.sent = v; });
+  on('friendRequests/' + uid, 'r', (v, first) => {
+    if (!first) Object.keys(v).forEach(k => { if (!SOC.reqIn[k]) socToast('📩 ' + ((v[k] && v[k].name) || 'لاعب') + ' بعتلك طلب صداقة', 4000); });
+    SOC.reqIn = v;
+  });
+  on('unread/' + uid, 'u', (v, first) => {
+    if (!first) Object.keys(v).forEach(k => {
+      const n = Number(v[k]) || 0, o = Number(SOC.unread[k]) || 0;
+      if (n > o && !(SOC.chat && SOC.chat.uid === k && socPageId() === 'page-chat')) socToast('💬 رسالة جديدة من ' + ((SOC.friends[k] && SOC.friends[k].name) || 'صديق'), 3500);
+    });
+    SOC.unread = v;
+    if (SOC.chat && v[SOC.chat.uid] && socPageId() === 'page-chat') socClearUnread(SOC.chat.uid);
+  });
+  try { upPushBadges(); } catch (e) {}   // يضمن ظهور اسمي في البحث
+}
+function socStop() {
+  SOC.offs.forEach(f => { try { f(); } catch (e) {} }); SOC.offs = [];
+  SOC.friends = {}; SOC.reqIn = {}; SOC.sent = {}; SOC.unread = {};
+  socCloseChat(); socCloseSheet();
+}
+function socUiRefresh() {
+  const req = socCnt(SOC.reqIn), msg = socUnreadTotal();
+  document.querySelectorAll('.soc-bd-req').forEach(e => { e.textContent = req ? String(req) : ''; e.style.display = req ? 'inline-block' : 'none'; });
+  document.querySelectorAll('.soc-bd-msg').forEach(e => { e.textContent = msg ? String(msg) : ''; e.style.display = msg ? 'inline-block' : 'none'; });
+  const t = document.getElementById('acctTopBtn'); if (t) t.classList.toggle('soc-dot', !!(req || msg));
+  const id = socPageId();
+  if (id === 'page-friends') socRenderFriends();
+  if (id === 'page-user-profile' && SOC.viewUid) socRenderProfAct();
+  if (id === 'page-user-search') { try { upSearchFilter(); } catch (e) {} }
+  if (SOC.sheet) socRenderSheet();
+}
+function socTick() {
+  const uid = socUid() || null;
+  if (uid !== SOC.me) { socStop(); SOC.me = uid; if (uid && socOk()) socStart(uid); }
+  const id = socPageId();
+  if (SOC.chat && id !== 'page-chat') socCloseChat();
+  if (SOC_RM.roomRef && id !== 'page-battle-result' && id !== 'page-guesschar-result' && id !== 'page-battle-review') socRmStop(true);
+  const t = document.getElementById('acctTopBtn');
+  if (t) t.classList.toggle('soc-dot', !!(socCnt(SOC.reqIn) || socUnreadTotal()));
+}
+setInterval(socTick, 1500);
+
+/* ---------- عمليات الصداقة ---------- */
+async function socSend(uid, name) {
+  const me = socUid();
+  if (!me) { socToast('سجّل الدخول بحساب Google عشان تبعت طلب صداقة'); return; }
+  if (!uid || uid === me || SOC.friends[uid] || SOC.sent[uid]) return;
+  if (SOC.reqIn[uid]) { socAccept(uid, (SOC.reqIn[uid] && SOC.reqIn[uid].name) || name); return; }
+  try {
+    const u = {};
+    u['friendRequests/' + uid + '/' + me] = { name: socMyName(), ts: socTs() };
+    u['sentRequests/' + me + '/' + uid] = { name: (name || '').slice(0, 24), ts: socTs() };
+    await acctWithTimeout(socDb().ref().update(u));
+    socToast('تم إرسال طلب الصداقة ✅');
+  } catch (e) { socErr(e); }
+}
+async function socCancel(uid) {
+  const me = socUid(); if (!me) return;
+  try { const u = {}; u['friendRequests/' + uid + '/' + me] = null; u['sentRequests/' + me + '/' + uid] = null; await acctWithTimeout(socDb().ref().update(u)); socToast('اتلغى الطلب'); } catch (e) { socErr(e); }
+}
+async function socAccept(uid, name) {
+  const me = socUid(); if (!me) return;
+  try {
+    const u = {};
+    u['friends/' + me + '/' + uid] = { name: (name || 'لاعب').slice(0, 24), ts: socTs() };
+    u['friends/' + uid + '/' + me] = { name: socMyName(), ts: socTs() };
+    u['friendRequests/' + me + '/' + uid] = null; u['sentRequests/' + uid + '/' + me] = null;
+    u['friendRequests/' + uid + '/' + me] = null; u['sentRequests/' + me + '/' + uid] = null;
+    await acctWithTimeout(socDb().ref().update(u));
+    socToast('بقيتوا أصحاب 🤝 تقدروا تتكلموا دلوقتي');
+  } catch (e) { socErr(e); }
+}
+async function socDecline(uid) {
+  const me = socUid(); if (!me) return;
+  try { const u = {}; u['friendRequests/' + me + '/' + uid] = null; u['sentRequests/' + uid + '/' + me] = null; await acctWithTimeout(socDb().ref().update(u)); } catch (e) { socErr(e); }
+}
+async function socUnfriend(uid, name) {
+  const me = socUid(); if (!me) return;
+  if (!confirm('تلغي الصداقة مع ' + (name || 'اللاعب') + '؟')) return;
+  try { const u = {}; u['friends/' + me + '/' + uid] = null; u['friends/' + uid + '/' + me] = null; await acctWithTimeout(socDb().ref().update(u)); socToast('اتلغت الصداقة'); } catch (e) { socErr(e); }
+}
+/* أزرار حسب العلاقة (تُستخدم في البروفايل وفي نافذة المنافس) */
+function socRelHtml(uid, name, inMatch) {
+  const me = socUid();
+  if (!me) return `<div class="acct-p">سجّل الدخول بحساب Google من «حسابي» عشان تضيف أصدقاء.</div>` +
+    (inMatch ? '' : `<button class="kbc-btn download" onclick="socClick();showPage('page-account')">تسجيل الدخول</button>`);
+  if (uid === me) return '';
+  const a = `data-u="${socEsc(uid)}" data-n="${socEsc(name)}"`;
+  if (SOC.friends[uid]) return `<div class="soc-rel">✔ أصدقاء</div><div class="soc-btnrow">
+    <button class="kbc-btn download" ${a} onclick="socClick();socCloseSheet();socOpenChat(this.dataset.u,this.dataset.n)">💬 محادثة</button>
+    <button class="kbc-btn" ${a} onclick="socClick();socUnfriend(this.dataset.u,this.dataset.n)">إلغاء الصداقة</button></div>`;
+  if (SOC.reqIn[uid]) return `<div class="soc-rel">📩 بعتلك طلب صداقة</div><div class="soc-btnrow">
+    <button class="kbc-btn download" ${a} onclick="socClick();socAccept(this.dataset.u,this.dataset.n)">✅ قبول</button>
+    <button class="kbc-btn" ${a} onclick="socClick();socDecline(this.dataset.u)">رفض</button></div>`;
+  if (SOC.sent[uid]) return `<div class="soc-rel">⏳ تم إرسال الطلب — في انتظار الرد</div>
+    <button class="kbc-btn" ${a} onclick="socClick();socCancel(this.dataset.u)">إلغاء الطلب</button>`;
+  return `<button class="kbc-btn download" ${a} onclick="socClick();socSend(this.dataset.u,this.dataset.n)">➕ إرسال طلب صداقة</button>`;
+}
+
+/* ---------- صفحة الأصدقاء والطلبات ---------- */
+let _socTab = 'friends';
+function socOpenFriends(tab) {
+  if (!socUid()) { socToast('سجّل الدخول بحساب Google الأول 🙂'); showPage('page-account'); return; }
+  _socTab = tab || 'friends'; showPage('page-friends'); socRenderFriends();
+}
+function socSetTab(t) { socClick(); _socTab = t; socRenderFriends(); }
+function socRenderFriends() {
+  const box = document.getElementById('socFriendsBody'); if (!box) return;
+  const fk = Object.keys(SOC.friends), rk = Object.keys(SOC.reqIn), sk = Object.keys(SOC.sent);
+  const tabs = `<div class="soc-tabs">
+    <button class="soc-tab${_socTab === 'friends' ? ' on' : ''}" onclick="socSetTab('friends')">👥 أصدقائي (${fk.length})</button>
+    <button class="soc-tab${_socTab === 'requests' ? ' on' : ''}" onclick="socSetTab('requests')">📩 الطلبات${rk.length ? ' (' + rk.length + ')' : ''}</button></div>
+    <div style="text-align:center;margin-bottom:10px"><button class="kbc-btn download" onclick="playClickSound();upOpenSearch()">🔍 دوّر على لاعب</button></div>`;
+  let body = '';
+  if (_socTab === 'friends') {
+    fk.sort((x, y) => (Number(SOC.unread[y]) || 0) - (Number(SOC.unread[x]) || 0) || String((SOC.friends[x] || {}).name || '').localeCompare(String((SOC.friends[y] || {}).name || ''), 'ar'));
+    body = fk.length ? fk.map(k => {
+      const nm = (SOC.friends[k] && SOC.friends[k].name) || 'صديق', n = Number(SOC.unread[k]) || 0;
+      const a = `data-u="${socEsc(k)}" data-n="${socEsc(nm)}"`;
+      return `<div class="soc-row" ${a} onclick="socClick();socOpenChat(this.dataset.u,this.dataset.n)">
+        <div class="soc-av">${socEsc(nm.charAt(0) || '؟')}</div><div class="soc-nm">${socEsc(nm)}</div>
+        ${n ? `<span class="soc-bd" style="display:inline-block">${n}</span>` : ''}
+        <button class="kbc-btn" ${a} onclick="event.stopPropagation();socClick();upOpen(this.dataset.u,this.dataset.n)">👤</button>
+        <button class="kbc-btn download" ${a} onclick="event.stopPropagation();socClick();socOpenChat(this.dataset.u,this.dataset.n)">💬</button></div>`;
+    }).join('') : `<div class="soc-empty">لسه معندكش أصدقاء 🌿<br>دوّر على لاعب بالاسم وابعتله طلب صداقة.</div>`;
+  } else {
+    body = (rk.length ? `<div class="soc-sec">طلبات وصلتلك</div>` + rk.map(k => {
+      const nm = (SOC.reqIn[k] && SOC.reqIn[k].name) || 'لاعب'; const a = `data-u="${socEsc(k)}" data-n="${socEsc(nm)}"`;
+      return `<div class="soc-row" ${a} onclick="socClick();upOpen(this.dataset.u,this.dataset.n)"><div class="soc-av">${socEsc(nm.charAt(0) || '؟')}</div><div class="soc-nm">${socEsc(nm)}</div>
+        <button class="kbc-btn download" ${a} onclick="event.stopPropagation();socClick();socAccept(this.dataset.u,this.dataset.n)">قبول</button>
+        <button class="kbc-btn" ${a} onclick="event.stopPropagation();socClick();socDecline(this.dataset.u)">رفض</button></div>`;
+    }).join('') : '') + (sk.length ? `<div class="soc-sec">طلبات أرسلتها</div>` + sk.map(k => {
+      const nm = (SOC.sent[k] && SOC.sent[k].name) || 'لاعب'; const a = `data-u="${socEsc(k)}" data-n="${socEsc(nm)}"`;
+      return `<div class="soc-row" ${a} onclick="socClick();upOpen(this.dataset.u,this.dataset.n)"><div class="soc-av">${socEsc(nm.charAt(0) || '؟')}</div><div class="soc-nm">${socEsc(nm)}</div>
+        <span class="soc-chip">⏳ في الانتظار</span><button class="kbc-btn" ${a} onclick="event.stopPropagation();socClick();socCancel(this.dataset.u)">إلغاء</button></div>`;
+    }).join('') : '');
+    if (!body) body = `<div class="soc-empty">مفيش طلبات صداقة دلوقتي 🌙</div>`;
+  }
+  box.innerHTML = tabs + body;
+}
+
+/* ---------- البحث بالاسم (من البروفايل) ---------- */
+function socNorm(s) { return String(s || '').toLowerCase().replace(/[\u064B-\u065F\u0670\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').replace(/ؤ/g, 'و').replace(/ئ/g, 'ي'); }
+upSearchFilter = function () {
+  const list = document.getElementById('upSearchList'); if (!list || !_upIndex) return;
+  const q = socNorm(((document.getElementById('upSearchInput') || {}).value || '').trim());
+  const me = socUid();
+  const rows = _upIndex.filter(x => !q || socNorm(x.name).includes(q)).slice(0, 40);
+  list.innerHTML = rows.length ? rows.map(x => {
+    const a = `data-u="${socEsc(x.uid)}" data-n="${socEsc(x.name)}"`; let act;
+    if (x.uid === me) act = '<span class="soc-chip">أنت</span>';
+    else if (SOC.friends[x.uid]) act = `<button class="kbc-btn download" ${a} onclick="event.stopPropagation();socClick();socOpenChat(this.dataset.u,this.dataset.n)">💬</button>`;
+    else if (SOC.reqIn[x.uid]) act = `<button class="kbc-btn download" ${a} onclick="event.stopPropagation();socClick();socAccept(this.dataset.u,this.dataset.n)">✅ قبول</button>`;
+    else if (SOC.sent[x.uid]) act = '<span class="soc-chip">⏳ تم الإرسال</span>';
+    else act = `<button class="kbc-btn download" ${a} onclick="event.stopPropagation();socClick();socSend(this.dataset.u,this.dataset.n)">➕ إضافة</button>`;
+    return `<div class="soc-row" ${a} onclick="socClick();upOpen(this.dataset.u,this.dataset.n)"><div class="soc-av">${socEsc((x.name || '؟').charAt(0))}</div><div class="soc-nm">${socEsc(x.name)}</div>${act}</div>`;
+  }).join('') : '<div class="acct-p" style="text-align:center">مفيش لاعب بالاسم ده</div>';
+};
+
+/* ---------- زر الصداقة داخل بروفايل اللاعب ---------- */
+const _socUpOpen0 = upOpen;
+upOpen = async function (uid, fb) {
+  SOC.viewUid = uid; SOC.viewName = fb || '';
+  await _socUpOpen0.apply(this, arguments);
+  socRenderProfAct();
+};
+function socRenderProfAct() {
+  const body = document.getElementById('upBody'); if (!body || !SOC.viewUid) return;
+  const first = body.firstElementChild;
+  if (!first || !first.classList.contains('acct-card') || !first.querySelector('.acct-av')) return;
+  const nm = ((first.querySelector('.acct-name') || {}).textContent || SOC.viewName || '').trim();
+  const html = socRelHtml(SOC.viewUid, nm, false);
+  let el = document.getElementById('socProfAct');
+  if (!html) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'socProfAct'; el.className = 'acct-card'; first.insertAdjacentElement('afterend', el); }
+  el.innerHTML = html;
+}
+
+/* ---------- نافذة المنافس (داخل المباراة وبعدها): ضغط الاسم/الصورة ---------- */
+async function socOppInfo(kind) {
+  try {
+    let m;
+    if (kind === 'gc') m = (typeof GuessCharMatch !== 'undefined' && GuessCharMatch) || SOC.gcLast;
+    else m = (typeof ArenaBattle !== 'undefined') ? ArenaBattle : null;
+    if (!m || !m.roomRef || !m.oppKey) return null;
+    const pl = (await m.roomRef.child('players/' + m.oppKey).once('value')).val() || {};
+    return { uid: pl.fuid || null, name: pl.name || '' };
+  } catch (e) { return null; }
+}
+upOpenOpp = function (kind) { socOppSheet(kind); };
+async function socOppSheet(kind) {
+  socClick();
+  const info = await socOppInfo(kind);
+  if (!info) { socToast('مفيش منافس حقيقي هنا', 2500); return; }
+  SOC.sheet = { uid: info.uid, name: info.name || 'المنافس', photo: '', equipped: {} };
+  socRenderSheet();
+  if (info.uid && socOk()) {
+    try {
+      const ref = socDb().ref('users/' + info.uid);
+      const g = k => ref.child(k).once('value').then(x => x.val()).catch(() => null);
+      const [nm, ph, eq] = await Promise.all([g('name'), g('photo'), g('equipped')]);
+      if (SOC.sheet && SOC.sheet.uid === info.uid) { SOC.sheet.name = nm || SOC.sheet.name; SOC.sheet.photo = ph || ''; SOC.sheet.equipped = eq || {}; socRenderSheet(); }
+    } catch (e) {}
+  }
+}
+function socRenderSheet() {
+  const s = SOC.sheet; if (!s) return;
+  let bg = document.getElementById('socSheetBg');
+  if (!bg) { bg = document.createElement('div'); bg.id = 'socSheetBg'; bg.className = 'soc-modal-bg'; bg.onclick = socCloseSheet; document.body.appendChild(bg); }
+  const p = { name: s.name, photo: s.photo, equipped: s.equipped };
+  const inMatch = ['page-battle-match', 'page-guesschar-match'].includes(socPageId());
+  let body;
+  if (!s.uid) body = '<div class="acct-p">اللاعب ده مش مسجّل دخول بحساب Google، فمينفعش تبعتله طلب صداقة.</div>';
+  else {
+    body = socRelHtml(s.uid, s.name, true);
+    if (!inMatch) body += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" data-u="${socEsc(s.uid)}" data-n="${socEsc(s.name)}" onclick="socClick();socCloseSheet();upOpen(this.dataset.u,this.dataset.n)">👤 عرض البروفايل</button></div>`;
+  }
+  bg.innerHTML = `<div class="soc-modal" onclick="event.stopPropagation()">${acctAvatarHtml(p, 84)}${acctNameHtml(p)}<div style="margin-top:12px">${body}</div><button class="kbc-btn" style="margin-top:14px" onclick="socClick();socCloseSheet()">إغلاق</button></div>`;
+}
+function socCloseSheet() { SOC.sheet = null; const bg = document.getElementById('socSheetBg'); if (bg) bg.remove(); }
+
+/* ---------- الشات (بين الأصدقاء فقط) + فلتر الألفاظ ---------- */
+const SOC_BAD_MSG = 'الكلمة دي مش مناسبة 🌿 خلّينا نتكلم بأدب';
+function socCollapse(s) { return s.replace(/(.)\1+/g, '$1'); }
+const SOC_BAD_TOK = new Set(['كلب','كلاب','حمار','حمير','حيوان','خنزير','زباله','وسخ','وسخه','حقير','ساقط','عرص','خول','قحبه','شرموطه','شراميط','عاهره','منيك','متناك','fuck','shit','bitch','asshole','dick','pussy','cunt'].map(w => socCollapse(socNorm(w))));
+const SOC_BAD_SUB = ['شرموط','متناك','منيوك','كسمك','كسامك','كسامه','كسختك','ابنالكلب','ابنالحمار','ابنالوسخ','ابنالمتناكه','fuck','bitch','asshole'].map(w => socCollapse(socNorm(w)));
+function socCheckText(t) {
+  if (/(https?:\/\/|www\.|t\.me\/|wa\.me\/|\.com\b|\.net\b|\.org\b)/i.test(t)) return 'الروابط مش مسموحة في الشات 🙂';
+  const n = socNorm(t);
+  const toks = n.split(/[^\u0621-\u064Aa-z0-9]+/).filter(Boolean).map(socCollapse);
+  if (toks.some(w => SOC_BAD_TOK.has(w))) return SOC_BAD_MSG;
+  const joined = socCollapse(n.replace(/[^\u0621-\u064Aa-z]/g, ''));
+  if (SOC_BAD_SUB.some(w => joined.includes(w))) return SOC_BAD_MSG;
+  return '';
+}
+function socOpenChat(uid, name) {
+  const me = socUid(); if (!me) { socToast('سجّل الدخول الأول'); return; }
+  if (!SOC.friends[uid]) { socToast('لازم تبقوا أصحاب الأول عشان تتكلموا 🙂'); return; }
+  socCloseChat();
+  const nm = name || (SOC.friends[uid] && SOC.friends[uid].name) || 'صديق';
+  const ref = socDb().ref('chats/' + socPair(me, uid) + '/messages').limitToLast(100);
+  SOC.chat = { uid, name: nm, pair: socPair(me, uid), ref, cb: null, seen: {} };
+  document.getElementById('socChatTitle').textContent = '💬 ' + nm;
+  const box = document.getElementById('socChatMsgs');
+  box.innerHTML = '<div class="soc-note">💚 الشات بينك وبين صديقك بس. حافظ على الأدب — الألفاظ المسيئة والروابط بتتمنع تلقائيًا.</div>';
+  showPage('page-chat');
+  SOC.chat.cb = ref.on('child_added', sn => socAddMsg(sn.key, sn.val()), () => { box.insertAdjacentHTML('beforeend', '<div class="soc-note">تعذّر تحميل الرسائل (راجع قواعد Firebase).</div>'); });
+  socClearUnread(uid);
+}
+function socAddMsg(key, m) {
+  const c = SOC.chat; if (!c || !m || c.seen[key]) return; c.seen[key] = true;
+  const box = document.getElementById('socChatMsgs'); if (!box) return;
+  const mine = m.from === socUid();
+  const near = box.scrollHeight - box.scrollTop - box.clientHeight < 140;
+  const d = document.createElement('div'); d.className = 'soc-msg ' + (mine ? 'me' : 'them');
+  d.appendChild(document.createTextNode(String(m.text || '').slice(0, 300)));
+  const t = document.createElement('span'); t.className = 'soc-t';
+  try { t.textContent = new Date(m.ts || Date.now()).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }); } catch (e) {}
+  d.appendChild(t); box.appendChild(d);
+  if (mine || near) box.scrollTop = box.scrollHeight;
+  if (!mine && socPageId() === 'page-chat') socClearUnread(c.uid);
+}
+function socClearUnread(uid) { const me = socUid(); if (!me || !SOC.unread[uid]) return; try { socDb().ref('unread/' + me + '/' + uid).remove().catch(() => {}); } catch (e) {} }
+function socCloseChat() { const c = SOC.chat; if (c && c.cb) { try { c.ref.off('child_added', c.cb); } catch (e) {} } SOC.chat = null; }
+function socChatBack() { socCloseChat(); showPage('page-friends'); socRenderFriends(); }
+function socChatSend() {
+  const c = SOC.chat, me = socUid(); if (!c || !me) return;
+  const inp = document.getElementById('socChatInput'); let t = ((inp && inp.value) || '').trim();
+  if (!t) return;
+  if (!SOC.friends[c.uid]) { socToast('انتوا مبقتوش أصحاب', 2500); return; }
+  t = t.slice(0, 300);
+  const bad = socCheckText(t); if (bad) { socToast(bad, 3500); return; }
+  const now = Date.now(); if (now - SOC.lastSend < 1200) { socToast('براحة شوية 🙂', 1500); return; } SOC.lastSend = now;
+  inp.value = '';
+  try {
+    socDb().ref('chats/' + c.pair + '/messages').push({ from: me, text: t, ts: socTs() }).catch(e => { inp.value = t; socErr(e); });
+    socDb().ref('unread/' + c.uid + '/' + me).transaction(v => (Number(v) || 0) + 1).catch(() => {});
+  } catch (e) { inp.value = t; socErr(e); }
+}
+function socChatReport() {
+  const c = SOC.chat, me = socUid(); if (!c || !me) return;
+  if (!confirm('تبلّغ عن ' + c.name + ' بسبب كلام مسيء؟')) return;
+  socDb().ref('reports').push({ by: me, against: c.uid, pair: c.pair, ts: socTs() }).then(() => socToast('تم الإبلاغ، شكرًا لك 🌿', 3000)).catch(socErr);
+}
+
+/* ---------- «العب مجددًا» بعد انتهاء المباراة ---------- */
+const SOC_RM = { kind:null, roomRef:null, myKey:null, oppKey:null, myName:'', oppName:'', off:null, box:null, rm:null, sentPending:false, busy:false, joined:false, timer:null };
+function socRmInit(kind, roomRef, myKey, oppKey, myName, oppName) {
+  socRmStop(false);
+  Object.assign(SOC_RM, { kind, roomRef, myKey, oppKey, myName: myName || '', oppName: oppName || 'المنافس', rm: null, sentPending: false, busy: false, joined: false });
+  SOC_RM.box = document.getElementById(kind === 'battle' ? 'socRmBattle' : 'socRmGc');
+  socRmRender(null);
+  const ref = roomRef.child('rematch');
+  const cb = ref.on('value', sn => socRmOnValue(sn.val()), () => {});
+  SOC_RM.off = () => ref.off('value', cb);
+}
+function socRmStop(cancelPending) {
+  clearTimeout(SOC_RM.timer);
+  if (cancelPending && SOC_RM.roomRef && SOC_RM.sentPending) { try { SOC_RM.roomRef.child('rematch').remove(); } catch (e) {} }
+  if (SOC_RM.off) { try { SOC_RM.off(); } catch (e) {} }
+  SOC_RM.off = null; SOC_RM.roomRef = null; SOC_RM.box = null; SOC_RM.rm = null; SOC_RM.sentPending = false;
+  socRmModal(false);
+}
+function socRmRender(rm) {
+  const box = SOC_RM.box; if (!box) return;
+  const opp = socEsc(SOC_RM.oppName), mine = rm && rm.by === SOC_RM.myKey;
+  if (!rm || ['declined', 'expired', 'failed'].includes(rm.status)) { box.innerHTML = `<button class="arena-result-btn primary" onclick="playClickSound();socRmAsk()">🔄 العب مجددًا</button>`; return; }
+  if (mine) box.innerHTML = rm.status === 'accepted'
+    ? `<div class="soc-rm-wait">✅ ${opp} وافق — بنجهّز المباراة...</div>`
+    : `<div class="soc-rm-wait">⏳ بنستنى رد ${opp}...</div><button class="arena-result-btn secondary" onclick="playClickSound();socRmCancel()">إلغاء الطلب</button>`;
+  else box.innerHTML = rm.status === 'accepted'
+    ? `<div class="soc-rm-wait">✅ قبلت — بنجهّز المباراة...</div>`
+    : `<div class="soc-rm-wait">📩 ${opp} عايز يلاعبك تاني</div><div class="soc-btnrow"><button class="kbc-btn download" onclick="socRmAnswer(true)">✅ قبول</button><button class="kbc-btn" onclick="socRmAnswer(false)">رفض</button></div>`;
+}
+function socRmModal(show) {
+  let bg = document.getElementById('socRmModalBg');
+  if (!show) { if (bg) bg.remove(); return; }
+  if (!bg) { bg = document.createElement('div'); bg.id = 'socRmModalBg'; bg.className = 'soc-modal-bg'; document.body.appendChild(bg); }
+  bg.innerHTML = `<div class="soc-modal"><div style="font-size:2.2rem">🔄</div><div class="acct-h" style="margin:8px 0">${socEsc(SOC_RM.oppName)} عايز يلاعبك تاني!</div>
+    <div class="acct-p">تقبل التحدي ولا لأ؟</div>
+    <div class="soc-btnrow" style="margin-top:14px"><button class="kbc-btn download" onclick="socRmAnswer(true)">✅ قبول</button><button class="kbc-btn" onclick="socRmAnswer(false)">❌ رفض</button></div></div>`;
+}
+function socRmAsk() {
+  if (!SOC_RM.roomRef) return;
+  const ref = SOC_RM.roomRef.child('rematch');
+  ref.set({ by: SOC_RM.myKey, byName: SOC_RM.myName, status: 'pending', ts: socTs() }).catch(() => socToast('تعذّر إرسال الطلب', 3000));
+  try { ref.onDisconnect().remove(); } catch (e) {}
+  clearTimeout(SOC_RM.timer);
+  SOC_RM.timer = setTimeout(() => {
+    const r = SOC_RM.rm;
+    if (SOC_RM.roomRef && r && r.by === SOC_RM.myKey && r.status === 'pending') { ref.remove().catch(() => {}); socToast('⏰ ' + SOC_RM.oppName + ' ما ردّش على الطلب', 3500); }
+  }, 60000);
+}
+function socRmCancel() {
+  const r = SOC_RM.rm; clearTimeout(SOC_RM.timer);
+  if (SOC_RM.roomRef && r && r.by === SOC_RM.myKey && r.status === 'pending') SOC_RM.roomRef.child('rematch').remove().catch(() => {});
+}
+function socRmAnswer(yes) {
+  const r = SOC_RM.rm; socRmModal(false);
+  if (!SOC_RM.roomRef || !r || r.by === SOC_RM.myKey || r.status !== 'pending') return;
+  SOC_RM.roomRef.child('rematch').update({ status: yes ? 'accepted' : 'declined' }).catch(() => socToast('تعذّر إرسال ردك', 3000));
+}
+function socRmOnValue(rm) {
+  if (!SOC_RM.roomRef) return;
+  SOC_RM.rm = rm; const my = SOC_RM.myKey, opp = SOC_RM.oppName;
+  if (rm && rm.by === my) {
+    if (rm.status === 'declined') {
+      SOC_RM.sentPending = false; clearTimeout(SOC_RM.timer);
+      socToast('😔 ' + opp + ' رفض اللعب مرة تانية', 3500);
+      SOC_RM.roomRef.child('rematch').remove().catch(() => {}); socRmRender(null); return;
+    }
+    if (rm.status === 'accepted') {
+      SOC_RM.sentPending = false; clearTimeout(SOC_RM.timer);
+      try { SOC_RM.roomRef.child('rematch').onDisconnect().cancel(); } catch (e) {}
+      socRmRender(rm);
+      if (!rm.newCode && !SOC_RM.busy) { SOC_RM.busy = true; socRmCreate(); }
+      return;
+    }
+    if (rm.status === 'failed') { SOC_RM.sentPending = false; socToast('تعذّر تجهيز المباراة الجديدة', 3000); socRmRender(rm); return; }
+    SOC_RM.sentPending = true; socRmRender(rm); return;
+  }
+  if (rm && rm.by && rm.by !== my) {
+    if (rm.status === 'pending') { socRmRender(rm); socRmModal(true); return; }
+    socRmModal(false); socRmRender(rm);
+    if (rm.status === 'accepted' && rm.newCode && !SOC_RM.joined) { SOC_RM.joined = true; socRmJoin(rm.newCode); }
+    return;
+  }
+  socRmModal(false); socRmRender(null);
+}
+async function socRmCreate() {
+  const kind = SOC_RM.kind, oldRef = SOC_RM.roomRef.child('rematch'), name = SOC_RM.oppName;
+  try {
+    let code;
+    if (kind === 'battle') {
+      if (typeof ArenaBattle !== 'undefined' && ArenaBattle && ArenaBattle.category) battleSelectedCategory = ArenaBattle.category;
+      await startBattleVsFriend(); code = arenaOnlineRoomRef && arenaOnlineRoomRef.key;
+    } else { _gcMyChar = null; await startGuessCharVsFriend(); code = gcCurrentRoomId; }
+    if (!code) throw new Error('no-code');
+    await oldRef.update({ newCode: code });
+    const cont = document.getElementById(kind === 'battle' ? 'battleStateContent' : 'guessCharStateContent');
+    if (cont) cont.innerHTML = `<div class="arena-state-icon spin">🔄</div><div class="arena-state-title">بنجهّز مباراة جديدة مع ${socEsc(name)}</div>
+      <div class="arena-state-desc">بمجرد ما ${socEsc(name)} يدخل، المباراة هتبدأ تلقائيًا 🎮</div>
+      <button class="arena-cancel-btn" onclick="playClickSound();${kind === 'battle' ? 'cancelBattleState()' : 'cancelGuessCharState()'}">إلغاء</button>`;
+  } catch (e) { try { oldRef.update({ status: 'failed' }); } catch (_) {} socToast('تعذّر تجهيز المباراة الجديدة', 3000); }
+}
+function socRmJoin(code) {
+  try {
+    if (SOC_RM.kind === 'battle') { const i = document.getElementById('battleJoinCodeInput'); if (!i) throw 0; i.value = code; joinBattleWithCode(); }
+    else { _gcMyChar = null; const i = document.getElementById('guessCharJoinCodeInput'); if (!i) throw 0; i.value = code; joinGuessCharWithCode(); }
+  } catch (e) { socToast('تعذّر الانضمام للمباراة الجديدة', 3000); }
+}
+function socGcResultOpp(info) {
+  const el = document.getElementById('socGcOpp'); if (!el) return;
+  el.innerHTML = `<div class="soc-opp-tap" onclick="socOppSheet('gc')">👤 ${socEsc(info.oppName || 'المنافس')} <small style="opacity:.75">— اضغط لإضافته صديق</small></div>`;
+}
+/* ربط مع نهاية المباراتين */
+(function () {
+  const o1 = arenaShowOnlineResult;
+  arenaShowOnlineResult = function (room) {
+    const b = (typeof ArenaBattle !== 'undefined') ? ArenaBattle : null, first = !!(b && !b.resultShown);
+    const r = o1.apply(this, arguments);
+    try { if (first && b && b.online && b.roomRef) socRmInit('battle', b.roomRef, b.myKey, b.oppKey, (room.players[b.myKey] || {}).name, (room.players[b.oppKey] || {}).name); } catch (e) {}
+    return r;
+  };
+  const o2 = gcShowResult;
+  gcShowResult = function (meta) {
+    const m = (typeof GuessCharMatch !== 'undefined') ? GuessCharMatch : null;
+    const info = m ? { roomRef: m.roomRef, myKey: m.myKey, oppKey: m.oppKey, myName: m.myName, oppName: m.oppName } : null;
+    const r = o2.apply(this, arguments);
+    try { if (info) { SOC.gcLast = info; socGcResultOpp(info); socRmInit('gc', info.roomRef, info.myKey, info.oppKey, info.myName, info.oppName); } } catch (e) {}
+    return r;
+  };
+  const rp = acctRenderPage; acctRenderPage = function () { const r = rp.apply(this, arguments); try { socUiRefresh(); } catch (e) {} return r; };
+})();
+</script>
+
 </body>
 </html>
