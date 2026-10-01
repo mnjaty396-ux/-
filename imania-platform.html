@@ -2677,7 +2677,7 @@
   <div id="guessCharConnBanner" class="arena-perf-note" style="display:none;color:#c0392b;">⚠️ الخصم غير متصل حاليًا...</div>
   <div class="gc-secret-card">
     <div class="gc-secret-icon">🕵️‍♂️</div>
-    <div class="gc-secret-text">شخصيتك مخفية</div>
+    <div class="gc-secret-text" id="guessCharSecretText">شخصيتك مخفية</div>
   </div>
   <div class="gc-status-text" id="guessCharStatusText">جارٍ التحميل...</div>
   <div id="guessCharTurnArea"></div>
@@ -2706,7 +2706,7 @@
   <div class="arena-perf-note" id="guessCharResultDetail"></div>
   <div class="arena-hemma-earned" id="guessCharResultHemma"></div>
   <div class="arena-result-actions">
-    <button class="arena-result-btn secondary" onclick="playClickSound();showPage('page-guesschar-lobby')">مباراة تانية! 🔁</button>
+    <button class="arena-result-btn secondary" onclick="playClickSound();openGuessCharLobby()">مباراة تانية! 🔁</button>
     <button class="arena-result-btn secondary" onclick="playClickSound();showPage('page-arena-home')">العودة لساحة المنافسة</button>
   </div>
 </div>
@@ -10517,14 +10517,23 @@ function gcNoCharactersState() {
     'لم تتم إضافة شخصيات إلى بنك اللعبة بعد. أضف صفوفًا في شيت باسم "خمن الشخصية - شخصيات" بالأعمدة: المعرف، الاسم، الفئة — راجع التعليقات أعلى دوال اللعبة فى الكود لمزيد من التفاصيل.',
     'رجوع', "showPage('page-guesschar-lobby')");
 }
+let _gcMyChar = null;
+async function gcPickMyChar() {
+  const list = await getGuessCharCharacters();
+  _gcMyChar = list.length ? list[Math.floor(Math.random() * list.length)] : null;
+  return _gcMyChar;
+}
+function gcCharAnnounceHtml(c) {
+  return `<div class="gc-secret-card" style="margin:0 0 10px;"><div class="gc-secret-icon">🎭</div><div class="gc-secret-text">شخصيتك هي: ${arenaEscape(c.name)}</div></div>`;
+}
 function openGuessCharLobby() {
   showPage('page-guesschar-lobby');
   const notice = document.getElementById('guessCharLobbyNotice');
   if (notice) notice.innerHTML = '';
-  getGuessCharCharacters().then(list => {
+  _gcMyChar = null;
+  gcPickMyChar().then(c => {
     if (!notice) return;
-    notice.innerHTML = list.length ? '' :
-      `<div class="arena-perf-note">⚠️ بنك الشخصيات فارغ حاليًا، فلن تبدأ مباراة حقيقية حتى تُضاف شخصيات لبنك اللعبة.</div>`;
+    notice.innerHTML = c ? gcCharAnnounceHtml(c) : `<div class="arena-perf-note">⚠️ بنك الشخصيات فارغ حاليًا، فلن تبدأ مباراة حقيقية حتى تُضاف شخصيات لبنك اللعبة.</div>`;
   });
 }
 function cancelGuessCharState() {
@@ -10540,6 +10549,7 @@ async function startGuessCharVsFriend() {
   if (!arenaFirebaseReady()) { gcShowFirebaseMissing(); return; }
   const chars = await getGuessCharCharacters();
   if (!chars.length) { gcNoCharactersState(); return; }
+  if (!_gcMyChar) await gcPickMyChar();
   gcCleanupListeners();
   showPage('page-guesschar-state');
   document.getElementById('guessCharStateTopTitle').textContent = '🤝 لعب ضد صديق';
@@ -10588,6 +10598,7 @@ async function joinGuessCharWithCode() {
   if (!arenaFirebaseReady()) { gcShowFirebaseMissing(); return; }
   const chars = await getGuessCharCharacters();
   if (!chars.length) { gcNoCharactersState(); return; }
+  if (!_gcMyChar) await gcPickMyChar();
   gcCleanupListeners();
   showPage('page-guesschar-state');
   document.getElementById('guessCharStateTopTitle').textContent = '🤝 الانضمام لصديق';
@@ -10608,11 +10619,6 @@ async function joinGuessCharWithCode() {
   }
   const myId = arenaMyId(), myName = arenaMyName();
   await roomRef.child('players/player2').update({ id: myId, name: myName, connected: true, guessAttempts: 0 });
-  const pool = await getGuessCharCharacters();
-  const secretA = pool[Math.floor(Math.random() * pool.length)];
-  let secretB = pool[Math.floor(Math.random() * pool.length)];
-  if (pool.length > 1) { while (secretB.id === secretA.id) secretB = pool[Math.floor(Math.random() * pool.length)]; }
-  await roomRef.child('secrets').set({ player1: secretA.id, player2: secretB.id });
   await roomRef.child('meta').update({ status: 'active', startedAt: Date.now(), updatedAt: Date.now() });
   try { roomRef.onDisconnect().update({ 'players/player2/connected': false }); } catch (e) {}
   gcRoomRef = roomRef; gcCurrentRoomId = code; gcMyKey = 'player2'; gcOppKey = 'player1';
@@ -10625,6 +10631,7 @@ async function startGuessCharRandom() {
   if (!arenaFirebaseReady()) { gcShowFirebaseMissing(); return; }
   const chars = await getGuessCharCharacters();
   if (!chars.length) { gcNoCharactersState(); return; }
+  if (!_gcMyChar) await gcPickMyChar();
   gcCleanupListeners();
   showPage('page-guesschar-state');
   document.getElementById('guessCharStateTopTitle').textContent = '🌐 مباراة عشوائية';
@@ -10668,10 +10675,6 @@ async function startGuessCharRandom() {
     mailboxRef.on('value', listener);
     gcListeners.push(() => { mailboxRef.off('value', listener); queueRef.transaction(c => (c && c.uid === myId) ? null : c); });
   } else if (capturedWaitingPlayer) {
-    const pool = await getGuessCharCharacters();
-    const secretA = pool[Math.floor(Math.random() * pool.length)];
-    let secretB = pool[Math.floor(Math.random() * pool.length)];
-    if (pool.length > 1) { while (secretB.id === secretA.id) secretB = pool[Math.floor(Math.random() * pool.length)]; }
     const roomId = arenaGenerateCode();
     const roomRef = db.ref('guessCharRooms/' + roomId);
     await roomRef.set({
@@ -10681,7 +10684,6 @@ async function startGuessCharRandom() {
         player1: { id: capturedWaitingPlayer.uid, name: capturedWaitingPlayer.name, connected: true, guessAttempts: 0 },
         player2: { id: myId, name: myName, connected: true, guessAttempts: 0 }
       },
-      secrets: { player1: secretA.id, player2: secretB.id },
       usedQuestions: {}
     });
     await db.ref('guessCharMailbox/' + capturedWaitingPlayer.uid).set(roomId);
@@ -10714,6 +10716,9 @@ function gcBeginMatch(roomRef, myKey, room) {
     _lastHandledGuessTs: null
   };
   gcRoomRef = roomRef; gcMyKey = myKey; gcOppKey = oppKey;
+  if (_gcMyChar) { try { roomRef.child('secrets/' + myKey).set(_gcMyChar.id); } catch (e) {} }
+  const _gcSecEl = document.getElementById('guessCharSecretText');
+  if (_gcSecEl) _gcSecEl.textContent = _gcMyChar ? 'شخصيتك هي: ' + _gcMyChar.name : 'شخصيتك مخفية';
   try { roomRef.child('players/' + myKey + '/fx').set(shopMyWinFx()); } catch (e) {}   // تأثير الفوز المفعّل
   showPage('page-guesschar-match');
   document.getElementById('guessCharMeName').textContent = GuessCharMatch.myName;
@@ -10734,9 +10739,6 @@ function gcBeginMatch(roomRef, myKey, room) {
   roomRef.child('meta').on('value', metaListener);
   gcListeners.push(() => roomRef.child('meta').off('value', metaListener));
 
-  const oppSecretListener = snap => { if (GuessCharMatch) GuessCharMatch.oppSecretId = snap.val(); };
-  roomRef.child('secrets/' + oppKey).on('value', oppSecretListener);
-  gcListeners.push(() => roomRef.child('secrets/' + oppKey).off('value', oppSecretListener));
 
   const pendingListener = snap => gcRenderPendingQuestion(snap.val());
   roomRef.child('pendingQuestion').on('value', pendingListener);
@@ -10776,8 +10778,7 @@ function gcRenderTurnArea(meta) {
     <div class="gc-ask-box">
       <input type="text" class="arena-guess-input" id="guessCharQuestionInput" placeholder="اكتب سؤالك هنا... مثال: هل شخصيتى من الصحابة؟">
       <button class="agc-btn" onclick="playClickSound();gcSendQuestion()">إرسال السؤال 📨</button>
-    </div>
-    <button class="arena-cancel-btn" style="margin-top:8px;" onclick="playClickSound();gcOpenGuessPopup()">🎯 تخمين الشخصية</button>`;
+    </div>`;
 }
 
 /* ---------- 8) إرسال سؤال (يُستهلك فور الإرسال، وليس عند الإجابة) ---------- */
@@ -10802,11 +10803,92 @@ async function gcSendQuestion() {
   input.value = '';
 }
 
+/* ---------- 8-ب) الفوز بمجرد ذكر اسم الشخصية فى أى رسالة ----------
+   صاحب الشخصية (جهازه) هو من يفحص رسالة الخصم؛ لو احتوت على اسم شخصيته
+   (الاسم الكامل أو لقب/اسم شهرة غير ملتبس بشخصية أخرى) يفوز مرسل الرسالة فورًا،
+   بلا أى صيغة معيّنة. */
+const GC_ALIASES = {
+  'أبو بكر الصديق':['الصديق'], 'عبد الله بن مسعود':['ابن مسعود'], 'عبد الله بن عباس':['ابن عباس'],
+  'أحمد بن حنبل':['ابن حنبل','الامام احمد'], 'مسلم بن الحجاج':['الامام مسلم'], 'محمد بن عبد الوهاب':['ابن عبد الوهاب'],
+  'محمد بن صالح العثيمين':['ابن عثيمين','العثيمين'], 'عبد العزيز بن باز':['ابن باز'], 'عبد الرحمن بن عوف':['ابن عوف'],
+  'عثمان بن عفان':['ابن عفان'], 'محمد ناصر الدين الألباني':['الالباني'], 'محمد متولي الشعراوي':['الشعراوي'],
+  'محمد صديق المنشاوي':['المنشاوي'], 'محمود خليل الحصري':['الحصري'], 'عبد الرحمن السديس':['السديس'],
+  'ياسر الدوسري':['الدوسري'], 'ماهر المعيقلي':['المعيقلي'], 'صالح الفوزان':['الفوزان'], 'عثمان الخميس':['الخميس'],
+  'أبو إسحاق الحويني':['الحويني'], 'محمد حسان':['الشيخ حسان'], 'مصطفى العدوي':['العدوي'], 'أحمد الطيب':['الطيب'],
+  'عبد الباسط عبد الصمد':['عبد الباسط'], 'محمد إسحاق يعقوب':['إسحاق يعقوب'], 'محمد ﷺ':['رسول الله','النبي محمد'],
+  'ابن حجر العسقلاني':['ابن حجر'], 'ابن رجب الحنبلي':['ابن رجب'], 'أبو حنيفة النعمان':['ابو حنيفة']
+};
+function gcTokens(text) {
+  let t = String(text == null ? '' : text).replace(/(^|\s)على(?=\s|$|[^\u0621-\u064A])/g, '$1zzon ');   // «على» حرف جر وليست «علي»
+  t = gcNormalize(t).replace(/[\u064B-\u0652\u0640\uFDFA]/g, '').replace(/[^\u0621-\u064Aa-z0-9\s]/g, ' ');
+  return t.split(/\s+/).filter(Boolean).map(w => {
+    w = w.replace(/^[وفبك](?=ال)/, '').replace(/^لل/, 'ال');
+    return (w.length > 3 && w.startsWith('ال')) ? w.slice(2) : w;
+  });
+}
+function gcCharForms(list) {
+  const full = list.map(c => ({ c, f: gcTokens(c.name) }));
+  const forms = [];
+  full.forEach(({ c, f }) => {
+    forms.push({ id: c.id, t: f });
+    const raw = String(c.name).replace(/\uFDFA/g, '').trim(), parts = raw.split(/\s+/), cand = [];
+    const bi = parts.indexOf('بن');
+    if (bi > 0) cand.push(parts.slice(0, bi).join(' '));
+    if (parts[0] === 'أبو' && parts.length > 2) cand.push(parts.slice(0, 2).join(' '));
+    (GC_ALIASES[c.name] || []).forEach(a => cand.push(a));
+    cand.forEach(a => {
+      const t = gcTokens(a);
+      if (!t.length || t.join('').length < 3) return;
+      const sub = (arr, x) => { for (let i = 0; i + x.length <= arr.length; i++) if (x.every((v, j) => arr[i + j] === v)) return true; return false; };
+      const ambiguous = full.some(o => o.c.id !== c.id && sub(o.f, t));   // لقب يشبه جزءًا من شخصية أخرى لا يُعتمد
+      if (!ambiguous && !forms.some(x => x.id === c.id && x.t.join(' ') === t.join(' '))) forms.push({ id: c.id, t });
+    });
+  });
+  return forms;
+}
+function gcMatchedCharIds(text, list) {
+  const toks = gcTokens(text), hits = [];
+  gcCharForms(list).forEach(fm => {
+    const n = fm.t.length;
+    for (let i = 0; i + n <= toks.length; i++) {
+      let ok = true;
+      for (let j = 0; j < n && ok; j++) {
+        const a = toks[i + j], b = fm.t[j];
+        ok = a === b || (j === 0 && a.length === b.length + 1 && 'وفبل'.includes(a[0]) && a.slice(1) === b);
+      }
+      if (ok) hits.push({ id: fm.id, s: i, e: i + n });
+    }
+  });
+  const kept = hits.filter(h => !hits.some(o => o !== h && o.s <= h.s && o.e >= h.e && (o.e - o.s) > (h.e - h.s)));
+  const ids = new Set(kept.map(h => h.id));
+  return ids.size > 3 ? new Set() : ids;   // رسالة تسرد أسماء كثيرة (تخمين عشوائى جماعى) لا تُحتسب
+}
+async function gcCheckWinByMessage(pending) {
+  if (!pending || !GuessCharMatch || !_gcMyChar) return false;
+  if (pending.askerKey === GuessCharMatch.myKey || GuessCharMatch.finished) return false;
+  if (GuessCharMatch._winChecked === pending.ts) return false;
+  GuessCharMatch._winChecked = pending.ts;
+  const list = await getGuessCharCharacters();
+  if (!gcMatchedCharIds(pending.questionText, list).has(_gcMyChar.id)) return false;
+  const roomRef = GuessCharMatch.roomRef;
+  GuessCharMatch.finished = true;
+  try {
+    const usedSnap = await roomRef.child('usedQuestions').once('value');
+    const usedCount = usedSnap.exists() ? Object.keys(usedSnap.val()).length : 0;
+    await roomRef.child('log').push({ askerKey: pending.askerKey, questionText: pending.questionText, answer: 'اسم الشخصية صحيح ✅', ts: Date.now() });
+    await roomRef.child('pendingQuestion').remove();
+    await roomRef.child('meta').update({ status: 'finished', winner: pending.askerKey, endedAt: Date.now(), updatedAt: Date.now(),
+      winnerRevealedName: _gcMyChar.name, questionsUsedCount: usedCount });
+  } catch (e) { GuessCharMatch.finished = false; }
+  return true;
+}
+
 /* ---------- 9) عرض السؤال المعلّق + الإجابة عليه ---------- */
 function gcRenderPendingQuestion(pending) {
   if (!GuessCharMatch) return;
   const area = document.getElementById('guessCharTurnArea');
   if (!area || !pending) return;
+  if (pending.askerKey !== GuessCharMatch.myKey) gcCheckWinByMessage(pending);
   if (pending.askerKey === GuessCharMatch.myKey) {
     area.innerHTML = `<div class="arena-state-desc" style="text-align:center;">📨 تم إرسال سؤالك: «${arenaEscape(pending.questionText)}» — فى انتظار إجابة ${arenaEscape(GuessCharMatch.oppName)}...</div>`;
     return;
@@ -10915,7 +10997,7 @@ function gcShowResult(meta) {
   const amWinner = meta.winner === GuessCharMatch.myKey;
   showPage('page-guesschar-result');
   document.getElementById('guessCharResultIcon').textContent = amWinner ? '🏆' : '🎭';
-  document.getElementById('guessCharResultTitle').textContent = amWinner ? 'مبروك! خمّنت شخصيتك صح! 🏆' : 'خسرت هذه الجولة، حظ أوفر المرة القادمة!';
+  document.getElementById('guessCharResultTitle').textContent = amWinner ? 'مبروك! عرفت شخصية خصمك 🏆' : 'خصمك عرف شخصيتك، حظ أوفر المرة القادمة!';
   const winnerName = amWinner ? GuessCharMatch.myName : GuessCharMatch.oppName;
   document.getElementById('guessCharResultSub').textContent = `الفائز: ${winnerName} — الشخصية كانت: ${meta.winnerRevealedName || '—'}`;
   const durationSec = (meta.startedAt && meta.endedAt) ? Math.max(0, Math.round((meta.endedAt - meta.startedAt) / 1000)) : 0;
@@ -10967,7 +11049,7 @@ function exitGuessCharMatch() {
   }
   gcCleanupListeners();
   GuessCharMatch = null; gcRoomRef = null; gcMyKey = null; gcOppKey = null;
-  showPage('page-guesschar-lobby');
+  openGuessCharLobby();
 }
 
 </script>
@@ -11365,6 +11447,41 @@ async function shopEquip(slot, id) {
   acctRenderTop();
 })();
 
+</script>
+<script id="owner-module">
+/* ============================================================================
+   صلاحيات صاحب المنصة: عملات لا نهائية + كل البراويز وتأثيرات الفوز
+   (تُفعَّل فقط لحساب Firebase صاحب هذا الـ UID)
+   ============================================================================ */
+const IMANIA_OWNER_UID = 'MuXp0YqF2dTuaPg5vWY5c6VWupR2';
+let _ownerPersisted = false;
+function isPlatformOwner() { return !!(typeof _acct !== 'undefined' && _acct.user && _acct.user.uid === IMANIA_OWNER_UID); }
+function ownerAllIds() { const ids = []; SHOP_CATALOG.forEach(g => g.items.forEach(p => ids.push(p.id))); return ids; }
+function ownerDecorate() {
+  if (!isPlatformOwner()) return;
+  if (_acct.rec) { _acct.rec.owned = _acct.rec.owned || {}; ownerAllIds().forEach(id => { _acct.rec.owned[id] = true; }); }
+  ['arenaHemmaBalance', 'acctBalance'].forEach(id => { const el = document.getElementById(id); if (el && el.textContent !== '∞') el.textContent = '∞'; });
+  if (!_ownerPersisted && _acct.ready && typeof firebase !== 'undefined') {
+    _ownerPersisted = true;
+    const o = {}; ownerAllIds().forEach(id => { o[id] = true; });
+    try { firebase.database().ref('users/' + _acct.user.uid + '/owned').update(o).catch(() => {}); } catch (e) {}
+  }
+}
+(function () {
+  const _bal = shopBal, _own = shopOwned, _buy = acctBuy, _eq = acctEquip;
+  shopBal = function () { return isPlatformOwner() ? '∞' : _bal.apply(this, arguments); };
+  shopOwned = function (id) { return isPlatformOwner() ? ownerAllIds().includes(id) : _own.apply(this, arguments); };
+  acctBuy = async function (id) {
+    if (isPlatformOwner()) { ownerDecorate(); if (typeof showImaniaToast === 'function') showImaniaToast('كل المقتنيات مفتوحة لك كصاحب المنصة 👑', 2500); return; }
+    return _buy.apply(this, arguments);
+  };
+  acctEquip = async function () { ownerDecorate(); return _eq.apply(this, arguments); };
+  ['acctRenderAll', 'acctRenderPage', 'openArenaHome', 'arenaRenderCoinBalance'].forEach(n => {
+    const f = window[n]; if (typeof f !== 'function') return;
+    window[n] = function () { ownerDecorate(); const r = f.apply(this, arguments); ownerDecorate(); return r; };
+  });
+  setInterval(ownerDecorate, 1500);
+})();
 </script>
 </body>
 </html>
