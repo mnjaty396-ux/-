@@ -10136,13 +10136,7 @@ function acctInit() {
 }
 acctInit();
 
-/* =====================================================================
-   🏆 البطولة الشهرية — هيكل كامل بدون بيانات حقيقية
-   ---------------------------------------------------------------------
-   هذا القسم جاهز لاستقبال بيانات بطولة حقيقية (اسم، علم، تواريخ، بنك
-   أسئلة) من Firebase أو Google Sheets لاحقًا. راجع التعليقات "TODO"
-   لمعرفة أماكن الربط المستقبلي بالضبط.
-   ===================================================================== */
+/* ===== 🏆 البطولة الشهرية ===== */
 
 /* ---------- إعداد نوعي البطولة (قواعد ثابتة فقط، لا بيانات فعلية) ---------- */
 /* ميدالية بلا أرقام: هلال بدلًا من الرقم، فضية للصغرى وذهبية للكبرى */
@@ -10178,19 +10172,7 @@ const CHAMP_STATUS = {
   WON: 'won', LOST: 'lost', BLOCKED_REPEAT: 'blocked_repeat', ENDED: 'ended'
 };
 
-/* ---------- البطولة الحالية ----------
-   TODO: اربط هذا المتغير مستقبلًا بمصدر بيانات حقيقي (Firebase Realtime DB
-   أو Google Sheets عبر PROXY_URL) يوفر كائنًا بهذا الشكل:
-   {
-     id: 'ramadan-2027-tawheed',      // معرّف فريد للبطولة (يُستخدم لمنع تكرار المشاركة)
-     name: 'بطولة ...',               // اسم البطولة الفعلي
-     subject: 'العلم ...',            // العلم الذي تدور حوله البطولة
-     startDate: 'YYYY-MM-DD',
-     endDate: 'YYYY-MM-DD',
-     status: 'active' | 'upcoming' | 'ended',
-     questionBankRef: '...'           // مرجع بنك الأسئلة الخاص بها
-   }
-   حاليًا لا توجد بطولة فعلية، والقيمة null تعرض حالة فارغة احترافية. */
+/* ---------- البطولة الحالية (null = لا توجد بطولة متاحة الآن) ---------- */
 let _currentChampionship = null;
 
 /* ---------- تخزين حالة المستخدم محليًا (بنفس آلية عملات همة الحالية) ---------- */
@@ -10391,6 +10373,7 @@ async function champConfirmJoin(type) {
   if (!cfg || !_currentChampionship) { champCloseModal(); return; }
   const tournamentId = _currentChampionship.id;
   if (champAlreadyParticipated(tournamentId, type)) { champCloseModal(); acctSay('لقد شاركت بالفعل في هذه البطولة.'); return; }
+  if (!champBuildQuestionSet(type, champGetQuestionBank(type)).length) { champCloseModal(); acctSay('أسئلة هذه البطولة غير جاهزة بعد، لم يُخصم أي رصيد.'); return; }
   const localBal = arenaLoadStats().hemma || 0;
   if (localBal < cfg.fee && !(_acct.user && _acct.ready)) { champCloseModal(); acctSay('رصيدك من عملات همة غير كافٍ للمشاركة.'); return; }
   try {
@@ -10422,12 +10405,10 @@ async function champConfirmJoin(type) {
   champStartQuiz(type);
 }
 
-/* ---------- بنية بنك الأسئلة (بدون أي أسئلة فعلية حاليًا) ----------
-   TODO: يُستبدل المصفوفة الفارغة أدناه ببنك أسئلة حقيقي قادم من Firebase أو
-   Google Sheets. يجب أن يكون كل سؤال بهذا الشكل:
-   { id, question, options: [...], correctAnswer, difficulty: 'veryHard'|'hard'|'medium'|'easy', category } */
+/* ---------- بنك أسئلة البطولة ----------
+   شكل السؤال: { id, question, options: [...], correctAnswer, difficulty: 'veryHard'|'hard'|'medium'|'easy', category } */
 function champGetQuestionBank(type) {
-  return []; // لا يوجد بنك أسئلة حاليًا — مقصود بحسب المرحلة الحالية
+  return [];
 }
 function champShuffleArray(arr) {
   const a = arr.slice();
@@ -10456,9 +10437,6 @@ function champStartQuiz(type) {
   const bank = champGetQuestionBank(type);
   const questions = champBuildQuestionSet(type, bank);
   if (!questions.length) {
-    // TODO: عند توفر بنك أسئلة حقيقي، استبدل هذه الرسالة بعرض شاشة الاختبار
-    // الفعلية (سؤال سؤال)، ثم استدعِ champFinishQuiz() في النهاية بعدد
-    // الإجابات الصحيحة الذي يحسبه النظام.
     acctSay('بنك أسئلة هذه البطولة غير مجهز بعد.');
     return;
   }
