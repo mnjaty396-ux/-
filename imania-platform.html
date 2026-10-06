@@ -7866,7 +7866,24 @@ const BATTLE_DIFFICULTY_MIX = [
   { level:'متقدم', count:3 },  // صعب
   { level:'متوسط', count:2 }   // متوسط
 ];
+/* خلط ترتيب الاختيارات مع تحديث correctIndex (كانت الإجابة الصحيحة دايمًا فى مكانها الأصلي = أ).
+   بيتنفذ مرة واحدة وقت بناء أسئلة المباراة فالطرفين بيشوفوا نفس الترتيب. */
+function arenaShuffleOptions(q) {
+  if (!q || !Array.isArray(q.options)) return q;
+  const filled = [], blanks = [];
+  q.options.forEach((t, i) => {
+    const item = { t, c: i === q.correctIndex };
+    if (t === undefined || t === null || String(t).trim() === '') blanks.push(item); else filled.push(item);
+  });
+  if (filled.length < 2) return q;
+  const mixed = arenaShuffle(filled).concat(blanks);
+  const ci = mixed.findIndex(o => o.c);
+  return Object.assign({}, q, { options: mixed.map(o => o.t), correctIndex: ci >= 0 ? ci : 0 });
+}
 function arenaBuildBattlePool(pool) {
+  return arenaBuildBattlePoolRaw(pool).map(arenaShuffleOptions);
+}
+function arenaBuildBattlePoolRaw(pool) {
   const used = new Set();
   let result = [];
   BATTLE_DIFFICULTY_MIX.forEach(tier => {
@@ -9788,7 +9805,7 @@ async function acctLoadRecord(user) {
     if (!link) delta = localH;                                   // أول ربط على هذا الجهاز: تُنقل العملات المحلية مرة واحدة
     else if (link.uid === user.uid) delta = localH - (link.last || 0);   // نفس الحساب: نضيف ما كُسب منذ آخر مزامنة
     const base = { updatedAt: Date.now() };
-    if (!rec || !rec.photoCustom) base.photo = acctSafeUrl(user.photoURL) || '';   // لا نستبدل الصورة التي اختارها المستخدم
+    if (!rec || !rec.photoCustom) { const _pu = acctSafeUrl(user.photoURL); if (_pu) base.photo = _pu; }   // لا نستبدل الصورة التي اختارها المستخدم
     if (!rec || !rec.name) base.name = (rec && rec.name) || (user.displayName || 'لاعب').slice(0, 24);
     if (!rec) base.createdAt = Date.now();
     await acctWithTimeout(ref.update(base));
@@ -10681,7 +10698,7 @@ function gcNoCharactersState() {
 }
 let _gcMyChar = null;
 async function gcPickMyChar() {
-  const list = await getGuessCharCharacters();
+  const list = await gcLoadChars();
   _gcMyChar = list.length ? list[Math.floor(Math.random() * list.length)] : null;
   return _gcMyChar;
 }
@@ -10699,6 +10716,7 @@ function openGuessCharLobby() {
   });
 }
 function cancelGuessCharState() {
+  window._gcSearchToken = (window._gcSearchToken || 0) + 1;
   gcCleanupListeners();
   if (gcRoomRef && gcMyKey) { try { gcRoomRef.child('players/' + gcMyKey + '/connected').set(false); } catch (e) {} }
   if (window._gcQueueRef) { try { window._gcQueueRef.transaction(c => (c && c.uid === arenaMyId()) ? null : c); } catch (e) {} }
@@ -10707,48 +10725,95 @@ function cancelGuessCharState() {
 }
 
 /* ---------- 3) لعب ضد صديق (بكود) ---------- */
+/* ===== أدوات تمنع التعليق الأبدي (مهلة لكل عملية + رسالة خطأ واضحة) ===== */
+function gcWithTimeout(promise, ms, label) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('timeout:' + (label || ''))), ms);
+    Promise.resolve(promise).then(v => { clearTimeout(t); resolve(v); }, e => { clearTimeout(t); reject(e); });
+  });
+}
+/* تحميل الشخصيات بمهلة 6 ثوانٍ، وبعدها نكمل بالبنك المحلي بدل ما نفضل مستنيين الشيت */
+async function gcLoadChars() {
+  try { return await gcWithTimeout(getGuessCharCharacters(), 6000, 'chars'); }
+  catch (e) { if (!_gcCharsCache) _gcCharsCache = GUESS_CHAR_DB.slice(); return _gcCharsCache; }
+}
+function gcWaitFor(ref, pred, ms) {
+  return new Promise(resolve => {
+    let done = false;
+    const cb = snap => { if (!done && pred(snap.val())) { done = true; clearTimeout(t); ref.off('value', cb); resolve(true); } };
+    const t = setTimeout(() => { if (!done) { done = true; ref.off('value', cb); resolve(false); } }, ms);
+    ref.on('value', cb);
+  });
+}
+function gcShowSpinner(topTitle, icon, title, desc) {
+  showPage('page-guesschar-state');
+  document.getElementById('guessCharStateTopTitle').textContent = topTitle;
+  document.getElementById('guessCharStateContent').innerHTML = `
+    <div class="arena-state-icon spin">${icon}</div>
+    <div class="arena-state-title">${title}</div>
+    ${desc ? `<div class="arena-state-desc">${desc}</div>` : ''}
+    <button class="arena-cancel-btn" onclick="playClickSound();cancelGuessCharState()">إلغاء</button>`;
+}
+function gcErrDesc(e) {
+  const m = String((e && (e.code || e.message)) || e || '');
+  if (/permission/i.test(m)) return 'قاعدة البيانات رافضة الكتابة (Permission denied). لازم قواعد Firebase تسمح بالمسارات: guessCharRooms و guessCharQueue و guessCharMailbox.';
+  if (/timeout/i.test(m)) return 'الاتصال بطيء أو الخادم مش بيرد. جرّب تاني.';
+  return 'حاول مرة أخرى.';
+}
+function gcShowError(title, desc) {
+  showPage('page-guesschar-state');
+  document.getElementById('guessCharStateContent').innerHTML = `
+    <div class="arena-state-icon">🙁</div>
+    <div class="arena-state-title">${title}</div>
+    ${desc ? `<div class="arena-state-desc">${desc}</div>` : ''}
+    <button class="arena-cancel-btn" onclick="playClickSound();cancelGuessCharState()">رجوع</button>`;
+}
+
 async function startGuessCharVsFriend() {
   if (!arenaFirebaseReady()) { gcShowFirebaseMissing(); return; }
-  const chars = await getGuessCharCharacters();
-  if (!chars.length) { gcNoCharactersState(); return; }
-  if (!_gcMyChar) await gcPickMyChar();
   gcCleanupListeners();
-  showPage('page-guesschar-state');
-  document.getElementById('guessCharStateTopTitle').textContent = '🤝 لعب ضد صديق';
-  document.getElementById('guessCharStateContent').innerHTML = `
-    <div class="arena-state-icon spin">🤝</div>
-    <div class="arena-state-title">جارٍ تجهيز الغرفة...</div>`;
+  const token = window._gcSearchToken = (window._gcSearchToken || 0) + 1;
+  gcShowSpinner('🤝 لعب ضد صديق', '🤝', 'جارٍ تجهيز الغرفة...');
   const code = arenaGenerateCode();
-  const db = firebase.database();
-  const roomRef = db.ref('guessCharRooms/' + code);
-  const myId = arenaMyId(), myName = arenaMyName();
-  await roomRef.set({
-    meta: { roomId: code, createdAt: Date.now(), updatedAt: Date.now(), status: 'waiting',
-      currentTurn: 'player1', winner: null, startedAt: null, endedAt: null, rewardGranted: false },
-    players: {
-      player1: { id: myId, name: myName, connected: true, guessAttempts: 0 },
-      player2: { id: null, name: '', connected: false, guessAttempts: 0 }
-    },
-    usedQuestions: {}
-  });
-  gcRoomRef = roomRef; gcCurrentRoomId = code; gcMyKey = 'player1'; gcOppKey = 'player2';
-  try { roomRef.onDisconnect().update({ 'players/player1/connected': false }); } catch (e) {}
-  document.getElementById('guessCharStateContent').innerHTML = `
-    <div class="arena-state-icon spin">🤝</div>
-    <div class="arena-state-title">شارك هذا الكود مع صديقك</div>
-    <div class="arena-state-desc">بمجرد أن يدخل صديقك هذا الكود من جهازه ستبدأ المباراة تلقائيًا لكما.</div>
-    <div class="arena-match-code">${code}</div>
-    <div class="arena-state-desc" style="margin-top:-10px;">🔌 جارٍ انتظار انضمام صديقك...</div>
-    <button class="arena-cancel-btn" onclick="playClickSound();cancelGuessCharState()">إلغاء</button>`;
-  const listener = snap => {
-    const players = snap.val();
-    if (players && players.player2 && players.player2.connected && players.player2.id) {
-      roomRef.child('players').off('value', listener);
-      roomRef.once('value').then(s => gcBeginMatch(roomRef, 'player1', s.val()));
-    }
-  };
-  roomRef.child('players').on('value', listener);
-  gcListeners.push(() => roomRef.child('players').off('value', listener));
+  try {
+    const chars = await gcLoadChars();
+    if (!chars.length) { gcNoCharactersState(); return; }
+    if (!_gcMyChar) await gcPickMyChar();
+    if (token !== window._gcSearchToken) return;
+    const db = firebase.database();
+    const roomRef = db.ref('guessCharRooms/' + code);
+    const myId = arenaMyId(), myName = arenaMyName();
+    await gcWithTimeout(roomRef.set({
+      meta: { roomId: code, createdAt: Date.now(), updatedAt: Date.now(), status: 'waiting',
+        currentTurn: 'player1', winner: null, startedAt: null, endedAt: null, rewardGranted: false },
+      players: {
+        player1: { id: myId, name: myName, connected: true, guessAttempts: 0 },
+        player2: { id: null, name: '', connected: false, guessAttempts: 0 }
+      },
+      usedQuestions: {}
+    }), 10000, 'room');
+    if (token !== window._gcSearchToken) { try { roomRef.remove(); } catch (e) {} return; }
+    gcRoomRef = roomRef; gcCurrentRoomId = code; gcMyKey = 'player1'; gcOppKey = 'player2';
+    try { roomRef.onDisconnect().update({ 'players/player1/connected': false }); } catch (e) {}
+    document.getElementById('guessCharStateContent').innerHTML = `
+      <div class="arena-state-icon spin">🤝</div>
+      <div class="arena-state-title">شارك هذا الكود مع صديقك</div>
+      <div class="arena-state-desc">بمجرد أن يدخل صديقك هذا الكود من جهازه ستبدأ المباراة تلقائيًا لكما.</div>
+      <div class="arena-match-code">${code}</div>
+      <div class="arena-state-desc" style="margin-top:-10px;">🔌 جارٍ انتظار انضمام صديقك...</div>
+      <button class="arena-cancel-btn" onclick="playClickSound();cancelGuessCharState()">إلغاء</button>`;
+    const listener = snap => {
+      const players = snap.val();
+      if (players && players.player2 && players.player2.connected && players.player2.id) {
+        roomRef.child('players').off('value', listener);
+        roomRef.once('value').then(s => gcBeginMatch(roomRef, 'player1', s.val()));
+      }
+    };
+    roomRef.child('players').on('value', listener);
+    gcListeners.push(() => roomRef.child('players').off('value', listener));
+  } catch (e) {
+    gcShowError('تعذّر إنشاء الغرفة', gcErrDesc(e));
+  }
 }
 
 /* ---------- 4) الانضمام بكود صديق ---------- */
@@ -10758,106 +10823,138 @@ async function joinGuessCharWithCode() {
   if (!code) return;
   playClickSound();
   if (!arenaFirebaseReady()) { gcShowFirebaseMissing(); return; }
-  const chars = await getGuessCharCharacters();
-  if (!chars.length) { gcNoCharactersState(); return; }
-  if (!_gcMyChar) await gcPickMyChar();
   gcCleanupListeners();
-  showPage('page-guesschar-state');
-  document.getElementById('guessCharStateTopTitle').textContent = '🤝 الانضمام لصديق';
-  document.getElementById('guessCharStateContent').innerHTML = `
-    <div class="arena-state-icon spin">🔎</div>
-    <div class="arena-state-title">جارٍ البحث عن الغرفة...</div>`;
-  const db = firebase.database();
-  const roomRef = db.ref('guessCharRooms/' + code);
-  const snap = await roomRef.once('value');
-  const room = snap.val();
-  if (!room || !room.meta || room.meta.status !== 'waiting') {
+  const token = window._gcSearchToken = (window._gcSearchToken || 0) + 1;
+  gcShowSpinner('🤝 الانضمام لصديق', '🔎', 'جارٍ البحث عن الغرفة...');
+  const notFound = () => {
     document.getElementById('guessCharStateContent').innerHTML = `
       <div class="arena-state-icon">🙁</div>
       <div class="arena-state-title">لم يتم العثور على هذه الغرفة</div>
-      <div class="arena-state-desc">تأكد من الكود مع صديقك، أو أنه بدأ مباراة أخرى بالفعل.</div>
+      <div class="arena-state-desc">تأكد من الكود مع صديقك، أو أنه بدأ مباراة أخرى بالفعل، أو أنه خرج من الغرفة.</div>
       <button class="arena-cancel-btn" onclick="playClickSound();showPage('page-guesschar-lobby')">رجوع</button>`;
-    return;
+  };
+  try {
+    const chars = await gcLoadChars();
+    if (!chars.length) { gcNoCharactersState(); return; }
+    if (!_gcMyChar) await gcPickMyChar();
+    if (token !== window._gcSearchToken) return;
+    const db = firebase.database();
+    const roomRef = db.ref('guessCharRooms/' + code);
+    const room = (await gcWithTimeout(roomRef.once('value'), 10000, 'find')).val();
+    if (!room || !room.meta || room.meta.status !== 'waiting') { notFound(); return; }
+    /* المضيف لازم يكون لسه متصل، وإلا هندخل غرفة فاضية ونفضل مستنيين */
+    if (!room.players || !room.players.player1 || room.players.player1.connected === false) { notFound(); return; }
+    const myId = arenaMyId(), myName = arenaMyName();
+    await gcWithTimeout(roomRef.child('players/player2').update({ id: myId, name: myName, connected: true, guessAttempts: 0 }), 10000, 'join');
+    await gcWithTimeout(roomRef.child('meta').update({ status: 'active', startedAt: Date.now(), updatedAt: Date.now() }), 10000, 'start');
+    try { roomRef.onDisconnect().update({ 'players/player2/connected': false }); } catch (e) {}
+    gcRoomRef = roomRef; gcCurrentRoomId = code; gcMyKey = 'player2'; gcOppKey = 'player1';
+    const fresh = (await gcWithTimeout(roomRef.once('value'), 10000, 'fresh')).val();
+    gcBeginMatch(roomRef, 'player2', fresh);
+  } catch (e) {
+    gcShowError('تعذّر الانضمام للغرفة', gcErrDesc(e));
   }
-  const myId = arenaMyId(), myName = arenaMyName();
-  await roomRef.child('players/player2').update({ id: myId, name: myName, connected: true, guessAttempts: 0 });
-  await roomRef.child('meta').update({ status: 'active', startedAt: Date.now(), updatedAt: Date.now() });
-  try { roomRef.onDisconnect().update({ 'players/player2/connected': false }); } catch (e) {}
-  gcRoomRef = roomRef; gcCurrentRoomId = code; gcMyKey = 'player2'; gcOppKey = 'player1';
-  const fresh = (await roomRef.once('value')).val();
-  gcBeginMatch(roomRef, 'player2', fresh);
 }
 
-/* ---------- 5) مباراة عشوائية (طابور مطابقة + صندوق بريد، منفصل تمامًا عن battleQueue) ---------- */
-async function startGuessCharRandom() {
+/* ---------- 5) مباراة عشوائية (طابور مطابقة + صندوق بريد، منفصل تمامًا عن battleQueue) ----------
+   إصلاح التعليق: اللاعب المنتظر اللى قفل التطبيق كان بيفضل فى الطابور ويتطابق معاه اللاعب الجاى
+   ويدخل غرفة فيها "شبح" مستنيينه ساعة. دلوقتى: (1) المنتظر بيجدد ts كل 10 ثوانٍ واللى ts بتاعه أقدم من
+   45 ثانية بيتعتبر ميت، (2) اللاعب الجاى بيتأكد إن المنتظر دخل الغرفة فعلًا خلال 12 ثانية وإلا بيعيد البحث. */
+const GC_QUEUE_STALE_MS = 45000;
+async function startGuessCharRandom(retry) {
+  retry = retry || 0;
   if (!arenaFirebaseReady()) { gcShowFirebaseMissing(); return; }
-  const chars = await getGuessCharCharacters();
-  if (!chars.length) { gcNoCharactersState(); return; }
-  if (!_gcMyChar) await gcPickMyChar();
   gcCleanupListeners();
-  showPage('page-guesschar-state');
-  document.getElementById('guessCharStateTopTitle').textContent = '🌐 مباراة عشوائية';
-  document.getElementById('guessCharStateContent').innerHTML = `
-    <div class="arena-state-icon spin">🌐</div>
-    <div class="arena-state-title">جارٍ البحث عن منافس...</div>
-    <button class="arena-cancel-btn" onclick="playClickSound();cancelGuessCharState()">إلغاء البحث</button>`;
+  const token = window._gcSearchToken = (window._gcSearchToken || 0) + 1;
+  gcShowSpinner('🌐 مباراة عشوائية', '🌐', 'جارٍ البحث عن منافس...');
   const db = firebase.database();
   const queueRef = db.ref('guessCharQueue/عام');
   window._gcQueueRef = queueRef;
   const myId = arenaMyId(), myName = arenaMyName();
-  let capturedWaitingPlayer = null, result;
+  let captured = null, result;
   try {
-    result = await queueRef.transaction(current => {
-      if (!current || !current.uid) return { uid: myId, name: myName, ts: Date.now() };
-      if (current.uid === myId) return current;
-      capturedWaitingPlayer = current;
+    const chars = await gcLoadChars();
+    if (!chars.length) { gcNoCharactersState(); return; }
+    if (!_gcMyChar) await gcPickMyChar();
+    if (token !== window._gcSearchToken) return;
+    result = await gcWithTimeout(queueRef.transaction(current => {
+      captured = null;
+      const alive = current && current.uid && (Date.now() - (current.ts || 0) < GC_QUEUE_STALE_MS);
+      if (!alive) return { uid: myId, name: myName, ts: Date.now() };
+      if (current.uid === myId) return { uid: myId, name: myName, ts: Date.now() };
+      captured = current;
       return null;
-    });
+    }), 10000, 'queue');
   } catch (e) {
-    document.getElementById('guessCharStateContent').innerHTML = `
-      <div class="arena-state-icon">🙁</div>
-      <div class="arena-state-title">تعذّر الاتصال بخادم المطابقة</div>
-      <button class="arena-cancel-btn" onclick="playClickSound();showPage('page-guesschar-lobby')">رجوع</button>`;
+    gcShowError('تعذّر الاتصال بخادم المطابقة', gcErrDesc(e));
     return;
   }
+  if (token !== window._gcSearchToken) { try { queueRef.transaction(c => (c && c.uid === myId) ? null : c); } catch (e) {} return; }
   const finalVal = result.snapshot.val();
   if (finalVal && finalVal.uid === myId) {
+    /* أنا المنتظر: أجدد حضوري كل 10 ثوانٍ وأنتظر صندوق البريد */
+    const hb = setInterval(() => {
+      try { queueRef.transaction(c => (c && c.uid === myId) ? { uid: c.uid, name: c.name, ts: Date.now() } : c); } catch (e) {}
+    }, 10000);
     const mailboxRef = db.ref('guessCharMailbox/' + myId);
     const listener = snap => {
       const roomId = snap.val();
-      if (roomId) {
-        mailboxRef.off('value', listener);
-        mailboxRef.remove();
-        const roomRef = db.ref('guessCharRooms/' + roomId);
+      if (!roomId) return;
+      clearInterval(hb);
+      mailboxRef.off('value', listener);
+      mailboxRef.remove();
+      const roomRef = db.ref('guessCharRooms/' + roomId);
+      roomRef.once('value').then(s => {
+        const r = s.val();
+        if (!r) { startGuessCharRandom(); return; }   // الغرفة اتلغت (اتأخرت) => نبحث من جديد
         gcRoomRef = roomRef; gcCurrentRoomId = roomId; gcMyKey = 'player1'; gcOppKey = 'player2';
         try { roomRef.onDisconnect().update({ 'players/player1/connected': false }); } catch (e) {}
-        roomRef.once('value').then(s => gcBeginMatch(roomRef, 'player1', s.val()));
-      }
+        gcBeginMatch(roomRef, 'player1', r);
+      }).catch(() => gcShowError('تعذّر دخول المباراة', 'حاول مرة أخرى.'));
     };
     mailboxRef.on('value', listener);
-    gcListeners.push(() => { mailboxRef.off('value', listener); queueRef.transaction(c => (c && c.uid === myId) ? null : c); });
-  } else if (capturedWaitingPlayer) {
+    gcListeners.push(() => {
+      clearInterval(hb);
+      mailboxRef.off('value', listener);
+      try { queueRef.transaction(c => (c && c.uid === myId) ? null : c); } catch (e) {}
+    });
+  } else if (captured) {
     const roomId = arenaGenerateCode();
     const roomRef = db.ref('guessCharRooms/' + roomId);
-    await roomRef.set({
-      meta: { roomId, createdAt: Date.now(), updatedAt: Date.now(), status: 'active',
-        currentTurn: 'player1', winner: null, startedAt: Date.now(), endedAt: null, rewardGranted: false },
-      players: {
-        player1: { id: capturedWaitingPlayer.uid, name: capturedWaitingPlayer.name, connected: true, guessAttempts: 0 },
-        player2: { id: myId, name: myName, connected: true, guessAttempts: 0 }
-      },
-      usedQuestions: {}
-    });
-    await db.ref('guessCharMailbox/' + capturedWaitingPlayer.uid).set(roomId);
+    const hostUid = captured.uid;
+    try {
+      await gcWithTimeout(roomRef.set({
+        meta: { roomId, createdAt: Date.now(), updatedAt: Date.now(), status: 'active',
+          currentTurn: 'player1', winner: null, startedAt: Date.now(), endedAt: null, rewardGranted: false },
+        players: {
+          player1: { id: hostUid, name: captured.name, connected: false, guessAttempts: 0 },
+          player2: { id: myId, name: myName, connected: true, guessAttempts: 0 }
+        },
+        usedQuestions: {}
+      }), 10000, 'room');
+      await gcWithTimeout(db.ref('guessCharMailbox/' + hostUid).set(roomId), 10000, 'mailbox');
+    } catch (e) {
+      gcShowError('تعذّر إنشاء المباراة', gcErrDesc(e));
+      return;
+    }
+    /* ننتظر دخول المنتظر فعلًا للغرفة (connected=true) — لو مدخلش خلال 12 ثانية يبقى شبح */
+    const joined = await gcWaitFor(roomRef.child('players/player1/connected'), v => v === true, 12000);
+    if (token !== window._gcSearchToken) { try { roomRef.remove(); } catch (e) {} return; }
+    if (!joined) {
+      try { await roomRef.remove(); } catch (e) {}
+      try { await db.ref('guessCharMailbox/' + hostUid).remove(); } catch (e) {}
+      if (retry < 2) { startGuessCharRandom(retry + 1); return; }
+      gcShowError('مفيش منافس متاح دلوقتي', 'جرّب تاني بعد شوية.');
+      return;
+    }
     gcRoomRef = roomRef; gcCurrentRoomId = roomId; gcMyKey = 'player2'; gcOppKey = 'player1';
     try { roomRef.onDisconnect().update({ 'players/player2/connected': false }); } catch (e) {}
-    const fresh = (await roomRef.once('value')).val();
-    gcBeginMatch(roomRef, 'player2', fresh);
+    try {
+      const fresh = (await gcWithTimeout(roomRef.once('value'), 10000, 'fresh')).val();
+      gcBeginMatch(roomRef, 'player2', fresh);
+    } catch (e) { gcShowError('تعذّر دخول المباراة', gcErrDesc(e)); }
   } else {
-    document.getElementById('guessCharStateContent').innerHTML = `
-      <div class="arena-state-icon">🙁</div>
-      <div class="arena-state-title">حدث خطأ غير متوقع فى المطابقة</div>
-      <button class="arena-cancel-btn" onclick="playClickSound();showPage('page-guesschar-lobby')">رجوع</button>`;
+    gcShowError('حدث خطأ غير متوقع فى المطابقة', '');
   }
 }
 
