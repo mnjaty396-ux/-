@@ -1860,6 +1860,40 @@
   .champ-modal-actions button { flex:1; padding:11px; border-radius:10px; border:none; font-weight:800; cursor:pointer; font-size:0.86rem; }
   .champ-modal-confirm { background:var(--green); color:#fff; }
   .champ-modal-cancel { background:var(--bg3); color:var(--text); }
+  
+  /* ===== البطولة الشهرية: نفس طابع صفحة الحساب (أخضر + ذهبي) ===== */
+  #page-championship-home { --ch-ink:#f4efdc; --ch-mut:#b9d4c1; --ch-gold:#e6b950; --ch-line:rgba(212,168,67,0.38); }
+  .ch-card { background:linear-gradient(165deg,#1b6d3c 0%,#14532d 55%,#0f4024 100%); border:1.5px solid var(--ch-line); border-radius:18px; padding:14px 16px; margin:0 0 14px; color:var(--ch-ink); box-shadow:0 8px 22px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); }
+  .ch-row { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(244,239,220,.12); font-size:.84rem; }
+  .ch-row:last-child { border-bottom:0; }
+  .ch-l { color:var(--ch-mut); } .ch-v { font-weight:800; color:var(--ch-ink); text-align:left; }
+  .ch-title { font-weight:900; color:var(--ch-gold); font-size:.95rem; margin:20px 4px 10px; display:flex; align-items:center; gap:8px; }
+  .ch-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--ch-line),transparent); }
+  .ch-btn { display:block; width:100%; margin-top:10px; border:0; cursor:pointer; font-family:'Tajawal',sans-serif; font-weight:800; font-size:.95rem; padding:13px; border-radius:14px; color:#2b1d00; background:linear-gradient(135deg,#f0c060,#d4a843); box-shadow:0 6px 18px rgba(212,168,67,.28); transition:transform .15s; }
+  .ch-btn:active { transform:scale(.97); } .ch-btn:disabled { opacity:.5; }
+  .ch-btn.ghost { background:rgba(0,0,0,.22); color:var(--ch-ink); border:1.5px solid var(--ch-line); box-shadow:none; }
+  .ch-back { border:1.5px solid var(--ch-line); background:rgba(0,0,0,.22); color:var(--ch-ink); font-family:'Tajawal',sans-serif; font-weight:700; font-size:.85rem; padding:8px 16px; border-radius:50px; cursor:pointer; margin:0 0 12px; }
+  .ch-pill { display:flex; align-items:center; gap:8px; background:rgba(0,0,0,.24); border:1px solid rgba(212,168,67,.22); border-radius:14px; padding:10px 14px; margin-bottom:8px; color:var(--ch-ink); font-weight:700; font-size:.88rem; }
+  .ch-types { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:6px; }
+  .ch-type { border-radius:18px; padding:14px 12px; text-align:center; color:var(--ch-ink); background:linear-gradient(165deg,#1f3d2c,#0f2a1b); border:1.5px solid #c7ccd6; box-shadow:0 8px 22px rgba(0,0,0,.35); }
+  .ch-type.major { border-color:#d4af37; background:linear-gradient(165deg,#3a2a07,#1d1403); }
+  .ch-type-h { font-weight:900; font-size:1rem; display:flex; gap:6px; align-items:center; justify-content:center; }
+  .ch-type.major .ch-type-h { color:#f0c060; }
+  .ch-type-d { font-size:.76rem; color:var(--ch-mut); line-height:1.9; margin-top:8px; }
+  .ch-bar { height:9px; border-radius:50px; background:rgba(0,0,0,.35); overflow:hidden; margin:8px 0 4px; } .ch-bar div { height:100%; border-radius:50px; transition:width .4s; }
+  .ch-day { display:flex; align-items:center; gap:12px; padding:12px 14px; margin-bottom:10px; border-radius:16px; background:rgba(0,0,0,.24); border:1.5px solid rgba(244,239,220,.12); color:var(--ch-ink); }
+  .ch-day.available { border-color:#4ade80; background:rgba(74,222,128,.12); cursor:pointer; }
+  .ch-day.completed { border-color:var(--ch-line); background:rgba(212,168,67,.12); }
+  .ch-day.locked, .ch-day.expired { opacity:.55; }
+  .ch-dn { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; background:rgba(244,239,220,.12); color:var(--ch-gold); }
+  .ch-dname { flex:1; font-weight:800; } .ch-dst { font-size:.78rem; color:var(--ch-mut); }
+  .ch-oath { text-align:center; padding:26px 18px; border:2px solid var(--ch-gold); }
+  .ch-oath-t { font-family:'Amiri',serif; font-size:1.3rem; line-height:2.1; color:#fff4d0; margin:12px 0 6px; }
+  .ch-trow { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid rgba(244,239,220,.12); cursor:pointer; line-height:1.7; font-size:.9rem; }
+  .ch-trow input { display:none; }
+  .ch-trow i { flex:0 0 24px; height:24px; border-radius:8px; border:2px solid var(--ch-gold); margin-top:2px; position:relative; transition:.15s; }
+  .ch-trow input:checked + i { background:linear-gradient(135deg,#f0c060,#d4a843); }
+  .ch-trow input:checked + i::after { content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#2b1d00; font-weight:900; }
   /* ============== نهاية طابع البطولة الشهرية ============== */
 
   /* ============== 🛍️ متجر العملات ============== */
@@ -10237,7 +10271,7 @@ function chTotals(t) {
     return { uid, name: m.name, pts };
   }).sort((a, b) => b.pts - a.pts);
 }
-function chBtn(label, fn, cls) { return `<button class="${cls || 'champ-modal-confirm'}" style="width:100%;margin-top:8px" onclick="playClickSound();${fn}">${label}</button>`; }
+function chBtn(label, fn, cls) { return `<button class="ch-btn ${cls || ''}" onclick="playClickSound();${fn}">${label}</button>`; }
 function openChampionshipHome() {
   showPage('page-championship-home');
   try { chDb().ref('.info/serverTimeOffset').once('value', s => { _ch.off = s.val() || 0; }); } catch (e) {}
@@ -10253,10 +10287,10 @@ async function champRenderAll() {
     const rows = Object.entries(all).map(([id, t]) => Object.assign({ id }, t)).reverse();
     const mine = rows.filter(t => t.members && t.members[me] && !t.members[me].left);
     const open = rows.filter(t => t.status === 'open' && !(t.members && t.members[me]));
-    const row = t => { const c = chCfg(t), st = chState(t); return `<div class="champ-info-card" style="cursor:pointer" onclick="playClickSound();champOpen('${t.id}')"><div class="champ-info-row"><span class="champ-info-label">${c.icon} ${c.name}</span><span class="champ-info-value">${{open:'مفتوحة',active:'جارية',ended:'منتهية'}[st]}</span></div><div class="champ-info-row"><span class="champ-info-label">القائد: ${chE(t.leaderName)}</span><span class="champ-info-value">${chMembers(t).length} / 10</span></div></div>`; };
-    chView(`<div class="champ-cards">${['minor', 'major'].map(k => `<div class="champ-card ${k === 'major' ? 'major' : ''}" style="padding:14px"><div style="font-weight:700">${CHAMPIONSHIP_TYPES[k].icon} ${CHAMPIONSHIP_TYPES[k].name}</div><div class="acct-p">7 أيام · ${CHAMP_TASKS[k].length} مهام يوميًا · ${CHAMPIONSHIP_TYPES[k].max} نقطة · ${CHAMPIONSHIP_TYPES[k].prizeCoins} عملة + ${CHAMPIONSHIP_TYPES[k].cash} جنيه</div>${chBtn('إنشاء بطولة (أنت القائد)', `champCreate('${k}')`)}</div>`).join('')}</div>
-      <div class="champ-section-title">بطولاتي</div>${mine.map(row).join('') || '<div class="acct-p" style="text-align:center">لم تنضم لأي بطولة بعد</div>'}
-      <div class="champ-section-title">بطولات مفتوحة للانضمام</div>${open.map(row).join('') || '<div class="acct-p" style="text-align:center">لا توجد بطولات مفتوحة الآن</div>'}`);
+    const row = t => { const c = chCfg(t), st = chState(t); return `<div class="ch-card" style="cursor:pointer" onclick="playClickSound();champOpen('${t.id}')"><div class="ch-row"><span class="ch-l">${c.icon} ${c.name}</span><span class="ch-v">${{open:'مفتوحة',active:'جارية',ended:'منتهية'}[st]}</span></div><div class="ch-row"><span class="ch-l">القائد: ${chE(t.leaderName)}</span><span class="ch-v">${chMembers(t).length} / 10</span></div></div>`; };
+    chView(`<div class="ch-types">${['minor', 'major'].map(k => { const c = CHAMPIONSHIP_TYPES[k]; return `<div class="ch-type ${k === 'major' ? 'major' : ''}"><div class="ch-type-h">${c.icon} ${c.name}</div><div class="ch-type-d">7 أيام · ${c.tasks} مهام يوميًا<br>${c.max} نقطة<br>${c.prizeCoins} عملة + ${c.cash} جنيه</div>${chBtn('إنشاء بطولة', `champCreate('${k}')`)}</div>`; }).join('')}</div>
+      <div class="ch-title">بطولاتي</div>${mine.map(row).join('') || '<div class="acct-p" style="text-align:center">لم تنضم لأي بطولة بعد</div>'}
+      <div class="ch-title">بطولات مفتوحة للانضمام</div>${open.map(row).join('') || '<div class="acct-p" style="text-align:center">لا توجد بطولات مفتوحة الآن</div>'}`);
   } catch (e) { chView('<div class="empty-state"><div>تعذّر التحميل، تحقق من الاتصال.</div></div>'); }
 }
 async function champCreate(type) {
@@ -10284,7 +10318,7 @@ async function champOpen(id, keepView) {
     }
     champRenderTourney();
     if (_ch.res && _ch.res.winners && _ch.res.winners[me] && !_ch.claim) champClaim();
-  } catch (e) { chView('<div class="empty-state"><div>تعذّر فتح البطولة.</div></div>' + chBtn('رجوع', 'champBack()', 'champ-modal-cancel')); }
+  } catch (e) { chView('<div class="empty-state"><div>تعذّر فتح البطولة.</div></div>' + chBtn('رجوع', 'champBack()', 'ghost')); }
 }
 function champBack() { _ch.id = null; _ch.view = 'main'; champRenderAll(); }
 function champRenderTourney() {
@@ -10292,38 +10326,38 @@ function champRenderTourney() {
   const mem = chMembers(t), isMem = !!(t.members && t.members[me] && !t.members[me].left), tot = chTotals(t);
   const myPts = (tot.find(x => x.uid === me) || {}).pts || 0, medals = ['🥇', '🥈', '🥉'];
   const fmt = ms => new Date(ms).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' });
-  let h = `<button class="champ-modal-cancel" onclick="playClickSound();champBack()">← البطولات</button>
-  <div class="champ-info-card"><div class="champ-info-row"><span class="champ-info-label">${c.icon} ${c.name}</span><span class="champ-info-value">${{open:'بانتظار البدء',active:'جارية',ended:'منتهية'}[st]}</span></div>
-  <div class="champ-info-row"><span class="champ-info-label">المشاركون</span><span class="champ-info-value">${mem.length} / 10 مشاركين</span></div>
-  <div class="champ-info-row"><span class="champ-info-label">القائد</span><span class="champ-info-value">${chE(t.leaderName)}</span></div>
-  <div class="champ-info-row"><span class="champ-info-label">المدة</span><span class="champ-info-value">7 أيام · ${c.tasks} نقاط يوميًا · حتى ${c.max} نقطة</span></div>
-  <div class="champ-info-row"><span class="champ-info-label">الجائزة</span><span class="champ-info-value">${c.prizeCoins} عملة + درع + ${c.cash} جنيه (تُقسَّم بين الفائزين)</span></div>
-  ${t.startAt ? `<div class="champ-info-row"><span class="champ-info-label">البداية</span><span class="champ-info-value">${fmt(t.startAt)}</span></div><div class="champ-info-row"><span class="champ-info-label">النهاية</span><span class="champ-info-value">${fmt(t.startAt + 7 * CH_DAY)}</span></div>` : ''}</div>`;
+  let h = `<button class="ch-back" onclick="playClickSound();champBack()">← البطولات</button>
+  <div class="ch-card"><div class="ch-row"><span class="ch-l">${c.icon} ${c.name}</span><span class="ch-v">${{open:'بانتظار البدء',active:'جارية',ended:'منتهية'}[st]}</span></div>
+  <div class="ch-row"><span class="ch-l">المشاركون</span><span class="ch-v">${mem.length} / 10 مشاركين</span></div>
+  <div class="ch-row"><span class="ch-l">القائد</span><span class="ch-v">${chE(t.leaderName)}</span></div>
+  <div class="ch-row"><span class="ch-l">المدة</span><span class="ch-v">7 أيام · ${c.tasks} نقاط يوميًا · حتى ${c.max} نقطة</span></div>
+  <div class="ch-row"><span class="ch-l">الجائزة</span><span class="ch-v">${c.prizeCoins} عملة + درع + ${c.cash} جنيه (تُقسَّم بين الفائزين)</span></div>
+  ${t.startAt ? `<div class="ch-row"><span class="ch-l">البداية</span><span class="ch-v">${fmt(t.startAt)}</span></div><div class="ch-row"><span class="ch-l">النهاية</span><span class="ch-v">${fmt(t.startAt + 7 * CH_DAY)}</span></div>` : ''}</div>`;
   if (st === 'open') {
     if (isL) {
       const rq = Object.entries(_ch.reqs);
-      h += `<div class="champ-section-title">طلبات ${c.name} (${rq.length})</div>` + (rq.map(([u, r]) => `<div class="champ-info-card"><div class="champ-info-row"><span class="champ-info-label">👤 ${chE(r.name)}</span></div><div style="display:flex;gap:8px"><button class="champ-modal-confirm" style="flex:1" onclick="champAccept('${u}')">قبول</button><button class="champ-modal-cancel" style="flex:1" onclick="champReject('${u}')">رفض</button></div></div>`).join('') || '<div class="acct-p" style="text-align:center">لا توجد طلبات جديدة</div>');
-      h += `<div class="champ-section-title">المشاركون (${mem.length} / 10)</div>` + mem.map(([, m]) => `<div class="champ-badge-item">👤 ${chE(m.name)}</div>`).join('') + chBtn('ابدأ البطولة الآن', 'champStart()') + (mem.length < 2 ? '<div class="acct-p" style="text-align:center">يلزم مشاركان على الأقل للبدء</div>' : '');
+      h += `<div class="ch-title">طلبات ${c.name} (${rq.length})</div>` + (rq.map(([u, r]) => `<div class="ch-card"><div class="ch-row"><span class="ch-l">👤 ${chE(r.name)}</span></div><div style="display:flex;gap:8px"><button class="ch-btn" style="flex:1" onclick="champAccept('${u}')">قبول</button><button class="ch-btn ghost" style="flex:1" onclick="champReject('${u}')">رفض</button></div></div>`).join('') || '<div class="acct-p" style="text-align:center">لا توجد طلبات جديدة</div>');
+      h += `<div class="ch-title">المشاركون (${mem.length} / 10)</div>` + mem.map(([, m]) => `<div class="ch-pill">👤 ${chE(m.name)}</div>`).join('') + chBtn('ابدأ البطولة الآن', 'champStart()') + (mem.length < 2 ? '<div class="acct-p" style="text-align:center">يلزم مشاركان على الأقل للبدء</div>' : '');
     } else if (isMem) h += '<div class="acct-p" style="text-align:center">أنت مشارك. بانتظار أن يبدأ القائد البطولة.</div>';
     else h += chBtn('إرسال طلب انضمام', 'champRequest()');
     chView(h); return;
   }
   if (!isMem) { chView(h + '<div class="acct-p" style="text-align:center">هذه البطولة لأعضائها فقط.</div>'); return; }
-  h += `<div class="champ-info-card"><div class="champ-info-row"><span class="champ-info-label">نقاطي</span><span class="champ-info-value">${myPts}</span></div><div class="champ-info-row"><span class="champ-info-label">إجمالي نقاط البطولة</span><span class="champ-info-value">${myPts} / ${c.max}</span></div><div style="height:8px;border-radius:6px;background:rgba(128,128,128,.25);overflow:hidden"><div style="height:100%;width:${Math.round(myPts / c.max * 100)}%;background:${c.color}"></div></div><div class="champ-info-row"><span class="champ-info-label">ترتيبي</span><span class="champ-info-value">${1 + tot.filter(x => x.pts > myPts).length} من ${tot.length}</span></div></div>
-  <div class="champ-section-title">المتصدرون</div>` + tot.slice(0, 3).map(x => `<div class="champ-badge-item">${medals[tot.filter(y => y.pts > x.pts).length] || '🏅'} ${chE(x.name)} — ${x.pts} نقطة</div>`).join('');
+  h += `<div class="ch-card"><div class="ch-row"><span class="ch-l">نقاطي</span><span class="ch-v">${myPts}</span></div><div class="ch-row"><span class="ch-l">إجمالي نقاط البطولة</span><span class="ch-v">${myPts} / ${c.max}</span></div><div class="ch-bar"><div style="width:${Math.round(myPts / c.max * 100)}%;background:${c.color}"></div></div><div class="ch-row"><span class="ch-l">ترتيبي</span><span class="ch-v">${1 + tot.filter(x => x.pts > myPts).length} من ${tot.length}</span></div></div>
+  <div class="ch-title">المتصدرون</div>` + tot.slice(0, 3).map(x => `<div class="ch-pill">${medals[tot.filter(y => y.pts > x.pts).length] || '🏅'} ${chE(x.name)} — ${x.pts} نقطة</div>`).join('');
   if (st === 'ended') {
     const r = _ch.res;
     if (r) {
       const ws = Object.entries(r.winners || {});
-      h += `<div class="champ-section-title">🏆 النتائج النهائية</div>${tot.map(x => `<div class="champ-badge-item">${r.winners && r.winners[x.uid] ? '🥇' : '▫️'} ${chE(x.name)} — ${x.pts}</div>`).join('')}<div class="champ-info-card"><div class="champ-info-row"><span class="champ-info-label">الفائزون</span><span class="champ-info-value">${ws.map(([, n]) => chE(n)).join('، ')}</span></div><div class="champ-info-row"><span class="champ-info-label">الجائزة النقدية</span><span class="champ-info-value">${r.share} جنيه لكل فائز (حالة الدفع: ${r.paymentStatus === 'paid' ? 'تم' : 'قيد الانتظار'})</span></div>${r.winners && r.winners[me] ? `<div class="champ-info-row"><span class="champ-info-label">جوائزك</span><span class="champ-info-value">${_ch.claim ? '✓ الدرع + ' + c.prizeCoins + ' عملة' : 'جارٍ التسليم...'}</span></div>` : ''}</div>`;
+      h += `<div class="ch-title">🏆 النتائج النهائية</div>${tot.map(x => `<div class="ch-pill">${r.winners && r.winners[x.uid] ? '🥇' : '▫️'} ${chE(x.name)} — ${x.pts}</div>`).join('')}<div class="ch-card"><div class="ch-row"><span class="ch-l">الفائزون</span><span class="ch-v">${ws.map(([, n]) => chE(n)).join('، ')}</span></div><div class="ch-row"><span class="ch-l">الجائزة النقدية</span><span class="ch-v">${r.share} جنيه لكل فائز (حالة الدفع: ${r.paymentStatus === 'paid' ? 'تم' : 'قيد الانتظار'})</span></div>${r.winners && r.winners[me] ? `<div class="ch-row"><span class="ch-l">جوائزك</span><span class="ch-v">${_ch.claim ? '✓ الدرع + ' + c.prizeCoins + ' عملة' : 'جارٍ التسليم...'}</span></div>` : ''}</div>`;
       if (isL && r.paymentStatus !== 'paid') h += chBtn('تم دفع الجوائز النقدية', 'champMarkPaid()');
     }
   }
-  h += '<div class="champ-section-title">الأيام</div>' + CH_NAMES.map((n, i) => {
+  h += '<div class="ch-title">الأيام</div>' + CH_NAMES.map((n, i) => {
     const d = i + 1, rec = (_ch.days[me] || {})[d], s0 = t.startAt + i * CH_DAY;
     const s = rec && rec.tasks ? 'completed' : chNow() < s0 ? 'locked' : chNow() >= s0 + CH_DAY ? 'expired' : 'available';
     const lb = { completed: `✓ مكتمل (${rec && rec.pts}/${c.tasks})`, locked: '🔒 مغلق', expired: 'انتهى', available: '🟢 متاح' }[s];
-    return `<div class="champ-info-card" ${s === 'available' ? `style="cursor:pointer" onclick="playClickSound();champDay(${d})"` : ''}><div class="champ-info-row"><span class="champ-info-label">${n}</span><span class="champ-info-value">${lb}</span></div></div>`;
+    return `<div class="ch-day ${s}" ${s === 'available' ? `onclick="playClickSound();champDay(${d})"` : ''}><span class="ch-dn">${d}</span><span class="ch-dname">${n}</span><span class="ch-dst">${lb}</span></div>`;
   }).join('');
   chView(h);
 }
@@ -10354,11 +10388,11 @@ async function champStart() {
 function champDay(d) {
   const me = chMe(), t = _ch.t, c = chCfg(t), rec = (_ch.days[me] || {})[d];
   if (rec && rec.tasks) return;
-  const back = chBtn('رجوع', 'champOpen(_ch.id)', 'champ-modal-cancel');
+  const back = chBtn('رجوع', 'champOpen(_ch.id)', 'ghost');
   if (!rec || !rec.oath) {
-    chView(`<div class="champ-info-card" style="text-align:center"><div style="font-size:2rem">🤲</div><div class="champ-section-title">${CH_NAMES[d - 1]}</div><p style="font-weight:700;line-height:2">أقسم بالله العظيم الذي لا إله إلا هو أنني لن أكذب في أي خيار سأختاره الآن</p>${chBtn('أقسم بذلك', `champOath(${d})`)}</div>` + back); return;
+    chView(`<div class="ch-card ch-oath"><div style="font-size:2rem">🤲</div><div class="ch-title">${CH_NAMES[d - 1]}</div><p class="ch-oath-t">أقسم بالله العظيم الذي لا إله إلا هو أنني لن أكذب في أي خيار سأختاره الآن</p>${chBtn('أقسم بذلك', `champOath(${d})`)}</div>` + back); return;
   }
-  chView(`<div class="champ-section-title">${CH_NAMES[d - 1]}</div><div class="champ-info-card">${CHAMP_TASKS[t.type].map((x, i) => `<label style="display:flex;gap:10px;padding:8px 0;align-items:flex-start"><input type="checkbox" class="ch-task" onchange="champCount()"> <span>${x}</span></label>`).join('')}<div class="champ-info-row"><span class="champ-info-label">نقاط اليوم</span><span class="champ-info-value" id="chDayPts">0 / ${c.tasks}</span></div></div><div class="acct-p" style="text-align:center">بعد الحفظ لا يمكن التعديل.</div>${chBtn('حفظ اليوم', `champSubmit(${d})`)}` + back);
+  chView(`<div class="ch-title">${CH_NAMES[d - 1]}</div><div class="ch-card">${CHAMP_TASKS[t.type].map((x, i) => `<label class="ch-trow"><input type="checkbox" class="ch-task" onchange="champCount()"><i></i><span>${x}</span></label>`).join('')}<div class="ch-row"><span class="ch-l">نقاط اليوم</span><span class="ch-v" id="chDayPts">0 / ${c.tasks}</span></div></div><div class="acct-p" style="text-align:center">بعد الحفظ لا يمكن التعديل.</div>${chBtn('حفظ اليوم', `champSubmit(${d})`)}` + back);
 }
 function champCount() { const n = document.querySelectorAll('.ch-task:checked').length; document.getElementById('chDayPts').textContent = n + ' / ' + chCfg(_ch.t).tasks; }
 async function champOath(d) {
