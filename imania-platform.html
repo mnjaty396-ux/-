@@ -1862,7 +1862,7 @@
   .champ-modal-cancel { background:var(--bg3); color:var(--text); }
   
   /* ===== البطولة الشهرية: نفس طابع صفحة الحساب (أخضر + ذهبي) ===== */
-  #page-championship-home { --ch-ink:#f4efdc; --ch-mut:#b9d4c1; --ch-gold:#e6b950; --ch-line:rgba(212,168,67,0.38); }
+  #page-championship-home, #acctChampReqs { --ch-ink:#f4efdc; --ch-mut:#b9d4c1; --ch-gold:#e6b950; --ch-line:rgba(212,168,67,0.38); }
   .ch-card { background:linear-gradient(165deg,#1b6d3c 0%,#14532d 55%,#0f4024 100%); border:1.5px solid var(--ch-line); border-radius:18px; padding:14px 16px; margin:0 0 14px; color:var(--ch-ink); box-shadow:0 8px 22px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); }
   .ch-row { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(244,239,220,.12); font-size:.84rem; }
   .ch-row:last-child { border-bottom:0; }
@@ -9775,7 +9775,9 @@ function acctRenderPage() {
         <button class="kbc-btn" onclick="playClickSound();socOpenFriends('requests')">📩 الطلبات <span class="soc-bd soc-bd-req" style="display:none"></span></button>
       </div></div>
     ${shop}
-    ${champBadgesHtml()}`;
+    ${champBadgesHtml()}
+    <div id="acctChampReqs"></div>`;
+  if (typeof champLoadLeaderRequests === 'function') champLoadLeaderRequests();
 }
 function acctRenderAll() {
   acctRenderTop();
@@ -10279,21 +10281,28 @@ function openChampionshipHome() {
 }
 async function champRenderAll() {
   const me = chMe();
-  if (!me || typeof firebase === 'undefined') { chView('<div class="empty-state"><div class="empty-icon">🔐</div><div>سجّل دخولك من «حسابي» للمشاركة في البطولات</div></div>'); return; }
+  if (typeof firebase === 'undefined') { chView('<div class="empty-state"><div>تعذّر الاتصال بقاعدة البيانات.</div></div>'); return; }
   if (_ch.id) { champOpen(_ch.id, true); return; }
   chView('<div class="empty-state"><div class="empty-icon">⏳</div><div>جارٍ التحميل...</div></div>');
+  const waiting = !!(_acct.user && !_acct.ready);
+  const cta = me ? '' : `<div class="ch-card" style="text-align:center"><div class="ch-l">${waiting ? 'جارٍ تحميل حسابك...' : 'تقدر تتصفح البطولات، لكن لازم تسجّل الدخول بحساب Google عشان تنشئ بطولة أو تنضم لبطولة.'}</div>${waiting ? '' : chBtn('تسجيل الدخول', "showPage('page-account')")}</div>`;
+  const afterRender = () => { if (!isPlatformOwner()) document.querySelectorAll('#champRoot .ch-types').forEach(e => e.remove()); if (!me) { const root = document.getElementById('champRoot'); if (root) root.insertAdjacentHTML('afterbegin', cta); } };
   try {
     const all = (await chDb().ref('champ').limitToLast(60).once('value')).val() || {};
     const rows = Object.entries(all).map(([id, t]) => Object.assign({ id }, t)).reverse();
     const mine = rows.filter(t => t.members && t.members[me] && !t.members[me].left);
     const open = rows.filter(t => t.status === 'open' && !(t.members && t.members[me]));
-    const row = t => { const c = chCfg(t), st = chState(t); return `<div class="ch-card" style="cursor:pointer" onclick="playClickSound();champOpen('${t.id}')"><div class="ch-row"><span class="ch-l">${c.icon} ${c.name}</span><span class="ch-v">${{open:'مفتوحة',active:'جارية',ended:'منتهية'}[st]}</span></div><div class="ch-row"><span class="ch-l">القائد: ${chE(t.leaderName)}</span><span class="ch-v">${chMembers(t).length} / 10</span></div></div>`; };
+    const pend = {};
+    if (me) await Promise.all(open.map(async t => { try { pend[t.id] = !!(await chDb().ref('champReqs/' + t.id + '/' + me).once('value')).val(); } catch (e) {} }));
+    const row = t => { const c = chCfg(t), st = chState(t); return `<div class="ch-card" style="cursor:pointer" onclick="playClickSound();champOpen('${t.id}')"><div class="ch-row"><span class="ch-l">${c.icon} ${c.name}</span><span class="ch-v">${{open:'مفتوحة',active:'جارية',ended:'منتهية'}[st]}</span></div><div class="ch-row"><span class="ch-l">القائد: ${chE(t.leaderName)}</span><span class="ch-v">${chMembers(t).length} / 10</span></div>${me && t.status === 'open' && !(t.members && t.members[me]) ? (pend[t.id] ? '<div class="ch-btn ghost" style="text-align:center;opacity:.75">⏳ بانتظار رد القائد</div>' : chBtn('إرسال طلب انضمام', `event.stopPropagation();champRequestFor('${t.id}')`)) : ''}</div>`; };
     chView(`<div class="ch-types">${['minor', 'major'].map(k => { const c = CHAMPIONSHIP_TYPES[k]; return `<div class="ch-type ${k === 'major' ? 'major' : ''}"><div class="ch-type-h">${c.icon} ${c.name}</div><div class="ch-type-d">7 أيام · ${c.tasks} مهام يوميًا<br>${c.max} نقطة<br>${c.prizeCoins} عملة + ${c.cash} جنيه</div>${chBtn('إنشاء بطولة', `champCreate('${k}')`)}</div>`; }).join('')}</div>
       <div class="ch-title">بطولاتي</div>${mine.map(row).join('') || '<div class="acct-p" style="text-align:center">لم تنضم لأي بطولة بعد</div>'}
       <div class="ch-title">بطولات مفتوحة للانضمام</div>${open.map(row).join('') || '<div class="acct-p" style="text-align:center">لا توجد بطولات مفتوحة الآن</div>'}`);
-  } catch (e) { chView('<div class="empty-state"><div>تعذّر التحميل، تحقق من الاتصال.</div></div>'); }
+    afterRender();
+  } catch (e) { chView('<div class="empty-state"><div>تعذّر التحميل، تحقق من الاتصال.</div></div>'); afterRender(); }
 }
 async function champCreate(type) {
+  if (!isPlatformOwner()) { acctSay('إنشاء البطولات للقائد فقط.'); return; }
   const me = chMe(), name = ((_acct.rec && _acct.rec.name) || 'لاعب').slice(0, 24);
   try {
     const ref = chDb().ref('champ').push();
@@ -10339,7 +10348,7 @@ function champRenderTourney() {
       h += `<div class="ch-title">طلبات ${c.name} (${rq.length})</div>` + (rq.map(([u, r]) => `<div class="ch-card"><div class="ch-row"><span class="ch-l">👤 ${chE(r.name)}</span></div><div style="display:flex;gap:8px"><button class="ch-btn" style="flex:1" onclick="champAccept('${u}')">قبول</button><button class="ch-btn ghost" style="flex:1" onclick="champReject('${u}')">رفض</button></div></div>`).join('') || '<div class="acct-p" style="text-align:center">لا توجد طلبات جديدة</div>');
       h += `<div class="ch-title">المشاركون (${mem.length} / 10)</div>` + mem.map(([, m]) => `<div class="ch-pill">👤 ${chE(m.name)}</div>`).join('') + chBtn('ابدأ البطولة الآن', 'champStart()') + (mem.length < 2 ? '<div class="acct-p" style="text-align:center">يلزم مشاركان على الأقل للبدء</div>' : '');
     } else if (isMem) h += '<div class="acct-p" style="text-align:center">أنت مشارك. بانتظار أن يبدأ القائد البطولة.</div>';
-    else h += chBtn('إرسال طلب انضمام', 'champRequest()');
+    else h += me ? chBtn('إرسال طلب انضمام', 'champRequest()') : chBtn('سجّل الدخول للانضمام', "showPage('page-account')");
     chView(h); return;
   }
   if (!isMem) { chView(h + '<div class="acct-p" style="text-align:center">هذه البطولة لأعضائها فقط.</div>'); return; }
@@ -10361,11 +10370,44 @@ function champRenderTourney() {
   }).join('');
   chView(h);
 }
-async function champRequest() {
-  const me = chMe(); try {
-    await chDb().ref('champReqs/' + _ch.id + '/' + me).set({ name: ((_acct.rec && _acct.rec.name) || 'لاعب').slice(0, 24), ts: firebase.database.ServerValue.TIMESTAMP });
-    acctSay('تم إرسال طلب الانضمام للقائد.');
-  } catch (e) { acctSay('تعذّر إرسال الطلب (ربما أرسلته من قبل).'); }
+async function champRequestFor(id) {
+  const me = chMe(); if (!me) { acctSay('سجّل الدخول أولًا.'); return; }
+  try {
+    await chDb().ref('champReqs/' + id + '/' + me).set({ name: ((_acct.rec && _acct.rec.name) || 'لاعب').slice(0, 24), ts: firebase.database.ServerValue.TIMESTAMP });
+    acctSay('تم إرسال طلبك للقائد ✓');
+  } catch (e) { acctSay('تعذّر إرسال الطلب (ربما أرسلته من قبل أو اكتملت البطولة).'); }
+  if (_ch.id === id) champOpen(id); else champRenderAll();
+}
+async function champRequest() { return champRequestFor(_ch.id); }
+/* ===== طلبات الانضمام فى صفحة «حسابي» (للقائد فقط) ===== */
+async function champLoadLeaderRequests() {
+  const el = document.getElementById('acctChampReqs'); if (!el) return;
+  if (!isPlatformOwner() || !_acct.ready) { el.innerHTML = ''; return; }
+  try {
+    const all = (await chDb().ref('champ').limitToLast(60).once('value')).val() || {};
+    const mine = Object.entries(all).filter(([, t]) => t.leader === chMe() && t.status === 'open');
+    const g = { minor: [], major: [] };
+    await Promise.all(mine.map(async ([id, t]) => {
+      const rq = (await chDb().ref('champReqs/' + id).once('value')).val() || {};
+      Object.entries(rq).forEach(([uid, x]) => g[t.type].push({ id, uid, name: x.name, n: Object.keys(t.members || {}).length }));
+    }));
+    el.innerHTML = ['minor', 'major'].map(k => {
+      const c = CHAMPIONSHIP_TYPES[k], list = g[k];
+      return `<div class="ch-title" style="margin-top:22px">${c.icon} طلبات ${c.name} (${list.length})</div>` + (list.map(x => `<div class="ch-card"><div class="ch-row"><span class="ch-l">👤 ${chE(x.name)}</span><span class="ch-v">${x.n} / 10</span></div><div style="display:flex;gap:8px"><button class="ch-btn" style="flex:1" onclick="playClickSound();champDecide('${x.id}','${x.uid}',true)">قبول</button><button class="ch-btn ghost" style="flex:1" onclick="playClickSound();champDecide('${x.id}','${x.uid}',false)">رفض</button></div></div>`).join('') || '<div class="acct-p" style="text-align:center">لا توجد طلبات جديدة</div>');
+    }).join('');
+  } catch (e) { el.innerHTML = ''; }
+}
+async function champDecide(id, uid, ok) {
+  try {
+    const db = chDb();
+    if (ok) {
+      const t = (await db.ref('champ/' + id).once('value')).val(), r = (await db.ref('champReqs/' + id + '/' + uid).once('value')).val();
+      if (!t || !r) { acctSay('الطلب لم يعد موجودًا.'); champLoadLeaderRequests(); return; }
+      if (Object.keys(t.members || {}).length >= 10) { acctSay('اكتمل العدد (10 مشاركين).'); return; }
+      await db.ref().update({ ['champ/' + id + '/members/' + uid]: { name: r.name }, ['champReqs/' + id + '/' + uid]: null });
+    } else await db.ref('champReqs/' + id + '/' + uid).remove();
+    champLoadLeaderRequests();
+  } catch (e) { acctSay('تعذّر تنفيذ العملية.'); }
 }
 async function champAccept(uid) {
   const r = _ch.reqs[uid]; if (!r) return;
