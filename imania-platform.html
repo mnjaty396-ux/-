@@ -10316,14 +10316,24 @@ async function champCreate(type) {
   } catch (e) { _ch.creating = false; acctSay('تعذّر إنشاء البطولة.'); }
 }
 async function champWipe(ids) {
-  const up = {}; ids.forEach(id => { up['champ/' + id] = null; up['champReqs/' + id] = null; up['champResult/' + id] = null; });
-  await chDb().ref().update(up);
+  /* قواعد Firebase بتسمح بحذف طلبات كل لاعب على حدة (champReqs/id/uid) مش العقدة كاملة، فنحذفها واحدًا واحدًا */
+  const db = chDb(), up = {};
+  await Promise.all(ids.map(async id => {
+    up['champ/' + id] = null;
+    try { const rq = (await db.ref('champReqs/' + id).once('value')).val() || {}; Object.keys(rq).forEach(u => { up['champReqs/' + id + '/' + u] = null; }); } catch (e) {}
+    try { if ((await db.ref('champResult/' + id).once('value')).exists()) up['champResult/' + id] = null; } catch (e) {}
+  }));
+  try { await db.ref().update(up); }
+  catch (e) {                                   // لو جزء مرفوض، نحذف البطولة نفسها على الأقل
+    const only = {}; ids.forEach(id => { only['champ/' + id] = null; });
+    await db.ref().update(only);
+  }
 }
 async function champDeleteId(id) {
   if (!isPlatformOwner()) return;
   if (!confirm('حذف هذه البطولة نهائيًا مع طلباتها ونتائجها؟')) return;
   try { await champWipe([id]); acctSay('تم حذف البطولة.'); if (_ch.id === id) _ch.id = null; champRenderAll(); }
-  catch (e) { acctSay('تعذّر الحذف.'); }
+  catch (e) { acctSay('تعذّر الحذف: ' + ((e && (e.code || e.message)) || '')); }
 }
 function champDelete() { return champDeleteId(_ch.id); }
 async function champWipeMine() {
