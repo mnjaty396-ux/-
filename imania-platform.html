@@ -12806,7 +12806,6 @@ function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId(
    - حظر نهائي: نفس التصفير + bans/{uid} → اللاعب يتفصل ومايقدرش يدخل. فك الحظر = حذف bans/{uid} فيرجع جديد ومتصفّر.
    - الحماية الحقيقية في قواعد Firebase (bans / resets).
    ============================================================================ */
-const IMANIA_OWNER_UID = 'MuXp0YqF2dTuaPg5vWY5c6VWupR2';
 LEADER.viewBan = false; LEADER.resetBusy = false;
 
 async function banGate(user) {
