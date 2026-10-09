@@ -9899,6 +9899,8 @@ async function acctSignOut() {
 function acctWithTimeout(p, ms) { return Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms || 15000))]); }
 async function acctLoadRecord(user) {
   try {
+    if (typeof banGate === 'function' && await banGate(user)) return;
+    if (typeof resetGate === 'function') await resetGate(user);
     const ref = firebase.database().ref('users/' + user.uid);
     const snap = await acctWithTimeout(ref.once('value'));
     let rec = snap.val();
@@ -10099,7 +10101,7 @@ async function acctResetPhoto() {
 /* ---------- مزامنة التقدم مع الحساب ----------
    كل مفتاح imania_* في التخزين المحلي (مفضلات، تقدم الأذكار، إحصائيات وسجل الساحة...) يُنسخ إلى users/{uid}/progress
    ويُستعاد عند الدخول من أي جهاز. تُستثنى إعدادات الجهاز (الصوت، حجم الخط، الموقع، الكاش، التنزيلات). */
-const SYNC_EXCLUDE = /^imania_(account|acct_link|sync_ts|sync_uid|signed_in|arena_myid|arena_myname|arena_muted|font_scale|surah_downloads|prayer_cache.*|qibla_loc.*)$/;
+const SYNC_EXCLUDE = /^imania_(account|acct_link|sync_ts|sync_uid|signed_in|arena_myid|arena_myname|arena_muted|font_scale|surah_downloads|prayer_cache.*|qibla_loc.*|reset_seen_.*)$/;
 const _sync = { dirty:{}, timer:null, applying:false, pulled:false, state:'' };
 const _lsSet = Storage.prototype.setItem, _lsRem = Storage.prototype.removeItem;
 function syncIsKey(k) { return typeof k === 'string' && k.indexOf('imania_') === 0 && !SYNC_EXCLUDE.test(k); }
@@ -12620,6 +12622,15 @@ function ldStart(uid) {
     ldUiRefresh();
   }, () => {});
   LEADER.offs.push(() => lref.off('value', lcb));
+  const bref = db.ref('bans/' + uid);
+  const bcb = bref.on('value', sn => { if (sn.val()) { try { _acct.ready = false; } catch (e) {} banKick(); } }, () => {});
+  LEADER.offs.push(() => bref.off('value', bcb));
+  const rref = db.ref('resets/' + uid);
+  const rcb = rref.on('value', async sn => {
+    const rt = Number(sn.val()) || 0, seen = Number(localStorage.getItem('imania_reset_seen_' + uid)) || 0;
+    if (rt > seen && _acct.ready && !LEADER.resetBusy) { _acct.ready = false; await ldLocalReset(uid, rt); try { location.reload(); } catch (e) {} }
+  }, () => {});
+  LEADER.offs.push(() => rref.off('value', rcb));
   const iref = db.ref('giftInbox/' + uid);
   const icb = iref.on('child_added', sn => { ldClaim(uid, sn.key, sn.val(), 0); }, () => {});
   LEADER.offs.push(() => iref.off('child_added', icb));
@@ -12740,7 +12751,7 @@ async function ldToggleLeader(uid, name) {
   } catch (e) { socErr(e); }
 }
 async function ldLoadViewFlag(uid) {
-  if (!isPlatformOwner() || !socOk()) return;
+  if (!isLeader() || !socOk()) return;
   try {
     const v = (await acctWithTimeout(ldDb().ref('leaders/' + uid).once('value'))).val() === true;
     if (LEADER.viewUid === uid) { LEADER.viewFlag = v; ldRenderProfAct(); }
@@ -12753,13 +12764,27 @@ function ldRenderProfAct() {
   const first = body.firstElementChild;
   let el = document.getElementById('ldProfAct');
   const me = socUid();
-  if (!isLeader() || LEADER.viewUid === me || !first || !first.classList.contains('acct-card') || !first.querySelector('.acct-av')) { if (el) el.remove(); return; }
+  if (!isLeader() || !first || !first.classList.contains('acct-card') || !first.querySelector('.acct-av')) { if (el) el.remove(); return; }
   const nm = ((first.querySelector('.acct-name') || {}).textContent || '').trim();
   const a = `data-u="${socEsc(LEADER.viewUid)}" data-n="${socEsc(nm)}"`;
-  let html = `<div class="acct-h" style="text-align:center">🛡️ صلاحيات الليدر</div>
+  const bansBtn = `<button class="kbc-btn" onclick="socClick();ldOpenBans()">⛔ قائمة المحظورين</button>`;
+  let html;
+  if (LEADER.viewUid === me) {
+    html = `<div class="acct-h" style="text-align:center">🛡️ صلاحيات الليدر</div><div class="soc-btnrow">${bansBtn}</div>`;
+  } else {
+    html = `<div class="acct-h" style="text-align:center">🛡️ صلاحيات الليدر</div>
     <div class="soc-btnrow"><button class="kbc-btn download" ${a} onclick="socClick();ldOpenGift(this.dataset.u,this.dataset.n)">🎁 إهداء عملات همة</button></div>`;
-  if (isPlatformOwner()) {
-    html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" ${a} onclick="socClick();ldToggleLeader(this.dataset.u,this.dataset.n)">${LEADER.viewFlag ? '🚫 إزالة صلاحية ليدر' : '🛡️ تعيينه ليدر'}</button></div>`;
+    const protectedTarget = LEADER.viewUid === IMANIA_OWNER_UID || (LEADER.viewFlag === true && !isPlatformOwner());
+    if (!protectedTarget) {
+      const banBtn = LEADER.viewBan
+        ? `<button class="kbc-btn" ${a} onclick="socClick();ldUnban(this.dataset.u,this.dataset.n)">✅ فك الحظر</button>`
+        : `<button class="kbc-btn" ${a} onclick="socClick();ldWipeUser(this.dataset.u,this.dataset.n,true)">⛔ حظر نهائي</button>`;
+      html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" ${a} onclick="socClick();ldWipeUser(this.dataset.u,this.dataset.n,false)">🧹 حذف / تصفير الحساب</button>${banBtn}</div>`;
+    }
+    if (isPlatformOwner()) {
+      html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" ${a} onclick="socClick();ldToggleLeader(this.dataset.u,this.dataset.n)">${LEADER.viewFlag ? '🚫 إزالة صلاحية ليدر' : '🛡️ تعيينه ليدر'}</button></div>`;
+    }
+    html += `<div class="soc-btnrow" style="margin-top:8px">${bansBtn}</div>`;
   }
   if (!el) { el = document.createElement('div'); el.id = 'ldProfAct'; el.className = 'acct-card'; first.insertAdjacentElement('afterend', el); }
   el.innerHTML = html;
@@ -12768,11 +12793,132 @@ function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId(
 (function () {
   const _prev = upOpen;
   upOpen = async function (uid, fb) {
-    LEADER.viewUid = uid; LEADER.viewFlag = null;
+    LEADER.viewUid = uid; LEADER.viewFlag = null; LEADER.viewBan = false;
     await _prev.apply(this, arguments);
-    ldRenderProfAct(); ldLoadViewFlag(uid);
+    ldRenderProfAct(); ldLoadViewFlag(uid); ldLoadViewBan(uid);
   };
 })();
+
+/* ============================================================================
+   تصفير الحساب + الحظر النهائي (للّيدر وصاحب المنصة)
+   - تصفير: يمسح users/{uid} (العملات، المشتريات، الدروع، التقدم...) + فهرس البحث + مشاركاته في المسابقة الجارية،
+            ويكتب resets/{uid}؛ جهاز اللاعب أول ما يشوفها يمسح بياناته المحلية وصداقاته ويبدأ من الصفر.
+   - حظر نهائي: نفس التصفير + bans/{uid} → اللاعب يتفصل ومايقدرش يدخل. فك الحظر = حذف bans/{uid} فيرجع جديد ومتصفّر.
+   - الحماية الحقيقية في قواعد Firebase (bans / resets).
+   ============================================================================ */
+const IMANIA_OWNER_UID = 'MuXp0YqF2dTuaPg5vWY5c6VWupR2';
+LEADER.viewBan = false; LEADER.resetBusy = false;
+
+async function banGate(user) {
+  try {
+    const sn = await acctWithTimeout(ldDb().ref('bans/' + user.uid).once('value'));
+    if (sn.val()) { banKick(); return true; }
+  } catch (e) {}
+  return false;
+}
+function banKick() {
+  if (window._banKicking) return; window._banKicking = true;
+  try { socToast('⛔ حسابك محظور نهائيًا من المنصة', 6000); } catch (e) {}
+  Promise.resolve(acctSignOut()).finally(() => { setTimeout(() => { window._banKicking = false; }, 3000); });
+}
+async function resetGate(user) {
+  try {
+    const sn = await acctWithTimeout(ldDb().ref('resets/' + user.uid).once('value'));
+    const rt = Number(sn.val()) || 0, seen = Number(localStorage.getItem('imania_reset_seen_' + user.uid)) || 0;
+    if (rt > seen) await ldLocalReset(user.uid, rt);
+  } catch (e) {}
+}
+async function ldLocalReset(uid, rt) {
+  if (LEADER.resetBusy) return; LEADER.resetBusy = true;
+  try {
+    try { _acct.lastHemma = 0; } catch (e) {}
+    try { syncWipeLocal(); } catch (e) {}
+    try { acctSetLink(uid, 0); } catch (e) {}
+    try {
+      const db = ldDb(), get = n => db.ref(n + '/' + uid).once('value').then(s => s.val() || {}).catch(() => ({}));
+      const [fr, sr, rq, un] = await Promise.all([get('friends'), get('sentRequests'), get('friendRequests'), get('unread')]);
+      const u = {};
+      Object.keys(fr).forEach(o => { u['friends/' + uid + '/' + o] = null; u['friends/' + o + '/' + uid] = null; });
+      Object.keys(sr).forEach(o => { u['sentRequests/' + uid + '/' + o] = null; u['friendRequests/' + o + '/' + uid] = null; });
+      Object.keys(rq).forEach(o => { u['friendRequests/' + uid + '/' + o] = null; u['sentRequests/' + o + '/' + uid] = null; });
+      Object.keys(un).forEach(o => { u['unread/' + uid + '/' + o] = null; });
+      if (Object.keys(u).length) await db.ref().update(u);
+    } catch (e) {}
+    try { localStorage.setItem('imania_reset_seen_' + uid, String(rt)); } catch (e) {}
+  } finally { LEADER.resetBusy = false; }
+}
+async function ldTargetIsLeader(uid) {
+  try { return (await ldDb().ref('leaders/' + uid).once('value')).val() === true; } catch (e) { return false; }
+}
+async function ldWipeUser(uid, name, withBan) {
+  if (!isLeader() || !uid || uid === socUid() || uid === IMANIA_OWNER_UID || LEADER.busy) return;
+  if (!isPlatformOwner() && await ldTargetIsLeader(uid)) { socToast('مينفعش تتعامل مع حساب ليدر', 2800); return; }
+  const nm = name || 'اللاعب';
+  const msg = withBan
+    ? 'حظر ' + nm + ' نهائيًا؟\nهيتمسح كل حاجة في حسابه (عملات، إطارات، مؤثرات، دروع، تقدم) ومش هيقدر يدخل المنصة تاني لحد ما تفك الحظر.'
+    : 'حذف / تصفير حساب ' + nm + '؟\nهيتمسح منه كل حاجة (عملات، إطارات، مؤثرات، دروع، تقدم، أصدقاء) ويقدر يدخل تاني من الصفر.';
+  if (!confirm(msg)) return;
+  LEADER.busy = true;
+  try {
+    const db = ldDb(), me = socUid();
+    if (withBan) {
+      const myName = (((window._acct && _acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
+      await acctWithTimeout(db.ref('bans/' + uid).set({ name: String(nm).slice(0, 24), ts: socTs(), by: me, byName: myName }));
+    }
+    const u = {}; u['users/' + uid] = null; u['profilesIndex/' + uid] = null; u['resets/' + uid] = socTs();
+    await acctWithTimeout(db.ref().update(u));
+    try {   // مشاركاته في المسابقات الغير منتهية
+      const rs = (await acctWithTimeout(db.ref('monthly/rounds').once('value'))).val() || {}, m = {};
+      Object.keys(rs).forEach(rid => {
+        const r = rs[rid] || {}; if (r.meta && r.meta.status === 'ended') return;
+        if (r.requests && r.requests[uid]) m['monthly/rounds/' + rid + '/requests/' + uid] = null;
+        if (r.progress && r.progress[uid]) m['monthly/rounds/' + rid + '/progress/' + uid] = null;
+      });
+      if (Object.keys(m).length) await acctWithTimeout(db.ref().update(m));
+    } catch (e) {}
+    if (withBan) LEADER.viewBan = true;
+    ldRenderProfAct();
+    socToast(withBan ? 'اتحظر نهائيًا ⛔ واتصفّر حسابه' : 'اتصفّر الحساب 🧹', 3000);
+  } catch (e) { socErr(e); }
+  finally { LEADER.busy = false; }
+}
+async function ldUnban(uid, name) {
+  if (!isLeader() || !uid) return;
+  if (!confirm('فك الحظر عن ' + (name || 'اللاعب') + '؟\nهيرجع للمنصة عادي بس من الصفر (حسابه اتصفّر وقت الحظر).')) return;
+  try {
+    await acctWithTimeout(ldDb().ref('bans/' + uid).set(null));
+    if (LEADER.viewUid === uid) LEADER.viewBan = false;
+    ldRenderProfAct(); ldRefreshBans();
+    socToast('اتفك الحظر ✅', 2500);
+  } catch (e) { socErr(e); }
+}
+async function ldLoadViewBan(uid) {
+  if (!isLeader() || !socOk()) return;
+  try {
+    const v = !!(await acctWithTimeout(ldDb().ref('bans/' + uid).once('value'))).val();
+    if (LEADER.viewUid === uid) { LEADER.viewBan = v; ldRenderProfAct(); }
+  } catch (e) {}
+}
+function ldCloseBans() { const b = document.getElementById('ldBansBg'); if (b) b.remove(); }
+function ldOpenBans() {
+  if (!isLeader()) return;
+  ldCloseBans();
+  const bg = document.createElement('div'); bg.id = 'ldBansBg'; bg.className = 'soc-modal-bg'; bg.onclick = ldCloseBans;
+  bg.innerHTML = `<div class="soc-modal" onclick="event.stopPropagation()"><div class="acct-h">⛔ المحظورون</div><div id="ldBansList" class="acct-p">جاري التحميل...</div><div class="soc-btnrow" style="margin-top:14px"><button class="kbc-btn" onclick="socClick();ldCloseBans()">إغلاق</button></div></div>`;
+  document.body.appendChild(bg);
+  ldRefreshBans();
+}
+async function ldRefreshBans() {
+  const box = document.getElementById('ldBansList'); if (!box) return;
+  try {
+    const v = (await acctWithTimeout(ldDb().ref('bans').once('value'))).val() || {};
+    const ids = Object.keys(v).sort((x, y) => (v[y].ts || 0) - (v[x].ts || 0));
+    box.innerHTML = ids.length ? ids.map(id => {
+      const x = v[id] || {}, d = x.ts ? new Date(x.ts).toLocaleDateString('ar-EG') : '';
+      return `<div class="soc-row" style="margin:6px 0"><div class="soc-nm">${socEsc(x.name || 'لاعب')}<div style="font-size:11px;opacity:.7">${socEsc(d)}${x.byName ? ' • بواسطة ' + socEsc(x.byName) : ''}</div></div><button class="kbc-btn" data-u="${socEsc(id)}" data-n="${socEsc(x.name || '')}" onclick="socClick();ldUnban(this.dataset.u,this.dataset.n)">✅ فك الحظر</button></div>`;
+    }).join('') : 'مفيش محظورين.';
+  } catch (e) { box.textContent = 'تعذّر تحميل القائمة.'; }
+}
 </script>
 
 </body>
