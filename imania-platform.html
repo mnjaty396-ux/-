@@ -12779,7 +12779,7 @@ function ldRenderProfAct() {
       const banBtn = LEADER.viewBan
         ? `<button class="kbc-btn" ${a} onclick="socClick();ldUnban(this.dataset.u,this.dataset.n)">✅ فك الحظر</button>`
         : `<button class="kbc-btn" ${a} onclick="socClick();ldWipeUser(this.dataset.u,this.dataset.n,true)">⛔ حظر نهائي</button>`;
-      html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" ${a} onclick="socClick();ldWipeUser(this.dataset.u,this.dataset.n,false)">🧹 حذف / تصفير الحساب</button>${banBtn}</div>`;
+      html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn download" ${a} onclick="socClick();ldWipeUser(this.dataset.u,this.dataset.n,false)">🧹 تصفير الحساب</button></div><div class="soc-btnrow" style="margin-top:8px">${banBtn}</div>`;
     }
     if (isPlatformOwner()) {
       html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" ${a} onclick="socClick();ldToggleLeader(this.dataset.u,this.dataset.n)">${LEADER.viewFlag ? '🚫 إزالة صلاحية ليدر' : '🛡️ تعيينه ليدر'}</button></div>`;
@@ -12856,7 +12856,7 @@ async function ldWipeUser(uid, name, withBan) {
   const nm = name || 'اللاعب';
   const msg = withBan
     ? 'حظر ' + nm + ' نهائيًا؟\nهيتمسح كل حاجة في حسابه (عملات، إطارات، مؤثرات، دروع، تقدم) ومش هيقدر يدخل المنصة تاني لحد ما تفك الحظر.'
-    : 'حذف / تصفير حساب ' + nm + '؟\nهيتمسح منه كل حاجة (عملات، إطارات، مؤثرات، دروع، تقدم، أصدقاء) ويقدر يدخل تاني من الصفر.';
+    : 'تصفير حساب ' + nm + '؟\nهيتمسح منه كل حاجة (عملات همة، براويز، مؤثرات فوز، دروع، تقدم، أصدقاء) ويقدر يدخل تاني من الصفر.';
   if (!confirm(msg)) return;
   LEADER.busy = true;
   try {
