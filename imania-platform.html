@@ -10328,7 +10328,7 @@ const MC_TASKS = [
 ];
 const MC_DAY_TOTAL = MC_TASKS.reduce((a, b) => a + b.p, 0);
 const MC_DAY_NAMES = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع'];
-const MC = { stage: 'terms', view: 'days', day: 1, sheet: null, uid: null, rid: null, round: null, offs: [], roundOff: null, off: 0, busy: false, charging: false, awarding: false, prevReq: undefined, loaded: false };
+const MC = { watch: null, stage: 'terms', view: 'days', day: 1, sheet: null, uid: null, rid: null, round: null, offs: [], roundOff: null, off: 0, busy: false, charging: false, awarding: false, prevReq: undefined, loaded: false };
 
 function mcEsc(s) { return escapeHtml(String(s == null ? '' : s)); }
 function mcDb() { return firebase.database(); }
@@ -10353,6 +10353,7 @@ function mcDayNow() {
 function mcRows() {
   return mcMemberUids().map(u => ({ uid: u, name: (mcReq(u) || {}).name || 'لاعب', pts: mcPoints(u) })).sort((a, b) => b.pts - a.pts);
 }
+function mcIsLead() { return (typeof isLeader === 'function' && isLeader()); }
 function mcOnPage() { const p = document.getElementById('page-monthly'); return !!(p && p.classList.contains('active')); }
 
 /* ---------- الاشتراك في البيانات ---------- */
@@ -10392,8 +10393,9 @@ function mcAfterRound() {
     if (st === 'accepted') socToast('تم قبول طلبك في المسابقة الشهرية', 4200);
     if (st === 'rejected') socToast('تعذر قبول طلبك الان', 4200);
   }
+  if (st === 'kicked' && MC.prevReq !== undefined && MC.prevReq !== 'kicked') socToast('تم استبعادك من المسابقة', 4200);
   MC.prevReq = st;
-  if (rq && rq.status === 'accepted' && rq.charged !== true && !rq.nofunds && !MC.charging && mcStatus() !== 'ended') mcCharge(MC.rid);
+  if (!mcIsLead() && rq && rq.status === 'accepted' && rq.charged !== true && !rq.nofunds && !MC.charging && mcStatus() !== 'ended') mcCharge(MC.rid);
   if (mcStatus() === 'ended') mcCheckAward();
 }
 async function mcCharge(rid) {
@@ -10528,6 +10530,10 @@ function mcActionHtml() {
   const me = mcMe(), st = mcStatus();
   if (!me) return `<div class="mc-state">سجّل الدخول من «حسابي» لتتمكن من المشاركة</div><button class="mc-btn" onclick="playClickSound();showPage('page-account')">الذهاب إلى حسابي</button>`;
   if (!MC.loaded) return `<div class="mc-state">جاري التحميل…</div>`;
+  if (mcIsLead()) {
+    const lbl = { none: 'لا توجد مسابقة حاليًا', open: 'التسجيل مفتوح', running: 'المسابقة جارية', ended: 'انتهت المسابقة' }[st];
+    return `<div class="mc-state ok">${lbl}<small>أنت الليدر — تدير المسابقة وتتابعها ولا تشارك فيها</small></div>`;
+  }
   if (st === 'none') return `<div class="mc-state">لا توجد مسابقة مفتوحة حاليًا<small>سيُعلن الليدر عن بدء التسجيل قريبًا</small></div>`;
   const rq = mcReq(me), member = mcIsMember(me);
   if (member) return mcMemberHtml(me, st);
@@ -10537,6 +10543,7 @@ function mcActionHtml() {
   }
   if (rq && rq.status === 'pending') return `<div class="mc-state">طلبك قيد المراجعة</div>`;
   if (rq && rq.status === 'rejected') return `<div class="mc-state bad">تعذر قبول طلبك الان</div>`;
+  if (rq && rq.status === 'kicked') return `<div class="mc-state bad">تم استبعادك من المسابقة</div>`;
   if (st === 'open') return `<button class="mc-btn" onclick="playClickSound();mcRequest()">ادفع ${MC_FEE} <span class="mc-coin">${typeof CHAMP_COIN_ICON !== 'undefined' ? CHAMP_COIN_ICON : ''}</span> عملة همة</button>`;
   if (st === 'running') return `<div class="mc-state">المسابقة جارية الآن — التسجيل مغلق</div>`;
   return `<div class="mc-state">انتهت المسابقة</div>`;
@@ -10577,8 +10584,8 @@ function mcBoardHtml() {
       ${ids.map(u => `<div class="mc-row"><span class="mc-rk">١</span><span class="mc-rn">${mcEsc(w[u].name)}</span><span class="mc-rp">${w[u].points} <small>نقطة</small></span></div>`).join('')}
       <div class="mc-empty">نصيب كل فائز من الجائزة النقدية: ${each} جنيه</div></div>`;
   }
-  const rows = mcRows().slice(0, 3);
-  const body = rows.length ? rows.map((r, i) => `<div class="mc-row"><span class="mc-rk r${i + 1}">${['١', '٢', '٣'][i]}</span><span class="mc-rn">${mcEsc(r.name)}</span><span class="mc-rp">${r.pts} <small>نقطة</small></span></div>`).join('') : '<div class="mc-empty">لا مشاركين بعد</div>';
+  const rows = mcIsLead() ? mcRows() : mcRows().slice(0, 3);
+  const body = rows.length ? rows.map((r, i) => `<div class="mc-row"><span class="mc-rk r${i + 1}">${String(i + 1).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])}</span><span class="mc-rn">${mcEsc(r.name)}</span><span class="mc-rp">${r.pts} <small>نقطة</small></span></div>`).join('') : '<div class="mc-empty">لا مشاركين بعد</div>';
   return `<div class="mc-board mc-rise mc-d2"><div class="mc-board-h">الصدارة</div>${body}</div>`;
 }
 
@@ -10586,6 +10593,7 @@ function mcBoardHtml() {
 async function mcRequest() {
   const me = mcMe();
   if (!me) { showPage('page-account'); return; }
+  if (mcIsLead()) { socToast('الليدر لا يشارك في المسابقة', 3000); return; }
   if (mcStatus() !== 'open' || MC.busy) return;
   const owner = (typeof isPlatformOwner === 'function' && isPlatformOwner());
   if (!owner && (arenaLoadStats().hemma || 0) < MC_FEE) { socToast('رصيدك غير كافٍ — تحتاج ' + MC_FEE + ' عملة همة', 3500); return; }
@@ -10628,24 +10636,35 @@ function mcRenderLeader() {
   const label = { none: 'لا توجد مسابقة', open: 'التسجيل مفتوح', running: 'جارية', ended: 'منتهية' }[st];
   let ctl = '';
   if (st === 'none' || st === 'ended') ctl = `<button class="mc-btn" onclick="mcNewRound()">فتح مسابقة جديدة</button>`;
-  else if (st === 'open') ctl = `<button class="mc-btn" ${paid >= MC_MIN ? '' : 'disabled'} onclick="mcStartRound()">بدء المسابقة (٧ أيام)</button><div class="mc-empty">يلزم ${MC_MIN} مشاركين مدفوعين على الأقل</div>`;
-  else if (st === 'running') ctl = `<button class="mc-btn" onclick="mcEndRound()">إنهاء المسابقة وإعلان الفائز</button>`;
+  else if (st === 'open') ctl = `<button class="mc-btn" ${paid >= MC_MIN ? '' : 'disabled'} onclick="mcStartRound()">بدء المسابقة (٧ أيام)</button><div class="mc-empty">يلزم ${MC_MIN} مشاركين مدفوعين على الأقل</div><button class="mc-btn ghost" style="margin-top:8px" onclick="mcCancelRound()">إلغاء المسابقة</button>`;
+  else if (st === 'running') ctl = `<button class="mc-btn" onclick="mcEndRound()">إنهاء المسابقة وإعلان الفائز</button><button class="mc-btn ghost" style="margin-top:8px" onclick="mcCancelRound()">إلغاء المسابقة بدون فائز</button>`;
   const group = (title, status) => {
-    const list = ids.filter(u => reqs[u].status === status).sort((a, b) => (reqs[a].ts || 0) - (reqs[b].ts || 0));
+    const list = ids.filter(u => reqs[u].status === status).sort((a, b) => status === 'accepted' ? (mcPoints(b) - mcPoints(a)) : ((reqs[a].ts || 0) - (reqs[b].ts || 0)));
     if (!list.length) return '';
     return `<div class="mc-sec">${title} (${list.length})</div>` + list.map(u => {
-      const r = reqs[u], n = mcEsc(r.name || 'لاعب');
-      let btns = '', sub = '';
-      if (status === 'pending') btns = `<button class="mc-btn sm" onclick="mcDecide('${mcEsc(u)}',true)">قبول</button><button class="mc-btn sm ghost" onclick="mcDecide('${mcEsc(u)}',false)">رفض</button>`;
-      else if (status === 'rejected') btns = `<button class="mc-btn sm ghost" onclick="mcDecide('${mcEsc(u)}',true)">قبول</button>`;
-      else sub = `<small>${r.charged ? 'تم الدفع' : (r.nofunds ? 'رصيد غير كافٍ' : 'بانتظار الخصم')}</small>`;
-      return `<div class="mc-req"><span>${n}${sub}</span>${btns}</div>`;
+      const r = reqs[u], n = mcEsc(r.name || 'لاعب'), eu = mcEsc(u);
+      let btns = '', sub = '', detail = '';
+      if (status === 'pending') btns = `<button class="mc-btn sm" onclick="mcDecide('${eu}',true)">قبول</button><button class="mc-btn sm ghost" onclick="mcDecide('${eu}',false)">رفض</button>`;
+      else if (status === 'rejected') btns = `<button class="mc-btn sm ghost" onclick="mcDecide('${eu}',true)">قبول</button>`;
+      else if (status === 'kicked') btns = `<button class="mc-btn sm ghost" onclick="mcDecide('${eu}',true)">إعادة</button>`;
+      else {
+        const days = [1, 2, 3, 4, 5, 6, 7].map(d => mcDayPts(u, d)).join(' • ');
+        sub = `<small>${r.charged ? 'تم الدفع' : (r.nofunds ? 'رصيد غير كافٍ' : 'بانتظار الخصم')} • ${mcPoints(u)} نقطة${(st === 'running' || st === 'ended') ? '<br>الأيام: ' + days : ''}</small>`;
+        btns = `<button class="mc-btn sm ghost" onclick="mcWatch('${eu}')">${MC.watch === u ? 'إخفاء' : 'تفاصيل'}</button><button class="mc-btn sm ghost" onclick="mcKick('${eu}')">طرد</button>`;
+        if (MC.watch === u) {
+          detail = '<div class="mc-empty" style="text-align:right;line-height:2">' + [1, 2, 3, 4, 5, 6, 7].map(d => {
+            const ds = mcDayStr(u, d);
+            return 'اليوم ' + MC_DAY_NAMES[d - 1] + ': ' + MC_TASKS.map((t, i) => ds[i] === '1' ? '✅' : '⬜').join('') + ' (' + mcDayPts(u, d) + ')';
+          }).join('<br>') + '</div>';
+        }
+      }
+      return `<div class="mc-req"><span>${n}${sub}</span>${btns}</div>${detail}`;
     }).join('');
   };
   const html = `<div class="mc-sheet" onclick="event.stopPropagation()"><h3>لوحة الليدر</h3>
     <div class="mc-empty">الحالة: ${label} • مقبولون ${accepted}/${MC_MAX} • مدفوعون ${paid}</div>
     <div style="margin:10px 0">${ctl}</div>
-    ${group('طلبات جديدة', 'pending')}${group('المقبولون', 'accepted')}${group('المرفوضون', 'rejected')}
+    ${group('طلبات جديدة', 'pending')}${group('المشاركون', 'accepted')}${group('المطرودون', 'kicked')}${group('المرفوضون', 'rejected')}
     ${ids.length ? '' : '<div class="mc-empty">لا توجد طلبات</div>'}
     <button class="mc-btn ghost" style="margin-top:16px" onclick="mcCloseModal()">إغلاق</button></div>`;
   const r = document.getElementById('mcModalRoot'); if (!r) return;
@@ -10658,6 +10677,19 @@ async function mcDecide(uid, ok) {
   const reqs = (MC.round && MC.round.requests) || {};
   if (ok && Object.keys(reqs).filter(u => reqs[u].status === 'accepted').length >= MC_MAX) { socToast('وصلت للحد الأقصى (' + MC_MAX + ')', 3000); return; }
   try { await acctWithTimeout(mcDb().ref('monthly/rounds/' + MC.rid + '/requests/' + uid + '/status').set(ok ? 'accepted' : 'rejected')); } catch (e) { socErr(e); }
+}
+function mcWatch(uid) { if (!mcIsLead()) return; MC.watch = (MC.watch === uid) ? null : uid; mcRenderLeader(); }
+async function mcKick(uid) {
+  if (!mcIsLead() || !MC.rid) return;
+  const rq = mcReq(uid), n = (rq && rq.name) || 'اللاعب';
+  if (!confirm('طرد ' + n + ' من المسابقة؟ لن تُسترجع رسوم اشتراكه.')) return;
+  try { await acctWithTimeout(mcDb().ref('monthly/rounds/' + MC.rid + '/requests/' + uid + '/status').set('kicked')); socToast('تم طرد ' + n, 2500); } catch (e) { socErr(e); }
+}
+async function mcCancelRound() {
+  if (!mcIsLead() || !MC.rid) return;
+  const st = mcStatus(); if (st !== 'open' && st !== 'running') return;
+  if (!confirm('إلغاء المسابقة بدون فائز؟ لن تُسترجع رسوم المشتركين.')) return;
+  try { await acctWithTimeout(mcDb().ref('monthly/rounds/' + MC.rid + '/meta').update({ status: 'ended', endedAt: socTs(), winners: null })); MC.sheet = null; mcCloseModal(); } catch (e) { socErr(e); }
 }
 async function mcNewRound() {
   if (!(typeof isLeader === 'function' && isLeader())) return;
