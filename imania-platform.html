@@ -10593,11 +10593,12 @@ function mcBoardHtml() {
   const st = mcStatus(); if (st !== 'running' && st !== 'ended') return '';
   if (st === 'ended') {
     const w = mcMeta().winners || {}, ids = Object.keys(w);
-    if (!ids.length) return `<div class="mc-board mc-rise mc-d2"><div class="mc-board-h">نتيجة المسابقة</div><div class="mc-empty">انتهت المسابقة دون فائز</div></div>`;
+    if (!ids.length) return '';
     const each = mcCashEach(ids.length);
     return `<div class="mc-board mc-rise mc-d2"><div class="mc-board-h">${ids.length > 1 ? 'الفائزون بدرع الهمة' : 'الفائز بدرع الهمة'}</div>
       ${ids.map(u => `<div class="mc-row"><span class="mc-rk">١</span><span class="mc-rn">${mcEsc(w[u].name)}</span><span class="mc-rp">${w[u].points} <small>نقطة</small></span></div>`).join('')}
-      <div class="mc-empty">نصيب كل فائز من الجائزة النقدية: ${each} جنيه</div></div>`;
+      <div class="mc-empty">نصيب كل فائز من الجائزة النقدية: ${each} جنيه</div>
+      ${mcIsLead() ? '<div style="text-align:center;margin-top:10px"><button class="mc-link" onclick="playClickSound();mcClearWinners()">حذف رسالة الفائز</button></div>' : ''}</div>`;
   }
   const rows = mcIsLead() ? mcRows() : mcRows().slice(0, 3);
   const body = rows.length ? rows.map((r, i) => `<div class="mc-row"><span class="mc-rk r${i + 1}">${String(i + 1).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])}</span><span class="mc-rn">${mcEsc(r.name)}</span><span class="mc-rp">${r.pts} <small>نقطة</small></span></div>`).join('') : '<div class="mc-empty">لا مشاركين بعد</div>';
@@ -10699,6 +10700,11 @@ async function mcKick(uid) {
   const rq = mcReq(uid), n = (rq && rq.name) || 'اللاعب';
   if (!confirm('طرد ' + n + ' من المسابقة؟ لن تُسترجع رسوم اشتراكه.')) return;
   try { await acctWithTimeout(mcDb().ref('monthly/rounds/' + MC.rid + '/requests/' + uid + '/status').set('kicked')); socToast('تم طرد ' + n, 2500); } catch (e) { socErr(e); }
+}
+async function mcClearWinners() {
+  if (!mcIsLead() || !MC.rid) return;
+  if (!confirm('حذف رسالة الفائز من صفحة المسابقة؟')) return;
+  try { await acctWithTimeout(mcDb().ref('monthly/rounds/' + MC.rid + '/meta/winners').set(null)); socToast('اتحذفت رسالة الفائز', 2500); } catch (e) { socErr(e); }
 }
 async function mcCancelRound() {
   if (!mcIsLead() || !MC.rid) return;
@@ -12295,7 +12301,7 @@ async function socRepDecide(key, ok) {
       socDb().ref('reportStrikes/' + e.against).transaction(v => (Number(v) || 0) + 1).catch(() => {});
       if (e.against !== socUid()) {
         try {
-          const myName = (((window._acct && _acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
+          const myName = (((_acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
           await acctWithTimeout(socDb().ref('bans/' + e.against).set({ type: 'suspended', name: String(e.againstName || '').slice(0, 24), ts: socTs(), by: socUid(), byName: myName }));
           suspended = true;
         } catch (x2) {}
@@ -12901,7 +12907,7 @@ async function ldAct(uid, name, mode) {
   LEADER.busy = true;
   try {
     const db = ldDb(), me = socUid();
-    const myName = (((window._acct && _acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
+    const myName = (((_acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
     if (mode === 'suspend' || mode === 'delete') {
       await acctWithTimeout(db.ref('bans/' + uid).set({ type: mode === 'delete' ? 'deleted' : 'suspended', name: String(nm).slice(0, 24), ts: socTs(), by: me, byName: myName }));
       LEADER.viewBan = mode === 'delete' ? 'deleted' : 'suspended';
@@ -12977,7 +12983,7 @@ async function ldClearMyFriends() {
 function ldAccountCard() {
   const body = document.getElementById('acctBody'); if (!body) return;
   let el = document.getElementById('ldAcctCard');
-  if (!isLeader() || !window._acct || !_acct.user || !_acct.rec) { if (el) el.remove(); return; }
+  if (!isLeader() || !_acct.user || !_acct.rec) { if (el) el.remove(); return; }
   if (!el) { el = document.createElement('div'); el.id = 'ldAcctCard'; el.className = 'acct-card'; }
   const W = 'style="width:100%;margin-top:8px"';
   let html = '<div class="acct-h">أدوات الليدر</div>';
@@ -12985,7 +12991,8 @@ function ldAccountCard() {
   html += `<button class="kbc-btn" ${W} onclick="socClick();ldOpenBans()">الحسابات المعلّقة</button>`;
   html += `<button class="kbc-btn" ${W} onclick="socClick();ldClearMyFriends()">حذف جميع أصدقائي</button>`;
   el.innerHTML = html;
-  body.appendChild(el);
+  const first = body.firstElementChild;
+  if (first && first !== el) first.insertAdjacentElement('afterend', el); else body.appendChild(el);
   try { socRepBadge(); } catch (e) {}
 }
 (function () {
