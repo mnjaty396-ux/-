@@ -1909,6 +1909,16 @@
   background:radial-gradient(120% 60% at 50% -8%, rgba(212,168,67,.16) 0%, transparent 60%), linear-gradient(180deg,#07170e 0%,#040b07 100%); }
 .mc-shield { background:var(--mc-shield) center/cover no-repeat; border-radius:18px; }
 .mc-badge-ico { display:inline-block; width:30px; height:30px; border-radius:50%; background:var(--mc-shield) center/cover no-repeat; border:1.5px solid #caa04a; vertical-align:middle; margin-left:6px; box-shadow:0 0 8px rgba(212,168,67,.45); }
+
+.mc-shield-card{position:relative;text-align:center;padding:24px 12px 18px;margin:10px 0;border-radius:22px;border:1.5px solid rgba(243,215,122,.6);background:radial-gradient(120% 90% at 50% 0%,rgba(243,215,122,.24),transparent 65%),linear-gradient(180deg,#14361f,#0a1c12);box-shadow:0 0 30px rgba(212,168,67,.38),inset 0 0 24px rgba(212,168,67,.14);overflow:hidden}
+.mc-shield-card::before{content:'';position:absolute;inset:-70%;background:conic-gradient(from 0deg,transparent 0 72%,rgba(243,215,122,.32) 82%,transparent 92%);animation:mcSpin 8s linear infinite;pointer-events:none}
+.mc-shield-card>*{position:relative}
+.mc-shield-img{width:112px;height:112px;margin:0 auto 10px;border-radius:50%;background:var(--mc-shield) center/cover no-repeat;border:3px solid #f3d77a;animation:mcShieldGlow 2.6s ease-in-out infinite}
+.mc-shield-name{font-weight:800;font-size:1.2rem;color:#f3d77a;text-shadow:0 0 14px rgba(212,168,67,.8)}
+.mc-shield-sub{font-size:.75rem;color:#cfe3d4;opacity:.85;margin-top:3px}
+.mc-shield-card .mc-spark{position:absolute;color:#f3d77a;font-size:14px;animation:mcTwinkle 2.2s ease-in-out infinite;pointer-events:none}
+@keyframes mcShieldGlow{0%,100%{box-shadow:0 0 16px rgba(243,215,122,.55),0 0 36px rgba(212,168,67,.3)}50%{box-shadow:0 0 28px rgba(243,215,122,.95),0 0 60px rgba(212,168,67,.55)}}
+@keyframes mcTwinkle{0%,100%{opacity:.2;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
 @keyframes mcRise { from { opacity:0; transform:translateY(28px) scale(.965); filter:blur(5px); } to { opacity:1; transform:none; filter:none; } }
 @keyframes mcLeave { to { opacity:0; transform:translateY(-14px) scale(.985); filter:blur(3px); } }
 @keyframes mcSpin { to { transform:rotate(360deg); } }
@@ -10303,12 +10313,18 @@ function champLoadState() {
   return s.championship;
 }
 function champSaveState(cs) { const s = arenaLoadStats(); s.championship = cs; arenaSaveStats(s); }
+function champBadgeItemHtml(id, cfg) {
+  if (id === 'hemma_shield') {
+    return `<div class="mc-shield-card"><span class="mc-spark" style="top:14px;right:18%">✦</span><span class="mc-spark" style="top:34px;left:16%;animation-delay:.7s">✦</span><span class="mc-spark" style="bottom:20px;right:24%;animation-delay:1.3s">✦</span><div class="mc-shield-img"></div><div class="mc-shield-name">درع الهمة</div><div class="mc-shield-sub">بطل المسابقة الشهرية</div></div>`;
+  }
+  return `<div class="champ-badge-item">${cfg ? cfg.icon : '🏅'} ${cfg ? cfg.name : escapeHtml(String(id))}</div>`;
+}
 function champBadgesHtml() {
   const badges = champLoadState().badges || [];
   const items = badges.length
     ? badges.map(id => {
         const cfg = Object.values(CHAMPIONSHIP_TYPES).find(c => c.badgeId === id);
-        return `<div class="champ-badge-item">${cfg ? cfg.icon : '🏅'} ${cfg ? cfg.name : id}</div>`;
+        return champBadgeItemHtml(id, cfg);
       }).join('')
     : `<div class="empty-state" style="padding:16px"><div class="empty-icon">🏅</div><div>لا توجد أوسمة بعد</div></div>`;
   return `<div class="acct-card" style="text-align:right">
@@ -11954,7 +11970,7 @@ async function upOpen(uid, fallbackName) {
     const bl = Array.isArray(badges) ? badges : (badges ? Object.values(badges) : []);
     const bItems = bl.length ? bl.map(id => {
       const cfg = Object.values(CHAMPIONSHIP_TYPES).find(c => c.badgeId === id);
-      return `<div class="champ-badge-item">${cfg ? cfg.icon : '🏅'} ${cfg ? cfg.name : escapeHtml(String(id))}</div>`;
+      return champBadgeItemHtml(id, cfg);
     }).join('') : '<div class="acct-p" style="text-align:center">لسه ما كسبش دروع</div>';
     body.innerHTML = `
       <div class="acct-card">${acctAvatarHtml(p, 96)}${acctNameHtml(p)}</div>
@@ -12623,7 +12639,7 @@ function ldStart(uid) {
   }, () => {});
   LEADER.offs.push(() => lref.off('value', lcb));
   const bref = db.ref('bans/' + uid);
-  const bcb = bref.on('value', sn => { if (sn.val()) { try { _acct.ready = false; } catch (e) {} banKick(); } }, () => {});
+  const bcb = bref.on('value', sn => { if (sn.val()) { try { _acct.ready = false; } catch (e) {} banKick((sn.val() || {}).type); } }, () => {});
   LEADER.offs.push(() => bref.off('value', bcb));
   const rref = db.ref('resets/' + uid);
   const rcb = rref.on('value', async sn => {
@@ -12764,32 +12780,25 @@ function ldRenderProfAct() {
   const first = body.firstElementChild;
   let el = document.getElementById('ldProfAct');
   const me = socUid();
-  if (!isLeader() || !first || !first.classList.contains('acct-card') || !first.querySelector('.acct-av')) { if (el) el.remove(); return; }
+  if (!isLeader() || LEADER.viewUid === me || !first || !first.classList.contains('acct-card') || !first.querySelector('.acct-av')) { if (el) el.remove(); return; }
   const nm = ((first.querySelector('.acct-name') || {}).textContent || '').trim();
   const a = `data-u="${socEsc(LEADER.viewUid)}" data-n="${socEsc(nm)}"`;
-  const bansBtn = `<button class="kbc-btn" onclick="socClick();ldOpenBans()">⛔ قائمة المحظورين</button>`;
-  let html;
-  if (LEADER.viewUid === me) {
-    html = `<div class="acct-h" style="text-align:center">🛡️ صلاحيات الليدر</div><div class="soc-btnrow">${bansBtn}</div>`;
-  } else {
-    html = `<div class="acct-h" style="text-align:center">🛡️ صلاحيات الليدر</div>
-    <div class="soc-btnrow"><button class="kbc-btn download" ${a} onclick="socClick();ldOpenGift(this.dataset.u,this.dataset.n)">🎁 إهداء عملات همة</button></div>`;
-    const protectedTarget = LEADER.viewUid === IMANIA_OWNER_UID || (LEADER.viewFlag === true && !isPlatformOwner());
-    if (!protectedTarget) {
-      const banBtn = LEADER.viewBan
-        ? `<button class="kbc-btn" ${a} onclick="socClick();ldUnban(this.dataset.u,this.dataset.n)">✅ فك الحظر</button>`
-        : `<button class="kbc-btn" ${a} onclick="socClick();ldWipeUser(this.dataset.u,this.dataset.n,true)">⛔ حظر نهائي</button>`;
-      html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn download" ${a} onclick="socClick();ldWipeUser(this.dataset.u,this.dataset.n,false)">🧹 تصفير الحساب</button></div><div class="soc-btnrow" style="margin-top:8px">${banBtn}</div>`;
-    }
-    if (isPlatformOwner()) {
-      html += `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" ${a} onclick="socClick();ldToggleLeader(this.dataset.u,this.dataset.n)">${LEADER.viewFlag ? '🚫 إزالة صلاحية ليدر' : '🛡️ تعيينه ليدر'}</button></div>`;
-    }
-    html += `<div class="soc-btnrow" style="margin-top:8px">${bansBtn}</div>`;
+  const W = 'style="width:100%;margin-top:8px"';
+  const protectedTarget = LEADER.viewUid === IMANIA_OWNER_UID || (LEADER.viewFlag === true && !isPlatformOwner());
+  let html = '';
+  if (!protectedTarget) {
+    html += `<button class="kbc-btn" ${W} ${a} onclick="socClick();ldAct(this.dataset.u,this.dataset.n,'delete')">حذف الحساب</button>`;
+    html += LEADER.viewBan === 'suspended'
+      ? `<button class="kbc-btn download" ${W} ${a} onclick="socClick();ldUnsuspend(this.dataset.u,this.dataset.n)">فك تعليق الحساب</button>`
+      : `<button class="kbc-btn" ${W} ${a} onclick="socClick();ldAct(this.dataset.u,this.dataset.n,'suspend')">تعليق الحساب</button>`;
+    html += `<button class="kbc-btn" ${W} ${a} onclick="socClick();ldAct(this.dataset.u,this.dataset.n,'reset')">تصفير الحساب</button>`;
   }
+  html += `<button class="kbc-btn" ${W} ${a} onclick="socClick();ldOpenGift(this.dataset.u,this.dataset.n)">إهداء عملات همة</button>`;
+  if (isPlatformOwner()) html += `<button class="kbc-btn" ${W} ${a} onclick="socClick();ldToggleLeader(this.dataset.u,this.dataset.n)">${LEADER.viewFlag ? 'إزالة صلاحية ليدر' : 'تعيينه ليدر'}</button>`;
   if (!el) { el = document.createElement('div'); el.id = 'ldProfAct'; el.className = 'acct-card'; first.insertAdjacentElement('afterend', el); }
   el.innerHTML = html;
 }
-function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId() === 'page-user-profile') ldRenderProfAct(); } catch (e) {} }
+function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId() === 'page-user-profile') ldRenderProfAct(); } catch (e) {} try { ldAccountCard(); } catch (e) {} }
 (function () {
   const _prev = upOpen;
   upOpen = async function (uid, fb) {
@@ -12800,25 +12809,27 @@ function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId(
 })();
 
 /* ============================================================================
-   تصفير الحساب + الحظر النهائي (للّيدر وصاحب المنصة)
-   - تصفير: يمسح users/{uid} (العملات، المشتريات، الدروع، التقدم...) + فهرس البحث + مشاركاته في المسابقة الجارية،
-            ويكتب resets/{uid}؛ جهاز اللاعب أول ما يشوفها يمسح بياناته المحلية وصداقاته ويبدأ من الصفر.
-   - حظر نهائي: نفس التصفير + bans/{uid} → اللاعب يتفصل ومايقدرش يدخل. فك الحظر = حذف bans/{uid} فيرجع جديد ومتصفّر.
+   حذف / تعليق / تصفير الحساب (للّيدر وصاحب المنصة)
+   - تعليق: bans/{uid} = {type:'suspended'} — مفيش حاجة بتتمسح، اللاعب بس ممنوع من الدخول لحد ما الليدر يفك التعليق.
+   - تصفير: يمسح users/{uid} + فهرس البحث + مشاركاته في المسابقات، ويكتب resets/{uid} فجهازه يتصفّر.
+   - حذف نهائي: bans/{uid} = {type:'deleted'} + تصفير + شيله من قوائم أصدقاء الكل وطلبات الصداقة وكل المسابقات.
    - الحماية الحقيقية في قواعد Firebase (bans / resets).
    ============================================================================ */
 LEADER.viewBan = false; LEADER.resetBusy = false;
+const BAN_MSG = { deleted: 'تم حذف حسابك نهائيًا من المنصة', suspended: 'حسابك معلّق مؤقتًا — تواصل مع إدارة المنصة' };
 
 async function banGate(user) {
   try {
-    const sn = await acctWithTimeout(ldDb().ref('bans/' + user.uid).once('value'));
-    if (sn.val()) { banKick(); return true; }
+    const v = (await acctWithTimeout(ldDb().ref('bans/' + user.uid).once('value'))).val();
+    if (v) { banKick(v.type); return true; }
   } catch (e) {}
   return false;
 }
-function banKick() {
+function banKick(type) {
   if (window._banKicking) return; window._banKicking = true;
-  try { socToast('⛔ حسابك محظور نهائيًا من المنصة', 6000); } catch (e) {}
-  Promise.resolve(acctSignOut()).finally(() => { setTimeout(() => { window._banKicking = false; }, 3000); });
+  const msg = BAN_MSG[type] || BAN_MSG.suspended;
+  try { socToast('⛔ ' + msg, 6000); } catch (e) {}
+  Promise.resolve(acctSignOut()).then(() => { try { acctSay(msg); } catch (e) {} }).finally(() => { setTimeout(() => { window._banKicking = false; }, 3000); });
 }
 async function resetGate(user) {
   try {
@@ -12849,53 +12860,71 @@ async function ldLocalReset(uid, rt) {
 async function ldTargetIsLeader(uid) {
   try { return (await ldDb().ref('leaders/' + uid).once('value')).val() === true; } catch (e) { return false; }
 }
-async function ldWipeUser(uid, name, withBan) {
+async function ldRemoveFromRounds(db, uid, allRounds) {
+  try {
+    const rs = (await acctWithTimeout(db.ref('monthly/rounds').once('value'))).val() || {}, m = {};
+    Object.keys(rs).forEach(rid => {
+      const r = rs[rid] || {}; if (!allRounds && r.meta && r.meta.status === 'ended') return;
+      if (r.requests && r.requests[uid]) m['monthly/rounds/' + rid + '/requests/' + uid] = null;
+      if (r.progress && r.progress[uid]) m['monthly/rounds/' + rid + '/progress/' + uid] = null;
+    });
+    if (Object.keys(m).length) await acctWithTimeout(db.ref().update(m));
+  } catch (e) {}
+}
+async function ldRemoveSocial(db, uid) {   // الحذف النهائي: يختفي من أصدقاء الكل وطلبات الصداقة
+  const get = n => db.ref(n + '/' + uid).once('value').then(s => s.val() || {}).catch(() => ({}));
+  const [fr, sr, rq, un] = await Promise.all([get('friends'), get('sentRequests'), get('friendRequests'), get('unread')]);
+  const groups = [{}, {}, {}];
+  Object.keys(fr).forEach(o => { groups[0]['friends/' + uid + '/' + o] = null; groups[0]['friends/' + o + '/' + uid] = null; groups[0]['unread/' + o + '/' + uid] = null; groups[0]['unread/' + uid + '/' + o] = null; });
+  Object.keys(sr).forEach(o => { groups[1]['sentRequests/' + uid + '/' + o] = null; groups[1]['friendRequests/' + o + '/' + uid] = null; });
+  Object.keys(rq).forEach(o => { groups[2]['friendRequests/' + uid + '/' + o] = null; groups[2]['sentRequests/' + o + '/' + uid] = null; });
+  Object.keys(un).forEach(o => { groups[0]['unread/' + uid + '/' + o] = null; });
+  for (const g of groups) { if (Object.keys(g).length) { try { await acctWithTimeout(db.ref().update(g)); } catch (e) {} } }
+}
+async function ldAct(uid, name, mode) {
   if (!isLeader() || !uid || uid === socUid() || uid === IMANIA_OWNER_UID || LEADER.busy) return;
   if (!isPlatformOwner() && await ldTargetIsLeader(uid)) { socToast('مينفعش تتعامل مع حساب ليدر', 2800); return; }
   const nm = name || 'اللاعب';
-  const msg = withBan
-    ? 'حظر ' + nm + ' نهائيًا؟\nهيتمسح كل حاجة في حسابه (عملات، إطارات، مؤثرات، دروع، تقدم) ومش هيقدر يدخل المنصة تاني لحد ما تفك الحظر.'
-    : 'تصفير حساب ' + nm + '؟\nهيتمسح منه كل حاجة (عملات همة، براويز، مؤثرات فوز، دروع، تقدم، أصدقاء) ويقدر يدخل تاني من الصفر.';
-  if (!confirm(msg)) return;
+  const msgs = {
+    delete: 'حذف حساب ' + nm + ' نهائيًا؟\nهيتمسح كل حاجة له، ويختفي من قوائم أصدقاء الكل ومن كل المسابقات، ومش هيقدر يدخل المنصة تاني أبدًا.',
+    suspend: 'تعليق حساب ' + nm + '؟\nمش هيتمسح منه أي حاجة، بس مش هيقدر يدخل المنصة لحد ما تفك التعليق من قائمة الحسابات المعلّقة.',
+    reset: 'تصفير حساب ' + nm + '؟\nكل حاجة هتبقى صفر (العملات، الدروع، البراويز، المؤثرات، التقدم) ويقدر يدخل تاني من الصفر.'
+  };
+  if (!msgs[mode] || !confirm(msgs[mode])) return;
   LEADER.busy = true;
   try {
     const db = ldDb(), me = socUid();
-    if (withBan) {
-      const myName = (((window._acct && _acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
-      await acctWithTimeout(db.ref('bans/' + uid).set({ name: String(nm).slice(0, 24), ts: socTs(), by: me, byName: myName }));
+    const myName = (((window._acct && _acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
+    if (mode === 'suspend' || mode === 'delete') {
+      await acctWithTimeout(db.ref('bans/' + uid).set({ type: mode === 'delete' ? 'deleted' : 'suspended', name: String(nm).slice(0, 24), ts: socTs(), by: me, byName: myName }));
+      LEADER.viewBan = mode === 'delete' ? 'deleted' : 'suspended';
     }
-    const u = {}; u['users/' + uid] = null; u['profilesIndex/' + uid] = null; u['resets/' + uid] = socTs();
-    await acctWithTimeout(db.ref().update(u));
-    try {   // مشاركاته في المسابقات الغير منتهية
-      const rs = (await acctWithTimeout(db.ref('monthly/rounds').once('value'))).val() || {}, m = {};
-      Object.keys(rs).forEach(rid => {
-        const r = rs[rid] || {}; if (r.meta && r.meta.status === 'ended') return;
-        if (r.requests && r.requests[uid]) m['monthly/rounds/' + rid + '/requests/' + uid] = null;
-        if (r.progress && r.progress[uid]) m['monthly/rounds/' + rid + '/progress/' + uid] = null;
-      });
-      if (Object.keys(m).length) await acctWithTimeout(db.ref().update(m));
-    } catch (e) {}
-    if (withBan) LEADER.viewBan = true;
+    if (mode === 'delete') await ldRemoveSocial(db, uid);
+    if (mode === 'delete' || mode === 'reset') {
+      await ldRemoveFromRounds(db, uid, mode === 'delete');
+      const u = {}; u['users/' + uid] = null; u['profilesIndex/' + uid] = null; u['resets/' + uid] = socTs();
+      await acctWithTimeout(db.ref().update(u));
+    }
     ldRenderProfAct();
-    socToast(withBan ? 'اتحظر نهائيًا ⛔ واتصفّر حسابه' : 'اتصفّر الحساب 🧹', 3000);
+    socToast({ delete: 'اتحذف الحساب نهائيًا', suspend: 'اتعلّق الحساب', reset: 'اتصفّر الحساب' }[mode], 3000);
   } catch (e) { socErr(e); }
   finally { LEADER.busy = false; }
 }
-async function ldUnban(uid, name) {
+async function ldUnsuspend(uid, name) {
   if (!isLeader() || !uid) return;
-  if (!confirm('فك الحظر عن ' + (name || 'اللاعب') + '؟\nهيرجع للمنصة عادي بس من الصفر (حسابه اتصفّر وقت الحظر).')) return;
+  if (!confirm('فك تعليق حساب ' + (name || 'اللاعب') + '؟\nهيرجع للمنصة بكل بياناته زي ما كانت.')) return;
   try {
     await acctWithTimeout(ldDb().ref('bans/' + uid).set(null));
     if (LEADER.viewUid === uid) LEADER.viewBan = false;
     ldRenderProfAct(); ldRefreshBans();
-    socToast('اتفك الحظر ✅', 2500);
+    socToast('اتفك التعليق', 2500);
   } catch (e) { socErr(e); }
 }
 async function ldLoadViewBan(uid) {
   if (!isLeader() || !socOk()) return;
   try {
-    const v = !!(await acctWithTimeout(ldDb().ref('bans/' + uid).once('value'))).val();
-    if (LEADER.viewUid === uid) { LEADER.viewBan = v; ldRenderProfAct(); }
+    const v = (await acctWithTimeout(ldDb().ref('bans/' + uid).once('value'))).val();
+    if (LEADER.viewUid === uid) { LEADER.viewBan = v ? (v.type || 'suspended') : false; ldRenderProfAct(); }
   } catch (e) {}
 }
 function ldCloseBans() { const b = document.getElementById('ldBansBg'); if (b) b.remove(); }
@@ -12903,7 +12932,7 @@ function ldOpenBans() {
   if (!isLeader()) return;
   ldCloseBans();
   const bg = document.createElement('div'); bg.id = 'ldBansBg'; bg.className = 'soc-modal-bg'; bg.onclick = ldCloseBans;
-  bg.innerHTML = `<div class="soc-modal" onclick="event.stopPropagation()"><div class="acct-h">⛔ المحظورون</div><div id="ldBansList" class="acct-p">جاري التحميل...</div><div class="soc-btnrow" style="margin-top:14px"><button class="kbc-btn" onclick="socClick();ldCloseBans()">إغلاق</button></div></div>`;
+  bg.innerHTML = `<div class="soc-modal" onclick="event.stopPropagation()"><div class="acct-h">الحسابات المعلّقة</div><div id="ldBansList" class="acct-p">جاري التحميل...</div><div class="soc-btnrow" style="margin-top:14px"><button class="kbc-btn" onclick="socClick();ldCloseBans()">إغلاق</button></div></div>`;
   document.body.appendChild(bg);
   ldRefreshBans();
 }
@@ -12911,14 +12940,74 @@ async function ldRefreshBans() {
   const box = document.getElementById('ldBansList'); if (!box) return;
   try {
     const v = (await acctWithTimeout(ldDb().ref('bans').once('value'))).val() || {};
-    const ids = Object.keys(v).sort((x, y) => (v[y].ts || 0) - (v[x].ts || 0));
+    const ids = Object.keys(v).filter(id => (v[id] || {}).type !== 'deleted').sort((x, y) => (v[y].ts || 0) - (v[x].ts || 0));
     box.innerHTML = ids.length ? ids.map(id => {
       const x = v[id] || {}, d = x.ts ? new Date(x.ts).toLocaleDateString('ar-EG') : '';
-      return `<div class="soc-row" style="margin:6px 0"><div class="soc-nm">${socEsc(x.name || 'لاعب')}<div style="font-size:11px;opacity:.7">${socEsc(d)}${x.byName ? ' • بواسطة ' + socEsc(x.byName) : ''}</div></div><button class="kbc-btn" data-u="${socEsc(id)}" data-n="${socEsc(x.name || '')}" onclick="socClick();ldUnban(this.dataset.u,this.dataset.n)">✅ فك الحظر</button></div>`;
-    }).join('') : 'مفيش محظورين.';
+      return `<div class="soc-row" style="margin:6px 0"><div class="soc-nm">${socEsc(x.name || 'لاعب')}<div style="font-size:11px;opacity:.7">${socEsc(d)}${x.byName ? ' • بواسطة ' + socEsc(x.byName) : ''}</div></div><button class="kbc-btn" data-u="${socEsc(id)}" data-n="${socEsc(x.name || '')}" onclick="socClick();ldUnsuspend(this.dataset.u,this.dataset.n)">فك التعليق</button></div>`;
+    }).join('') : 'مفيش حسابات معلّقة.';
   } catch (e) { box.textContent = 'تعذّر تحميل القائمة.'; }
 }
+/* كارت الليدر في صفحته الشخصية */
+function ldAccountCard() {
+  const body = document.getElementById('acctBody'); if (!body) return;
+  let el = document.getElementById('ldAcctCard');
+  if (!isLeader() || !window._acct || !_acct.user || !_acct.rec) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'ldAcctCard'; el.className = 'acct-card'; }
+  el.innerHTML = `<div class="acct-h">أدوات الليدر</div><button class="kbc-btn download" style="width:100%;margin-top:8px" onclick="socClick();ldOpenBans()">قائمة الحسابات المعلّقة</button>`;
+  body.appendChild(el);
+}
+(function () {
+  const _r = acctRenderPage;
+  acctRenderPage = function () { const r = _r.apply(this, arguments); try { ldAccountCard(); } catch (e) {} return r; };
+})();
 </script>
 
+
+<script id="nav-back">
+/* زرار الرجوع (المثلث) في موبايل المتصفح: يرجّع خطوة داخل المنصة بدل الخروج منها. نسخة التطبيق لها معالجها الخاص. */
+(function () {
+  try { if (window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()) return; } catch (e) {}
+  const NAV = { ignore: 0, modals: 0, timer: null };
+  const _sp = showPage;
+  showPage = function (id, opts) {
+    const h = window._pageHistory || (window._pageHistory = ['page-home']);
+    if (!(opts && opts.skipHistory)) {
+      const cur = h[h.length - 1];
+      if (cur !== id) {
+        if (h.length > 1 && h[h.length - 2] === id) {   // رجوع بسهم داخل المنصة
+          NAV.ignore++; try { history.back(); } catch (e) { NAV.ignore--; }
+          h.pop(); opts = Object.assign({}, opts, { skipHistory: true });
+        } else { try { history.pushState({ imania: 1 }, ''); } catch (e) {} }
+      }
+    }
+    return _sp.call(this, id, opts);
+  };
+  const modalEls = () => document.querySelectorAll('.soc-modal-bg');
+  function reconcile() {
+    NAV.timer = null;
+    const present = modalEls().length;
+    while (NAV.modals < present) { try { history.pushState({ imania: 2 }, ''); } catch (e) {} NAV.modals++; }
+    if (NAV.modals > present) { const d = NAV.modals - present; NAV.modals = present; NAV.ignore++; try { history.go(-d); } catch (e) { NAV.ignore--; } }
+  }
+  new MutationObserver(() => { if (!NAV.timer) NAV.timer = setTimeout(reconcile, 30); }).observe(document.body, { childList: true });
+  window.addEventListener('popstate', () => {
+    if (NAV.ignore > 0) { NAV.ignore--; return; }
+    if (NAV.modals > 0) {
+      const els = modalEls(), top = els[els.length - 1];
+      NAV.modals--;
+      if (top) { try { top.click(); } catch (e) {} if (top.isConnected) top.remove(); }
+      return;
+    }
+    const a = document.querySelector('.page.active'), cid = a ? a.id : 'page-home';
+    if (/match/.test(cid)) {   // مباراة شغالة: مانخرجش منها بالغلط
+      try { history.pushState({ imania: 1 }, ''); } catch (e) {}
+      try { showImaniaToast('اطلع من المباراة بزرار الخروج جوه الصفحة', 2500); } catch (e) {}
+      return;
+    }
+    const h = window._pageHistory;
+    if (h && h.length > 1) { h.pop(); _sp(h[h.length - 1], { skipHistory: true }); }
+  });
+})();
+</script>
 </body>
 </html>
