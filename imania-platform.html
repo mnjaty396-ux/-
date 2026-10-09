@@ -12947,13 +12947,32 @@ async function ldRefreshBans() {
     }).join('') : 'مفيش حسابات معلّقة.';
   } catch (e) { box.textContent = 'تعذّر تحميل القائمة.'; }
 }
+async function ldClearMyFriends() {
+  const uid = socUid(); if (!uid || !isLeader() || LEADER.busy) return;
+  if (!confirm('مسح كل أصدقائك وطلبات الصداقة؟\nهتتشال من عندك ومن عند كل واحد منهم، والمحادثات القديمة مش هتظهر.')) return;
+  LEADER.busy = true;
+  try {
+    const db = ldDb(), get = n => db.ref(n + '/' + uid).once('value').then(s => s.val() || {}).catch(() => ({}));
+    const [fr, sr, rq, un] = await Promise.all([get('friends'), get('sentRequests'), get('friendRequests'), get('unread')]);
+    const groups = [{}, {}, {}, {}];
+    Object.keys(fr).forEach(o => { groups[0]['friends/' + uid + '/' + o] = null; groups[0]['friends/' + o + '/' + uid] = null; });
+    Object.keys(sr).forEach(o => { groups[1]['sentRequests/' + uid + '/' + o] = null; groups[1]['friendRequests/' + o + '/' + uid] = null; });
+    Object.keys(rq).forEach(o => { groups[2]['friendRequests/' + uid + '/' + o] = null; groups[2]['sentRequests/' + o + '/' + uid] = null; });
+    Object.keys(un).forEach(o => { groups[3]['unread/' + uid + '/' + o] = null; });
+    let n = 0;
+    for (const g of groups) { if (Object.keys(g).length) { try { await acctWithTimeout(db.ref().update(g)); n++; } catch (e) {} } }
+    socToast(Object.keys(fr).length ? 'اتمسحت كل الصداقات' : 'مفيش أصدقاء عندك', 3000);
+    try { acctRenderAll(); } catch (e) {}
+  } catch (e) { socErr(e); }
+  finally { LEADER.busy = false; }
+}
 /* كارت الليدر في صفحته الشخصية */
 function ldAccountCard() {
   const body = document.getElementById('acctBody'); if (!body) return;
   let el = document.getElementById('ldAcctCard');
   if (!isLeader() || !window._acct || !_acct.user || !_acct.rec) { if (el) el.remove(); return; }
   if (!el) { el = document.createElement('div'); el.id = 'ldAcctCard'; el.className = 'acct-card'; }
-  el.innerHTML = `<div class="acct-h">أدوات الليدر</div><button class="kbc-btn download" style="width:100%;margin-top:8px" onclick="socClick();ldOpenBans()">قائمة الحسابات المعلّقة</button>`;
+  el.innerHTML = `<div class="acct-h">أدوات الليدر</div><button class="kbc-btn download" style="width:100%;margin-top:8px" onclick="socClick();ldOpenBans()">قائمة الحسابات المعلّقة</button><button class="kbc-btn" style="width:100%;margin-top:8px" onclick="socClick();ldClearMyFriends()">مسح كل أصدقائي</button>`;
   body.appendChild(el);
 }
 (function () {
