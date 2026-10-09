@@ -2628,9 +2628,6 @@
       <button class="agc-btn">يلا نكتشف! 🔍</button>
     </div>
   </div>
-  <div id="ownerReportsBtn" style="display:none;text-align:center;padding:6px 16px 24px">
-    <button class="agc-btn" onclick="playClickSound();socOpenReports()">🚩 البلاغات <span class="soc-bd soc-bd-rep" style="display:none"></span></button>
-  </div>
 </div>
 <div class="page arena-fun" id="page-battle-lobby">
   <div class="inner-topbar">
@@ -12293,8 +12290,18 @@ async function socRepDecide(key, ok) {
   const e = SOC_REP.list[key]; if (!e) return;
   try {
     await acctWithTimeout(socDb().ref('reports/' + key).update({ status: ok ? 'approved' : 'rejected', reviewedAt: socTs(), reviewedBy: socUid() }));
-    if (ok && e.against) socDb().ref('reportStrikes/' + e.against).transaction(v => (Number(v) || 0) + 1).catch(() => {});
-    socToast(ok ? 'تم قبول البلاغ ✅' : 'تم رفض البلاغ', 2200);
+    let suspended = false;
+    if (ok && e.against) {
+      socDb().ref('reportStrikes/' + e.against).transaction(v => (Number(v) || 0) + 1).catch(() => {});
+      if (e.against !== socUid()) {
+        try {
+          const myName = (((window._acct && _acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
+          await acctWithTimeout(socDb().ref('bans/' + e.against).set({ type: 'suspended', name: String(e.againstName || '').slice(0, 24), ts: socTs(), by: socUid(), byName: myName }));
+          suspended = true;
+        } catch (x2) {}
+      }
+    }
+    socToast(ok ? (suspended ? 'تم قبول البلاغ وتعليق حساب اللاعب ✅' : 'تم قبول البلاغ ✅') : 'تم رفض البلاغ', 2600);
   } catch (x) { socErr(x); }
 }
 
@@ -12972,8 +12979,14 @@ function ldAccountCard() {
   let el = document.getElementById('ldAcctCard');
   if (!isLeader() || !window._acct || !_acct.user || !_acct.rec) { if (el) el.remove(); return; }
   if (!el) { el = document.createElement('div'); el.id = 'ldAcctCard'; el.className = 'acct-card'; }
-  el.innerHTML = `<div class="acct-h">أدوات الليدر</div><button class="kbc-btn download" style="width:100%;margin-top:8px" onclick="socClick();ldOpenBans()">قائمة الحسابات المعلّقة</button><button class="kbc-btn" style="width:100%;margin-top:8px" onclick="socClick();ldClearMyFriends()">مسح كل أصدقائي</button>`;
+  const W = 'style="width:100%;margin-top:8px"';
+  let html = '<div class="acct-h">أدوات الليدر</div>';
+  if (isPlatformOwner()) html += `<button class="kbc-btn download" ${W} onclick="socClick();socOpenReports()">البلاغات <span class="soc-bd soc-bd-rep" style="display:none"></span></button>`;
+  html += `<button class="kbc-btn" ${W} onclick="socClick();ldOpenBans()">الحسابات المعلّقة</button>`;
+  html += `<button class="kbc-btn" ${W} onclick="socClick();ldClearMyFriends()">حذف جميع أصدقائي</button>`;
+  el.innerHTML = html;
   body.appendChild(el);
+  try { socRepBadge(); } catch (e) {}
 }
 (function () {
   const _r = acctRenderPage;
