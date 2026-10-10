@@ -2108,7 +2108,7 @@
 <div class="topbar">
   <div class="topbar-logo"><span class="logo-icon">🕌</span> منصة إيمانية</div>
   <div class="topbar-actions">
-    <button class="notif-btn" id="hdrCoinsBtn" onclick="playClickSound();showPage('page-account')" aria-label="عملات همة" style="width:auto;min-width:44px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:.82rem;font-weight:800;color:#d4a843">🌙<span id="hdrCoins">0</span></button>
+    <button id="hdrCoinsBtn" onclick="playClickSound();showPage('page-account')" aria-label="عملات همة" style="display:flex;align-items:center;gap:5px;height:34px;padding:0 10px 0 8px;border-radius:999px;border:1px solid rgba(212,168,67,.6);background:rgba(0,0,0,.35);color:#ffe9b0;font-weight:800;font-size:.85rem;font-family:inherit;cursor:pointer;flex-shrink:0"><span id="hdrCoinIco" style="display:inline-flex"></span><span id="hdrCoins">0</span></button>
     <button class="notif-btn acct-top" id="acctTopBtn" onclick="playClickSound();showPage('page-account')" aria-label="حسابي">👤</button>
     <button class="notif-btn" onclick="playClickSound();toggleNotif()">🔔<span class="notif-dot" id="notifDot"></span></button>
     <button class="theme-toggle" onclick="playClickSound();toggleTheme()" id="themeBtn">🌙</button>
@@ -13140,10 +13140,21 @@ async function accTogglePrivate() {
 })();
 </script>
 <script id="hdr-coins">
-/* رصيد عملات همة ظاهر في شريط المنصة العلوي في كل الصفحات */
-setInterval(function () {
-  var el = document.getElementById('hdrCoins'); if (!el) return; var v; try { v = (typeof isPlatformOwner === 'function' && isPlatformOwner()) ? '∞' : String((arenaLoadStats().hemma) || 0); } catch (e) { return; } if (el.textContent !== v) el.textContent = v;
-}, 1000);
+/* رصيد عملات همة (أيقونة ذهبية) في الشريط العلوي — مرة واحدة في الصفحة (بيختفي في ساحة المنافسة لأن فيها رصيدها) */
+(function () {
+  var icoDone = false;
+  setInterval(function () {
+    var btn = document.getElementById('hdrCoinsBtn'), el = document.getElementById('hdrCoins'); if (!btn || !el) return;
+    if (!icoDone && typeof CHAMP_COIN_ICON !== 'undefined') {
+      var ico = document.getElementById('hdrCoinIco');
+      if (ico) { ico.innerHTML = CHAMP_COIN_ICON.replace('width="15"', 'width="22"').replace('height="15"', 'height="22"'); icoDone = true; }
+    }
+    var a = document.querySelector('.page.active'), onArena = a && a.id === 'page-arena-home';
+    var want = onArena ? 'none' : 'flex'; if (btn.style.display !== want) btn.style.display = want;
+    var v; try { v = (typeof isPlatformOwner === 'function' && isPlatformOwner()) ? '∞' : String((arenaLoadStats().hemma) || 0); } catch (e) { return; }
+    if (el.textContent !== v) el.textContent = v;
+  }, 700);
+})();
 </script>
 </body>
 </html>
