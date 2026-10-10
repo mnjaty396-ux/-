@@ -10402,7 +10402,8 @@ setInterval(function () { if (mcOnPage() && mcStatus() === 'running') mcRender()
 
 /* ---------- ردود الفعل على تغيّر بيانات الجولة ---------- */
 function mcAfterRound() {
-  const me = mcMe(); if (!me || !MC.round) return;
+  const me = mcMe(); if (me && !mcIsLead()) { try { mcRefundScan(); } catch (e) {} }
+  if (!me || !MC.round) return;
   const rq = mcReq(me), st = rq ? rq.status : null;
   if (MC.prevReq !== undefined && st !== MC.prevReq) {
     if (st === 'accepted') socToast('تم قبول طلبك في المسابقة الشهرية', 4200);
@@ -10412,6 +10413,44 @@ function mcAfterRound() {
   MC.prevReq = st;
   if (!mcIsLead() && rq && rq.status === 'accepted' && rq.charged !== true && !rq.nofunds && !MC.charging && mcStatus() !== 'ended') mcCharge(MC.rid);
   if (mcStatus() === 'ended') mcCheckAward();
+}
+/* رجوع رسوم الاشتراك: لو اللاعب دفع وبعدين اتطرد / اترفض / اتشال من المسابقة */
+async function mcRefundScan() {
+  const me = mcMe(); if (!me || MC.refunding || mcIsLead()) return;
+  if (typeof isPlatformOwner === 'function' && isPlatformOwner()) return;
+  if (Date.now() - (MC.refundTs || 0) < 20000) return;
+  MC.refundTs = Date.now(); MC.refunding = true;
+  try {
+    const db = mcDb();
+    const rec = (await acctWithTimeout(db.ref('users/' + me).once('value'))).val() || {};
+    for (const rid of Object.keys(rec.monthlyPaid || {})) {
+      const meta = (await acctWithTimeout(db.ref('monthly/rounds/' + rid + '/meta').once('value'))).val();
+      const rq = (await acctWithTimeout(db.ref('monthly/rounds/' + rid + '/requests/' + me).once('value'))).val();
+      if (meta && rq && rq.status !== 'kicked' && rq.status !== 'rejected') continue;   // لسه مشترك
+      if (!meta && rq) continue;
+      let did = false;
+      const res = await acctWithTimeout(db.ref('users/' + me).transaction(r => {
+        if (r === null || !r.monthlyPaid || !r.monthlyPaid[rid]) return;
+        delete r.monthlyPaid[rid];
+        if (!Object.keys(r.monthlyPaid).length) delete r.monthlyPaid;
+        r.hemma = (r.hemma || 0) + MC_FEE; did = true; return r;
+      }));
+      if (res.committed && did) {
+        const bal = (res.snapshot.val() || {}).hemma || 0;
+        await (_acct.chain = _acct.chain.then(() => {
+          const st = arenaLoadStats();
+          st.hemma = (st.hemma || 0) + MC_FEE;
+          _acct.lastHemma = (_acct.lastHemma || 0) + MC_FEE;
+          if (_acct.rec) _acct.rec.hemma = bal;
+          acctSetLink(me, _acct.lastHemma);
+          _acct.applying = true; arenaSaveStats(st); _acct.applying = false;
+          ['arenaHemmaBalance', 'acctBalance'].forEach(i => { const el = document.getElementById(i); if (el) el.textContent = bal; });
+        }).catch(() => {}));
+        socToast('اتردّت لك ' + MC_FEE + ' عملة همة (رسوم المسابقة)', 4500);
+      }
+    }
+  } catch (e) {}
+  MC.refunding = false;
 }
 async function mcCharge(rid) {
   const me = mcMe(); if (!me || MC.charging) return; MC.charging = true;
@@ -10661,8 +10700,8 @@ function mcRenderLeader() {
       const r = reqs[u], n = mcEsc(r.name || 'لاعب'), eu = mcEsc(u);
       let btns = '', sub = '', detail = '';
       if (status === 'pending') btns = `<button class="mc-btn sm" onclick="mcDecide('${eu}',true)">قبول</button><button class="mc-btn sm ghost" onclick="mcDecide('${eu}',false)">رفض</button>`;
-      else if (status === 'rejected') btns = `<button class="mc-btn sm ghost" onclick="mcDecide('${eu}',true)">قبول</button>`;
-      else if (status === 'kicked') btns = `<button class="mc-btn sm ghost" onclick="mcDecide('${eu}',true)">إعادة</button>`;
+      else if (status === 'rejected') btns = `<button class="mc-btn sm ghost" onclick="mcDecide('${eu}',true)">قبول</button><button class="mc-btn sm ghost" onclick="mcRemoveEntry('${eu}')">إزالة</button>`;
+      else if (status === 'kicked') btns = `<button class="mc-btn sm ghost" onclick="mcDecide('${eu}',true)">إعادة</button><button class="mc-btn sm ghost" onclick="mcRemoveEntry('${eu}')">إزالة</button>`;
       else {
         const days = [1, 2, 3, 4, 5, 6, 7].map(d => mcDayPts(u, d)).join(' • ');
         sub = `<small>${r.charged ? 'تم الدفع' : (r.nofunds ? 'رصيد غير كافٍ' : 'بانتظار الخصم')} • ${mcPoints(u)} نقطة${(st === 'running' || st === 'ended') ? '<br>الأيام: ' + days : ''}</small>`;
@@ -10692,14 +10731,29 @@ async function mcDecide(uid, ok) {
   if (!(typeof isLeader === 'function' && isLeader()) || !MC.rid) return;
   const reqs = (MC.round && MC.round.requests) || {};
   if (ok && Object.keys(reqs).filter(u => reqs[u].status === 'accepted').length >= MC_MAX) { socToast('وصلت للحد الأقصى (' + MC_MAX + ')', 3000); return; }
-  try { await acctWithTimeout(mcDb().ref('monthly/rounds/' + MC.rid + '/requests/' + uid + '/status').set(ok ? 'accepted' : 'rejected')); } catch (e) { socErr(e); }
+  try {
+    const rq = reqs[uid] || {}, ref = mcDb().ref('monthly/rounds/' + MC.rid + '/requests/' + uid);
+    if (ok && rq.charged && (rq.status === 'kicked' || rq.status === 'rejected')) await acctWithTimeout(ref.update({ status: 'accepted', charged: null, nofunds: null }));   // رسومه اترجعت: يتخصم تاني
+    else await acctWithTimeout(ref.child('status').set(ok ? 'accepted' : 'rejected'));
+  } catch (e) { socErr(e); }
 }
 function mcWatch(uid) { if (!mcIsLead()) return; MC.watch = (MC.watch === uid) ? null : uid; mcRenderLeader(); }
 async function mcKick(uid) {
   if (!mcIsLead() || !MC.rid) return;
   const rq = mcReq(uid), n = (rq && rq.name) || 'اللاعب';
-  if (!confirm('طرد ' + n + ' من المسابقة؟ لن تُسترجع رسوم اشتراكه.')) return;
+  if (!confirm('طرد ' + n + ' من المسابقة؟ هتترجّع له رسوم اشتراكه تلقائيًا.')) return;
   try { await acctWithTimeout(mcDb().ref('monthly/rounds/' + MC.rid + '/requests/' + uid + '/status').set('kicked')); socToast('تم طرد ' + n, 2500); } catch (e) { socErr(e); }
+}
+async function mcRemoveEntry(uid) {
+  if (!mcIsLead() || !MC.rid || !uid) return;
+  if (!confirm('إزالة اللاعب ده من قائمة المسابقة نهائيًا؟')) return;
+  try {
+    const base = 'monthly/rounds/' + MC.rid, u = {};
+    u[base + '/requests/' + uid] = null; u[base + '/progress/' + uid] = null;
+    if ((mcMeta().winners || {})[uid]) u[base + '/meta/winners/' + uid] = null;
+    await acctWithTimeout(mcDb().ref().update(u));
+    socToast('اتشال من المسابقة', 2200);
+  } catch (e) { socErr(e); }
 }
 async function mcClearWinners() {
   if (!mcIsLead() || !MC.rid) return;
@@ -12829,7 +12883,7 @@ function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId(
    - الحماية الحقيقية في قواعد Firebase (bans / resets).
    ============================================================================ */
 LEADER.viewBan = false; LEADER.resetBusy = false;
-const BAN_MSG = { deleted: 'تم حذف حسابك نهائيًا من المنصة', suspended: 'حسابك معلّق مؤقتًا — تواصل مع إدارة المنصة' };
+const BAN_MSG = { deleted: 'تم حذف حسابك — سجّل دخول من جديد وهتبدأ من الصفر', suspended: 'حسابك معلّق مؤقتًا — تواصل مع إدارة المنصة' };
 
 async function banGate(user) {
   try {
@@ -12880,6 +12934,7 @@ async function ldRemoveFromRounds(db, uid, allRounds) {
       const r = rs[rid] || {}; if (!allRounds && r.meta && r.meta.status === 'ended') return;
       if (r.requests && r.requests[uid]) m['monthly/rounds/' + rid + '/requests/' + uid] = null;
       if (r.progress && r.progress[uid]) m['monthly/rounds/' + rid + '/progress/' + uid] = null;
+      if (r.meta && r.meta.winners && r.meta.winners[uid]) m['monthly/rounds/' + rid + '/meta/winners/' + uid] = null;
     });
     if (Object.keys(m).length) await acctWithTimeout(db.ref().update(m));
   } catch (e) {}
@@ -12887,11 +12942,14 @@ async function ldRemoveFromRounds(db, uid, allRounds) {
 async function ldRemoveSocial(db, uid) {   // الحذف النهائي: يختفي من أصدقاء الكل وطلبات الصداقة
   const get = n => db.ref(n + '/' + uid).once('value').then(s => s.val() || {}).catch(() => ({}));
   const [fr, sr, rq, un] = await Promise.all([get('friends'), get('sentRequests'), get('friendRequests'), get('unread')]);
-  const groups = [{}, {}, {}];
+  const groups = [{}, {}, {}, {}];
   Object.keys(fr).forEach(o => { groups[0]['friends/' + uid + '/' + o] = null; groups[0]['friends/' + o + '/' + uid] = null; groups[0]['unread/' + o + '/' + uid] = null; groups[0]['unread/' + uid + '/' + o] = null; });
   Object.keys(sr).forEach(o => { groups[1]['sentRequests/' + uid + '/' + o] = null; groups[1]['friendRequests/' + o + '/' + uid] = null; });
   Object.keys(rq).forEach(o => { groups[2]['friendRequests/' + uid + '/' + o] = null; groups[2]['sentRequests/' + o + '/' + uid] = null; });
   Object.keys(un).forEach(o => { groups[0]['unread/' + uid + '/' + o] = null; });
+  Object.keys(fr).forEach(o => { groups[3]['chats/' + socPair(uid, o)] = null; });
+  const gi = await db.ref('giftInbox/' + uid).once('value').then(x => x.val() || {}).catch(() => ({}));
+  Object.keys(gi).forEach(id => { groups[3]['giftInbox/' + uid + '/' + id] = null; });
   for (const g of groups) { if (Object.keys(g).length) { try { await acctWithTimeout(db.ref().update(g)); } catch (e) {} } }
 }
 async function ldAct(uid, name, mode) {
@@ -12899,7 +12957,7 @@ async function ldAct(uid, name, mode) {
   if (!isPlatformOwner() && await ldTargetIsLeader(uid)) { socToast('مينفعش تتعامل مع حساب ليدر', 2800); return; }
   const nm = name || 'اللاعب';
   const msgs = {
-    delete: 'حذف حساب ' + nm + ' نهائيًا؟\nهيتمسح كل حاجة له، ويختفي من قوائم أصدقاء الكل ومن كل المسابقات، ومش هيقدر يدخل المنصة تاني أبدًا.',
+    delete: 'حذف حساب ' + nm + '؟\nهيتصفّر من كل حاجة ويتشال بالكامل من أصدقاء الكل ومن كل المسابقات من غير أي رسالة. يقدر يسجّل دخول بحساب جوجل تاني بس يبدأ من الصفر.',
     suspend: 'تعليق حساب ' + nm + '؟\nمش هيتمسح منه أي حاجة، بس مش هيقدر يدخل المنصة لحد ما تفك التعليق من قائمة الحسابات المعلّقة.',
     reset: 'تصفير حساب ' + nm + '؟\nكل حاجة هتبقى صفر (العملات، الدروع، البراويز، المؤثرات، التقدم) ويقدر يدخل تاني من الصفر.'
   };
@@ -12910,7 +12968,7 @@ async function ldAct(uid, name, mode) {
     const myName = (((_acct.rec && _acct.rec.name) || '') + '').slice(0, 24) || 'ليدر';
     if (mode === 'suspend' || mode === 'delete') {
       await acctWithTimeout(db.ref('bans/' + uid).set({ type: mode === 'delete' ? 'deleted' : 'suspended', name: String(nm).slice(0, 24), ts: socTs(), by: me, byName: myName }));
-      LEADER.viewBan = mode === 'delete' ? 'deleted' : 'suspended';
+      LEADER.viewBan = mode === 'suspend' ? 'suspended' : false;
     }
     if (mode === 'delete') await ldRemoveSocial(db, uid);
     if (mode === 'delete' || mode === 'reset') {
@@ -12918,10 +12976,14 @@ async function ldAct(uid, name, mode) {
       const u = {}; u['users/' + uid] = null; u['profilesIndex/' + uid] = null; u['resets/' + uid] = socTs();
       await acctWithTimeout(db.ref().update(u));
     }
+    if (mode === 'delete') { try { await acctWithTimeout(db.ref('bans/' + uid).set(null)); } catch (e) {} LEADER.viewBan = false; }
     ldRenderProfAct();
-    socToast({ delete: 'اتحذف الحساب نهائيًا', suspend: 'اتعلّق الحساب', reset: 'اتصفّر الحساب' }[mode], 3000);
+    socToast({ delete: 'اتحذف الحساب واتصفّر بالكامل', suspend: 'اتعلّق الحساب', reset: 'اتصفّر الحساب' }[mode], 3000);
   } catch (e) { socErr(e); }
-  finally { LEADER.busy = false; }
+  finally {
+    if (mode === 'delete') { try { await ldDb().ref('bans/' + uid).set(null); } catch (e) {} }
+    LEADER.busy = false;
+  }
 }
 async function ldUnsuspend(uid, name) {
   if (!isLeader() || !uid) return;
