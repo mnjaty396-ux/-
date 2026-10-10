@@ -2108,6 +2108,7 @@
 <div class="topbar">
   <div class="topbar-logo"><span class="logo-icon">🕌</span> منصة إيمانية</div>
   <div class="topbar-actions">
+    <button class="notif-btn" id="hdrCoinsBtn" onclick="playClickSound();showPage('page-account')" aria-label="عملات همة" style="width:auto;min-width:44px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:.82rem;font-weight:800;color:#d4a843">🌙<span id="hdrCoins">0</span></button>
     <button class="notif-btn acct-top" id="acctTopBtn" onclick="playClickSound();showPage('page-account')" aria-label="حسابي">👤</button>
     <button class="notif-btn" onclick="playClickSound();toggleNotif()">🔔<span class="notif-dot" id="notifDot"></span></button>
     <button class="theme-toggle" onclick="playClickSound();toggleTheme()" id="themeBtn">🌙</button>
@@ -5279,7 +5280,7 @@ function kutubRenderTopicBookCards(name, sorted, hasGroups) {
   listEl.classList.remove('hidden');
   let lastGroup = null;
   listEl.innerHTML =
-    `<div class="kutub-path-intro">${hasGroups ? 'كل مجموعة تبدأ بالمتن الأصلي ثم شروحه — اقرأ المتن أولًا.' : 'مسار تعليمي متسلسل من الأسهل إلى الأصعب — ابدأ بالكتاب الأول ثم انتقل تباعًا.'}</div>` +
+    (hasGroups ? `<div class="kutub-path-intro">كل مجموعة تبدأ بالمتن الأصلي ثم شروحه — اقرأ المتن أولًا.</div>` : '') +
     sorted.map(b => {
       const statusHtml = b.manhaj
         ? `<span class="kbc-status ${b.manhaj === 'تقني' ? '' : 'review'}">${b.manhaj === 'تقني' ? 'علم آلي تقني' : 'يحتاج مراجعة منهجية'}</span>`
@@ -9833,7 +9834,6 @@ function acctRenderPage() {
         <span class="acct-cam" aria-hidden="true">📷</span>
       </div>
       ${acctNameHtml(p)}
-      <div class="acct-email">${escapeHtml(_acct.user.email || '')}</div>
       <div class="acct-balance">🌙 <b id="acctBalance">${bal}</b> عملة همة</div>
       <div class="acct-photo-actions">
         <button class="kbc-btn" onclick="playClickSound();acctPickPhoto()">📷 تغيير الصورة</button>
@@ -10339,7 +10339,7 @@ const MC_TASKS = [
   { t: 'قمت الليل لمدة لا تقل عن نصف ساعة.', p: 3 },
   { t: 'قرأت أذكار الصباح والمساء.', p: 3 },
   { t: 'تصدقت بصدقة ولو كانت بسيطة.', p: 3 },
-  { t: 'قرأت خمسة أحاديث عن النبي ﷺ وفهمت معانيها.', p: 5 }
+  { t: 'قرأت ثلاثة أحاديث عن النبي ﷺ وفهمت معانيها.', p: 5 }
 ];
 const MC_DAY_TOTAL = MC_TASKS.reduce((a, b) => a + b.p, 0);
 const MC_DAY_NAMES = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع'];
@@ -10560,7 +10560,7 @@ function mcShowTerms() {
 const MC_CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.6 4.6L19 7.5"/></svg>';
 function mcRender() {
   const body = document.getElementById('mcBody'); if (!body || !mcOnPage()) { if (MC.sheet === 'leader') mcRenderLeader(); return; }
-  if (MC.stage === 'terms') {
+  if (MC.stage === 'terms' && !mcIsLead()) {
     body.innerHTML = `<div class="mc-terms mc-rise">${mcTermsHtml('<button class="mc-btn" style="margin-top:18px" onclick="playClickSound();mcAccept()">قرأت الشروط</button>')}</div>`;
   } else {
     body.innerHTML = mcCardHtml() + mcBoardHtml();
@@ -12010,9 +12010,13 @@ async function upOpen(uid, fallbackName) {
   try {
     const ref = firebase.database().ref('users/' + uid);
     const get = k => acctWithTimeout(ref.child(k).once('value')).then(x => x.val()).catch(() => null);
-    let [name, photo, equipped, owned, badges] = await Promise.all([get('name'), get('photo'), get('equipped'), get('owned'), get('badges')]);
+    let [name, photo, equipped, owned, badges, priv] = await Promise.all([get('name'), get('photo'), get('equipped'), get('owned'), get('badges'), get('private')]);
     if (!name && !photo) { body.innerHTML = '<div class="acct-card"><div class="acct-p">البروفايل ده مش متاح.</div></div>'; return; }
     const p = { name: name || fallbackName || '', photo: photo || '', equipped: equipped || {} };
+    if (priv === true && uid !== (_acct.user && _acct.user.uid) && !(typeof isLeader === 'function' && isLeader()) && !(typeof SOC !== 'undefined' && SOC.friends && SOC.friends[uid])) {
+      body.innerHTML = `<div class="acct-card">${acctAvatarHtml(p, 96)}${acctNameHtml(p)}</div><div class="acct-card"><div class="acct-h">🔒 الحساب خاص</div></div>`;
+      return;
+    }
     owned = owned || {};
     const secs = SHOP_CATALOG.map(g => {
       const mine = g.items.filter(it => owned[it.id]); if (!mine.length) return '';
@@ -12271,6 +12275,7 @@ const _socRelBase = socRelHtml;
 socRelHtml = function (uid, name, inMatch) {
   const base = _socRelBase.apply(this, arguments), me = socUid();
   if (!me || !uid || uid === me) return base;
+  if (uid === IMANIA_OWNER_UID || (LEADER.ids && LEADER.ids[uid])) return base;   // مفيش بلاغ على الليدر
   return base + `<div class="soc-btnrow" style="margin-top:8px"><button class="kbc-btn" data-u="${socEsc(uid)}" data-n="${socEsc(name)}" onclick="socClick();socReportAsk(this.dataset.u,this.dataset.n)">🚩 إبلاغ</button></div>`;
 };
 const SOC_REP_REASONS = ['ألفاظ مسيئة', 'سلوك غير لائق / إزعاج', 'غش أو تلاعب', 'اسم أو صورة غير مناسبة', 'سبب آخر'];
@@ -12289,6 +12294,7 @@ function socReportAsk(uid, name) {
 }
 async function socReportSend(uid, name, reason, kind) {
   const me = socUid(); if (!me || !uid || !socOk()) { socToast('سجّل الدخول الأول 🙂'); return; }
+  if (uid === IMANIA_OWNER_UID || (LEADER.ids && LEADER.ids[uid])) { socToast('مينفعش الإبلاغ عن الإدارة', 2500); return; }
   const lk = 'imania_rep_' + uid;
   try { if (Date.now() - Number(localStorage.getItem(lk) || 0) < 864e5) { socToast('بلّغت عن اللاعب ده قبل كده، البلاغ عند الإدارة 🌿', 3200); return; } } catch (e) {}
   let room = ''; try { const m = kind === 'gc' ? ((typeof GuessCharMatch !== 'undefined' && GuessCharMatch) || SOC.gcLast) : (typeof ArenaBattle !== 'undefined' ? ArenaBattle : null); room = (m && m.roomRef && m.roomRef.key) || ''; } catch (e) {}
@@ -12547,6 +12553,7 @@ function socChatSend() {
 }
 function socChatReport() {
   const c = SOC.chat, me = socUid(); if (!c || !me) return;
+  if (c.uid === IMANIA_OWNER_UID || (LEADER.ids && LEADER.ids[c.uid])) { socToast('مينفعش الإبلاغ عن الإدارة', 2500); return; }
   if (!confirm('تبلّغ عن ' + c.name + ' بسبب كلام مسيء؟')) return;
   socDb().ref('reports').push({ by: me, byName: socMyName(), against: c.uid, againstName: String(c.name || '').slice(0, 24), pair: c.pair, reason: 'كلام مسيء في الشات', ctx: 'chat', status: 'pending', ts: socTs() }).then(() => socToast('تم الإبلاغ، شكرًا لك 🌿', 3000)).catch(socErr);
 }
@@ -12708,6 +12715,9 @@ function ldStart(uid) {
   const bref = db.ref('bans/' + uid);
   const bcb = bref.on('value', sn => { if (sn.val()) { try { _acct.ready = false; } catch (e) {} banKick((sn.val() || {}).type); } }, () => {});
   LEADER.offs.push(() => bref.off('value', bcb));
+  const idsRef = db.ref('leaders');
+  const idsCb = idsRef.on('value', sn => { LEADER.ids = sn.val() || {}; }, () => {});
+  LEADER.offs.push(() => idsRef.off('value', idsCb));
   const rref = db.ref('resets/' + uid);
   const rcb = rref.on('value', async sn => {
     const rt = Number(sn.val()) || 0, seen = Number(localStorage.getItem('imania_reset_seen_' + uid)) || 0;
@@ -12865,7 +12875,7 @@ function ldRenderProfAct() {
   if (!el) { el = document.createElement('div'); el.id = 'ldProfAct'; el.className = 'acct-card'; first.insertAdjacentElement('afterend', el); }
   el.innerHTML = html;
 }
-function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId() === 'page-user-profile') ldRenderProfAct(); } catch (e) {} try { ldAccountCard(); } catch (e) {} }
+function ldUiRefresh() { try { if (typeof socPageId === 'function' && socPageId() === 'page-user-profile') ldRenderProfAct(); } catch (e) {} try { ldAccountCard(); } catch (e) {} try { accPrivacyCard(); } catch (e) {} }
 (function () {
   const _prev = upOpen;
   upOpen = async function (uid, fb) {
@@ -13057,9 +13067,28 @@ function ldAccountCard() {
   if (first && first !== el) first.insertAdjacentElement('afterend', el); else body.appendChild(el);
   try { socRepBadge(); } catch (e) {}
 }
+function accPrivacyCard() {
+  const body = document.getElementById('acctBody'); if (!body) return;
+  let el = document.getElementById('accPrivCard');
+  if (isLeader() || !_acct.user || !_acct.rec) { if (el) el.remove(); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'accPrivCard'; el.className = 'acct-card'; }
+  const on = _acct.rec.private === true;
+  el.innerHTML = `<div class="acct-h">🔒 خصوصية الحساب</div><div class="acct-p" style="margin-bottom:8px">لما الحساب يكون خاص، أي لاعب مش صديقك هيشوف «الحساب خاص» وزرار إرسال طلب صداقة بس.</div><button class="kbc-btn ${on ? '' : 'download'}" style="width:100%" onclick="playClickSound();accTogglePrivate()">${on ? 'الحساب خاص — اضغط لجعله عام' : 'اجعل حسابي خاص'}</button>`;
+  const first = body.firstElementChild;
+  if (first && first !== el) first.insertAdjacentElement('afterend', el); else body.appendChild(el);
+}
+async function accTogglePrivate() {
+  if (!_acct.user || !_acct.rec) return;
+  const v = !(_acct.rec.private === true);
+  try {
+    await acctWithTimeout(ldDb().ref('users/' + _acct.user.uid + '/private').set(v ? true : null));
+    if (v) _acct.rec.private = true; else delete _acct.rec.private;
+    accPrivacyCard(); socToast(v ? 'الحساب بقى خاص' : 'الحساب بقى عام', 2200);
+  } catch (e) { socErr(e); }
+}
 (function () {
   const _r = acctRenderPage;
-  acctRenderPage = function () { const r = _r.apply(this, arguments); try { ldAccountCard(); } catch (e) {} return r; };
+  acctRenderPage = function () { const r = _r.apply(this, arguments); try { ldAccountCard(); } catch (e) {} try { accPrivacyCard(); } catch (e) {} return r; };
 })();
 </script>
 
@@ -13109,6 +13138,12 @@ function ldAccountCard() {
     if (h && h.length > 1) { h.pop(); _sp(h[h.length - 1], { skipHistory: true }); }
   });
 })();
+</script>
+<script id="hdr-coins">
+/* رصيد عملات همة ظاهر في شريط المنصة العلوي في كل الصفحات */
+setInterval(function () {
+  var el = document.getElementById('hdrCoins'); if (!el) return; var v; try { v = (typeof isPlatformOwner === 'function' && isPlatformOwner()) ? '∞' : String((arenaLoadStats().hemma) || 0); } catch (e) { return; } if (el.textContent !== v) el.textContent = v;
+}, 1000);
 </script>
 </body>
 </html>
