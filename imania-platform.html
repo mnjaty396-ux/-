@@ -2112,15 +2112,8 @@
   </div>
   <div class="topbar-actions">
     <button class="notif-btn acct-top" id="acctTopBtn" onclick="playClickSound();showPage('page-account')" aria-label="حسابي">👤</button>
-    <button class="notif-btn" onclick="playClickSound();toggleNotif()">🔔<span class="notif-dot" id="notifDot"></span></button>
     <button class="theme-toggle" onclick="playClickSound();toggleTheme()" id="themeBtn">🌙</button>
   </div>
-</div>
-<div class="notification-popup" id="notifPopup">
-  <div class="notif-header">
-    <button class="notif-x" onclick="playClickSound();closeNotif()">✕</button>
-  </div>
-  <div class="notif-dhikr" id="notifDhikr"></div>
 </div>
 <div class="page active" id="page-home">
   <div class="prayer-hero" id="prayerHero">
@@ -6069,11 +6062,8 @@ function showFajrReminder() { /* خانة التذكير اتشالت — الج
 window.addEventListener('imania:prayerTime', function (e) {
   if (e && e.detail && e.detail.prayer === 'Fajr') showFajrReminder();
 });
-function toggleNotif() {
-  document.getElementById('notifPopup').classList.toggle('show');
-  document.getElementById('notifDot').style.display = 'none';
-}
-function closeNotif() { document.getElementById('notifPopup').classList.remove('show'); }
+function toggleNotif() {}
+function closeNotif() {}
 /* تم استبدال loadDate() القديمة بوحدة PrayerModule التي تعرض التاريخ الميلادي/الهجري
    الحقيقيين المرتبطين بموقع المستخدم ومصدر مواقيت الصلاة (انظر أسفل الملف). */
 const DUA_SOURCE_LABELS = {
