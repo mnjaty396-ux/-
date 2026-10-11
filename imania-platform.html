@@ -2106,9 +2106,11 @@
 <div class="islamic-pattern"></div>
 <div class="imania-toast" id="imaniaToast"></div>
 <div class="topbar">
-  <div class="topbar-logo"><span class="logo-icon">🕌</span> منصة إيمانية</div>
+  <div style="display:flex;align-items:center;gap:10px;min-width:0">
+    <div id="hdrCoinsBtn" aria-label="عملات همة" style="display:flex;align-items:center;gap:5px;height:34px;padding:0 10px 0 8px;border-radius:999px;border:1px solid rgba(212,168,67,.6);background:rgba(0,0,0,.35);color:#ffe9b0;font-weight:800;font-size:.85rem;flex-shrink:0;pointer-events:none"><span id="hdrCoinIco" style="display:inline-flex"></span><span id="hdrCoins">0</span></div>
+    <div class="topbar-logo" style="white-space:nowrap"><span class="logo-icon">🕌</span> منصة إيمانية</div>
+  </div>
   <div class="topbar-actions">
-    <button id="hdrCoinsBtn" onclick="playClickSound();showPage('page-account')" aria-label="عملات همة" style="display:flex;align-items:center;gap:5px;height:34px;padding:0 10px 0 8px;border-radius:999px;border:1px solid rgba(212,168,67,.6);background:rgba(0,0,0,.35);color:#ffe9b0;font-weight:800;font-size:.85rem;font-family:inherit;cursor:pointer;flex-shrink:0"><span id="hdrCoinIco" style="display:inline-flex"></span><span id="hdrCoins">0</span></button>
     <button class="notif-btn acct-top" id="acctTopBtn" onclick="playClickSound();showPage('page-account')" aria-label="حسابي">👤</button>
     <button class="notif-btn" onclick="playClickSound();toggleNotif()">🔔<span class="notif-dot" id="notifDot"></span></button>
     <button class="theme-toggle" onclick="playClickSound();toggleTheme()" id="themeBtn">🌙</button>
@@ -10546,10 +10548,12 @@ function mcTermsHtml(withBtn) {
     ${withBtn || ''}</div>`;
 }
 function openMonthlyContest() {
-  MC.stage = 'terms'; MC.view = 'days'; MC.sheet = null;
+  let seen = false; try { seen = localStorage.getItem('imania_mc_terms_seen') === '1'; } catch (e) {}
+  MC.stage = seen ? 'card' : 'terms'; MC.view = 'days'; MC.sheet = null;
   showPage('page-monthly'); mcRender();
 }
 function mcAccept() {
+  try { localStorage.setItem('imania_mc_terms_seen', '1'); } catch (e) {}
   MC.stage = 'card'; mcRender(); window.scrollTo(0, 0);
 }
 function mcShowTerms() {
